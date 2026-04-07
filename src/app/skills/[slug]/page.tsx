@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getSkillBySlug, getAllSkills, getRelatedSkills, getCareersForSkill } from '@/lib/content';
-import { formatCategoryName, formatDate } from '@/lib/utils';
+import { formatCategoryName, formatDate, getCategoryColor, getRiskLevelColor, getDifficultyColor } from '@/lib/utils';
 import { 
   ArrowLeft, 
   Star, 
@@ -16,7 +16,17 @@ import {
   AlertTriangle,
   BookOpen,
   Users,
-  Building2
+  Building2,
+  Brain,
+  Zap,
+  Shield,
+  Globe,
+  Sparkles,
+  Award,
+  Play,
+  BarChart3,
+  Lightbulb,
+  Compass
 } from 'lucide-react';
 
 interface SkillDetailPageProps {
@@ -65,65 +75,99 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     getCareersForSkill(skill.slug)
   ]);
 
+  const categoryColors = getCategoryColor(skill.category);
+  const riskColors = getRiskLevelColor(skill.automationRisk);
+  const difficultyColors = getDifficultyColor(skill.difficulty || 'intermediate');
+
   return (
-    <div className="py-12">
-      <div className="mx-auto max-w-4xl px-6 lg:px-8">
+    <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Back Navigation */}
         <div className="mb-8">
-          <Link href="/skills" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Skills
+          <Link 
+            href="/skills" 
+            className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors group"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Skills Repository
           </Link>
         </div>
 
-        {/* Header */}
-        <div className="mb-12">
-          <div className="flex items-center space-x-4 mb-4">
-            <Badge variant="info" size="lg">
-              {formatCategoryName(skill.category)}
-            </Badge>
-            <div className="flex items-center space-x-1">
-              <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              <span className="font-medium text-gray-900">{skill.employerSignalValue}/10</span>
-              <span className="text-sm text-gray-500">employer signal</span>
+        {/* Hero Header */}
+        <div className="mb-16">
+          <div className="relative bg-gradient-to-r from-white via-blue-50/50 to-purple-50/50 rounded-2xl p-8 shadow-sm border">
+            {/* Status Badges */}
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <Badge 
+                variant="default" 
+                className={`${categoryColors.bg} ${categoryColors.text} font-medium px-3 py-1`}
+                size="lg"
+              >
+                {formatCategoryName(skill.category)}
+              </Badge>
+              
+              {skill.featured && (
+                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-medium">
+                  <Sparkles className="h-3 w-3 mr-1" />
+                  Featured Skill
+                </Badge>
+              )}
+              
+              <Badge variant="outline" className="flex items-center">
+                <Award className="h-3 w-3 mr-1" />
+                {skill.employerSignalValue}/10 Signal Value
+              </Badge>
             </div>
-          </div>
-          
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-4">
-            {skill.name}
-          </h1>
-          
-          <p className="text-xl text-gray-600 mb-6">
-            {skill.shortDefinition}
-          </p>
+            
+            <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-4">
+              {skill.name}
+            </h1>
+            
+            <p className="text-xl text-gray-700 mb-8 max-w-4xl leading-relaxed">
+              {skill.shortDefinition}
+            </p>
 
-          {/* Key Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div className="text-center">
-              <div className="text-sm font-medium text-gray-500 mb-1">Difficulty</div>
-              <Badge variant={
-                skill.difficulty === 'beginner' ? 'success' : 
-                skill.difficulty === 'intermediate' ? 'warning' : 'danger'
-              }>
-                {skill.difficulty || 'Intermediate'}
-              </Badge>
-            </div>
-            <div className="text-center">
-              <div className="text-sm font-medium text-gray-500 mb-1">Time to Develop</div>
-              <div className="text-sm font-semibold">{skill.estimatedTimeToDevelop}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-sm font-medium text-gray-500 mb-1">Automation Risk</div>
-              <Badge variant={
-                skill.automationRisk === 'low' ? 'success' : 
-                skill.automationRisk === 'medium' ? 'warning' : 'danger'
-              }>
-                {skill.automationRisk}
-              </Badge>
-            </div>
-            <div className="text-center">
-              <div className="text-sm font-medium text-gray-500 mb-1">Last Updated</div>
-              <div className="text-sm">{formatDate(skill.lastUpdated)}</div>
+            {/* Key Metrics Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+              <div className="text-center p-4 bg-white/60 rounded-xl">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${difficultyColors.bg} mb-2`}>
+                  <Clock className={`h-6 w-6 ${difficultyColors.text}`} />
+                </div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Difficulty</div>
+                <div className={`text-sm font-semibold ${difficultyColors.text}`}>
+                  {skill.difficulty || 'Intermediate'}
+                </div>
+              </div>
+              
+              <div className="text-center p-4 bg-white/60 rounded-xl">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 mb-2">
+                  <BarChart3 className="h-6 w-6 text-blue-600" />
+                </div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Development Time</div>
+                <div className="text-sm font-semibold text-blue-600">
+                  {skill.estimatedTimeToDevelop.split('.')[0]}
+                </div>
+              </div>
+              
+              <div className="text-center p-4 bg-white/60 rounded-xl">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${riskColors.bg} mb-2`}>
+                  <Shield className={`h-6 w-6 ${riskColors.text}`} />
+                </div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Automation Risk</div>
+                <div className={`text-sm font-semibold ${riskColors.text} capitalize`}>
+                  {skill.automationRisk}
+                </div>
+              </div>
+              
+              <div className="text-center p-4 bg-white/60 rounded-xl">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 mb-2">
+                  <Briefcase className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Career Impact</div>
+                <div className="text-sm font-semibold text-green-600">
+                  {relatedCareers.length} careers
+                </div>
+              </div>
             </div>
           </div>
         </div>
