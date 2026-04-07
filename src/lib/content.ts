@@ -296,6 +296,27 @@ export async function getCareersForSkill(skillSlug: string): Promise<Career[]> {
   );
 }
 
+export async function getCareersForIndustry(industrySlug: string): Promise<Career[]> {
+  const industry = await getIndustryBySlug(industrySlug);
+  if (!industry) return [];
+
+  const allCareers = await getAllCareers();
+  return allCareers.filter(career =>
+    career.commonIndustries.includes(industry.slug) ||
+    career.commonIndustries.includes(industry.id)
+  );
+}
+
+export async function getSkillsForIndustry(industrySlug: string): Promise<Skill[]> {
+  const industry = await getIndustryBySlug(industrySlug);
+  if (!industry) return [];
+
+  const allSkills = await getAllSkills();
+  return allSkills.filter(skill => 
+    industry.criticalSkills?.includes(skill.id) || false
+  );
+}
+
 // Utility functions
 function parseFrontmatter(frontmatter: string): Record<string, any> {
   const result: Record<string, any> = {};
