@@ -52,6 +52,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </SupabaseProvider>
+        <Analytics />
       </body>
     </html>
   );
