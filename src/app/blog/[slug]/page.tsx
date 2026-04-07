@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/content';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Clock, 
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
   User,
   Heart,
   Share2,
@@ -15,12 +16,45 @@ import {
   ArrowRight,
   MessageCircle,
   Star,
-  Target
 } from 'lucide-react';
 
 interface BlogPostDetailPageProps {
   params: Promise<{ slug: string }>;
 }
+
+const mdxComponents = {
+  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h1 className="mt-10 mb-4 text-4xl font-bold tracking-tight text-gray-900" {...props} />
+  ),
+  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h2 className="mt-10 mb-4 text-2xl font-bold text-gray-900" {...props} />
+  ),
+  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <h3 className="mt-8 mb-3 text-xl font-semibold text-gray-900" {...props} />
+  ),
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
+    <p className="mb-5 leading-8 text-gray-700" {...props} />
+  ),
+  ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
+    <ul className="mb-6 ml-6 list-disc space-y-2 text-gray-700" {...props} />
+  ),
+  ol: (props: React.HTMLAttributes<HTMLOListElement>) => (
+    <ol className="mb-6 ml-6 list-decimal space-y-2 text-gray-700" {...props} />
+  ),
+  li: (props: React.HTMLAttributes<HTMLLIElement>) => (
+    <li className="pl-1" {...props} />
+  ),
+  strong: (props: React.HTMLAttributes<HTMLElement>) => (
+    <strong className="font-semibold text-gray-900" {...props} />
+  ),
+  blockquote: (props: React.HTMLAttributes<HTMLElement>) => (
+    <blockquote className="my-6 border-l-4 border-blue-300 bg-blue-50/60 px-4 py-3 italic text-gray-700" {...props} />
+  ),
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <a className="font-medium text-blue-600 underline-offset-4 hover:underline" {...props} />
+  ),
+  hr: () => <hr className="my-10 border-gray-200" />,
+};
 
 export async function generateStaticParams() {
   const blogPosts = await getAllBlogPosts();
@@ -32,13 +66,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogPostDetailPageProps) {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
-  
+
   if (!post) {
     return {
       title: 'Article Not Found - SkillQuest',
     };
   }
-  
+
   return {
     title: `${post.title} - SkillQuest Blog`,
     description: post.excerpt,
@@ -48,21 +82,19 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
 export default async function BlogPostDetailPage({ params }: BlogPostDetailPageProps) {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
-  
+
   if (!post) {
     notFound();
   }
 
   const allPosts = await getAllBlogPosts();
   const relatedPosts = allPosts
-    .filter(p => p.id !== post.id && p.tags.some(tag => post.tags.includes(tag)))
+    .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
 
   return (
-    <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
-
-        {/* Back */}
         <div className="mb-8">
           <Link href="/blog" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -70,72 +102,62 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
           </Link>
         </div>
 
-        {/* Header */}
         <div className="mb-12">
-          <div className="flex flex-wrap items-center gap-3 mb-4">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             {post.tags.map((tag, i) => (
               <Badge key={i} variant="secondary">
-                {tag.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                {tag.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
               </Badge>
             ))}
             {post.featured && (
               <Badge className="bg-yellow-100 text-yellow-800">
-                <Star className="h-3 w-3 mr-1" />
+                <Star className="mr-1 h-3 w-3" />
                 Featured
               </Badge>
             )}
           </div>
 
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            {post.title}
-          </h1>
+          <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900">{post.title}</h1>
 
-          <p className="text-xl text-gray-700 mb-8">
-            {post.excerpt}
-          </p>
+          <p className="mb-8 text-xl leading-relaxed text-gray-700">{post.excerpt}</p>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-8">
+          <div className="mb-8 flex flex-wrap items-center gap-6 text-sm text-gray-600">
             <div className="flex items-center">
-              <User className="h-4 w-4 mr-2" />
+              <User className="mr-2 h-4 w-4" />
               {post.author}
             </div>
             <div className="flex items-center">
-              <Calendar className="h-4 w-4 mr-2" />
+              <Calendar className="mr-2 h-4 w-4" />
               {new Date(post.publishedAt).toLocaleDateString()}
             </div>
             <div className="flex items-center">
-              <Clock className="h-4 w-4 mr-2" />
+              <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
             </div>
           </div>
 
           <div className="flex gap-3 border-b pb-6">
-            <Button variant="outline" size="sm"><Heart className="h-4 w-4 mr-2" />Like</Button>
-            <Button variant="outline" size="sm"><Share2 className="h-4 w-4 mr-2" />Share</Button>
-            <Button variant="outline" size="sm"><MessageCircle className="h-4 w-4 mr-2" />Discuss</Button>
+            <Button variant="outline" size="sm"><Heart className="mr-2 h-4 w-4" />Like</Button>
+            <Button variant="outline" size="sm"><Share2 className="mr-2 h-4 w-4" />Share</Button>
+            <Button variant="outline" size="sm"><MessageCircle className="mr-2 h-4 w-4" />Discuss</Button>
           </div>
         </div>
 
-        {/* ✅ CLEAN ARTICLE CONTENT */}
-        <div className="prose prose-lg max-w-none mb-12">
-          {post.content.split('\n\n').map((p, i) => (
-            <p key={i} className="text-gray-700 leading-relaxed mb-6">
-              {p}
-            </p>
-          ))}
-        </div>
+        <article className="mb-12 rounded-2xl border bg-white p-8 shadow-sm">
+          <div className="prose prose-lg max-w-none">
+            <MDXRemote source={post.content} components={mdxComponents} />
+          </div>
+        </article>
 
-        {/* Related Skills / Careers */}
         {(post.relatedSkills?.length || post.relatedCareers?.length) && (
           <Card className="mb-12">
             <CardHeader>
               <CardTitle>Related Content</CardTitle>
             </CardHeader>
-            <CardContent className="grid md:grid-cols-2 gap-6">
-
+            <CardContent className="grid gap-6 md:grid-cols-2">
               {post.relatedSkills?.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-3">Skills</h4>
+                  <h4 className="mb-3 font-semibold">Skills</h4>
                   <div className="flex flex-wrap gap-2">
                     {post.relatedSkills.map((id, i) => (
                       <Link key={i} href={`/skills/${id}`}>
@@ -148,7 +170,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
 
               {post.relatedCareers?.length > 0 && (
                 <div>
-                  <h4 className="font-semibold mb-3">Careers</h4>
+                  <h4 className="mb-3 font-semibold">Careers</h4>
                   <div className="flex flex-wrap gap-2">
                     {post.relatedCareers.map((id, i) => (
                       <Link key={i} href={`/careers/${id}`}>
@@ -158,19 +180,17 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
                   </div>
                 </div>
               )}
-
             </CardContent>
           </Card>
         )}
 
-        {/* Related Articles */}
         {relatedPosts.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map(post => (
+            <h2 className="mb-6 text-2xl font-bold">Related Articles</h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              {relatedPosts.map((post) => (
                 <Link key={post.id} href={`/blog/${post.slug}`}>
-                  <Card className="hover:shadow-md transition">
+                  <Card className="h-full transition hover:shadow-md">
                     <CardHeader>
                       <CardTitle className="text-lg">{post.title}</CardTitle>
                     </CardHeader>
@@ -184,8 +204,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
           </div>
         )}
 
-        {/* CTA */}
-        <div className="text-center mt-12">
+        <div className="mt-12 text-center">
           <Link href="/blog">
             <Button variant="outline">
               <BookOpen className="mr-2 h-4 w-4" />
@@ -194,7 +213,6 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             </Button>
           </Link>
         </div>
-
       </div>
     </div>
   );
