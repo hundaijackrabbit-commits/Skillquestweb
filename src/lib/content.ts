@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Skill, Career, Industry, BlogPost, SkillSchema, CareerSchema, IndustrySchema, BlogPostSchema, SearchResult } from './types';
+import { Skill, Career, Industry, BlogPost, SkillPath, SkillSchema, CareerSchema, IndustrySchema, BlogPostSchema, SkillPathSchema, SearchResult } from './types';
 import Fuse from 'fuse.js';
 
 // Data file paths
@@ -8,6 +8,7 @@ const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 const SKILLS_FILE = path.join(DATA_DIR, 'skills-1000plus.json');
 const CAREERS_FILE = path.join(DATA_DIR, 'careers.json');
 const INDUSTRIES_FILE = path.join(DATA_DIR, 'industries.json');
+const SKILL_PATHS_FILE = path.join(DATA_DIR, 'skill-paths.json');
 const BLOG_DIR = path.join(process.cwd(), 'src', 'content', 'blog');
 
 // Content loading functions
@@ -91,6 +92,33 @@ export async function getAllIndustries(): Promise<Industry[]> {
 export async function getIndustryBySlug(slug: string): Promise<Industry | null> {
   const industries = await getAllIndustries();
   return industries.find(industry => industry.slug === slug) || null;
+}
+
+export async function getSkillPaths(): Promise<SkillPath[]> {
+  try {
+    if (!fs.existsSync(SKILL_PATHS_FILE)) {
+      console.warn('Skill paths file not found, returning empty array');
+      return [];
+    }
+    
+    const fileContent = fs.readFileSync(SKILL_PATHS_FILE, 'utf8');
+    const rawPaths = JSON.parse(fileContent);
+    
+    return rawPaths.map((path: any) => SkillPathSchema.parse(path));
+  } catch (error) {
+    console.error('Error loading skill paths:', error);
+    return [];
+  }
+}
+
+export async function getSkillPathBySlug(slug: string): Promise<SkillPath | null> {
+  const paths = await getSkillPaths();
+  return paths.find(path => path.id === slug) || null;
+}
+
+export async function getFeaturedSkillPaths(limit: number = 10): Promise<SkillPath[]> {
+  const paths = await getSkillPaths();
+  return paths.filter(path => path.featured).slice(0, limit);
 }
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {

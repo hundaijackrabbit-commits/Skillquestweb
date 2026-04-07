@@ -182,6 +182,23 @@ export interface SearchResult {
   relevance?: number;
 }
 
+// Skill Path Types
+export const SkillPathSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  category: z.string(),
+  difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
+  estimatedTime: z.string(),
+  skills: z.array(z.string()),
+  relatedCareers: z.array(z.string()),
+  featured: z.boolean().optional(),
+  learningOutcomes: z.array(z.string()),
+  prerequisites: z.array(z.string()),
+});
+
+export type SkillPath = z.infer<typeof SkillPathSchema>;
+
 // Content Statistics
 export interface ContentStats {
   totalSkills: number;
