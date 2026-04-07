@@ -26,7 +26,17 @@ import {
   Play,
   BarChart3,
   Lightbulb,
-  Compass
+  Compass,
+  MapPin,
+  Layers,
+  Activity,
+  Eye,
+  GraduationCap,
+  TrendingDown,
+  Link2,
+  FileText,
+  Search,
+  Gauge
 } from 'lucide-react';
 
 interface SkillDetailPageProps {
@@ -285,10 +295,171 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               </ul>
             </section>
 
+            {/* Where It Shows Up */}
+            {skill.whereItShowsUp && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <MapPin className="h-6 w-6 mr-2 text-blue-600" />
+                  Where This Skill Shows Up at Work
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.whereItShowsUp}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Career Applications */}
+            {skill.careerApplications && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Briefcase className="h-6 w-6 mr-2 text-blue-600" />
+                  Career Applications
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.careerApplications}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Skill In Action */}
+            {skill.skillInAction && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Activity className="h-6 w-6 mr-2 text-blue-600" />
+                  What Strong Execution Looks Like
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.skillInAction}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Real World Scenarios */}
+            {skill.realWorldScenarios && skill.realWorldScenarios.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Globe className="h-6 w-6 mr-2 text-blue-600" />
+                  Real-World Applications
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {skill.realWorldScenarios.map((scenario, index) => (
+                    <div key={index} className="bg-blue-50 p-4 rounded-lg">
+                      <div className="flex items-start">
+                        <Play className="h-4 w-4 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
+                        <p className="text-sm text-blue-900">{scenario}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Industry Variations */}
+            {skill.industryVariations && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Building2 className="h-6 w-6 mr-2 text-blue-600" />
+                  Industry Variations
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.industryVariations}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Core Subskills */}
+            {skill.coreSubskills && skill.coreSubskills.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Layers className="h-6 w-6 mr-2 text-blue-600" />
+                  Core Subskills
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {skill.coreSubskills.map((subskill, index) => (
+                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                      <Zap className="h-4 w-4 text-gray-600 mr-2 flex-shrink-0" />
+                      <span className="text-gray-700">{subskill}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* How Employers Evaluate */}
+            {skill.howEmployersEvaluate && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Search className="h-6 w-6 mr-2 text-blue-600" />
+                  How Employers Evaluate This Skill
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.howEmployersEvaluate}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Signals of Mastery */}
+            {skill.signalsOfMastery && skill.signalsOfMastery.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Eye className="h-6 w-6 mr-2 text-blue-600" />
+                  Signals of Mastery
+                </h2>
+                <ul className="space-y-2">
+                  {skill.signalsOfMastery.map((signal, index) => (
+                    <li key={index} className="flex items-start">
+                      <Award className="h-4 w-4 text-green-600 mt-0.5 mr-2 flex-shrink-0" />
+                      <span className="text-gray-700">{signal}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Development Methods */}
+            {skill.developmentMethods && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <GraduationCap className="h-6 w-6 mr-2 text-blue-600" />
+                  Specific Development Methods
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.developmentMethods}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Practice Opportunities */}
+            {skill.practiceOpportunities && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Target className="h-6 w-6 mr-2 text-blue-600" />
+                  Practice Opportunities
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.practiceOpportunities}</p>
+                </div>
+              </section>
+            )}
+
+            {/* Career Impact */}
+            {skill.careerImpact && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <TrendingUp className="h-6 w-6 mr-2 text-blue-600" />
+                  Career Impact
+                </h2>
+                <div className="prose max-w-none">
+                  <p className="text-gray-700">{skill.careerImpact}</p>
+                </div>
+              </section>
+            )}
+
             {/* Evidence Base */}
             {skill.evidenceSummary && (
               <section>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                  <FileText className="h-6 w-6 mr-2 text-blue-600" />
                   Evidence & Research
                 </h2>
                 <div className="bg-gray-50 p-6 rounded-lg">
@@ -310,6 +481,80 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
           {/* Right Sidebar */}
           <div className="space-y-6">
+            {/* Enhanced Skill Metrics */}
+            {(skill.transferabilityLevel || skill.demandLevel || skill.futureProofScore || skill.leadershipRelevance) && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Gauge className="h-5 w-5 mr-2" />
+                    Skill Metrics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {skill.transferabilityLevel && (
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Transferability</span>
+                        <Badge variant="outline" className={
+                          skill.transferabilityLevel === 'high' ? 'bg-green-50 text-green-700' :
+                          skill.transferabilityLevel === 'medium' ? 'bg-yellow-50 text-yellow-700' :
+                          'bg-red-50 text-red-700'
+                        }>
+                          {skill.transferabilityLevel.charAt(0).toUpperCase() + skill.transferabilityLevel.slice(1)}
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {skill.demandLevel && (
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Market Demand</span>
+                        <Badge variant="outline" className={
+                          skill.demandLevel === 'very-high' ? 'bg-green-50 text-green-700' :
+                          skill.demandLevel === 'high' ? 'bg-green-50 text-green-700' :
+                          skill.demandLevel === 'moderate' ? 'bg-yellow-50 text-yellow-700' :
+                          'bg-red-50 text-red-700'
+                        }>
+                          {skill.demandLevel === 'very-high' ? 'Very High' : skill.demandLevel.charAt(0).toUpperCase() + skill.demandLevel.slice(1)}
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {skill.futureProofScore && (
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Future-Proof Score</span>
+                        <span className="text-sm font-bold text-blue-600">{skill.futureProofScore}/10</span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {skill.leadershipRelevance && (
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Leadership Relevance</span>
+                        <span className="text-sm font-bold text-purple-600">{skill.leadershipRelevance}/10</span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {skill.creativeVsAnalytical && (
+                    <div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-600">Type</span>
+                        <Badge variant="outline">
+                          {skill.creativeVsAnalytical === 'creative' ? '🎨 Creative' :
+                           skill.creativeVsAnalytical === 'analytical' ? '📊 Analytical' : '🔄 Hybrid'}
+                        </Badge>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {/* Professional Context */}
             <Card>
               <CardHeader>
@@ -371,6 +616,27 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               </CardContent>
             </Card>
 
+            {/* Skills That Stack Well */}
+            {skill.skillStacksWell && skill.skillStacksWell.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Link2 className="h-5 w-5 mr-2" />
+                    Skills That Stack Well
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {skill.skillStacksWell.map((skillName, index) => (
+                      <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
+                        {skillName}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Related Skills */}
             <Card>
               <CardHeader>
@@ -390,6 +656,28 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 </div>
               </CardContent>
             </Card>
+
+            {/* Learning Resources */}
+            {skill.learningResources && skill.learningResources.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BookOpen className="h-5 w-5 mr-2" />
+                    Learning Resources
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {skill.learningResources.map((resource, index) => (
+                      <li key={index} className="text-sm text-gray-700 flex items-start">
+                        <GraduationCap className="h-3 w-3 text-gray-500 mt-0.5 mr-2 flex-shrink-0" />
+                        {resource}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Action Items */}
             <Card className="border-blue-200 bg-blue-50">

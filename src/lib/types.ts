@@ -39,6 +39,13 @@ export const SkillSchema = z.object({
   modernRelevance: z.string(),
   economicRelevance: z.string().optional(),
   
+  // Enhanced Content Sections
+  whereItShowsUp: z.string().optional(), // Real workplace examples
+  careerApplications: z.string().optional(), // How it's used across careers
+  industryVariations: z.string().optional(), // How skill differs by industry
+  realWorldScenarios: z.array(z.string()).optional(), // Specific use cases
+  skillInAction: z.string().optional(), // What strong execution looks like
+  
   // Professional Context
   professionalContexts: z.array(z.string()),
   relatedSkills: z.array(z.string()),
@@ -62,6 +69,19 @@ export const SkillSchema = z.object({
   commonMistakes: z.array(z.string()),
   estimatedTimeToDevelop: z.string(),
   
+  // Enhanced Development Content
+  coreSubskills: z.array(z.string()).optional(), // Breaking down the skill
+  developmentMethods: z.string().optional(), // Specific practice approaches
+  skillStacksWell: z.array(z.string()).optional(), // Complementary skills
+  learningResources: z.array(z.string()).optional(), // Platforms, books, courses
+  practiceOpportunities: z.string().optional(), // Where to gain experience
+  
+  // Employer & Career Context
+  howEmployersEvaluate: z.string().optional(), // Interview, portfolio, performance
+  signalsOfMastery: z.array(z.string()).optional(), // Observable evidence
+  careerImpact: z.string().optional(), // How it affects career progression
+  salaryImpact: z.string().optional(), // Economic value information
+  
   // Professional Relevance
   resumeRelevance: z.string(),
   interviewRelevance: z.string(),
@@ -70,6 +90,13 @@ export const SkillSchema = z.object({
   aiEraRelevance: z.string(),
   automationRisk: AutomationRiskSchema,
   humanAdvantage: z.string(),
+  
+  // Enhanced Metadata
+  transferabilityLevel: z.enum(['low', 'medium', 'high']).optional(),
+  demandLevel: z.enum(['low', 'moderate', 'high', 'very-high']).optional(),
+  futureProofScore: z.number().min(1).max(10).optional(),
+  leadershipRelevance: z.number().min(1).max(10).optional(),
+  creativeVsAnalytical: z.enum(['creative', 'analytical', 'hybrid']).optional(),
   
   // Metadata
   blogPosts: z.array(z.string()),
