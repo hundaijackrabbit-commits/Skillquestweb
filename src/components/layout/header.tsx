@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, X, BookOpen, Users, Briefcase, Building2, PenTool } from 'lucide-react';
+import { useSupabase } from '@/components/providers/supabase-provider';
+import { Search, Menu, X, BookOpen, Users, Briefcase, Building2, PenTool, User, LogOut } from 'lucide-react';
 
 const navigation = [
   { name: 'Skills', href: '/skills', icon: BookOpen },
@@ -15,6 +16,7 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, loading, signOut } = useSupabase();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -60,12 +62,43 @@ export function Header() {
             <Search className="h-4 w-4 mr-2" />
             Search
           </Button>
-          <Button variant="outline" size="sm">
-            Sign In
-          </Button>
-          <Button variant="primary" size="sm">
-            Get Started
-          </Button>
+          
+          {loading ? (
+            <div className="flex space-x-2">
+              <div className="w-16 h-8 bg-gray-200 rounded animate-pulse" />
+              <div className="w-20 h-8 bg-gray-200 rounded animate-pulse" />
+            </div>
+          ) : user ? (
+            <div className="flex items-center space-x-4">
+              <Link href="/dashboard">
+                <Button variant="ghost" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Dashboard
+                </Button>
+              </Link>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => signOut()}
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <div className="flex space-x-2">
+              <Link href="/auth">
+                <Button variant="outline" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/auth">
+                <Button variant="primary" size="sm">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -112,12 +145,47 @@ export function Header() {
                     <Search className="h-4 w-4 mr-2" />
                     Search
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Sign In
-                  </Button>
-                  <Button variant="primary" size="sm" className="w-full">
-                    Get Started
-                  </Button>
+                  
+                  {loading ? (
+                    <div className="space-y-3">
+                      <div className="w-full h-8 bg-gray-200 rounded animate-pulse" />
+                      <div className="w-full h-8 bg-gray-200 rounded animate-pulse" />
+                    </div>
+                  ) : user ? (
+                    <div className="space-y-3">
+                      <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                        <Button variant="ghost" size="sm" className="w-full">
+                          <User className="h-4 w-4 mr-2" />
+                          Dashboard
+                        </Button>
+                      </Link>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => {
+                          signOut();
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <Link href="/auth" onClick={() => setMobileMenuOpen(false)}>
+                        <Button variant="outline" size="sm" className="w-full">
+                          Sign In
+                        </Button>
+                      </Link>
+                      <Link href="/auth" onClick={() => setMobileMenuOpen(false)}>
+                        <Button variant="primary" size="sm" className="w-full">
+                          Get Started
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
