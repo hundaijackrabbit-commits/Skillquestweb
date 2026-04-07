@@ -5,7 +5,7 @@ import Fuse from 'fuse.js';
 
 // Data file paths
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
-const SKILLS_FILE = path.join(DATA_DIR, 'skills.json');
+const SKILLS_FILE = path.join(DATA_DIR, 'skills-1000plus.json');
 const CAREERS_FILE = path.join(DATA_DIR, 'careers.json');
 const INDUSTRIES_FILE = path.join(DATA_DIR, 'industries.json');
 const BLOG_DIR = path.join(process.cwd(), 'src', 'content', 'blog');
