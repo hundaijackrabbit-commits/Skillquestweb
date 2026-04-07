@@ -53,20 +53,7 @@ export default async function DashboardPage() {
     })
     .filter(Boolean) as Array<(Awaited<ReturnType<typeof getAllSkills>>)[number] & { savedAt: string }>;
 
-  const relatedCareersMap = new Map<string, (typeof allCareers)[number]>();
-
-  for (const skill of savedSkills) {
-    if (Array.isArray(skill.careersAssociated)) {
-      for (const careerSlug of skill.careersAssociated) {
-        const matchedCareer = allCareers.find((career) => career.slug === careerSlug);
-        if (matchedCareer) {
-          relatedCareersMap.set(matchedCareer.slug, matchedCareer);
-        }
-      }
-    }
-  }
-
-  const suggestedCareers = Array.from(relatedCareersMap.values()).slice(0, 8);
+  const suggestedCareers: (typeof allCareers)[] = [];
   const recentSavedSkills = savedSkills.slice(0, 12);
 
   return (
