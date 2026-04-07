@@ -1,0 +1,181 @@
+[
+  {
+    "id": "digital-marketer-path",
+    "name": "Become a Digital Marketer",
+    "description": "Master the essential skills for modern digital marketing, from content strategy to data analytics and campaign optimization.",
+    "category": "marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-8 months",
+    "skills": [
+      "digital-marketing",
+      "content-strategy",
+      "social-media-marketing",
+      "seo",
+      "email-marketing",
+      "marketing-automation",
+      "data-analysis",
+      "conversion-optimization"
+    ],
+    "relatedCareers": ["digital-marketer", "marketing-manager", "content-manager"],
+    "featured": true,
+    "learningOutcomes": [
+      "Plan and execute integrated digital marketing campaigns",
+      "Analyze marketing data and optimize campaign performance",
+      "Create compelling content across multiple channels",
+      "Build and nurture customer relationships through digital touchpoints"
+    ],
+    "prerequisites": [
+      "Basic understanding of business and marketing concepts",
+      "Comfortable with technology and online platforms"
+    ]
+  },
+  {
+    "id": "product-manager-path",
+    "name": "Break into Product Management",
+    "description": "Develop the strategic thinking, technical acumen, and leadership skills needed to succeed as a product manager.",
+    "category": "product",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "strategic-thinking",
+      "user-research",
+      "data-analysis",
+      "project-management",
+      "stakeholder-management",
+      "technical-communication",
+      "market-analysis",
+      "product-strategy"
+    ],
+    "relatedCareers": ["product-manager", "product-owner", "strategy-consultant"],
+    "featured": true,
+    "learningOutcomes": [
+      "Define product vision and strategy aligned with business goals",
+      "Conduct user research and translate insights into product requirements",
+      "Collaborate effectively with engineering, design, and business teams",
+      "Make data-driven decisions and measure product success"
+    ],
+    "prerequisites": [
+      "3+ years of relevant work experience",
+      "Strong analytical and communication skills"
+    ]
+  },
+  {
+    "id": "communication-excellence-path",
+    "name": "Build Strong Communication Skills",
+    "description": "Master the art of professional communication across written, verbal, and digital channels.",
+    "category": "communication",
+    "difficulty": "beginner",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "active-listening",
+      "public-speaking",
+      "professional-writing",
+      "presentation-skills",
+      "email-etiquette",
+      "conflict-resolution",
+      "cross-cultural-communication",
+      "storytelling"
+    ],
+    "relatedCareers": ["account-manager", "consultant", "sales-representative", "team-lead"],
+    "featured": true,
+    "learningOutcomes": [
+      "Communicate ideas clearly and persuasively",
+      "Navigate difficult conversations with confidence",
+      "Present to diverse audiences effectively",
+      "Build stronger professional relationships"
+    ],
+    "prerequisites": [
+      "Willingness to practice and receive feedback",
+      "Basic professional experience"
+    ]
+  },
+  {
+    "id": "ai-literacy-professional-path",
+    "name": "AI Literacy for Non-Technical Professionals",
+    "description": "Understand and leverage AI tools and concepts without needing programming skills.",
+    "category": "ai-era",
+    "difficulty": "beginner",
+    "estimatedTime": "3-4 months",
+    "skills": [
+      "ai-literacy",
+      "prompt-engineering",
+      "human-ai-collaboration",
+      "ai-ethics",
+      "digital-literacy",
+      "critical-thinking",
+      "automation-awareness"
+    ],
+    "relatedCareers": ["consultant", "analyst", "manager", "executive"],
+    "featured": true,
+    "learningOutcomes": [
+      "Use AI tools effectively for work productivity",
+      "Understand AI capabilities and limitations",
+      "Make informed decisions about AI implementation",
+      "Navigate the ethical considerations of AI use"
+    ],
+    "prerequisites": [
+      "Basic computer literacy",
+      "Curiosity about emerging technologies"
+    ]
+  },
+  {
+    "id": "data-analyst-path",
+    "name": "Become a Data Analyst",
+    "description": "Learn to collect, analyze, and interpret data to drive business decisions.",
+    "category": "analytics",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "data-analysis",
+      "statistical-analysis",
+      "data-visualization",
+      "sql",
+      "excel-advanced",
+      "critical-thinking",
+      "business-acumen",
+      "presentation-skills"
+    ],
+    "relatedCareers": ["data-analyst", "business-analyst", "researcher"],
+    "featured": false,
+    "learningOutcomes": [
+      "Extract insights from complex datasets",
+      "Create compelling data visualizations",
+      "Present findings to stakeholders effectively",
+      "Support data-driven decision making"
+    ],
+    "prerequisites": [
+      "Strong analytical mindset",
+      "Basic mathematics and statistics knowledge"
+    ]
+  },
+  {
+    "id": "leadership-fundamentals-path",
+    "name": "Leadership Fundamentals",
+    "description": "Develop core leadership skills for managing teams and driving organizational success.",
+    "category": "leadership",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-7 months",
+    "skills": [
+      "team-leadership",
+      "emotional-intelligence",
+      "delegation",
+      "performance-management",
+      "conflict-resolution",
+      "strategic-thinking",
+      "decision-making",
+      "coaching"
+    ],
+    "relatedCareers": ["team-lead", "manager", "department-head", "executive"],
+    "featured": false,
+    "learningOutcomes": [
+      "Lead and motivate high-performing teams",
+      "Make effective decisions under pressure",
+      "Develop and coach team members",
+      "Drive organizational change and growth"
+    ],
+    "prerequisites": [
+      "Some management or leadership experience",
+      "Strong interpersonal skills"
+    ]
+  }
+]
