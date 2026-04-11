@@ -1,0 +1,420 @@
+{
+  "discussionTopics": [
+    {
+      "id": "ai-era-skills",
+      "title": "AI Era Skills & Career Preparation",
+      "description": "Discuss the impact of artificial intelligence on careers and share strategies for developing AI-relevant skills.",
+      "category": "emerging-technology",
+      "memberCount": 2847,
+      "postCount": 1293,
+      "featured": true,
+      "moderators": [
+        "ai-expert-sarah",
+        "career-coach-mike"
+      ],
+      "latestActivity": "2024-04-07T09:30:00Z",
+      "tags": [
+        "ai",
+        "machine-learning",
+        "future-of-work",
+        "automation"
+      ]
+    },
+    {
+      "id": "remote-work-excellence",
+      "title": "Remote Work Excellence",
+      "description": "Share best practices, tools, and strategies for thriving in remote and hybrid work environments.",
+      "category": "workplace-culture",
+      "memberCount": 3421,
+      "postCount": 2156,
+      "featured": true,
+      "moderators": [
+        "remote-leader-jen",
+        "productivity-pro-alex"
+      ],
+      "latestActivity": "2024-04-07T08:45:00Z",
+      "tags": [
+        "remote-work",
+        "virtual-teams",
+        "productivity",
+        "work-life-balance"
+      ]
+    },
+    {
+      "id": "leadership-development",
+      "title": "Leadership & Management Skills",
+      "description": "Connect with current and aspiring leaders to discuss management challenges and leadership development.",
+      "category": "leadership",
+      "memberCount": 4156,
+      "postCount": 3287,
+      "featured": true,
+      "moderators": [
+        "exec-coach-david",
+        "team-lead-maria"
+      ],
+      "latestActivity": "2024-04-07T10:15:00Z",
+      "tags": [
+        "leadership",
+        "management",
+        "team-building",
+        "executive-development"
+      ]
+    },
+    {
+      "id": "data-analytics-professionals",
+      "title": "Data Analytics & Business Intelligence",
+      "description": "A community for data professionals to share insights, tools, and career advancement strategies.",
+      "category": "technical-skills",
+      "memberCount": 2943,
+      "postCount": 1876,
+      "featured": true,
+      "moderators": [
+        "data-scientist-lisa",
+        "bi-expert-carlos"
+      ],
+      "latestActivity": "2024-04-07T09:20:00Z",
+      "tags": [
+        "data-analysis",
+        "business-intelligence",
+        "analytics",
+        "data-science"
+      ]
+    },
+    {
+      "id": "career-transitions",
+      "title": "Career Transition & Pivoting",
+      "description": "Support and advice for professionals making career changes and industry transitions.",
+      "category": "career-development",
+      "memberCount": 5234,
+      "postCount": 4567,
+      "featured": true,
+      "moderators": [
+        "career-counselor-tim",
+        "transition-coach-anna"
+      ],
+      "latestActivity": "2024-04-07T07:30:00Z",
+      "tags": [
+        "career-change",
+        "professional-development",
+        "networking",
+        "job-search"
+      ]
+    },
+    {
+      "id": "digital-marketing-hub",
+      "title": "Digital Marketing & Growth",
+      "description": "Share strategies, tools, and results from digital marketing campaigns and growth initiatives.",
+      "category": "marketing",
+      "memberCount": 2765,
+      "postCount": 1934,
+      "featured": false,
+      "moderators": [
+        "growth-hacker-sam",
+        "content-strategist-kay"
+      ],
+      "latestActivity": "2024-04-07T08:15:00Z",
+      "tags": [
+        "digital-marketing",
+        "growth-hacking",
+        "content-marketing",
+        "social-media"
+      ]
+    },
+    {
+      "id": "project-management-pros",
+      "title": "Project Management Professionals",
+      "description": "Connect with PMs across industries to discuss methodologies, tools, and best practices.",
+      "category": "operations",
+      "memberCount": 3687,
+      "postCount": 2543,
+      "featured": false,
+      "moderators": [
+        "pmp-certified-john",
+        "agile-coach-rachel"
+      ],
+      "latestActivity": "2024-04-07T09:45:00Z",
+      "tags": [
+        "project-management",
+        "agile",
+        "scrum",
+        "productivity"
+      ]
+    },
+    {
+      "id": "entrepreneurship-startup",
+      "title": "Entrepreneurship & Startup Skills",
+      "description": "For entrepreneurs and those interested in startup culture, business development, and innovation.",
+      "category": "business-development",
+      "memberCount": 1876,
+      "postCount": 1245,
+      "featured": false,
+      "moderators": [
+        "startup-founder-ben",
+        "venture-advisor-claire"
+      ],
+      "latestActivity": "2024-04-07T06:20:00Z",
+      "tags": [
+        "entrepreneurship",
+        "startups",
+        "innovation",
+        "business-development"
+      ]
+    },
+    {
+      "id": "cybersecurity-professionals",
+      "title": "Cybersecurity & Information Security",
+      "description": "Discuss security trends, tools, certifications, and career paths in cybersecurity.",
+      "category": "technical-skills",
+      "memberCount": 2134,
+      "postCount": 1567,
+      "featured": false,
+      "moderators": [
+        "security-expert-frank",
+        "ciso-advisor-diana"
+      ],
+      "latestActivity": "2024-04-07T08:00:00Z",
+      "tags": [
+        "cybersecurity",
+        "information-security",
+        "risk-management",
+        "compliance"
+      ]
+    },
+    {
+      "id": "sales-professionals-network",
+      "title": "Sales Professionals Network",
+      "description": "Connect with sales professionals to share techniques, strategies, and career advancement tips.",
+      "category": "sales",
+      "memberCount": 2987,
+      "postCount": 2145,
+      "featured": false,
+      "moderators": [
+        "sales-director-tony",
+        "revenue-ops-kelly"
+      ],
+      "latestActivity": "2024-04-07T09:10:00Z",
+      "tags": [
+        "sales",
+        "business-development",
+        "revenue-growth",
+        "customer-relations"
+      ]
+    }
+  ],
+  "skillGroups": [
+    {
+      "id": "communication-masters",
+      "name": "Communication Masters",
+      "description": "Dedicated to improving professional communication skills across all mediums and contexts.",
+      "skillFocus": "communication",
+      "memberCount": 4521,
+      "activities": [
+        "weekly-practice-sessions",
+        "feedback-circles",
+        "presentation-workshops"
+      ],
+      "meetingSchedule": "Every Tuesday 7PM ET",
+      "featured": true
+    },
+    {
+      "id": "critical-thinkers-club",
+      "name": "Critical Thinkers Club",
+      "description": "Develop analytical reasoning, problem-solving, and decision-making capabilities.",
+      "skillFocus": "critical-thinking",
+      "memberCount": 3247,
+      "activities": [
+        "case-study-analysis",
+        "debate-sessions",
+        "logic-puzzles"
+      ],
+      "meetingSchedule": "Bi-weekly Thursdays 6PM ET",
+      "featured": true
+    },
+    {
+      "id": "ai-literacy-collective",
+      "name": "AI Literacy Collective",
+      "description": "Building AI competency and understanding across all professional levels.",
+      "skillFocus": "ai-literacy",
+      "memberCount": 2876,
+      "activities": [
+        "tool-demos",
+        "ethics-discussions",
+        "implementation-case-studies"
+      ],
+      "meetingSchedule": "Weekly Wednesdays 8PM ET",
+      "featured": true
+    },
+    {
+      "id": "public-speaking-society",
+      "name": "Public Speaking Society",
+      "description": "Practice and improve presentation and public speaking skills in a supportive environment.",
+      "skillFocus": "public-speaking",
+      "memberCount": 1987,
+      "activities": [
+        "speech-practice",
+        "impromptu-speaking",
+        "feedback-sessions"
+      ],
+      "meetingSchedule": "Weekly Mondays 7:30PM ET",
+      "featured": false
+    },
+    {
+      "id": "emotional-intelligence-hub",
+      "name": "Emotional Intelligence Hub",
+      "description": "Develop self-awareness, empathy, and interpersonal skills for professional success.",
+      "skillFocus": "emotional-intelligence",
+      "memberCount": 2134,
+      "activities": [
+        "self-assessment-workshops",
+        "empathy-exercises",
+        "conflict-resolution-practice"
+      ],
+      "meetingSchedule": "Monthly first Friday 6PM ET",
+      "featured": false
+    }
+  ],
+  "featuredInsights": [
+    {
+      "id": "skill-demand-report-2024",
+      "title": "2024 Skill Demand Analysis: What Employers Really Want",
+      "author": "SkillQuest Research Team",
+      "publishedAt": "2024-04-01",
+      "type": "research-report",
+      "summary": "Comprehensive analysis of skill requirements across 50,000+ job postings reveals the most in-demand capabilities.",
+      "keyFindings": [
+        "AI literacy mentioned in 47% of job postings (up 156% from 2023)",
+        "Remote work skills now required in 73% of positions",
+        "Communication skills remain the #1 requested soft skill",
+        "Data analysis capabilities wanted across 68% of non-technical roles"
+      ],
+      "downloadCount": 15647,
+      "featured": true
+    },
+    {
+      "id": "future-of-work-trends",
+      "title": "Future of Work: 10 Trends Shaping Professional Development",
+      "author": "Dr. Sarah Mitchell, Workplace Innovation Researcher",
+      "publishedAt": "2024-03-28",
+      "type": "trend-analysis",
+      "summary": "Expert analysis of workplace evolution and its implications for skill development and career planning.",
+      "keyFindings": [
+        "Hybrid work models becoming permanent in 82% of organizations",
+        "Continuous learning budgets increased by 34% across companies",
+        "Cross-functional collaboration skills increasingly critical",
+        "Purpose-driven work preferences driving talent decisions"
+      ],
+      "downloadCount": 12983,
+      "featured": true
+    },
+    {
+      "id": "career-transition-success-study",
+      "title": "Career Transition Success Factors: A 5-Year Study",
+      "author": "Career Development Institute",
+      "publishedAt": "2024-03-15",
+      "type": "longitudinal-study",
+      "summary": "Analysis of 2,500 successful career transitions identifies key success factors and common pitfalls.",
+      "keyFindings": [
+        "Network development 3x more important than additional education",
+        "Transferable skills identification crucial for transition success",
+        "Gradual transitions 40% more successful than abrupt changes",
+        "Mentorship involvement increases success rates by 67%"
+      ],
+      "downloadCount": 9876,
+      "featured": true
+    }
+  ],
+  "contributorSpotlights": [
+    {
+      "id": "featured-contributor-march",
+      "name": "Dr. Jennifer Chen",
+      "title": "AI Ethics Researcher & Consultant",
+      "bio": "Leading researcher in AI ethics with 15+ years experience in technology policy and responsible AI implementation.",
+      "contributions": [
+        "Published 'AI Ethics Framework for Organizations' guide",
+        "Led 12 community discussions on responsible AI",
+        "Mentored 47 professionals in AI career transitions"
+      ],
+      "skills": [
+        "ai-ethics",
+        "technology-policy",
+        "organizational-change"
+      ],
+      "linkedIn": "jennifer-chen-ai-ethics",
+      "featured": true,
+      "spotlightMonth": "2024-03"
+    },
+    {
+      "id": "featured-contributor-april",
+      "name": "Marcus Rodriguez",
+      "title": "Remote Team Leadership Specialist",
+      "bio": "Former VP of Remote Operations with expertise in distributed team management and virtual culture building.",
+      "contributions": [
+        "Authored 'Remote Leadership Excellence' article series",
+        "Facilitated 25+ virtual team workshops",
+        "Built remote work best practices guide"
+      ],
+      "skills": [
+        "remote-leadership",
+        "virtual-teams",
+        "organizational-culture"
+      ],
+      "linkedIn": "marcus-rodriguez-remote",
+      "featured": true,
+      "spotlightMonth": "2024-04"
+    }
+  ],
+  "communityStats": {
+    "totalMembers": 28450,
+    "activeMonthlyUsers": 18632,
+    "discussionPosts": 47821,
+    "skillPathsCompleted": 3421,
+    "mentorshipConnections": 1876,
+    "virtualEventsHosted": 156,
+    "careersAdvanced": 2943,
+    "lastUpdated": "2024-04-07"
+  },
+  "upcomingEvents": [
+    {
+      "id": "ai-career-summit-2024",
+      "title": "AI Career Summit 2024",
+      "description": "Virtual summit exploring AI's impact on careers with industry leaders and career strategists.",
+      "date": "2024-04-15",
+      "time": "12:00 PM - 4:00 PM ET",
+      "type": "virtual-summit",
+      "speakers": [
+        "Dr. Jennifer Chen",
+        "Alex Thompson (Microsoft AI)",
+        "Sarah Kim (OpenAI)"
+      ],
+      "registrationCount": 3247,
+      "featured": true
+    },
+    {
+      "id": "remote-leadership-masterclass",
+      "title": "Remote Leadership Masterclass",
+      "description": "Interactive workshop on leading distributed teams effectively in hybrid work environments.",
+      "date": "2024-04-22",
+      "time": "2:00 PM - 3:30 PM ET",
+      "type": "workshop",
+      "speakers": [
+        "Marcus Rodriguez"
+      ],
+      "registrationCount": 567,
+      "featured": true
+    },
+    {
+      "id": "data-skills-bootcamp",
+      "title": "Weekend Data Skills Bootcamp",
+      "description": "Intensive 2-day bootcamp covering data analysis fundamentals for business professionals.",
+      "date": "2024-04-27",
+      "time": "9:00 AM - 5:00 PM ET",
+      "type": "bootcamp",
+      "speakers": [
+        "Dr. Lisa Park",
+        "Carlos Martinez"
+      ],
+      "registrationCount": 234,
+      "featured": false
+    }
+  ]
+}

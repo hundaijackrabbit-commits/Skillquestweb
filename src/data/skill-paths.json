@@ -1,0 +1,2944 @@
+[
+  {
+    "id": "digital-marketer-path",
+    "name": "Become a Digital Marketer",
+    "description": "Master the essential skills for modern digital marketing, from content strategy to data analytics and campaign optimization.",
+    "category": "marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-8 months",
+    "skills": [
+      "digital-marketing",
+      "content-strategy",
+      "social-media-marketing",
+      "seo",
+      "email-marketing",
+      "marketing-automation",
+      "data-analysis",
+      "conversion-optimization"
+    ],
+    "relatedCareers": [
+      "digital-marketer",
+      "marketing-manager",
+      "content-manager"
+    ],
+    "featured": true,
+    "learningOutcomes": [
+      "Plan and execute integrated digital marketing campaigns",
+      "Analyze marketing data and optimize campaign performance",
+      "Create compelling content across multiple channels",
+      "Build and nurture customer relationships through digital touchpoints"
+    ],
+    "prerequisites": [
+      "Basic understanding of business and marketing concepts",
+      "Comfortable with technology and online platforms"
+    ]
+  },
+  {
+    "id": "product-manager-path",
+    "name": "Break into Product Management",
+    "description": "Develop the strategic thinking, technical acumen, and leadership skills needed to succeed as a product manager.",
+    "category": "product",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "strategic-thinking",
+      "user-research",
+      "data-analysis",
+      "project-management",
+      "stakeholder-management",
+      "technical-communication",
+      "market-analysis",
+      "product-strategy"
+    ],
+    "relatedCareers": [
+      "product-manager",
+      "product-owner",
+      "strategy-consultant"
+    ],
+    "featured": true,
+    "learningOutcomes": [
+      "Define product vision and strategy aligned with business goals",
+      "Conduct user research and translate insights into product requirements",
+      "Collaborate effectively with engineering, design, and business teams",
+      "Make data-driven decisions and measure product success"
+    ],
+    "prerequisites": [
+      "3+ years of relevant work experience",
+      "Strong analytical and communication skills"
+    ]
+  },
+  {
+    "id": "communication-excellence-path",
+    "name": "Build Strong Communication Skills",
+    "description": "Master the art of professional communication across written, verbal, and digital channels.",
+    "category": "communication",
+    "difficulty": "beginner",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "active-listening",
+      "public-speaking",
+      "professional-writing",
+      "presentation-skills",
+      "email-etiquette",
+      "conflict-resolution",
+      "cross-cultural-communication",
+      "storytelling"
+    ],
+    "relatedCareers": [
+      "account-manager",
+      "consultant",
+      "sales-representative",
+      "team-lead"
+    ],
+    "featured": true,
+    "learningOutcomes": [
+      "Communicate ideas clearly and persuasively",
+      "Navigate difficult conversations with confidence",
+      "Present to diverse audiences effectively",
+      "Build stronger professional relationships"
+    ],
+    "prerequisites": [
+      "Willingness to practice and receive feedback",
+      "Basic professional experience"
+    ]
+  },
+  {
+    "id": "ai-literacy-professional-path",
+    "name": "AI Literacy for Non-Technical Professionals",
+    "description": "Understand and leverage AI tools and concepts without needing programming skills.",
+    "category": "ai-era",
+    "difficulty": "beginner",
+    "estimatedTime": "3-4 months",
+    "skills": [
+      "ai-literacy",
+      "prompt-engineering",
+      "human-ai-collaboration",
+      "ai-ethics",
+      "digital-literacy",
+      "critical-thinking",
+      "automation-awareness"
+    ],
+    "relatedCareers": [
+      "consultant",
+      "analyst",
+      "manager",
+      "executive"
+    ],
+    "featured": true,
+    "learningOutcomes": [
+      "Use AI tools effectively for work productivity",
+      "Understand AI capabilities and limitations",
+      "Make informed decisions about AI implementation",
+      "Navigate the ethical considerations of AI use"
+    ],
+    "prerequisites": [
+      "Basic computer literacy",
+      "Curiosity about emerging technologies"
+    ]
+  },
+  {
+    "id": "data-analyst-path",
+    "name": "Become a Data Analyst",
+    "description": "Learn to collect, analyze, and interpret data to drive business decisions.",
+    "category": "analytics",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "data-analysis",
+      "statistical-analysis",
+      "data-visualization",
+      "sql",
+      "excel-advanced",
+      "critical-thinking",
+      "business-acumen",
+      "presentation-skills"
+    ],
+    "relatedCareers": [
+      "data-analyst",
+      "business-analyst",
+      "researcher"
+    ],
+    "featured": false,
+    "learningOutcomes": [
+      "Extract insights from complex datasets",
+      "Create compelling data visualizations",
+      "Present findings to stakeholders effectively",
+      "Support data-driven decision making"
+    ],
+    "prerequisites": [
+      "Strong analytical mindset",
+      "Basic mathematics and statistics knowledge"
+    ]
+  },
+  {
+    "id": "leadership-fundamentals-path",
+    "name": "Leadership Fundamentals",
+    "description": "Develop core leadership skills for managing teams and driving organizational success.",
+    "category": "leadership",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-7 months",
+    "skills": [
+      "team-leadership",
+      "emotional-intelligence",
+      "delegation",
+      "performance-management",
+      "conflict-resolution",
+      "strategic-thinking",
+      "decision-making",
+      "coaching"
+    ],
+    "relatedCareers": [
+      "team-lead",
+      "manager",
+      "department-head",
+      "executive"
+    ],
+    "featured": false,
+    "learningOutcomes": [
+      "Lead and motivate high-performing teams",
+      "Make effective decisions under pressure",
+      "Develop and coach team members",
+      "Drive organizational change and growth"
+    ],
+    "prerequisites": [
+      "Some management or leadership experience",
+      "Strong interpersonal skills"
+    ]
+  },
+  {
+    "id": "software-engineer-path",
+    "name": "Software Engineering Career Track",
+    "description": "Master programming fundamentals to advanced software architecture and become a professional software engineer.",
+    "category": "technology",
+    "difficulty": "intermediate",
+    "estimatedTime": "12-18 months",
+    "skills": [
+      "programming",
+      "algorithms",
+      "data-structures",
+      "system-design",
+      "software-testing",
+      "version-control",
+      "debugging",
+      "code-review"
+    ],
+    "relatedCareers": [
+      "software-engineer",
+      "full-stack-developer",
+      "backend-developer"
+    ],
+    "learningOutcomes": [
+      "Build full-stack web applications from scratch",
+      "Design scalable software systems and architectures",
+      "Write clean, maintainable, and well-tested code",
+      "Collaborate effectively in agile development teams"
+    ],
+    "prerequisites": [
+      "Basic computer skills",
+      "Logical thinking ability",
+      "Problem-solving mindset"
+    ]
+  },
+  {
+    "id": "data-scientist-path",
+    "name": "Data Science Mastery Path",
+    "description": "Transform data into insights with machine learning, statistics, and advanced analytics skills.",
+    "category": "data-science",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "python-programming",
+      "statistics",
+      "machine-learning",
+      "data-visualization",
+      "sql",
+      "data-cleaning",
+      "statistical-modeling",
+      "deep-learning"
+    ],
+    "relatedCareers": [
+      "data-scientist",
+      "machine-learning-engineer",
+      "research-analyst"
+    ],
+    "learningOutcomes": [
+      "Build predictive models using machine learning algorithms",
+      "Extract insights from large, complex datasets",
+      "Create compelling data visualizations and reports",
+      "Apply statistical methods to solve business problems"
+    ],
+    "prerequisites": [
+      "Mathematics/statistics background",
+      "Programming experience",
+      "Analytical mindset"
+    ]
+  },
+  {
+    "id": "cybersecurity-specialist-path",
+    "name": "Cybersecurity Professional Track",
+    "description": "Develop expertise in protecting organizations from cyber threats and security vulnerabilities.",
+    "category": "cybersecurity",
+    "difficulty": "advanced",
+    "estimatedTime": "9-12 months",
+    "skills": [
+      "network-security",
+      "ethical-hacking",
+      "incident-response",
+      "security-tools",
+      "risk-assessment",
+      "compliance",
+      "forensics",
+      "threat-analysis"
+    ],
+    "relatedCareers": [
+      "cybersecurity-specialist",
+      "security-analyst",
+      "penetration-tester"
+    ],
+    "learningOutcomes": [
+      "Identify and mitigate security vulnerabilities",
+      "Respond effectively to security incidents",
+      "Implement security controls and protocols",
+      "Conduct security audits and assessments"
+    ],
+    "prerequisites": [
+      "Basic IT knowledge",
+      "Understanding of computer networks",
+      "Detail-oriented mindset"
+    ]
+  },
+  {
+    "id": "devops-engineer-path",
+    "name": "DevOps Engineering Journey",
+    "description": "Master infrastructure automation, CI/CD pipelines, and cloud technologies for modern software delivery.",
+    "category": "devops",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "cloud-computing",
+      "containerization",
+      "automation",
+      "ci-cd",
+      "infrastructure-as-code",
+      "monitoring",
+      "scripting",
+      "system-administration"
+    ],
+    "relatedCareers": [
+      "devops-engineer",
+      "cloud-engineer",
+      "site-reliability-engineer"
+    ],
+    "learningOutcomes": [
+      "Automate software deployment and infrastructure management",
+      "Design and implement CI/CD pipelines",
+      "Manage cloud infrastructure at scale",
+      "Monitor and optimize system performance"
+    ],
+    "prerequisites": [
+      "Software development experience",
+      "Basic system administration",
+      "Cloud platform familiarity"
+    ]
+  },
+  {
+    "id": "ux-designer-path",
+    "name": "UX Design Career Foundation",
+    "description": "Learn user research, interface design, and prototyping to create exceptional user experiences.",
+    "category": "design",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "user-research",
+      "wireframing",
+      "prototyping",
+      "interaction-design",
+      "visual-design",
+      "usability-testing",
+      "information-architecture",
+      "design-systems"
+    ],
+    "relatedCareers": [
+      "ux-designer",
+      "ui-designer",
+      "product-designer"
+    ],
+    "learningOutcomes": [
+      "Conduct user research and usability testing",
+      "Create wireframes, mockups, and interactive prototypes",
+      "Design intuitive user interfaces and experiences",
+      "Apply design thinking methodology to solve problems"
+    ],
+    "prerequisites": [
+      "Creative mindset",
+      "Basic design principles",
+      "Empathy for users"
+    ]
+  },
+  {
+    "id": "business-analyst-path",
+    "name": "Business Analysis Professional Track",
+    "description": "Develop skills in requirements gathering, process analysis, and stakeholder management.",
+    "category": "business-analysis",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "requirements-gathering",
+      "process-mapping",
+      "stakeholder-management",
+      "data-analysis",
+      "business-modeling",
+      "solution-design",
+      "change-management",
+      "documentation"
+    ],
+    "relatedCareers": [
+      "business-analyst",
+      "systems-analyst",
+      "process-analyst"
+    ],
+    "learningOutcomes": [
+      "Gather and document business requirements",
+      "Analyze and optimize business processes",
+      "Facilitate stakeholder workshops and meetings",
+      "Design solutions that meet business needs"
+    ],
+    "prerequisites": [
+      "Business understanding",
+      "Analytical thinking",
+      "Communication skills"
+    ]
+  },
+  {
+    "id": "project-manager-path",
+    "name": "Project Management Mastery",
+    "description": "Master project planning, execution, and team leadership across various methodologies.",
+    "category": "project-management",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "project-planning",
+      "risk-management",
+      "team-leadership",
+      "stakeholder-communication",
+      "budget-management",
+      "agile-methodology",
+      "scheduling",
+      "quality-management"
+    ],
+    "relatedCareers": [
+      "project-manager",
+      "program-manager",
+      "scrum-master"
+    ],
+    "learningOutcomes": [
+      "Plan and execute projects from initiation to closure",
+      "Lead cross-functional teams effectively",
+      "Manage project risks, budgets, and timelines",
+      "Apply agile and traditional project methodologies"
+    ],
+    "prerequisites": [
+      "Organizational skills",
+      "Leadership potential",
+      "Basic business knowledge"
+    ]
+  },
+  {
+    "id": "management-consultant-path",
+    "name": "Management Consulting Career Path",
+    "description": "Develop strategic thinking, problem-solving, and client management skills for consulting excellence.",
+    "category": "consulting",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "strategic-analysis",
+      "problem-solving",
+      "client-management",
+      "presentation-skills",
+      "financial-analysis",
+      "change-management",
+      "market-research",
+      "business-strategy"
+    ],
+    "relatedCareers": [
+      "management-consultant",
+      "strategy-consultant",
+      "business-advisor"
+    ],
+    "learningOutcomes": [
+      "Analyze complex business problems systematically",
+      "Develop strategic recommendations and action plans",
+      "Present findings and proposals to executive audiences",
+      "Manage client relationships and project delivery"
+    ],
+    "prerequisites": [
+      "Strong analytical skills",
+      "Business acumen",
+      "Excellent communication"
+    ]
+  },
+  {
+    "id": "digital-marketing-specialist-path",
+    "name": "Digital Marketing Specialist Journey",
+    "description": "Master online marketing channels, analytics, and campaign optimization for digital success.",
+    "category": "digital-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "seo-sem",
+      "social-media-marketing",
+      "content-marketing",
+      "email-marketing",
+      "marketing-analytics",
+      "conversion-optimization",
+      "paid-advertising",
+      "marketing-automation"
+    ],
+    "relatedCareers": [
+      "digital-marketing-manager",
+      "marketing-specialist",
+      "growth-manager"
+    ],
+    "learningOutcomes": [
+      "Plan and execute integrated digital marketing campaigns",
+      "Optimize marketing performance using data and analytics",
+      "Create engaging content across digital channels",
+      "Manage paid advertising campaigns effectively"
+    ],
+    "prerequisites": [
+      "Basic marketing knowledge",
+      "Digital literacy",
+      "Analytical mindset"
+    ]
+  },
+  {
+    "id": "sales-professional-path",
+    "name": "Sales Excellence Career Track",
+    "description": "Develop consultative selling, relationship building, and revenue generation skills.",
+    "category": "sales",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "prospecting",
+      "consultative-selling",
+      "relationship-building",
+      "negotiation",
+      "crm-management",
+      "sales-process",
+      "closing-techniques",
+      "account-management"
+    ],
+    "relatedCareers": [
+      "sales-representative",
+      "account-executive",
+      "business-development"
+    ],
+    "learningOutcomes": [
+      "Identify and qualify high-potential prospects",
+      "Build strong relationships with clients and prospects",
+      "Navigate complex sales cycles and negotiations",
+      "Consistently achieve revenue targets and quotas"
+    ],
+    "prerequisites": [
+      "Communication skills",
+      "Resilience and persistence",
+      "Goal-oriented mindset"
+    ]
+  },
+  {
+    "id": "content-marketing-path",
+    "name": "Content Marketing Mastery",
+    "description": "Create compelling content strategies that engage audiences and drive business results.",
+    "category": "content-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "content-strategy",
+      "storytelling",
+      "copywriting",
+      "content-creation",
+      "editorial-planning",
+      "seo-writing",
+      "social-media-content",
+      "content-analytics"
+    ],
+    "relatedCareers": [
+      "content-marketing-manager",
+      "content-strategist",
+      "brand-manager"
+    ],
+    "learningOutcomes": [
+      "Develop comprehensive content marketing strategies",
+      "Create engaging content across multiple formats",
+      "Build and manage editorial calendars and workflows",
+      "Measure and optimize content performance"
+    ],
+    "prerequisites": [
+      "Writing skills",
+      "Creativity",
+      "Understanding of marketing basics"
+    ]
+  },
+  {
+    "id": "financial-analyst-path",
+    "name": "Financial Analysis Professional Track",
+    "description": "Master financial modeling, analysis, and reporting for strategic business decisions.",
+    "category": "finance",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "financial-modeling",
+      "financial-analysis",
+      "excel-advanced",
+      "valuation",
+      "budgeting",
+      "forecasting",
+      "financial-reporting",
+      "investment-analysis"
+    ],
+    "relatedCareers": [
+      "financial-analyst",
+      "investment-analyst",
+      "corporate-finance"
+    ],
+    "learningOutcomes": [
+      "Build sophisticated financial models and analyses",
+      "Evaluate investment opportunities and business cases",
+      "Prepare accurate financial reports and presentations",
+      "Support strategic decision-making with financial insights"
+    ],
+    "prerequisites": [
+      "Mathematics/accounting background",
+      "Excel proficiency",
+      "Analytical thinking"
+    ]
+  },
+  {
+    "id": "operations-manager-path",
+    "name": "Operations Management Excellence",
+    "description": "Develop skills in process optimization, team management, and operational efficiency.",
+    "category": "operations",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "process-optimization",
+      "operations-management",
+      "team-leadership",
+      "quality-control",
+      "supply-chain",
+      "performance-metrics",
+      "cost-management",
+      "continuous-improvement"
+    ],
+    "relatedCareers": [
+      "operations-manager",
+      "process-manager",
+      "supply-chain-manager"
+    ],
+    "learningOutcomes": [
+      "Optimize operational processes and workflows",
+      "Lead and develop high-performing operations teams",
+      "Implement quality control and improvement initiatives",
+      "Manage costs and drive operational efficiency"
+    ],
+    "prerequisites": [
+      "Leadership experience",
+      "Process thinking",
+      "Problem-solving skills"
+    ]
+  },
+  {
+    "id": "hr-generalist-path",
+    "name": "HR Generalist Career Foundation",
+    "description": "Build comprehensive human resources skills across talent management, compliance, and employee relations.",
+    "category": "human-resources",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "talent-acquisition",
+      "employee-relations",
+      "hr-compliance",
+      "performance-management",
+      "training-development",
+      "compensation-benefits",
+      "hr-policies",
+      "workplace-culture"
+    ],
+    "relatedCareers": [
+      "hr-manager",
+      "hr-generalist",
+      "people-operations"
+    ],
+    "learningOutcomes": [
+      "Manage full-cycle recruitment and hiring processes",
+      "Handle employee relations and workplace issues",
+      "Ensure compliance with employment laws and regulations",
+      "Develop and implement HR policies and procedures"
+    ],
+    "prerequisites": [
+      "People skills",
+      "Business understanding",
+      "Ethical mindset"
+    ]
+  },
+  {
+    "id": "talent-acquisition-path",
+    "name": "Talent Acquisition Specialist Track",
+    "description": "Master recruitment strategies, candidate assessment, and hiring process optimization.",
+    "category": "recruiting",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "recruiting",
+      "candidate-assessment",
+      "interviewing",
+      "sourcing",
+      "employer-branding",
+      "recruitment-marketing",
+      "applicant-tracking",
+      "hiring-process"
+    ],
+    "relatedCareers": [
+      "recruiter",
+      "talent-acquisition-specialist",
+      "hiring-manager"
+    ],
+    "learningOutcomes": [
+      "Source and attract top talent through multiple channels",
+      "Conduct effective interviews and candidate assessments",
+      "Build strong employer brand and candidate experience",
+      "Optimize recruitment processes and metrics"
+    ],
+    "prerequisites": [
+      "Communication skills",
+      "Sales mindset",
+      "People judgment"
+    ]
+  },
+  {
+    "id": "healthcare-administration-path",
+    "name": "Healthcare Administration Career Track",
+    "description": "Develop skills in healthcare management, compliance, and operational excellence.",
+    "category": "healthcare-admin",
+    "difficulty": "intermediate",
+    "estimatedTime": "7-10 months",
+    "skills": [
+      "healthcare-management",
+      "regulatory-compliance",
+      "healthcare-finance",
+      "quality-improvement",
+      "patient-experience",
+      "healthcare-technology",
+      "operations-management",
+      "leadership"
+    ],
+    "relatedCareers": [
+      "healthcare-administrator",
+      "hospital-manager",
+      "clinic-manager"
+    ],
+    "learningOutcomes": [
+      "Manage healthcare facility operations effectively",
+      "Ensure compliance with healthcare regulations",
+      "Optimize patient experience and care quality",
+      "Lead healthcare teams and initiatives"
+    ],
+    "prerequisites": [
+      "Healthcare knowledge",
+      "Management potential",
+      "Regulatory understanding"
+    ]
+  },
+  {
+    "id": "graphic-design-path",
+    "name": "Graphic Design Professional Journey",
+    "description": "Master visual design principles, branding, and creative software for professional design work.",
+    "category": "graphic-design",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "visual-design",
+      "typography",
+      "branding",
+      "logo-design",
+      "layout-design",
+      "color-theory",
+      "design-software",
+      "creative-concept"
+    ],
+    "relatedCareers": [
+      "graphic-designer",
+      "visual-designer",
+      "brand-designer"
+    ],
+    "learningOutcomes": [
+      "Create professional visual designs and brand identities",
+      "Master industry-standard design software and tools",
+      "Develop strong typography and layout skills",
+      "Build a compelling design portfolio"
+    ],
+    "prerequisites": [
+      "Creative aptitude",
+      "Visual sense",
+      "Attention to detail"
+    ]
+  },
+  {
+    "id": "corporate-trainer-path",
+    "name": "Corporate Training Specialist Track",
+    "description": "Develop instructional design and training delivery skills for corporate learning environments.",
+    "category": "training",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "instructional-design",
+      "training-delivery",
+      "adult-learning",
+      "curriculum-development",
+      "presentation-skills",
+      "assessment-design",
+      "e-learning",
+      "training-evaluation"
+    ],
+    "relatedCareers": [
+      "corporate-trainer",
+      "learning-specialist",
+      "training-manager"
+    ],
+    "learningOutcomes": [
+      "Design effective training programs and curricula",
+      "Deliver engaging training sessions to adult learners",
+      "Create e-learning content and digital training materials",
+      "Evaluate training effectiveness and ROI"
+    ],
+    "prerequisites": [
+      "Teaching aptitude",
+      "Subject matter expertise",
+      "Communication skills"
+    ]
+  },
+  {
+    "id": "customer-success-management-path",
+    "name": "Customer Success Mastery",
+    "description": "Develop comprehensive expertise in customer success management through structured learning and practical application.",
+    "category": "customer-success",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-8 months",
+    "skills": [
+      "customer-success-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master customer success management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "social-media-marketing-path",
+    "name": "Social Media Marketing Excellence",
+    "description": "Develop comprehensive expertise in social media marketing through structured learning and practical application.",
+    "category": "social-media",
+    "difficulty": "beginner",
+    "estimatedTime": "3-5 months",
+    "skills": [
+      "social-media-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master social media marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "ecommerce-management-path",
+    "name": "E-commerce Business Mastery",
+    "description": "Develop comprehensive expertise in e-commerce management through structured learning and practical application.",
+    "category": "e-commerce",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "e-commerce-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master e-commerce management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "supply-chain-analytics-path",
+    "name": "Supply Chain Optimization Track",
+    "description": "Develop comprehensive expertise in supply chain analytics through structured learning and practical application.",
+    "category": "supply-chain",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "supply-chain-analytics",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master supply chain analytics fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "quality-assurance-engineering-path",
+    "name": "QA Engineering Professional Path",
+    "description": "Develop comprehensive expertise in quality assurance engineering through structured learning and practical application.",
+    "category": "quality-assurance",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "quality-assurance-engineering",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master quality assurance engineering fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "technical-writing-path",
+    "name": "Technical Communication Mastery",
+    "description": "Develop comprehensive expertise in technical writing through structured learning and practical application.",
+    "category": "technical-writing",
+    "difficulty": "beginner",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "technical-writing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master technical writing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "event-planning-path",
+    "name": "Event Management Professional Track",
+    "description": "Develop comprehensive expertise in event planning through structured learning and practical application.",
+    "category": "event-planning",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "event-planning",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master event planning fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "real-estate-sales-path",
+    "name": "Real Estate Career Foundation",
+    "description": "Develop comprehensive expertise in real estate sales through structured learning and practical application.",
+    "category": "real-estate",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "real-estate-sales",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master real estate sales fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "accounting-professional-path",
+    "name": "Accounting Career Excellence",
+    "description": "Develop comprehensive expertise in accounting professional through structured learning and practical application.",
+    "category": "accounting",
+    "difficulty": "intermediate",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "accounting-professional",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master accounting professional fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "legal-assistant-path",
+    "name": "Paralegal Professional Development",
+    "description": "Develop comprehensive expertise in legal assistant through structured learning and practical application.",
+    "category": "legal-assistant",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "legal-assistant",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master legal assistant fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "nonprofit-management-path",
+    "name": "Nonprofit Leadership Track",
+    "description": "Develop comprehensive expertise in nonprofit management through structured learning and practical application.",
+    "category": "nonprofit",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "nonprofit-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master nonprofit management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "hospitality-management-path",
+    "name": "Hospitality Excellence Path",
+    "description": "Develop comprehensive expertise in hospitality management through structured learning and practical application.",
+    "category": "hospitality",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "hospitality-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master hospitality management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "retail-management-path",
+    "name": "Retail Leadership Development",
+    "description": "Develop comprehensive expertise in retail management through structured learning and practical application.",
+    "category": "retail-management",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "retail-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master retail management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "construction-project-management-path",
+    "name": "Construction Management Mastery",
+    "description": "Develop comprehensive expertise in construction project management through structured learning and practical application.",
+    "category": "construction",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "construction-project-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master construction project management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "property-management-path",
+    "name": "Real Estate Property Management",
+    "description": "Develop comprehensive expertise in property management through structured learning and practical application.",
+    "category": "property",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "property-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master property management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "insurance-sales-path",
+    "name": "Insurance Professional Track",
+    "description": "Develop comprehensive expertise in insurance sales through structured learning and practical application.",
+    "category": "insurance",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "insurance-sales",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master insurance sales fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "logistics-coordination-path",
+    "name": "Logistics and Transportation Mastery",
+    "description": "Develop comprehensive expertise in logistics coordination through structured learning and practical application.",
+    "category": "logistics",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "logistics-coordination",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master logistics coordination fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "manufacturing-engineering-path",
+    "name": "Manufacturing Excellence Path",
+    "description": "Develop comprehensive expertise in manufacturing engineering through structured learning and practical application.",
+    "category": "manufacturing",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "manufacturing-engineering",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master manufacturing engineering fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "environmental-consulting-path",
+    "name": "Sustainability Consulting Track",
+    "description": "Develop comprehensive expertise in environmental consulting through structured learning and practical application.",
+    "category": "environmental",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "environmental-consulting",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master environmental consulting fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "travel-consulting-path",
+    "name": "Tourism and Travel Expertise",
+    "description": "Develop comprehensive expertise in travel consulting through structured learning and practical application.",
+    "category": "travel",
+    "difficulty": "beginner",
+    "estimatedTime": "3-5 months",
+    "skills": [
+      "travel-consulting",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master travel consulting fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "freelance-consulting-path",
+    "name": "Independent Consulting Mastery",
+    "description": "Develop comprehensive expertise in freelance consulting through structured learning and practical application.",
+    "category": "freelance-consulting",
+    "difficulty": "advanced",
+    "estimatedTime": "6-12 months",
+    "skills": [
+      "freelance-consulting",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master freelance consulting fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "executive-assistant-path",
+    "name": "Executive Support Excellence",
+    "description": "Develop comprehensive expertise in executive assistant through structured learning and practical application.",
+    "category": "executive-assistant",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "executive-assistant",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master executive assistant fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "customer-service-excellence-path",
+    "name": "Customer Service Leadership",
+    "description": "Develop comprehensive expertise in customer service excellence through structured learning and practical application.",
+    "category": "customer-service",
+    "difficulty": "beginner",
+    "estimatedTime": "3-5 months",
+    "skills": [
+      "customer-service-excellence",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master customer service excellence fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "warehouse-operations-path",
+    "name": "Warehouse Management Mastery",
+    "description": "Develop comprehensive expertise in warehouse operations through structured learning and practical application.",
+    "category": "warehouse",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "warehouse-operations",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master warehouse operations fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "inventory-management-path",
+    "name": "Inventory Optimization Track",
+    "description": "Develop comprehensive expertise in inventory management through structured learning and practical application.",
+    "category": "inventory",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "inventory-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master inventory management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "procurement-specialist-path",
+    "name": "Procurement and Vendor Management",
+    "description": "Develop comprehensive expertise in procurement specialist through structured learning and practical application.",
+    "category": "procurement",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "procurement-specialist",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master procurement specialist fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "safety-management-path",
+    "name": "Workplace Safety Excellence",
+    "description": "Develop comprehensive expertise in safety management through structured learning and practical application.",
+    "category": "safety",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "safety-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master safety management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "facilities-management-path",
+    "name": "Facilities Operations Mastery",
+    "description": "Develop comprehensive expertise in facilities management through structured learning and practical application.",
+    "category": "facilities",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "facilities-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master facilities management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "network-administration-path",
+    "name": "IT Network Management Track",
+    "description": "Develop comprehensive expertise in network administration through structured learning and practical application.",
+    "category": "network-admin",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "network-administration",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master network administration fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "database-administration-path",
+    "name": "Database Management Excellence",
+    "description": "Develop comprehensive expertise in database administration through structured learning and practical application.",
+    "category": "database-admin",
+    "difficulty": "advanced",
+    "estimatedTime": "9-15 months",
+    "skills": [
+      "database-administration",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master database administration fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "it-help-desk-path",
+    "name": "IT Support Professional Development",
+    "description": "Develop comprehensive expertise in it help desk through structured learning and practical application.",
+    "category": "it-support",
+    "difficulty": "beginner",
+    "estimatedTime": "3-6 months",
+    "skills": [
+      "it-help-desk",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master it help desk fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "systems-analysis-path",
+    "name": "Business Systems Analysis",
+    "description": "Develop comprehensive expertise in systems analysis through structured learning and practical application.",
+    "category": "systems-analysis",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "systems-analysis",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master systems analysis fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "information-security-path",
+    "name": "Cybersecurity Fundamentals",
+    "description": "Develop comprehensive expertise in information security through structured learning and practical application.",
+    "category": "info-security",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "information-security",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master information security fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "cloud-computing-path",
+    "name": "Cloud Architecture Mastery",
+    "description": "Develop comprehensive expertise in cloud computing through structured learning and practical application.",
+    "category": "cloud-computing",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "cloud-computing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master cloud computing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "mobile-development-path",
+    "name": "Mobile App Development Track",
+    "description": "Develop comprehensive expertise in mobile development through structured learning and practical application.",
+    "category": "mobile-dev",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "mobile-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master mobile development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "web-development-path",
+    "name": "Full-Stack Web Development",
+    "description": "Develop comprehensive expertise in web development through structured learning and practical application.",
+    "category": "web-development",
+    "difficulty": "intermediate",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "web-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master web development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "game-development-path",
+    "name": "Video Game Development Path",
+    "description": "Develop comprehensive expertise in game development through structured learning and practical application.",
+    "category": "game-development",
+    "difficulty": "advanced",
+    "estimatedTime": "12-18 months",
+    "skills": [
+      "game-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master game development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "aiml-engineering-path",
+    "name": "Artificial Intelligence Engineering",
+    "description": "Develop comprehensive expertise in ai/ml engineering through structured learning and practical application.",
+    "category": "ai-engineering",
+    "difficulty": "advanced",
+    "estimatedTime": "12-18 months",
+    "skills": [
+      "ai/ml-engineering",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master ai/ml engineering fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "blockchain-development-path",
+    "name": "Blockchain and Cryptocurrency Development",
+    "description": "Develop comprehensive expertise in blockchain development through structured learning and practical application.",
+    "category": "blockchain-dev",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "blockchain-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master blockchain development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "robotics-engineering-path",
+    "name": "Robotics and Automation Engineering",
+    "description": "Develop comprehensive expertise in robotics engineering through structured learning and practical application.",
+    "category": "robotics",
+    "difficulty": "advanced",
+    "estimatedTime": "12-18 months",
+    "skills": [
+      "robotics-engineering",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master robotics engineering fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "voice-technology-path",
+    "name": "Voice Assistant and Audio Technology",
+    "description": "Develop comprehensive expertise in voice technology through structured learning and practical application.",
+    "category": "voice-tech",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "voice-technology",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master voice technology fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "arvr-development-path",
+    "name": "Immersive Technology Development",
+    "description": "Develop comprehensive expertise in ar/vr development through structured learning and practical application.",
+    "category": "ar-vr-dev",
+    "difficulty": "advanced",
+    "estimatedTime": "10-15 months",
+    "skills": [
+      "ar/vr-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master ar/vr development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "iot-development-path",
+    "name": "Internet of Things Engineering",
+    "description": "Develop comprehensive expertise in iot development through structured learning and practical application.",
+    "category": "iot-development",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "iot-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master iot development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "prompt-engineering-path",
+    "name": "AI Prompt Engineering Mastery",
+    "description": "Develop comprehensive expertise in prompt engineering through structured learning and practical application.",
+    "category": "prompt-engineering",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "prompt-engineering",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master prompt engineering fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "growth-marketing-path",
+    "name": "Growth Hacking and Marketing",
+    "description": "Develop comprehensive expertise in growth marketing through structured learning and practical application.",
+    "category": "growth-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "growth-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master growth marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "affiliate-marketing-path",
+    "name": "Affiliate Marketing Excellence",
+    "description": "Develop comprehensive expertise in affiliate marketing through structured learning and practical application.",
+    "category": "affiliate-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "affiliate-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master affiliate marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "email-marketing-path",
+    "name": "Email Marketing Automation",
+    "description": "Develop comprehensive expertise in email marketing through structured learning and practical application.",
+    "category": "email-marketing",
+    "difficulty": "beginner",
+    "estimatedTime": "3-5 months",
+    "skills": [
+      "email-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master email marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "seo-specialist-path",
+    "name": "Search Engine Optimization Mastery",
+    "description": "Develop comprehensive expertise in seo specialist through structured learning and practical application.",
+    "category": "seo-specialist",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "seo-specialist",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master seo specialist fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "ppc-advertising-path",
+    "name": "Pay-Per-Click Advertising Excellence",
+    "description": "Develop comprehensive expertise in ppc advertising through structured learning and practical application.",
+    "category": "ppc-advertising",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "ppc-advertising",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master ppc advertising fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "conversion-optimization-path",
+    "name": "Conversion Rate Optimization Track",
+    "description": "Develop comprehensive expertise in conversion optimization through structured learning and practical application.",
+    "category": "conversion-optimization",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "conversion-optimization",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master conversion optimization fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "brand-management-path",
+    "name": "Brand Strategy and Management",
+    "description": "Develop comprehensive expertise in brand management through structured learning and practical application.",
+    "category": "brand-management",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "brand-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master brand management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "public-relations-path",
+    "name": "PR and Communications Excellence",
+    "description": "Develop comprehensive expertise in public relations through structured learning and practical application.",
+    "category": "public-relations",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "public-relations",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master public relations fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "influencer-marketing-path",
+    "name": "Influencer Marketing Management",
+    "description": "Develop comprehensive expertise in influencer marketing through structured learning and practical application.",
+    "category": "influencer-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "influencer-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master influencer marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "video-marketing-path",
+    "name": "Video Content and Marketing",
+    "description": "Develop comprehensive expertise in video marketing through structured learning and practical application.",
+    "category": "video-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "video-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master video marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "podcast-marketing-path",
+    "name": "Podcast Creation and Marketing",
+    "description": "Develop comprehensive expertise in podcast marketing through structured learning and practical application.",
+    "category": "podcast-marketing",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "podcast-marketing",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master podcast marketing fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "community-management-path",
+    "name": "Community Building and Engagement",
+    "description": "Develop comprehensive expertise in community management through structured learning and practical application.",
+    "category": "community-management",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "community-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master community management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "market-research-path",
+    "name": "Market Research and Analysis",
+    "description": "Develop comprehensive expertise in market research through structured learning and practical application.",
+    "category": "market-research",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "market-research",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master market research fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "competitive-intelligence-path",
+    "name": "Competitive Analysis Excellence",
+    "description": "Develop comprehensive expertise in competitive intelligence through structured learning and practical application.",
+    "category": "competitive-intelligence",
+    "difficulty": "advanced",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "competitive-intelligence",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master competitive intelligence fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "business-development-path",
+    "name": "Business Development Excellence",
+    "description": "Develop comprehensive expertise in business development through structured learning and practical application.",
+    "category": "business-development",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "business-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master business development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "partnership-development-path",
+    "name": "Strategic Partnership Management",
+    "description": "Develop comprehensive expertise in partnership development through structured learning and practical application.",
+    "category": "partnership-development",
+    "difficulty": "advanced",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "partnership-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master partnership development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "revenue-operations-path",
+    "name": "Revenue Operations Excellence",
+    "description": "Develop comprehensive expertise in revenue operations through structured learning and practical application.",
+    "category": "revenue-operations",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "revenue-operations",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master revenue operations fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "sales-operations-path",
+    "name": "Sales Operations Optimization",
+    "description": "Develop comprehensive expertise in sales operations through structured learning and practical application.",
+    "category": "sales-operations",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "sales-operations",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master sales operations fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "customer-analytics-path",
+    "name": "Customer Data Analysis",
+    "description": "Develop comprehensive expertise in customer analytics through structured learning and practical application.",
+    "category": "customer-analytics",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-10 months",
+    "skills": [
+      "customer-analytics",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master customer analytics fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "product-analytics-path",
+    "name": "Product Data and Analytics",
+    "description": "Develop comprehensive expertise in product analytics through structured learning and practical application.",
+    "category": "product-analytics",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "product-analytics",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master product analytics fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "marketing-analytics-path",
+    "name": "Marketing Data Analysis",
+    "description": "Develop comprehensive expertise in marketing analytics through structured learning and practical application.",
+    "category": "marketing-analytics",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "marketing-analytics",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master marketing analytics fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "financial-planning-path",
+    "name": "Financial Planning and Analysis",
+    "description": "Develop comprehensive expertise in financial planning through structured learning and practical application.",
+    "category": "financial-planning",
+    "difficulty": "intermediate",
+    "estimatedTime": "7-10 months",
+    "skills": [
+      "financial-planning",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master financial planning fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "investment-analysis-path",
+    "name": "Investment and Portfolio Analysis",
+    "description": "Develop comprehensive expertise in investment analysis through structured learning and practical application.",
+    "category": "investment-analysis",
+    "difficulty": "advanced",
+    "estimatedTime": "9-15 months",
+    "skills": [
+      "investment-analysis",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master investment analysis fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "risk-management-path",
+    "name": "Financial Risk Management",
+    "description": "Develop comprehensive expertise in risk management through structured learning and practical application.",
+    "category": "risk-management",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "risk-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master risk management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "treasury-management-path",
+    "name": "Corporate Treasury Management",
+    "description": "Develop comprehensive expertise in treasury management through structured learning and practical application.",
+    "category": "treasury-management",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "treasury-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master treasury management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "tax-preparation-path",
+    "name": "Tax Planning and Preparation",
+    "description": "Develop comprehensive expertise in tax preparation through structured learning and practical application.",
+    "category": "tax-preparation",
+    "difficulty": "intermediate",
+    "estimatedTime": "5-8 months",
+    "skills": [
+      "tax-preparation",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master tax preparation fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "bookkeeping-path",
+    "name": "Professional Bookkeeping",
+    "description": "Develop comprehensive expertise in bookkeeping through structured learning and practical application.",
+    "category": "bookkeeping",
+    "difficulty": "beginner",
+    "estimatedTime": "3-6 months",
+    "skills": [
+      "bookkeeping",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master bookkeeping fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "payroll-management-path",
+    "name": "Payroll Processing Excellence",
+    "description": "Develop comprehensive expertise in payroll management through structured learning and practical application.",
+    "category": "payroll",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-6 months",
+    "skills": [
+      "payroll-management",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master payroll management fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "benefits-administration-path",
+    "name": "Employee Benefits Management",
+    "description": "Develop comprehensive expertise in benefits administration through structured learning and practical application.",
+    "category": "benefits-admin",
+    "difficulty": "intermediate",
+    "estimatedTime": "4-7 months",
+    "skills": [
+      "benefits-administration",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master benefits administration fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "training-and-development-path",
+    "name": "Learning and Development Excellence",
+    "description": "Develop comprehensive expertise in training and development through structured learning and practical application.",
+    "category": "learning-development",
+    "difficulty": "intermediate",
+    "estimatedTime": "6-9 months",
+    "skills": [
+      "training-and-development",
+      "communication",
+      "problem-solving",
+      "project-management",
+      "professional-development"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Master training and development fundamentals and best practices",
+      "Apply skills in real-world professional contexts",
+      "Build relevant experience and professional network",
+      "Achieve career advancement in chosen field"
+    ],
+    "prerequisites": [
+      "Basic professional skills",
+      "Motivation to learn and grow",
+      "Commitment to practice and development"
+    ]
+  },
+  {
+    "id": "innovation-management-path",
+    "name": "Innovation Management Excellence",
+    "description": "Master innovation processes, creative leadership, and transformational change management.",
+    "category": "innovation",
+    "difficulty": "advanced",
+    "estimatedTime": "8-12 months",
+    "skills": [
+      "innovation-management",
+      "creative-thinking",
+      "change-management",
+      "strategic-planning"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Lead innovation initiatives and transformational projects",
+      "Foster creative thinking and problem-solving in teams",
+      "Manage change processes and organizational transformation"
+    ],
+    "prerequisites": [
+      "Leadership experience",
+      "Strategic thinking",
+      "Change management background"
+    ]
+  },
+  {
+    "id": "sustainability-consulting-path",
+    "name": "Sustainability and ESG Consulting",
+    "description": "Develop expertise in environmental, social, and governance consulting for sustainable business practices.",
+    "category": "sustainability",
+    "difficulty": "advanced",
+    "estimatedTime": "9-15 months",
+    "skills": [
+      "sustainability-planning",
+      "esg-reporting",
+      "environmental-analysis",
+      "stakeholder-engagement"
+    ],
+    "relatedCareers": [],
+    "featured": false,
+    "learningOutcomes": [
+      "Assess and improve organizational sustainability practices",
+      "Develop ESG strategies and reporting frameworks",
+      "Guide organizations through sustainable transformation"
+    ],
+    "prerequisites": [
+      "Environmental knowledge",
+      "Business strategy understanding",
+      "Analytical skills"
+    ]
+  }
+]
