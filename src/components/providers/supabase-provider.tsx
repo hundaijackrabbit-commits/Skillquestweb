@@ -1,9 +1,9 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase'
+import type { User, Session } from '@supabase/supabase-js'
+import { createClient } from '@/lib/supabase/client'
 
 interface SupabaseContextType {
   user: User | null
@@ -19,79 +19,58 @@ const SupabaseContext = createContext<SupabaseContextType>({
   signOut: async () => {}
 })
 
-export const useSupabase = () => {
-  const context = useContext(SupabaseContext)
-  if (!context) {
-    throw new Error('useSupabase must be used within a SupabaseProvider')
-  }
-  return context
-}
+export const useSupabase = () => useContext(SupabaseContext)
 
 interface SupabaseProviderProps {
   children: React.ReactNode
 }
 
 export function SupabaseProvider({ children }: SupabaseProviderProps) {
+  // Use the same @supabase/ssr browser client as the sign-in form so client and
+  // server auth agree on the cookie-backed session.
+  const supabase = useMemo(() => createClient(), [])
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession()
-      if (error) {
-        console.error('Error getting session:', error.message)
-      } else {
-        setSession(session)
-        setUser(session?.user ?? null)
-      }
+    let mounted = true
+
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (!mounted) return
+      if (error) console.error('Error getting session:', error.message)
+      setSession(data.session)
+      setUser(data.session?.user ?? null)
       setLoading(false)
-    }
+    })
 
-    getInitialSession()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, nextSession) => {
+      if (!mounted) return
+      setSession(nextSession)
+      setUser(nextSession?.user ?? null)
+      setLoading(false)
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        setLoading(false)
-
-        // Handle specific auth events
-        if (event === 'SIGNED_IN') {
-          // User just signed in
-          router.refresh()
-        } else if (event === 'SIGNED_OUT') {
-          // User just signed out
-          router.push('/')
-          router.refresh()
-        }
+      if (event === 'SIGNED_IN') router.refresh()
+      if (event === 'SIGNED_OUT') {
+        router.push('/')
+        router.refresh()
       }
-    )
+    })
 
     return () => {
+      mounted = false
       subscription.unsubscribe()
     }
-  }, [router])
+  }, [router, supabase])
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut()
-    if (error) {
-      console.error('Error signing out:', error.message)
-    }
-  }
-
-  const value: SupabaseContextType = {
-    user,
-    session,
-    loading,
-    signOut
+    if (error) console.error('Error signing out:', error.message)
   }
 
   return (
-    <SupabaseContext.Provider value={value}>
+    <SupabaseContext.Provider value={{ user, session, loading, signOut }}>
       {children}
     </SupabaseContext.Provider>
   )

@@ -4,15 +4,17 @@ import React, { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Eye, EyeOff, Mail, Lock, User, CheckCircle2, AlertCircle } from 'lucide-react'
+import { Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react'
 
 interface AuthFormProps {
   mode: 'signin' | 'signup'
   onSuccess?: () => void
   onModeChange?: (mode: 'signin' | 'signup') => void
+  redirectTo?: string
+  hideModeToggle?: boolean
 }
 
-export function AuthForm({ mode, onSuccess, onModeChange }: AuthFormProps) {
+export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboard', hideModeToggle = false }: AuthFormProps) {
   const supabase = createClient()
 
   const [formData, setFormData] = useState({
@@ -70,7 +72,8 @@ export function AuthForm({ mode, onSuccess, onModeChange }: AuthFormProps) {
 
           // 🔥 CRITICAL: give cookies time to sync
           setTimeout(() => {
-            window.location.href = '/dashboard'
+            if (onSuccess) onSuccess()
+            else window.location.href = redirectTo
           }, 300)
         }
       }
@@ -169,6 +172,7 @@ export function AuthForm({ mode, onSuccess, onModeChange }: AuthFormProps) {
           </Button>
         </form>
 
+        {!hideModeToggle && (
         <div className="mt-4 text-center">
           <button
             onClick={() => onModeChange?.(mode === 'signup' ? 'signin' : 'signup')}
@@ -177,6 +181,7 @@ export function AuthForm({ mode, onSuccess, onModeChange }: AuthFormProps) {
             {mode === 'signup' ? 'Already have an account? Sign in' : 'No account? Sign up'}
           </button>
         </div>
+        )}
       </CardContent>
     </Card>
   )

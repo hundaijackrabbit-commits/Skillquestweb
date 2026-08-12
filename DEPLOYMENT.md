@@ -1,4 +1,4 @@
-# SkillQuest Web - Production Deployment Guide
+# Modern Skill Lab - Production Deployment Guide
 
 ## 📋 Project Status
 
@@ -112,7 +112,7 @@ The site will be available at `http://localhost:3000`
 - **Framework**: Next.js 16.2.2 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4
-- **Authentication**: Supabase (optional)
+- **Authentication / growth data**: Supabase
 - **Content**: Static JSON + MDX support
 - **Deployment**: Vercel (optimized)
 
@@ -228,4 +228,4 @@ For experienced developers, the fastest path:
 3. Click "Deploy"
 4. ✅ Done - Your professional skills platform is live!
 
-The entire SkillQuest Web platform is now production-ready and fully deployable.
+The entire Modern Skill Lab platform is now production-ready and fully deployable.

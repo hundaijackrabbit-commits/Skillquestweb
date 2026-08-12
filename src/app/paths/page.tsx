@@ -4,8 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getSkillPaths } from '@/lib/content';
 import { 
-  Search, 
-  Filter, 
   ArrowRight, 
   Target, 
   Clock, 
@@ -19,13 +17,15 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Skill Paths - SkillQuest | Structured Learning Journeys',
-  description: 'Follow structured skill development paths designed for career advancement. Evidence-backed progressions from beginner to mastery.',
+  title: 'Learning Paths',
+  description: 'Follow structured skill-development paths that connect practical capabilities into useful learning journeys.',
+  alternates: { canonical: '/paths' },
 };
 
 export default async function SkillPathsPage() {
   const paths = await getSkillPaths();
   const featuredPaths = paths.filter(path => path.featured);
+  const skillsCovered = new Set(paths.flatMap(path => path.skills)).size;
   
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -56,8 +56,8 @@ export default async function SkillPathsPage() {
           </h1>
           
           <p className="text-xl leading-8 text-gray-600 mb-8">
-            Follow evidence-backed learning paths designed by industry experts. 
-            From beginner fundamentals to advanced mastery, each path provides a clear roadmap for professional growth.
+            Follow structured learning paths that group complementary skills into practical sequences.
+            Move from foundations toward more advanced capabilities with a clearer roadmap for professional growth.
           </p>
 
           {/* Stats */}
@@ -71,30 +71,14 @@ export default async function SkillPathsPage() {
               <div className="text-sm font-medium text-gray-600">Featured Paths</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">500+</div>
-              <div className="text-sm font-medium text-gray-600">Skills Covered</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">{skillsCovered}</div>
+              <div className="text-sm font-medium text-gray-600">Unique Skills Covered</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">100%</div>
-              <div className="text-sm font-medium text-gray-600">Career-Connected</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">3</div>
+              <div className="text-sm font-medium text-gray-600">Difficulty Levels</div>
             </div>
           </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="mb-12 flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search learning paths..."
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
-            />
-          </div>
-          <Button variant="outline" className="sm:w-auto">
-            <Filter className="h-4 w-4 mr-2" />
-            Filters
-          </Button>
         </div>
 
         {/* Featured Paths */}
@@ -238,7 +222,7 @@ export default async function SkillPathsPage() {
               Why Follow Structured Paths?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our learning paths are designed by industry experts and backed by research on effective skill development
+              Our learning paths are organized around complementary skills so you can move from foundational concepts toward more advanced applications
             </p>
           </div>
 
@@ -257,9 +241,9 @@ export default async function SkillPathsPage() {
               <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <TrendingUp className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Career-Connected</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Career Context</h3>
               <p className="text-sm text-gray-600">
-                Every path connects directly to real career opportunities
+                Many paths include related career directions where the source data supports the connection
               </p>
             </div>
 
@@ -267,9 +251,9 @@ export default async function SkillPathsPage() {
               <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Award className="h-8 w-8 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Expert-Designed</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Structured</h3>
               <p className="text-sm text-gray-600">
-                Created by industry professionals with proven success
+                Skills are grouped into clearer sequences so the next step is easier to choose
               </p>
             </div>
 
@@ -279,7 +263,7 @@ export default async function SkillPathsPage() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Time-Efficient</h3>
               <p className="text-sm text-gray-600">
-                Optimized learning order saves time and accelerates growth
+                Estimated time and difficulty labels help you choose a path that fits your current level
               </p>
             </div>
           </div>
@@ -295,14 +279,8 @@ export default async function SkillPathsPage() {
             that will set you apart in today's competitive market.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="px-8">
-              <Target className="h-4 w-4 mr-2" />
-              Take Skills Assessment
-            </Button>
-            <Button variant="outline" size="lg" className="px-8">
-              <Users className="h-4 w-4 mr-2" />
-              Join Our Community
-            </Button>
+            <Link href="/skills"><Button size="lg" className="px-8"><Target className="h-4 w-4 mr-2" />Explore Skills</Button></Link>
+            <Link href="/community"><Button variant="outline" size="lg" className="px-8"><Users className="h-4 w-4 mr-2" />Visit Community</Button></Link>
           </div>
         </div>
       </div>

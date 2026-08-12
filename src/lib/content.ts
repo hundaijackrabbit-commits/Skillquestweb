@@ -151,7 +151,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           title: frontmatter.title || '',
           excerpt: frontmatter.excerpt || '',
           content: postContent,
-          author: frontmatter.author || 'SkillQuest Team',
+          author: frontmatter.author || 'Modern Skill Lab Team',
           publishedAt: frontmatter.publishedAt || new Date().toISOString(),
           lastUpdated: frontmatter.lastUpdated || new Date().toISOString(),
           tags: frontmatter.tags || [],

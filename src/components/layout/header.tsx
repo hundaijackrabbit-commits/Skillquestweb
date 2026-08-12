@@ -52,10 +52,10 @@ export function Header() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-3">
-          <Link href="/blog" className="hidden xl:block">
+          <Link href="/skills" className="hidden xl:block">
             <Button variant="ghost" size="sm" className="text-slate-700">
               <Search className="mr-2 h-4 w-4" />
-              Search topics
+              Find a skill
             </Button>
           </Link>
 

@@ -1,8 +1,8 @@
-# SkillQuest Web - Supabase Setup Guide
+# Modern Skill Lab - Supabase Setup Guide
 
 ## 📋 Overview
 
-SkillQuest Web uses Supabase for user authentication, user profiles, and data persistence. This guide walks through the complete setup process.
+Modern Skill Lab uses Supabase for user authentication, user profiles, and data persistence. This guide walks through the complete setup process.
 
 ## 🎯 Features Enabled by Supabase
 
@@ -22,7 +22,7 @@ SkillQuest Web uses Supabase for user authentication, user profiles, and data pe
 2. Click **"New Project"**
 3. Choose your organization
 4. Enter project details:
-   - **Name**: `SkillQuest Web`
+   - **Name**: `Modern Skill Lab`
    - **Database Password**: Generate a strong password (save it!)
    - **Region**: Choose closest to your users
    - **Pricing Plan**: Start with Free tier

@@ -2,8 +2,9 @@ import { SkillsPageClient } from './skills-client';
 import { getAllSkills } from '@/lib/content';
 
 export const metadata = {
-  title: 'Skills Repository - SkillQuest | 1000+ Professional Skills',
-  description: 'Explore 1000+ professional skills with evidence-backed development paths, career connections, and practical guidance for today\'s economy.',
+  title: 'Professional Skills Library',
+  description: 'Explore 1,500+ practical professional skills with development steps, career connections, workplace context, and modern-work guidance.',
+  alternates: { canonical: '/skills' },
 };
 
 export default async function SkillsPage() {

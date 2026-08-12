@@ -3,11 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getAllCareers } from '@/lib/content';
-import { Search, Filter, ArrowRight, Briefcase, TrendingUp, DollarSign, MapPin } from 'lucide-react';
+import { ArrowRight, Briefcase, TrendingUp, DollarSign, MapPin } from 'lucide-react';
 
 export const metadata = {
-  title: 'Career Paths - SkillQuest',
-  description: 'Explore career opportunities with deep skill requirements, growth paths, and market intelligence for today\'s professional landscape.',
+  title: 'Career Paths & Skill Requirements',
+  description: 'Explore career profiles, core skills, growth paths, work environments, and practical routes into modern careers.',
+  alternates: { canonical: '/careers' },
 };
 
 export default async function CareersPage() {
@@ -23,26 +24,8 @@ export default async function CareersPage() {
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600">
             Understand the skills, pathways, and market dynamics of modern professional careers. 
-            Make informed decisions about your career development with evidence-backed insights.
+            Make informed decisions with practical career profiles, skill connections, and role context.
           </p>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search careers..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-          <Button variant="outline" className="sm:w-auto">
-            <Filter className="h-4 w-4 mr-2" />
-            Filters
-          </Button>
         </div>
 
         {/* Stats */}
@@ -66,21 +49,20 @@ export default async function CareersPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Briefcase className="h-5 w-5 text-blue-600" />
-                      <Badge 
-                        variant={
-                          career.demandLevel === 'very-high' ? 'success' :
-                          career.demandLevel === 'high' ? 'warning' :
-                          career.demandLevel === 'moderate' ? 'info' : 'gray'
-                        }
-                        size="sm"
-                      >
-                        {career.demandLevel?.replace('-', ' ') || 'Moderate'} demand
-                      </Badge>
+                      {career.demandLevel && (
+                        <Badge 
+                          variant={
+                            career.demandLevel === 'very-high' ? 'success' :
+                            career.demandLevel === 'high' ? 'warning' :
+                            career.demandLevel === 'moderate' ? 'info' : 'gray'
+                          }
+                          size="sm"
+                        >
+                          {career.demandLevel.replace('-', ' ')} demand
+                        </Badge>
+                      )}
                     </div>
-                    <div className="text-xs text-gray-500">
-                      <TrendingUp className="h-3 w-3 inline mr-1" />
-                      Growing
-                    </div>
+
                   </div>
                   <CardTitle className="text-xl">{career.title}</CardTitle>
                 </CardHeader>
@@ -243,8 +225,8 @@ export default async function CareersPage() {
             Connect your skills to career opportunities and build a strategic development plan
           </p>
           <div className="flex justify-center space-x-4">
-            <Button>Assess Your Skills</Button>
-            <Button variant="outline">Browse Industries</Button>
+            <Link href="/skills"><Button>Explore Skills</Button></Link>
+            <Link href="/industries"><Button variant="outline">Browse Industries</Button></Link>
           </div>
         </div>
       </div>
