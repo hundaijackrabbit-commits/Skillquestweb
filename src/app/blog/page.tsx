@@ -3,9 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getAllBlogPosts } from '@/lib/content';
+import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { 
-  Search, 
-  Filter, 
   ArrowRight, 
   Clock, 
   User,
@@ -20,8 +19,9 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Professional Development Blog - SkillQuest',
-  description: 'Evidence-backed insights on career development, skills acquisition, and professional growth. Expert analysis and practical advice for navigating today\'s economy.',
+  title: 'Skills & Career Blog',
+  description: 'Practical articles on skill development, careers, AI, communication, leadership, digital work, and professional growth.',
+  alternates: { canonical: '/blog' },
 };
 
 export default async function BlogPage() {
@@ -44,45 +44,29 @@ export default async function BlogPage() {
           </h1>
           
           <p className="text-xl leading-8 text-gray-600 mb-8">
-            Evidence-backed insights on career development, skills acquisition, and professional growth. 
-            Expert analysis and practical advice for navigating today's rapidly evolving economy.
+            Practical ideas on career development, skill building, and modern work.
+            Use the blog to connect useful concepts with the deeper skill and career library.
           </p>
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600 mb-2">{blogPosts.length}</div>
-              <div className="text-sm font-medium text-gray-600">Expert Articles</div>
+              <div className="text-sm font-medium text-gray-600">Published Articles</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600 mb-2">{featuredPosts.length}</div>
               <div className="text-sm font-medium text-gray-600">Featured Insights</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">100%</div>
-              <div className="text-sm font-medium text-gray-600">Evidence-Based</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">Practical</div>
+              <div className="text-sm font-medium text-gray-600">Modern Work Focus</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">Weekly</div>
-              <div className="text-sm font-medium text-gray-600">New Content</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">Connected</div>
+              <div className="text-sm font-medium text-gray-600">Skills & Careers</div>
             </div>
           </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="mb-12 flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search insights and articles..."
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
-            />
-          </div>
-          <Button variant="outline" className="sm:w-auto">
-            <Filter className="h-4 w-4 mr-2" />
-            Filters
-          </Button>
         </div>
 
         {/* Content Status */}
@@ -94,29 +78,14 @@ export default async function BlogPage() {
                 Blog Content Coming Soon
               </h2>
               <p className="text-gray-600 mb-8">
-                We're crafting evidence-backed articles on professional development, 
-                career intelligence, and skills acquisition. Our first insights will be 
-                published shortly.
+                We're building practical articles on professional development,
+                career intelligence, and skill building. New insights will appear here as they are published.
               </p>
               
-              {/* Newsletter Signup Placeholder */}
-              <div className="bg-blue-50 rounded-lg p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Get Notified When We Publish
-                </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Be among the first to access our professional development insights
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                  <Button>
-                    Subscribe
-                  </Button>
-                </div>
+              <div className="rounded-xl bg-blue-50 p-6 text-left">
+                <h3 className="mb-2 font-semibold text-gray-900">Get the next useful skill</h3>
+                <p className="mb-4 text-sm text-gray-600">Get practical skill and career ideas in your inbox as new guides are published.</p>
+                <NewsletterForm source="blog-empty-state" />
               </div>
             </div>
           </div>
@@ -306,24 +275,13 @@ export default async function BlogPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Stay Ahead of the Curve
-          </h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Get weekly insights on skills, careers, and professional development delivered 
-            to your inbox. Evidence-backed content for strategic career growth.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="px-8">
-              <Target className="h-4 w-4 mr-2" />
-              Subscribe to Insights
-            </Button>
-            <Button variant="outline" size="lg" className="px-8">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Browse All Articles
-            </Button>
-          </div>
+        <div className="mx-auto max-w-2xl rounded-3xl border border-slate-200 bg-slate-50 p-8 text-center">
+          <h2 className="mb-3 text-2xl font-bold text-gray-900">One useful skill every week</h2>
+          <p className="mx-auto mb-6 max-w-xl text-gray-600">Get practical ideas on skills, careers, and modern work without another noisy newsletter.</p>
+          <NewsletterForm source="blog-footer" className="mx-auto max-w-xl text-left" />
+          <Link href="/blog" className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700">
+            <BookOpen className="mr-2 h-4 w-4" /> Browse all articles
+          </Link>
         </div>
       </div>
     </div>

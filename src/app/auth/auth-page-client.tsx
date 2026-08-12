@@ -31,8 +31,7 @@ export default function AuthPageClient() {
                 Unlock Your Professional Potential
               </h1>
               <p className="text-xl leading-relaxed text-gray-600">
-                Join thousands of professionals building strategic careers with
-                personalized skill development and evidence-backed guidance.
+                Build a personal learning hub with saved skills, career connections, and a clear place to return as your goals change.
               </p>
             </div>
 
@@ -42,10 +41,9 @@ export default function AuthPageClient() {
                   <Target className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="mb-2 font-semibold text-gray-900">Personalized Learning Paths</h3>
+                  <h3 className="mb-2 font-semibold text-gray-900">Save What Matters</h3>
                   <p className="text-gray-600">
-                    Get custom skill recommendations based on your career goals
-                    and current expertise level.
+                    Save useful skills to your dashboard instead of losing the guides you want to revisit.
                   </p>
                 </div>
               </div>
@@ -68,10 +66,9 @@ export default function AuthPageClient() {
                   <Star className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="mb-2 font-semibold text-gray-900">Track Your Progress</h3>
+                  <h3 className="mb-2 font-semibold text-gray-900">Build Your Skill Library</h3>
                   <p className="text-gray-600">
-                    Save skills, monitor learning progress, and build your
-                    professional development portfolio.
+                    Collect useful skills in one place and keep building a personal reference library over time.
                   </p>
                 </div>
               </div>
@@ -81,10 +78,9 @@ export default function AuthPageClient() {
                   <Users className="h-6 w-6 text-yellow-600" />
                 </div>
                 <div>
-                  <h3 className="mb-2 font-semibold text-gray-900">Professional Community</h3>
+                  <h3 className="mb-2 font-semibold text-gray-900">Come Back With Context</h3>
                   <p className="text-gray-600">
-                    Connect with like-minded professionals and access exclusive
-                    insights from industry experts.
+                    Keep your saved skills and learning activity in one place so you can return to what matters.
                   </p>
                 </div>
               </div>
@@ -92,20 +88,20 @@ export default function AuthPageClient() {
 
             <div className="rounded-xl bg-gray-50 p-6">
               <h3 className="mb-3 font-semibold text-gray-900">
-                Join 50,000+ professionals who trust SkillQuest
+                Build a skill stack you can come back to
               </h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-blue-600">1,000+</div>
+                  <div className="text-2xl font-bold text-blue-600">1,500+</div>
                   <div className="text-sm text-gray-600">Professional Skills</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-green-600">500+</div>
-                  <div className="text-sm text-gray-600">Career Paths</div>
+                  <div className="text-2xl font-bold text-green-600">100</div>
+                  <div className="text-sm text-gray-600">Learning Paths</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-600">100%</div>
-                  <div className="text-sm text-gray-600">Evidence-Based</div>
+                  <div className="text-2xl font-bold text-purple-600">Free</div>
+                  <div className="text-sm text-gray-600">Member Account</div>
                 </div>
               </div>
             </div>

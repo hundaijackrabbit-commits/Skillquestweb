@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getIndustryBySlug, getAllIndustries, getCareersForIndustry, getSkillsForIndustry } from '@/lib/content';
+import { absoluteUrl } from '@/lib/site';
 import { 
   ArrowLeft, 
   Building2, 
@@ -39,13 +40,16 @@ export async function generateMetadata({ params }: IndustryDetailPageProps) {
   
   if (!industry) {
     return {
-      title: 'Industry Not Found - SkillQuest',
+      title: 'Industry Not Found',
     };
   }
   
+  const description = industry.description.length > 158 ? `${industry.description.slice(0, 155)}…` : industry.description;
   return {
-    title: `${industry.name} Industry Guide - SkillQuest | Career Opportunities & Skills`,
-    description: industry.description,
+    title: `${industry.name} Industry Guide`,
+    description,
+    alternates: { canonical: `/industries/${industry.slug}` },
+    openGraph: { title: `${industry.name} Industry Guide | Modern Skill Lab`, description, type: 'article', url: `/industries/${industry.slug}` },
   };
 }
 
@@ -61,9 +65,21 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
     getCareersForIndustry(slug).catch(() => []),
     getSkillsForIndustry(slug).catch(() => [])
   ]);
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${industry.name} Industry Guide`,
+    description: industry.description,
+    mainEntityOfPage: absoluteUrl(`/industries/${industry.slug}`),
+    dateModified: industry.lastUpdated,
+    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    about: industry.name,
+  };
 
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Back Navigation */}
         <div className="mb-8">
@@ -96,7 +112,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                   className="bg-yellow-100 text-yellow-800 font-medium"
                 >
                   <Star className="h-3 w-3 mr-1" />
-                  High Growth
+                  Featured Industry
                 </Badge>
               )}
               

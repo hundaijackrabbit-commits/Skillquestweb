@@ -1,19 +1,19 @@
-# SkillQuest Web Architecture
+# Modern Skill Lab Architecture
 
 ## Product Vision
-SkillQuest Web is a serious, evidence-backed professional skills repository and career intelligence platform. Target users: young professionals, career changers, students, freelancers, and self-directed learners navigating today's economy.
+Modern Skill Lab is a serious, practical professional skills repository and career intelligence platform. Target users: young professionals, career changers, students, freelancers, and self-directed learners navigating today's economy.
 
 ## Core Differentiators
 - Skills are deep, multi-layered knowledge objects (not simple labels)
-- Strong evidence-backed content with research citations
+- Strong practical content with research citations
 - Tight integration between skills, careers, and industries
-- 500+ skills at launch, architected for 1,000-5,000+ scale
+- 1,541 skills in the current active library, with the data model designed to keep scaling
 - Premium, credible user experience without gamification gimmicks
 
 ## Technical Stack
 
 ### Frontend
-- **Next.js 14** with App Router for modern React patterns
+- **Next.js 16.2** with App Router for modern React patterns
 - **TypeScript** for type safety across complex data relationships
 - **Tailwind CSS** for consistent design system
 - **Framer Motion** for subtle, professional animations
@@ -33,7 +33,7 @@ SkillQuest Web is a serious, evidence-backed professional skills repository and 
 
 ### Deployment & Infrastructure
 - **Vercel** for hosting and deployment
-- **Supabase** (optional) for user accounts and community features
+- **Supabase** for user accounts, newsletter data, analytics events, and Growth Console controls
 - **GitHub Actions** for content validation
 - Environment-based configuration
 
@@ -183,7 +183,7 @@ interface BlogPost {
 ## Content Strategy
 
 ### Quality Standards
-- All claims must be evidence-backed or clearly qualified
+- All claims must be practical or clearly qualified
 - Minimum 2,000 words for flagship skill pages
 - Research citations using scholarly, government, or industry sources
 - No generic motivational language or unfounded claims
@@ -264,7 +264,7 @@ interface BlogPost {
 ### Content Quality
 - 30+ skills with 2,000+ word comprehensive content
 - 25+ career profiles with skill mappings
-- 15+ blog posts with evidence-backed insights
+- 15+ blog posts with practical insights
 - 500+ total skills in structured format
 
 ### Technical Performance

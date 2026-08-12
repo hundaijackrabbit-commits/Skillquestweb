@@ -12,8 +12,9 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'About SkillQuest - Professional Skills Repository',
-  description: 'Learn about SkillQuest\'s mission to provide evidence-backed skill development and career intelligence for today\'s ambitious professionals.',
+  title: 'About',
+  description: 'Learn why Modern Skill Lab exists and how its practical skill guides connect learning, careers, and modern work.',
+  alternates: { canonical: '/about' },
 };
 
 export default function AboutPage() {
@@ -23,7 +24,7 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">
-            About SkillQuest
+            About Modern Skill Lab
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             The professional skills repository and career intelligence platform designed for 
@@ -39,8 +40,7 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              To provide the most comprehensive, evidence-backed professional skills intelligence 
-              platform that empowers individuals to make informed career development decisions.
+              To build a deep, practical skills intelligence platform that helps people make better learning and career-development decisions.
             </p>
           </div>
 
@@ -48,18 +48,18 @@ export default function AboutPage() {
             <blockquote className="text-lg italic text-blue-900 text-center">
               "Skills are not just labels—they are complex, multi-dimensional professional capabilities 
               that require deep understanding, structured development, and strategic application. 
-              SkillQuest treats every skill as a comprehensive knowledge object deserving serious analysis."
+              Modern Skill Lab treats every skill as a comprehensive knowledge object deserving serious analysis."
             </blockquote>
             <div className="text-center mt-4 text-blue-700 font-semibold">
-              — The SkillQuest Philosophy
+              — The Modern Skill Lab Philosophy
             </div>
           </div>
         </section>
 
-        {/* Why SkillQuest Exists */}
+        {/* Why Modern Skill Lab Exists */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Why SkillQuest Exists
+            Why Modern Skill Lab Exists
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -71,7 +71,7 @@ export default function AboutPage() {
                   <li>• Skills are treated as simple keywords rather than complex capabilities</li>
                   <li>• Limited connection between skills and actual career outcomes</li>
                   <li>• Young professionals lack structured guidance for skill development</li>
-                  <li>• Evidence-based career intelligence is scarce and fragmented</li>
+                  <li>• Practical career intelligence is often scattered across disconnected sources</li>
                 </ul>
               </CardContent>
             </Card>
@@ -81,7 +81,7 @@ export default function AboutPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Our Solution</h3>
                 <ul className="space-y-3 text-gray-700">
                   <li>• Deep, multi-dimensional skill profiles with development paths</li>
-                  <li>• Evidence-backed content from credible research sources</li>
+                  <li>• Practical guidance with research surfaced where source material is available</li>
                   <li>• Clear connections between skills, careers, and industries</li>
                   <li>• Practical, actionable guidance for professional growth</li>
                   <li>• Modern relevance including AI-era skill adaptation</li>
@@ -102,9 +102,9 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Shield className="h-8 w-8 text-blue-600" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Evidence-Based</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Transparent</h3>
               <p className="text-sm text-gray-600">
-                All claims supported by research, data, or credible professional sources
+                Practical guidance is separated from research notes and source material when those are available
               </p>
             </div>
 
@@ -143,7 +143,7 @@ export default function AboutPage() {
         {/* What Makes Us Different */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            What Makes SkillQuest Different
+            What Makes Modern Skill Lab Different
           </h2>
           
           <div className="space-y-6">
@@ -157,7 +157,7 @@ export default function AboutPage() {
                     </h3>
                     <p className="text-gray-700">
                       Unlike simple skill directories, we treat each skill as a comprehensive knowledge system 
-                      with definition, development path, career connections, evidence base, and modern relevance.
+                      with definitions, practice ideas, career connections, workplace context, and modern relevance.
                     </p>
                   </div>
                 </div>
@@ -204,11 +204,10 @@ export default function AboutPage() {
                   <CheckCircle className="h-6 w-6 text-green-600 mt-1 mr-4 flex-shrink-0" />
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      Research-Backed Content
+                      Context & Source Transparency
                     </h3>
                     <p className="text-gray-700">
-                      Claims are supported by evidence from academic research, industry reports, 
-                      and credible professional sources—not generic motivational content.
+                      Practical guidance is presented clearly, while research notes and source material are surfaced separately when a guide includes them.
                     </p>
                   </div>
                 </div>
@@ -271,20 +270,20 @@ export default function AboutPage() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">1,500+</div>
                 <div className="text-sm font-medium text-gray-600">Professional Skills</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">25+</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">100+</div>
                 <div className="text-sm font-medium text-gray-600">Career Profiles</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">15+</div>
-                <div className="text-sm font-medium text-gray-600">Industries Covered</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">8</div>
+                <div className="text-sm font-medium text-gray-600">Industry Guides</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">100%</div>
-                <div className="text-sm font-medium text-gray-600">Evidence-Based</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">100</div>
+                <div className="text-sm font-medium text-gray-600">Learning Paths</div>
               </div>
             </div>
           </div>
@@ -296,7 +295,7 @@ export default function AboutPage() {
             Ready to Accelerate Your Professional Development?
           </h2>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join the community of professionals using SkillQuest to make informed, 
+            Join the community of professionals using Modern Skill Lab to make informed, 
             strategic decisions about their career development.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

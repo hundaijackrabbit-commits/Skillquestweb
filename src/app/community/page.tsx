@@ -4,6 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, BookOpen, Users, PenTool, Compass, Sparkles, Briefcase } from 'lucide-react';
 
+export const metadata = {
+  title: 'Community',
+  description: 'Explore ways to learn with Modern Skill Lab, follow practical skill guides, and grow alongside the platform.',
+  alternates: { canonical: '/community' },
+};
+
 const principles = [
   {
     title: 'Useful over performative',
