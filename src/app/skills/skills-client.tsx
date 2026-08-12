@@ -52,6 +52,7 @@ export function SkillsPageClient({ skills }: SkillsPageClientProps) {
   }, [filteredSkills, sortBy]);
 
   const featuredSkills = skills.filter(skill => skill.featured);
+  const categoryCount = new Set(skills.map((skill) => skill.category)).size;
   const categoryStats = useMemo(() => {
     const stats: Record<string, number> = {};
     skills.forEach(skill => {
@@ -69,7 +70,7 @@ export function SkillsPageClient({ skills }: SkillsPageClientProps) {
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
             <Sparkles className="h-4 w-4 mr-2" />
-            1000+ Professional Skills Available
+            1,500+ Professional Skills Available
           </div>
           
           <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl mb-6">
@@ -78,14 +79,14 @@ export function SkillsPageClient({ skills }: SkillsPageClientProps) {
           </h1>
           
           <p className="text-xl leading-8 text-gray-600 mb-8">
-            Deep, evidence-backed intelligence on the skills that power modern careers. 
-            Each skill is a comprehensive knowledge object designed for serious professional development.
+            Deep, practical context on the skills that power modern careers.
+            Each guide connects definitions, practice ideas, workplace context, related capabilities, and career relevance.
           </p>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">{skills.length}+</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">{skills.length.toLocaleString()}</div>
               <div className="text-sm font-medium text-gray-600">Professional Skills</div>
             </div>
             <div className="text-center">
@@ -93,12 +94,12 @@ export function SkillsPageClient({ skills }: SkillsPageClientProps) {
               <div className="text-sm font-medium text-gray-600">Featured Skills</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">{categoryStats.length}+</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">{categoryCount}</div>
               <div className="text-sm font-medium text-gray-600">Categories</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">100%</div>
-              <div className="text-sm font-medium text-gray-600">Evidence-Based</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">Practical</div>
+              <div className="text-sm font-medium text-gray-600">Workplace Context</div>
             </div>
           </div>
         </div>
@@ -248,18 +249,22 @@ export function SkillsPageClient({ skills }: SkillsPageClientProps) {
             Can't find the skill you're looking for?
           </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Our repository is constantly growing with evidence-backed professional skills. 
-            Request new skills or suggest improvements to help the community.
+            Our repository keeps growing with practical professional-skill guides.
+            Explore the library to find the next capability worth adding to your stack.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="px-8">
-              <Users className="h-4 w-4 mr-2" />
-              Request a Skill
-            </Button>
-            <Button variant="outline" size="lg" className="px-8">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Browse Categories
-            </Button>
+            <Link href="#all-skills">
+              <Button size="lg" className="px-8">
+                <Users className="h-4 w-4 mr-2" />
+                Explore all skills
+              </Button>
+            </Link>
+            <Link href="/paths">
+              <Button variant="outline" size="lg" className="px-8">
+                <BookOpen className="h-4 w-4 mr-2" />
+                Browse learning paths
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

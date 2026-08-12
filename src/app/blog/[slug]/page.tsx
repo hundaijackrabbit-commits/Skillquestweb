@@ -5,6 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/content';
+import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
+import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
+import { absoluteUrl } from '@/lib/site';
 import {
   ArrowLeft,
   Calendar,
@@ -69,13 +72,24 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
 
   if (!post) {
     return {
-      title: 'Article Not Found - SkillQuest',
+      title: 'Article Not Found',
     };
   }
 
+  const description = post.excerpt.length > 158 ? `${post.excerpt.slice(0, 155)}…` : post.excerpt;
   return {
-    title: `${post.title} - SkillQuest Blog`,
-    description: post.excerpt,
+    title: post.title,
+    description,
+    alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: {
+      title: `${post.title} | Modern Skill Lab`,
+      description,
+      type: 'article',
+      url: `/blog/${post.slug}`,
+      publishedTime: post.publishedAt,
+      modifiedTime: post.lastUpdated,
+      authors: [post.author],
+    },
   };
 }
 
@@ -91,9 +105,22 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
   const relatedPosts = allPosts
     .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    datePublished: post.publishedAt,
+    dateModified: post.lastUpdated,
+    author: { '@type': 'Organization', name: post.author },
+    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <ContentViewTracker eventType="blog_view" itemType="blog" itemSlug={post.slug} />
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         <div className="mb-8">
           <Link href="/blog" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900">
@@ -148,6 +175,8 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
+
+        <ManagedAdSlot placement="blog-inline" />
 
         {(post.relatedSkills?.length || post.relatedCareers?.length) && (
           <Card className="mb-12">

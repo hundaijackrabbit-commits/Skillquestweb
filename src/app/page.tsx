@@ -1,246 +1,129 @@
 import Link from 'next/link';
+import { ArrowRight, Brain, Briefcase, CheckCircle2, Compass, Flame, LineChart, Sparkles, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, BookOpen, Briefcase, Building2, TrendingUp, Users, Search, CheckCircle, Star, Target } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { NewsletterForm } from '@/components/marketing/newsletter-form';
+import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
+import { getAllBlogPosts, getAllCareers, getAllSkills } from '@/lib/content';
+import { getHomepageGrowthData } from '@/lib/growth';
 
-export default function HomePage() {
+export const dynamic = 'force-dynamic';
+
+const defaultSlugs = ['ai-literacy', 'communication', 'critical-thinking'];
+
+const pillars = [
+  { icon: Compass, title: 'Know what to learn next', description: 'Connect useful skills to careers and real-world work instead of learning randomly.' },
+  { icon: Brain, title: 'Understand the skill', description: 'Go beyond a definition with practice ideas, workplace context, mistakes, and related capabilities.' },
+  { icon: LineChart, title: 'Build a stronger stack', description: 'Save skills, follow connections, and compound capabilities that make you more useful over time.' },
+];
+
+export default async function HomePage() {
+  const [skills, careers, posts] = await Promise.all([
+    getAllSkills(),
+    getAllCareers(),
+    getAllBlogPosts(),
+  ]);
+  const growth = await getHomepageGrowthData(skills);
+
+  const defaultSkills = defaultSlugs
+    .map((slug) => skills.find((skill) => skill.slug === slug))
+    .filter(Boolean) as (typeof skills)[number][];
+  const featured = growth.featured.length > 0
+    ? growth.featured
+    : defaultSkills.map((skill) => ({ skill, featureType: 'editor', headline: null }));
+
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-blue-50 to-white py-20 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              The Professional{' '}
-              <span className="text-blue-600">Skills Repository</span>{' '}
-              for Today's Economy
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Evidence-backed skill development and career intelligence for ambitious professionals. 
-              Navigate your career with confidence in an evolving economy.
-            </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button size="lg" className="px-8">
-                Explore Skills
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="lg">
-                Find Your Path
-              </Button>
+      <section className="relative overflow-hidden border-b bg-gradient-to-b from-slate-50 via-white to-white">
+        <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.14),transparent_55%)]" />
+        <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
+          <div>
+            <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold">Practical skills for modern work</Badge>
+            <h1 className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">Build skills that actually move you forward.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">Explore a deep library of practical skills, career connections, and learning paths built for work that keeps changing.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/skills"><Button variant="primary" size="lg" className="w-full sm:w-auto">Explore {skills.length.toLocaleString()} skills<ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+              <Link href="/careers"><Button variant="outline" size="lg" className="w-full border-slate-300 sm:w-auto">Explore careers</Button></Link>
             </div>
           </div>
-          
-          {/* Stats */}
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-            <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 sm:text-3xl">500+</div>
-                <div className="text-sm font-medium text-gray-600">Professional Skills</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 sm:text-3xl">25+</div>
-                <div className="text-sm font-medium text-gray-600">Career Paths</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 sm:text-3xl">15+</div>
-                <div className="text-sm font-medium text-gray-600">Industries</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 sm:text-3xl">100%</div>
-                <div className="text-sm font-medium text-gray-600">Evidence-Based</div>
-              </div>
+
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_20px_70px_-35px_rgba(15,23,42,0.4)]">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div><p className="text-sm font-medium text-slate-500">Your next useful idea</p><h2 className="mt-1 text-xl font-semibold text-slate-900">{growth.marketing.newsletterHeadline}</h2></div>
+              <div className="rounded-2xl bg-blue-600/10 p-3 text-blue-600"><Sparkles className="h-5 w-5" /></div>
             </div>
+            <p className="mt-5 text-sm leading-6 text-slate-600">{growth.marketing.newsletterDescription}</p>
+            <NewsletterForm source="homepage-hero" className="mt-5" />
           </div>
         </div>
       </section>
 
-      {/* Featured Skills Section */}
-      <section className="py-16 sm:py-24">
+      <section className="py-12">
+        <div className="mx-auto grid max-w-7xl gap-4 px-6 sm:grid-cols-3 lg:px-8">
+          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{skills.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">skill guides</p></div>
+          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{careers.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">career profiles</p></div>
+          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{posts.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">in-depth articles</p></div>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Skills That Matter Now
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-gray-600">
-              High-impact professional skills that employers value and careers are built on
-            </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">Selected by Modern Skill Lab</p><h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Featured skills</h2></div>
+            <Link href="/skills" className="inline-flex items-center text-sm font-semibold text-blue-600">Browse all skills <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </div>
-          
-          <div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {/* Communication Skill Card */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Badge variant="info">Communication</Badge>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">9.2</span>
-                  </div>
-                </div>
-                <CardTitle className="text-xl">Professional Communication</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-4">
-                  The ability to convey information clearly, persuasively, and appropriately across different professional contexts and audiences.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Briefcase className="h-4 w-4 mr-2" />
-                    <span>Essential for 95% of professional roles</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <TrendingUp className="h-4 w-4 mr-2" />
-                    <span>High automation resistance</span>
-                  </div>
-                </div>
-                <Link href="/skills/communication" className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 mt-4">
-                  Learn more <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
-              </CardContent>
-            </Card>
-
-            {/* Critical Thinking Skill Card */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Badge variant="success">Critical Thinking</Badge>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">9.0</span>
-                  </div>
-                </div>
-                <CardTitle className="text-xl">Critical Thinking</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-4">
-                  The capacity to analyze information objectively, evaluate evidence, and make reasoned judgments in complex situations.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Target className="h-4 w-4 mr-2" />
-                    <span>Core requirement for leadership roles</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <TrendingUp className="h-4 w-4 mr-2" />
-                    <span>Increasingly valued in AI era</span>
-                  </div>
-                </div>
-                <Link href="/skills/critical-thinking" className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 mt-4">
-                  Learn more <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
-              </CardContent>
-            </Card>
-
-            {/* AI Literacy Skill Card */}
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Badge variant="purple">AI Era</Badge>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">8.5</span>
-                  </div>
-                </div>
-                <CardTitle className="text-xl">AI Literacy</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600 mb-4">
-                  Understanding how to effectively work with artificial intelligence tools while maintaining human judgment and creativity.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <TrendingUp className="h-4 w-4 mr-2" />
-                    <span>Rapidly growing demand</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    <span>Future-resistant advantage</span>
-                  </div>
-                </div>
-                <Link href="/skills/ai-literacy" className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 mt-4">
-                  Learn more <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
-              </CardContent>
-            </Card>
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {featured.slice(0, 3).map(({ skill, featureType, headline }) => (
+              <Card key={`${featureType}-${skill.slug}`} className="rounded-3xl border-slate-200 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <CardHeader>
+                  <Badge variant="success" className="w-fit rounded-full px-3 py-1 text-xs font-semibold">{featureType === 'week' ? 'Skill of the Week' : featureType === 'month' ? 'Skill of the Month' : 'Editor’s Pick'}</Badge>
+                  <CardTitle className="text-2xl text-slate-900">{skill.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {headline && <p className="mb-2 text-sm font-semibold text-blue-700">{headline}</p>}
+                  <p className="line-clamp-4 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
+                  <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600">Explore skill <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Platform Features Section */}
-      <section className="bg-gray-50 py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Your Career Intelligence Platform
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-gray-600">
-              More than a skills directory. A comprehensive system for professional development.
-            </p>
-          </div>
-          
-          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              {/* Skills Repository */}
-              <div className="text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-blue-600 mx-auto">
-                  <BookOpen className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">Deep Skill Intelligence</h3>
-                <p className="mt-3 text-gray-600">
-                  Every skill is a comprehensive knowledge object with development paths, career connections, 
-                  and evidence-backed guidance—not just a label.
-                </p>
-              </div>
-
-              {/* Career Pathways */}
-              <div className="text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-green-600 mx-auto">
-                  <Briefcase className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">Career Mapping</h3>
-                <p className="mt-3 text-gray-600">
-                  Understand exactly which skills power which careers. See clear pathways 
-                  from your current abilities to your professional goals.
-                </p>
-              </div>
-
-              {/* Industry Context */}
-              <div className="text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-purple-600 mx-auto">
-                  <Building2 className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">Industry Context</h3>
-                <p className="mt-3 text-gray-600">
-                  See how skills operate differently across industries. Make informed decisions 
-                  about where your abilities will be most valued.
-                </p>
-              </div>
+      {growth.trending.length > 0 && (
+        <section className="border-y bg-slate-50 py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="flex items-center gap-3"><div className="rounded-2xl bg-orange-100 p-2.5 text-orange-700"><Flame className="h-5 w-5" /></div><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Chosen by visitors</p><h2 className="text-3xl font-bold text-slate-900">Trending this week</h2></div></div>
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {growth.trending.map(({ skill, views }, index) => (
+                <Link key={skill.slug} href={`/skills/${skill.slug}`} className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">#{index + 1} · {views} views</p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700">{skill.name}</h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
+                </Link>
+              ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      <ManagedAdSlot placement="homepage-inline" />
+
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">A better way to browse</p><h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Turn curiosity into a skill stack.</h2></div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-3">
+            {pillars.map((pillar) => (
+              <div key={pillar.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><div className="inline-flex rounded-2xl bg-blue-600/10 p-3 text-blue-600"><pillar.icon className="h-5 w-5" /></div><h3 className="mt-5 text-lg font-semibold text-slate-900">{pillar.title}</h3><p className="mt-3 text-sm leading-6 text-slate-600">{pillar.description}</p></div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Start Building Your Professional Future
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-gray-600">
-              Join thousands of professionals using SkillQuest to navigate their careers with confidence
-            </p>
-            <div className="mt-8 flex items-center justify-center gap-x-6">
-              <Button size="lg" className="px-8">
-                <Search className="mr-2 h-4 w-4" />
-                Explore Skills
-              </Button>
-              <Button variant="outline" size="lg">
-                <Users className="mr-2 h-4 w-4" />
-                Join Community
-              </Button>
-            </div>
+          <div className="rounded-[2rem] bg-slate-900 px-6 py-10 text-white sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between">
+            <div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">Make it yours</p><h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Save skills and keep building.</h2><p className="mt-4 text-base leading-7 text-slate-300">Create a free account to save useful skills and return to them from your dashboard.</p></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto">Browse skills</Button></Link><Link href="/auth"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto">Create account</Button></Link></div>
           </div>
         </div>
       </section>

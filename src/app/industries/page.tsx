@@ -4,8 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getAllIndustries } from '@/lib/content';
 import { 
-  Search, 
-  Filter, 
   ArrowRight, 
   Building2, 
   TrendingUp, 
@@ -20,8 +18,9 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Industry Intelligence - SkillQuest | Career Opportunities by Sector',
-  description: 'Explore career opportunities, skill requirements, and market trends across major industries. Strategic insights for informed career planning.',
+  title: 'Industries: Skills, Careers & Opportunities',
+  description: 'Explore skill requirements, career paths, trends, and opportunities across major industries.',
+  alternates: { canonical: '/industries' },
 };
 
 export default async function IndustriesPage() {
@@ -56,33 +55,17 @@ export default async function IndustriesPage() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600 mb-2">{featuredIndustries.length}</div>
-              <div className="text-sm font-medium text-gray-600">High-Growth Sectors</div>
+              <div className="text-sm font-medium text-gray-600">Featured Industries</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">500+</div>
-              <div className="text-sm font-medium text-gray-600">Career Paths</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">100+</div>
+              <div className="text-sm font-medium text-gray-600">Career Profiles</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">1000+</div>
-              <div className="text-sm font-medium text-gray-600">Skills Mapped</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">1,500+</div>
+              <div className="text-sm font-medium text-gray-600">Skills Indexed</div>
             </div>
           </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="mb-12 flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search industries and sectors..."
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
-            />
-          </div>
-          <Button variant="outline" className="sm:w-auto">
-            <Filter className="h-4 w-4 mr-2" />
-            Filters
-          </Button>
         </div>
 
         {/* Content Status */}
@@ -135,7 +118,7 @@ export default async function IndustriesPage() {
                 <div className="flex items-center justify-between mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 flex items-center">
                     <Star className="h-7 w-7 mr-3 text-yellow-500" />
-                    High-Growth Industries
+                    Featured Industries
                   </h2>
                 </div>
                 
@@ -151,7 +134,7 @@ export default async function IndustriesPage() {
                             className="bg-green-100 text-green-800 font-medium"
                           >
                             <TrendingUp className="h-3 w-3 mr-1" />
-                            High Growth
+                            Featured
                           </Badge>
                           <div className="text-xs text-gray-500 uppercase tracking-wide">
                             Industry Sector
@@ -244,7 +227,7 @@ export default async function IndustriesPage() {
                         </div>
                         <div className="flex items-center text-xs text-gray-500">
                           <TrendingUp className="h-3 w-3 mr-2" />
-                          <span>Growing market</span>
+                          <span>{industry.trends?.length || 0} trends tracked</span>
                         </div>
                       </div>
 
@@ -331,14 +314,8 @@ export default async function IndustriesPage() {
             insights for making informed career transitions and advancement decisions.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="px-8">
-              <Target className="h-4 w-4 mr-2" />
-              Take Industry Assessment
-            </Button>
-            <Button variant="outline" size="lg" className="px-8">
-              <Compass className="h-4 w-4 mr-2" />
-              Browse All Sectors
-            </Button>
+            <Link href="/skills"><Button size="lg" className="px-8"><Target className="h-4 w-4 mr-2" />Explore Skills</Button></Link>
+            <Link href="/careers"><Button variant="outline" size="lg" className="px-8"><Compass className="h-4 w-4 mr-2" />Browse Careers</Button></Link>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
--- SkillQuest Web Database Schema
+-- Modern Skill Lab Database Schema
 -- Migration 002: Seed skill paths data
 
 -- Insert featured skill paths

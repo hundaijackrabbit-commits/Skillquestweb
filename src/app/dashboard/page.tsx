@@ -7,9 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { BookOpen, Briefcase, ArrowRight, Star } from 'lucide-react';
 
 export const metadata = {
-  title: 'Dashboard - SkillQuest | Your Personalized Learning Hub',
-  description:
-    'Track your saved skills, revisit career options, and manage your professional development journey.',
+  title: 'Your Learning Dashboard',
+  description: 'Track saved skills and return to your Modern Skill Lab learning activity.',
+  robots: { index: false, follow: false },
 };
 
 type SavedSkillRow = {

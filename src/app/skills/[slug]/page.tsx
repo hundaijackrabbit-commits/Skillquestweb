@@ -10,6 +10,9 @@ import {
   getDifficultyColor,
 } from '@/lib/utils';
 import SaveSkillButton from '@/components/skills/save-skill-button';
+import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
+import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
+import { absoluteUrl } from '@/lib/site';
 import {
   ArrowLeft,
   Briefcase,
@@ -60,15 +63,21 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
     };
   }
 
+  const title = `${skill.name}: Practical Skill Guide`;
+  const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
+
   return {
-    title: `${skill.name} - Professional Skill Guide | SkillQuest`,
-    description: skill.shortDefinition,
-    keywords: [skill.name, ...skill.professionalContexts, 'professional development', 'career skills'],
+    title,
+    description,
+    keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
+    alternates: { canonical: `/skills/${skill.slug}` },
     openGraph: {
-      title: `${skill.name} - Professional Skill Guide`,
-      description: skill.shortDefinition,
+      title: `${title} | Modern Skill Lab`,
+      description,
       type: 'article',
+      url: `/skills/${skill.slug}`,
     },
+    twitter: { card: 'summary_large_image', title: `${title} | Modern Skill Lab`, description },
   };
 }
 
@@ -88,9 +97,22 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
   const categoryColors = getCategoryColor(skill.category);
   const riskColors = getRiskLevelColor(skill.automationRisk);
   const difficultyColors = getDifficultyColor(skill.difficulty || 'intermediate');
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${skill.name}: Practical Skill Guide`,
+    description: skill.shortDefinition,
+    mainEntityOfPage: absoluteUrl(`/skills/${skill.slug}`),
+    dateModified: skill.lastUpdated,
+    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    about: skill.name,
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-8">
           <Link
@@ -192,6 +214,8 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </div>
           </div>
         </div>
+
+        <ManagedAdSlot placement="skill-inline" />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">

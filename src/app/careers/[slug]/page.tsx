@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getCareerBySlug, getAllCareers, getSkillsForCareer } from '@/lib/content';
 import { CareerPathway } from '@/components/features/career-pathway';
+import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
+import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
+import { absoluteUrl } from '@/lib/site';
 import { formatDate } from '@/lib/utils';
 import { 
   ArrowLeft, 
@@ -43,13 +46,17 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
   
   if (!career) {
     return {
-      title: 'Career Not Found - SkillQuest',
+      title: 'Career Not Found',
     };
   }
   
+  const title = `${career.title} Career Guide`;
+  const description = career.summary.length > 158 ? `${career.summary.slice(0, 155)}…` : career.summary;
   return {
-    title: `${career.title} Career Guide - SkillQuest`,
-    description: career.summary,
+    title,
+    description,
+    alternates: { canonical: `/careers/${career.slug}` },
+    openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
 }
 
@@ -62,9 +69,22 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
   }
 
   const relatedSkills = await getSkillsForCareer(career.slug);
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${career.title} Career Guide`,
+    description: career.summary,
+    mainEntityOfPage: absoluteUrl(`/careers/${career.slug}`),
+    dateModified: career.lastUpdated,
+    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    about: career.title,
+  };
 
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Back Navigation */}
         <div className="mb-8">
@@ -164,6 +184,8 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </div>
           </div>
         </div>
+
+        <ManagedAdSlot placement="career-inline" />
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">

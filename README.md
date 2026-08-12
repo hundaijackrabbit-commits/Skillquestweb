@@ -1,322 +1,130 @@
-# SkillQuest Web
+# Modern Skill Lab
 
-**The Professional Skills Repository and Career Intelligence Platform**
+Modern Skill Lab is a Next.js skills and career discovery platform built around a large structured content library, member accounts, and a Supabase-backed growth/admin layer.
 
-SkillQuest Web is a comprehensive, evidence-backed platform for professional skill development and career intelligence. Designed for ambitious professionals, career changers, and self-directed learners navigating today's evolving economy.
+**Canonical production domain:** `https://modernskilllab.space`
 
-## 🚀 Key Features
+## Current content library
 
-### **500+ Professional Skills Repository**
-- Deep, multi-dimensional skill profiles (not simple labels)
-- Evidence-backed development paths and career connections
-- AI-era relevance and automation risk analysis
-- Practical guidance with actionable development steps
+- 1,541 professional skill guides (`src/data/skills-1000plus.json`)
+- 103 career profiles
+- 8 industry guides
+- 100 learning paths
+- 20 MDX articles
 
-### **Career Intelligence Platform**
-- Comprehensive career profiles with skill requirements
-- Growth paths and market demand analysis
-- Industry context and salary intelligence
-- Alternative entry strategies and progression routes
+The active skill loader is `src/data/skills-1000plus.json`. Do not replace it with the smaller legacy `skills.json` file.
 
-### **Modern Architecture**
-- Next.js 14 with App Router and TypeScript
-- Fully static generation for optimal performance
-- SEO-optimized with comprehensive metadata
-- Responsive design with Tailwind CSS
+## Stack
 
-### **Evidence-Based Content**
-- Research-backed claims with source references
-- Scholarly notes and market intelligence
-- No generic motivational content or unfounded claims
-- Continuous updates based on labor market data
+- Next.js 16.2 / React 19 / TypeScript
+- Tailwind CSS 4
+- Supabase Auth + Postgres / Row Level Security
+- Vercel Analytics + Speed Insights
+- Zod validation
+- Fuse.js client-side skill search
+- MDX blog content
 
-## 🏗️ Architecture
+## Product features
 
-### **Technology Stack**
-- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
-- **UI Components**: Custom component library with class-variance-authority
-- **Icons**: Lucide React
-- **Content**: Structured JSON with Zod validation
-- **Search**: Fuse.js for client-side fuzzy search
-- **Deployment**: Vercel (production-ready)
+### Public site
 
-### **Content Architecture**
-```
-src/
-├── app/                    # Next.js App Router pages
-├── components/            
-│   ├── ui/                # Reusable UI components
-│   ├── features/          # Feature-specific components
-│   └── layout/            # Layout components (Header, Footer)
-├── lib/                   # Utilities and business logic
-│   ├── types.ts           # Zod schemas and TypeScript types
-│   ├── content.ts         # Content management functions
-│   └── utils.ts           # Utility functions
-└── data/                  # Content data files
-    ├── skills.json        # 500+ professional skills
-    ├── careers.json       # Career profiles
-    └── industries.json    # Industry intelligence
-```
+- Searchable skills repository
+- Career, industry, learning-path, and blog content
+- Member accounts and saved skills
+- Real newsletter signup
+- Admin-selected Skill of the Week / Month / Editor's Picks
+- Automatically calculated trending skills based on first-party skill-view events
+- Controlled AdSense placement hooks (disabled until configured)
 
-## 🚀 Quick Start
+### Growth Console (`/admin`)
 
-### **Prerequisites**
-- Node.js 18.17+ (recommended: 20+)
-- npm or yarn
+- Secure admin-only access
+- Account and newsletter subscriber totals
+- Recent account/subscriber activity
+- Most-viewed skills for 7-day and 30-day windows
+- Homepage featured-skill controls tied directly to real skill slugs
+- Homepage newsletter-message controls
+- Subscriber status management
+- Optional admin-role controls when a service-role key is configured server-side
+- Ad-placement enable/disable and slot-ID controls
 
-### **Installation**
+## SEO / canonical setup
+
+The owned domain is the canonical site. `src/proxy.ts` permanently redirects requests from `skillquestweb.vercel.app` to the same path and query on `modernskilllab.space`.
+
+The project includes:
+
+- `metadataBase` and canonical metadata
+- `robots.ts`
+- `sitemap.ts`
+- Organization + WebSite structured data
+- Article / BlogPosting structured data on content detail pages
+- `noindex` metadata for member/admin areas
+
+After deployment, submit:
+
+`https://modernskilllab.space/sitemap.xml`
+
+to Google Search Console and inspect/request indexing for the custom-domain homepage.
+
+## Local setup
+
 ```bash
-# Clone the repository
-git clone [repository-url]
-cd Skillquestweb
-
-# Install dependencies
-npm install
-
-# Run development server
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Production check:
 
-### **Build for Production**
 ```bash
-# Create optimized production build
 npm run build
-
-# Start production server locally
-npm start
+npm run lint
 ```
 
-## 📦 Deployment
+## Supabase setup
 
-### **Deploy to Vercel (Recommended)**
+On a new Supabase project, run the migrations in order:
 
-#### **Method 1: GitHub Integration**
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Click "New Project" 
-4. Import your GitHub repository
-5. Configure settings:
-   - **Framework Preset**: Next.js
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `.next`
-   - **Install Command**: `npm install`
-6. Click "Deploy"
+1. `supabase/migrations/001_initial_schema.sql`
+2. `supabase/migrations/003_growth_admin.sql`
 
-#### **Method 2: Vercel CLI**
-```bash
-# Install Vercel CLI
-npm i -g vercel
+If `public.profiles` already exists from an older deployment, `001_initial_schema.sql` is idempotent and can be rerun safely before 003.
 
-# Login to Vercel
-vercel login
+Then create/sign in to your account and promote only that profile once in the Supabase SQL editor:
 
-# Deploy (first time)
-vercel
-
-# Deploy to production
-vercel --prod
+```sql
+UPDATE public.profiles
+SET is_admin = TRUE
+WHERE email = 'YOUR_EMAIL_HERE';
 ```
 
-### **Environment Variables**
-
-#### **Optional Environment Variables**
-Copy `.env.example` to `.env.local` and configure:
+### Required Vercel variables for accounts/admin/newsletter
 
 ```env
-# Production URL (for SEO)
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
-
-# Optional: Supabase (for user accounts/community)
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
-
-# Optional: Analytics
-NEXT_PUBLIC_GA_ID=your_google_analytics_id
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 ```
 
-#### **Vercel Environment Setup**
-1. Go to your Vercel project dashboard
-2. Navigate to **Settings** → **Environment Variables**
-3. Add your environment variables for Production, Preview, and Development
+### Optional privileged admin control
 
-### **Custom Domain**
-1. In Vercel dashboard, go to **Settings** → **Domains**
-2. Add your custom domain
-3. Configure DNS records as instructed
-4. SSL certificates are automatically provisioned
+Only needed to grant/remove admin roles from inside the Growth Console:
 
-## 🔧 Development
-
-### **Project Structure**
-```
-SkillQuest Web/
-├── public/                # Static assets
-├── src/
-│   ├── app/              # Pages (App Router)
-│   │   ├── layout.tsx    # Root layout
-│   │   ├── page.tsx      # Homepage
-│   │   ├── skills/       # Skills repository
-│   │   ├── careers/      # Career profiles  
-│   │   └── about/        # About page
-│   ├── components/       # React components
-│   ├── lib/              # Utilities & content
-│   └── data/             # Content files
-├── tailwind.config.ts    # Tailwind configuration
-├── next.config.ts        # Next.js configuration
-├── vercel.json           # Vercel deployment config
-└── README.md             # This file
+```env
+SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
-### **Adding Content**
+Never expose the service-role key with a `NEXT_PUBLIC_` prefix.
 
-#### **Add New Skills**
-Edit `src/data/skills.json`:
-```json
-{
-  "id": "new-skill",
-  "slug": "new-skill", 
-  "name": "New Professional Skill",
-  "category": "communication",
-  "shortDefinition": "Brief definition...",
-  "fullDefinition": "Comprehensive definition...",
-  "whyItMatters": "Why this skill is important...",
-  // ... other required fields
-}
+### Optional AdSense
+
+Advertising remains off unless all three conditions are true: an ad placement is enabled in `/admin`, that placement has an AdSense slot ID, and this variable is configured:
+
+```env
+NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-...
 ```
 
-#### **Add New Careers**
-Edit `src/data/careers.json` with comprehensive career profiles.
+Do not publish an `ads.txt` seller line until Google provides the real publisher details.
 
-### **Content Guidelines**
-- **Evidence-based**: Support claims with research or credible sources
-- **Professional tone**: Intelligent, practical, ambitious but not overly academic
-- **Modern relevance**: Focus on skills valuable in today's economy
-- **Comprehensive**: Treat skills as complex knowledge objects, not simple labels
+## Important deployment notes
 
-### **Development Commands**
-```bash
-# Development server
-npm run dev
-
-# Production build
-npm run build
-
-# Start production server locally  
-npm start
-
-# Lint code
-npm run lint
-
-# Type checking
-npm run type-check
-```
-
-## 🎯 Content Strategy
-
-### **Skill Content Standards**
-- **500+ skills** at launch, expandable to 5,000+
-- **30+ flagship skills** with 2,000+ word comprehensive content
-- **Evidence-backed claims** with research citations
-- **Career connections** for every skill
-- **AI-era analysis** and automation risk assessment
-
-### **Quality Requirements**
-- No generic motivational language
-- Support all claims with evidence or qualify uncertainty
-- Professional tone targeting ambitious professionals
-- Modern relevance to today's economy
-- Practical, actionable guidance
-
-## 🚦 Performance & SEO
-
-### **Built-in Optimizations**
-- **Static Generation**: All pages pre-rendered at build time
-- **Image Optimization**: Next.js automatic image optimization
-- **Font Optimization**: Self-hosted fonts with automatic optimization
-- **Bundle Optimization**: Automatic code splitting and tree shaking
-
-### **SEO Features**
-- **Comprehensive metadata** for all pages
-- **Structured URLs** (`/skills/communication`, `/careers/product-manager`)
-- **Open Graph** tags for social sharing
-- **JSON-LD** structured data (ready to implement)
-- **XML sitemap** generation (ready to implement)
-
-### **Performance Targets**
-- **Lighthouse Score**: 90+ across all metrics
-- **Core Web Vitals**: Optimized LCP, FID, CLS
-- **Bundle Size**: Optimized with dynamic imports
-- **Loading Speed**: < 3 seconds on 3G networks
-
-## 🔒 Security
-
-### **Built-in Security**
-- **Content Security Policy** headers via Vercel
-- **XSS Protection** and security headers
-- **Input validation** with Zod schemas
-- **Type safety** with TypeScript
-- **Environment variable** protection
-
-## 🤝 Contributing
-
-### **Content Contributions**
-1. Review existing content standards
-2. Research claims thoroughly
-3. Follow evidence-based writing principles
-4. Test content locally before submitting
-
-### **Code Contributions**
-1. Follow TypeScript best practices
-2. Maintain component reusability
-3. Add proper type definitions
-4. Test builds before submitting
-
-## 📄 License
-
-[Add your license here]
-
-## 🆘 Troubleshooting
-
-### **Common Issues**
-
-#### **Build Errors**
-```bash
-# Clear Next.js cache
-rm -rf .next
-
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-#### **Type Errors**
-```bash
-# Run type checking
-npm run type-check
-
-# Common fix: restart TypeScript server in VS Code
-# Command Palette -> "TypeScript: Restart TS Server"
-```
-
-#### **Deployment Issues**
-- Verify `npm run build` succeeds locally
-- Check environment variables in Vercel dashboard
-- Review build logs in Vercel deployment panel
-
-### **Performance Issues**
-- Check bundle analyzer: `npm run analyze` (if configured)
-- Verify images are optimized
-- Review Core Web Vitals in production
-
-## 📧 Support
-
-For technical issues:
-1. Check existing GitHub issues
-2. Review troubleshooting section
-3. Create detailed issue with reproduction steps
-
----
-
-**SkillQuest Web** - Professional skills intelligence for the modern economy.
+See [`PATCH_NOTES_2026-08-12.md`](./PATCH_NOTES_2026-08-12.md) for the exact migration/deployment order and a summary of the patch.

@@ -1,10 +1,11 @@
--- SkillQuest Web Database Schema
--- Migration 001: Initial schema setup
+-- Modern Skill Lab Database Schema
+-- Migration 001: safe initial account/profile foundation
+-- Run before 003_growth_admin.sql on a new Supabase project.
+-- Idempotent and intentionally omits the obsolete app.jwt_secret database setting.
 
--- Enable Row Level Security
-ALTER DATABASE postgres SET "app.jwt_secret" TO 'your-jwt-secret';
+BEGIN;
 
--- Create profiles table (extends auth.users)
+-- Core profile table, extending Supabase auth.users
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     email TEXT UNIQUE NOT NULL,
@@ -23,7 +24,6 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     }'::jsonb
 );
 
--- Create skill_progress table
 CREATE TABLE IF NOT EXISTS public.skill_progress (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS public.skill_progress (
     UNIQUE(user_id, skill_id)
 );
 
--- Create user_activities table
 CREATE TABLE IF NOT EXISTS public.user_activities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -48,7 +47,6 @@ CREATE TABLE IF NOT EXISTS public.user_activities (
     created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
--- Create skill_paths table
 CREATE TABLE IF NOT EXISTS public.skill_paths (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -63,7 +61,6 @@ CREATE TABLE IF NOT EXISTS public.skill_paths (
     updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
--- Create user_paths table (tracks user enrollment in paths)
 CREATE TABLE IF NOT EXISTS public.user_paths (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
@@ -77,92 +74,119 @@ CREATE TABLE IF NOT EXISTS public.user_paths (
     UNIQUE(user_id, path_id)
 );
 
--- Create updated_at trigger function
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
 BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
--- Create triggers for updated_at
+DROP TRIGGER IF EXISTS set_profiles_updated_at ON public.profiles;
 CREATE TRIGGER set_profiles_updated_at
     BEFORE UPDATE ON public.profiles
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
+DROP TRIGGER IF EXISTS set_skill_progress_updated_at ON public.skill_progress;
 CREATE TRIGGER set_skill_progress_updated_at
     BEFORE UPDATE ON public.skill_progress
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
+DROP TRIGGER IF EXISTS set_skill_paths_updated_at ON public.skill_paths;
 CREATE TRIGGER set_skill_paths_updated_at
     BEFORE UPDATE ON public.skill_paths
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
+DROP TRIGGER IF EXISTS set_user_paths_updated_at ON public.user_paths;
 CREATE TRIGGER set_user_paths_updated_at
     BEFORE UPDATE ON public.user_paths
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
--- Enable Row Level Security
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.skill_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_activities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.skill_paths ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_paths ENABLE ROW LEVEL SECURITY;
 
--- Profiles policies
+DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
 CREATE POLICY "Users can view own profile" ON public.profiles
-    FOR SELECT USING (auth.uid() = id);
+    FOR SELECT TO authenticated USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile" ON public.profiles
-    FOR UPDATE USING (auth.uid() = id);
+    FOR UPDATE TO authenticated USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.profiles;
 CREATE POLICY "Users can insert own profile" ON public.profiles
-    FOR INSERT WITH CHECK (auth.uid() = id);
+    FOR INSERT TO authenticated WITH CHECK (auth.uid() = id);
 
--- Skill progress policies
+DROP POLICY IF EXISTS "Users can view own skill progress" ON public.skill_progress;
 CREATE POLICY "Users can view own skill progress" ON public.skill_progress
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT TO authenticated USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage own skill progress" ON public.skill_progress;
 CREATE POLICY "Users can manage own skill progress" ON public.skill_progress
-    FOR ALL USING (auth.uid() = user_id);
+    FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
--- User activities policies
+DROP POLICY IF EXISTS "Users can view own activities" ON public.user_activities;
 CREATE POLICY "Users can view own activities" ON public.user_activities
-    FOR SELECT USING (auth.uid() = user_id);
+    FOR SELECT TO authenticated USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own activities" ON public.user_activities;
 CREATE POLICY "Users can insert own activities" ON public.user_activities
-    FOR INSERT WITH CHECK (auth.uid() = user_id);
+    FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
 
--- Skill paths policies (public read, admin write)
+DROP POLICY IF EXISTS "Anyone can view skill paths" ON public.skill_paths;
 CREATE POLICY "Anyone can view skill paths" ON public.skill_paths
     FOR SELECT TO authenticated, anon USING (true);
 
--- User paths policies
+DROP POLICY IF EXISTS "Users can manage own paths" ON public.user_paths;
 CREATE POLICY "Users can manage own paths" ON public.user_paths
-    FOR ALL USING (auth.uid() = user_id);
+    FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
--- Function to handle new user signup
+-- New account -> profile
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
-    INSERT INTO public.profiles (id, email, name)
-    VALUES (
-        NEW.id,
-        NEW.email,
-        COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1))
-    );
+    IF NEW.email IS NOT NULL THEN
+        INSERT INTO public.profiles (id, email, name)
+        VALUES (
+            NEW.id,
+            NEW.email,
+            COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1))
+        )
+        ON CONFLICT (id) DO NOTHING;
+    END IF;
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
--- Trigger to create profile on signup
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- Create indexes for better performance
+-- IMPORTANT: recover profiles for users who signed up before this migration existed.
+INSERT INTO public.profiles (id, email, name, created_at, updated_at)
+SELECT
+    u.id,
+    u.email,
+    COALESCE(u.raw_user_meta_data->>'name', split_part(u.email, '@', 1)),
+    COALESCE(u.created_at, NOW()),
+    NOW()
+FROM auth.users u
+WHERE u.email IS NOT NULL
+ON CONFLICT (id) DO UPDATE
+SET email = EXCLUDED.email,
+    name = COALESCE(public.profiles.name, EXCLUDED.name),
+    updated_at = NOW();
+
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON public.profiles(email);
 CREATE INDEX IF NOT EXISTS idx_skill_progress_user_id ON public.skill_progress(user_id);
 CREATE INDEX IF NOT EXISTS idx_skill_progress_skill_id ON public.skill_progress(skill_id);
@@ -175,3 +199,9 @@ CREATE INDEX IF NOT EXISTS idx_skill_paths_featured ON public.skill_paths(featur
 CREATE INDEX IF NOT EXISTS idx_user_paths_user_id ON public.user_paths(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_paths_path_id ON public.user_paths(path_id);
 CREATE INDEX IF NOT EXISTS idx_user_paths_status ON public.user_paths(status);
+
+COMMIT;
+
+-- Quick verification:
+-- SELECT COUNT(*) AS auth_users FROM auth.users;
+-- SELECT COUNT(*) AS profiles FROM public.profiles;
