@@ -17,16 +17,15 @@ import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { isBlogPostIndexable } from '@/lib/content-quality';
+import { ArticleActions } from '@/components/blog/article-actions';
 import {
   Calendar,
   Clock,
   User,
-  Heart,
-  Share2,
   BookOpen,
   ArrowRight,
-  MessageCircle,
   Star,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface BlogPostDetailPageProps {
@@ -117,7 +116,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
     resolveIndustryReferences(post.relatedIndustries, 6),
   ]);
   const relatedPosts = allPosts
-    .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
+    .filter((p) => isBlogPostIndexable(p) && p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
   const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
   const structuredData = {
@@ -180,14 +179,20 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
               <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
             </div>
+            <div className="flex items-center">
+              <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
+              Reviewed {new Date(`${post.lastUpdated}T12:00:00`).toLocaleDateString()}
+            </div>
           </div>
 
-          <div className="flex gap-3 border-b pb-6">
-            <Button variant="outline" size="sm"><Heart className="mr-2 h-4 w-4" />Like</Button>
-            <Button variant="outline" size="sm"><Share2 className="mr-2 h-4 w-4" />Share</Button>
-            <Button variant="outline" size="sm"><MessageCircle className="mr-2 h-4 w-4" />Discuss</Button>
-          </div>
+          <ArticleActions slug={post.slug} />
         </div>
+
+        {post.reviewedBy && (
+          <aside className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-sm leading-6 text-emerald-950">
+            <strong>Editorial review:</strong> {post.reviewedBy}. {post.evidenceNote ?? 'Claims with a meaningful date or number are linked to their source in the article.'}
+          </aside>
+        )}
 
         <article className="mb-12 rounded-2xl border bg-white p-8 shadow-sm">
           <div className="prose prose-lg max-w-none">
@@ -198,7 +203,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
         <ManagedAdSlot placement="blog-inline" />
 
         {(relatedSkills.length > 0 || relatedCareers.length > 0 || relatedIndustries.length > 0) && (
-          <Card className="mb-12">
+          <Card id="practice-next" className="mb-12 scroll-mt-28">
             <CardHeader>
               <CardTitle>Continue through the topic</CardTitle>
             </CardHeader>

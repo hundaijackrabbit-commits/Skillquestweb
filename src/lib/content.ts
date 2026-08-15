@@ -290,6 +290,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           author: frontmatter.author || 'Modern Skill Lab Team',
           publishedAt: frontmatter.publishedAt || new Date().toISOString(),
           lastUpdated: frontmatter.lastUpdated || new Date().toISOString(),
+          reviewedBy: frontmatter.reviewedBy || undefined,
+          evidenceNote: frontmatter.evidenceNote || undefined,
           tags: frontmatter.tags || [],
           relatedSkills: frontmatter.relatedSkills || [],
           relatedCareers: frontmatter.relatedCareers || [],

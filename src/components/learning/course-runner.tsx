@@ -7,6 +7,7 @@ import {
   Check,
   CheckCircle2,
   Circle,
+  Flame,
   Lightbulb,
   RotateCcw,
   Sparkles,
@@ -15,6 +16,12 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { SkillCourse } from '@/lib/courses';
+import {
+  getLearningProfile,
+  hasLearningActivity,
+  recordLearningActivity,
+  type LearningProfile,
+} from '@/lib/learning-progress';
 
 type Props = {
   course: SkillCourse;
@@ -56,6 +63,14 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [learningProfile, setLearningProfile] = useState<LearningProfile>({
+    version: 1,
+    totalXp: 0,
+    currentStreak: 0,
+    longestStreak: 0,
+    lastPracticeDate: null,
+    activities: [],
+  });
 
   useEffect(() => {
     try {
@@ -66,9 +81,20 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
           course.lessons.some((lesson) => lesson.id === id),
         );
         setCompleted(valid);
+        let profile = getLearningProfile();
+        for (const lessonId of valid) {
+          profile = recordLearningActivity({
+            id: `course:${course.skillSlug}:${lessonId}`,
+            kind: 'course-lesson',
+            skillSlug: course.skillSlug,
+            xp: course.pointsPerLesson,
+          });
+        }
+        setLearningProfile(profile);
         const firstIncomplete = course.lessons.findIndex((lesson) => !valid.includes(lesson.id));
         if (firstIncomplete >= 0) setCurrentIndex(firstIncomplete);
       } else {
+        setLearningProfile(getLearningProfile());
         recordCourseEvent(course.skillSlug, 'start');
       }
     } catch {
@@ -81,7 +107,6 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
   const lesson = course.lessons[currentIndex];
   const isCorrect = selectedAnswer === lesson.quiz.correctIndex;
   const courseComplete = completed.length === course.lessons.length;
-  const points = completed.length * course.pointsPerLesson;
   const totalPoints = course.lessons.length * course.pointsPerLesson;
   const percent = Math.round((completed.length / course.lessons.length) * 100);
 
@@ -101,6 +126,17 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
       progressKey(course.skillSlug),
       JSON.stringify({ completed: nextCompleted, updatedAt: new Date().toISOString() }),
     );
+
+    if (!completedSet.has(lesson.id)) {
+      setLearningProfile(
+        recordLearningActivity({
+          id: `course:${course.skillSlug}:${lesson.id}`,
+          kind: 'course-lesson',
+          skillSlug: course.skillSlug,
+          xp: course.pointsPerLesson,
+        }),
+      );
+    }
 
     const nextIndex = course.lessons.findIndex(
       (candidate, index) => index > currentIndex && !nextCompleted.includes(candidate.id),
@@ -135,9 +171,14 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
             <div className="mt-1 text-2xl font-bold text-slate-900">{percent}%</div>
           </div>
           <div className="rounded-2xl bg-amber-50 px-3 py-2 text-right">
-            <div className="text-xs font-medium text-amber-700">Sprint points</div>
-            <div className="font-bold text-amber-900">{points}/{totalPoints} XP</div>
+            <div className="text-xs font-medium text-amber-700">Total practice XP</div>
+            <div className="font-bold text-amber-900">{learningProfile.totalXp} XP</div>
           </div>
+        </div>
+
+        <div className="mb-5 flex items-center justify-between rounded-2xl bg-orange-50 px-3 py-2 text-sm">
+          <span className="inline-flex items-center font-semibold text-orange-900"><Flame className="mr-1.5 h-4 w-4" />Practice rhythm</span>
+          <span className="font-bold text-orange-900">{learningProfile.currentStreak} days</span>
         </div>
 
         <div className="mb-6 h-2 overflow-hidden rounded-full bg-slate-100">
@@ -300,7 +341,9 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
                     ? 'Continue'
                     : currentIndex === course.lessons.length - 1
                       ? 'Complete sprint'
-                      : `Earn ${course.pointsPerLesson} XP and continue`}
+                      : hasLearningActivity(learningProfile, `course:${course.skillSlug}:${lesson.id}`)
+                        ? 'Complete practice and continue'
+                        : `Earn ${course.pointsPerLesson} XP and continue`}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>

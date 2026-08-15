@@ -16,6 +16,10 @@ import {
   resolveSkillReferences,
 } from '@/lib/content';
 import { getSkillCourse } from '@/lib/courses';
+import { SkillMission } from '@/components/learning/skill-mission';
+import { CurrentSkillBrief } from '@/components/skills/current-skill-brief';
+import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
+import { getSkillConnectionReason } from '@/lib/skill-connections';
 import {
   formatCategoryName,
   getCategoryColor,
@@ -128,6 +132,32 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     resolveSkillReferences(skill.skillStacksWell ?? [], 6),
   ]);
   const course = getSkillCourse(skill.slug);
+  const currentBrief = getSkillIntelligenceBrief(skill.slug);
+  const nextConnectedSkill = relatedSkills[0];
+  const nextConnection = nextConnectedSkill
+    ? {
+        name: nextConnectedSkill.name,
+        slug: nextConnectedSkill.slug,
+        reason: getSkillConnectionReason(skill, nextConnectedSkill),
+      }
+    : undefined;
+  const missions = [
+    {
+      level: 'Starter' as const,
+      action: skill.beginnerActions[0] || `Use ${skill.name} in one small, low-risk task and note the result.`,
+      xp: 30,
+    },
+    {
+      level: 'Builder' as const,
+      action: skill.intermediateActions[0] || `Ask a colleague for feedback on one visible example of your ${skill.name} practice.`,
+      xp: 60,
+    },
+    {
+      level: 'Stretch' as const,
+      action: skill.advancedActions[0] || `Apply ${skill.name} to a consequential decision and document the evidence you used.`,
+      xp: 90,
+    },
+  ];
   const canonicalUrl = absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`);
 
   const categoryColors = getCategoryColor(skill.category);
@@ -141,7 +171,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
         headline: `${skill.name}: Practical Skill Guide`,
         description: skill.shortDefinition,
         mainEntityOfPage: canonicalUrl,
-        dateModified: skill.lastUpdated,
+        dateModified: currentBrief?.reviewedAt ?? skill.lastUpdated,
         author: { '@type': 'Organization', name: 'Modern Skill Lab' },
         publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
         about: skill.name,
@@ -264,6 +294,8 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
         <ManagedAdSlot placement="skill-inline" />
 
+        {currentBrief && <CurrentSkillBrief skillName={skill.name} brief={currentBrief} />}
+
         {course && (
           <section className="mb-12 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-r from-slate-950 via-blue-950 to-violet-950 p-7 text-white shadow-lg sm:p-9">
             <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
@@ -285,6 +317,13 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </div>
           </section>
         )}
+
+        <SkillMission
+          skillSlug={skill.slug}
+          skillName={skill.name}
+          missions={missions}
+          nextSkill={nextConnection}
+        />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
@@ -749,17 +788,22 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
             <Card>
               <CardHeader>
-                <CardTitle>Related Skills</CardTitle>
+                <CardTitle>Connected Skills</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {relatedSkills.map((relatedSkill) => (
                     <Link
                       key={relatedSkill.id}
                       href={`/skills/${relatedSkill.slug}`}
-                      className="block text-sm text-blue-600 hover:text-blue-800"
+                      className="group block rounded-xl border border-slate-200 p-3 transition hover:border-blue-300 hover:bg-blue-50"
                     >
-                      {relatedSkill.name}
+                      <span className="block text-sm font-bold text-blue-700 group-hover:text-blue-950">
+                        {relatedSkill.name}
+                      </span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-500">
+                        {getSkillConnectionReason(skill, relatedSkill)}
+                      </span>
                     </Link>
                   ))}
                 </div>

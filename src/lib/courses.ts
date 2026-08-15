@@ -253,6 +253,234 @@ const courses: SkillCourse[] = [
       },
     ],
   },
+  {
+    skillSlug: 'data-analysis',
+    title: 'Decision-Ready Data Sprint',
+    description:
+      'Move from a business question to defensible evidence, then communicate what the data can and cannot support.',
+    estimatedMinutes: 15,
+    pointsPerLesson: 40,
+    lessons: [
+      {
+        id: 'decision-first',
+        title: 'Start with the decision',
+        objective: 'Translate a broad request into a question that data can answer usefully.',
+        concept:
+          'Analysis becomes useful when it is tied to a decision. Define the choice, the population or process involved, the time period, and the result that would change what someone does next.',
+        example:
+          'Replace “How is onboarding doing?” with “Which onboarding step is most associated with first-week abandonment among new mobile users this quarter?”',
+        practice:
+          'Rewrite one dashboard request as a decision question with a population, period, comparison, and next action.',
+        quiz: {
+          question: 'Which question gives an analyst the clearest decision context?',
+          options: [
+            'Can you pull some customer numbers?',
+            'Which support issue drove the largest rise in repeat contacts this month, and where should we test a fix?',
+            'What interesting patterns are in the database?',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It defines the outcome, period, comparison, and decision the analysis is meant to inform.',
+        },
+      },
+      {
+        id: 'test-the-measure',
+        title: 'Test the measure',
+        objective: 'Check whether a metric represents the claim being made.',
+        concept:
+          'A clean calculation can still answer the wrong question. Inspect the definition, collection method, missing values, comparison group, and plausible alternative explanations before interpreting a result.',
+        example:
+          'A rise in average order value may reflect a price increase rather than customers buying more items. Both are valid measurements, but they support different explanations.',
+        practice:
+          'Choose one metric and write its definition, one known limitation, and one plausible competing explanation.',
+        quiz: {
+          question: 'Why can average order value rise even if customers buy fewer items?',
+          options: [
+            'Averages always exaggerate performance.',
+            'Prices or the mix of products purchased may have changed.',
+            'The result must be a calculation error.',
+          ],
+          correctIndex: 1,
+          explanation:
+            'The same metric can move because of quantity, price, product mix, or a combination of factors.',
+        },
+      },
+      {
+        id: 'communicate-uncertainty',
+        title: 'Communicate the boundary',
+        objective: 'Present a conclusion without hiding uncertainty or overstating causation.',
+        concept:
+          'Decision-ready analysis separates observation from explanation. State the result, practical consequence, confidence limits, unresolved risk, and the next evidence that would strengthen or overturn the recommendation.',
+        example:
+          '“Conversion rose after the change” reports sequence. “The change caused the rise” requires a design that rules out meaningful competing causes.',
+        practice:
+          'Add a “what this does not prove” sentence and a next-test recommendation to one recent analysis.',
+        quiz: {
+          question: 'Which statement is the most defensible?',
+          options: [
+            'The campaign caused growth because sales rose afterward.',
+            'Sales rose 8% after launch; seasonality remains a plausible explanation, so we should compare matched regions next.',
+            'The chart proves the strategy works everywhere.',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It reports the observation, identifies an alternative explanation, and proposes a useful test.',
+        },
+      },
+    ],
+  },
+  {
+    skillSlug: 'cybersecurity-awareness',
+    title: 'Everyday Cybersecurity Sprint',
+    description:
+      'Practice the small identity, message, and reporting decisions that prevent avoidable security incidents.',
+    estimatedMinutes: 12,
+    pointsPerLesson: 40,
+    lessons: [
+      {
+        id: 'inspect-the-message',
+        title: 'Slow down the message',
+        objective: 'Recognize the combination of urgency, identity uncertainty, and unusual action in a suspicious request.',
+        concept:
+          'Phishing often succeeds by compressing decision time. Pause when a message creates urgency, requests credentials or money, changes a familiar process, or directs you to an unexpected link or attachment.',
+        example:
+          'A message that appears to come from a leader asks for an urgent gift-card purchase. Verify the request through a known channel instead of replying or using contact details in the message.',
+        practice:
+          'Review your organization’s phishing-reporting method and identify a trusted channel for verifying an unusual request.',
+        quiz: {
+          question: 'What is the strongest response to an urgent, unusual payment request?',
+          options: [
+            'Reply and ask whether it is legitimate.',
+            'Use a known, separate channel to verify the requester and report the message if suspicious.',
+            'Forward it to a colleague without context.',
+          ],
+          correctIndex: 1,
+          explanation:
+            'A separate trusted channel avoids relying on contact information controlled by a possible attacker.',
+        },
+      },
+      {
+        id: 'protect-the-account',
+        title: 'Protect the account',
+        objective: 'Reduce the damage a stolen password can cause.',
+        concept:
+          'Use a unique strong password for each important account, preferably managed by an approved password manager, and enable the strongest multifactor authentication option the service supports.',
+        example:
+          'If one website is breached, a unique password prevents the same credential from unlocking your email, payroll, or cloud storage.',
+        practice:
+          'Upgrade one important account: replace a reused password and confirm that multifactor authentication is active.',
+        quiz: {
+          question: 'Why should important accounts have unique passwords?',
+          options: [
+            'Unique passwords make usernames unnecessary.',
+            'A breach at one service cannot directly expose the same password at another.',
+            'They eliminate the need for multifactor authentication.',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Password reuse turns one compromised service into a route to other accounts.',
+        },
+      },
+      {
+        id: 'report-and-contain',
+        title: 'Report without delay',
+        objective: 'Use the right escalation path after a suspicious click or sign-in.',
+        concept:
+          'Fast reporting gives a security team a chance to contain harm. Do not conceal a mistake or investigate beyond your role. Follow the approved process, preserve relevant details, and change credentials from a trusted device when instructed.',
+        example:
+          'After entering a password on a suspicious page, contact the security team immediately and describe the account, time, and action taken rather than waiting to see whether anything happens.',
+        practice:
+          'Find and save the official security-reporting contact or button used by your workplace or primary email provider.',
+        quiz: {
+          question: 'What should you do after entering credentials on a suspicious page?',
+          options: [
+            'Wait for evidence of account misuse.',
+            'Delete your browser history and say nothing.',
+            'Report it immediately through the approved channel and follow containment instructions.',
+          ],
+          correctIndex: 2,
+          explanation:
+            'Early reporting allows defenders to reset access, inspect activity, and reduce further damage.',
+        },
+      },
+    ],
+  },
+  {
+    skillSlug: 'project-management',
+    title: 'Project Control Sprint',
+    description:
+      'Create enough structure to keep outcomes, decisions, dependencies, and risks visible without adding unnecessary process.',
+    estimatedMinutes: 15,
+    pointsPerLesson: 40,
+    lessons: [
+      {
+        id: 'define-done',
+        title: 'Define done',
+        objective: 'Turn activity into a shared outcome with acceptance criteria.',
+        concept:
+          'A project is easier to coordinate when “done” is observable. Name the user or stakeholder outcome, the boundary of the work, the owner, the target date, and the conditions required for acceptance.',
+        example:
+          '“Launch the help centre” becomes “Publish the 20 highest-volume support answers, reviewed by legal and searchable from the product by September 30.”',
+        practice:
+          'Rewrite one project goal so a neutral reviewer could determine whether it is complete.',
+        quiz: {
+          question: 'Which goal has the clearest completion test?',
+          options: [
+            'Improve customer onboarding soon.',
+            'Work on a better onboarding experience.',
+            'Reduce median account-setup time from 12 to 8 minutes for new self-serve customers by October 1.',
+          ],
+          correctIndex: 2,
+          explanation:
+            'It defines the population, measure, starting point, target, and date.',
+        },
+      },
+      {
+        id: 'expose-the-dependency',
+        title: 'Expose the dependency',
+        objective: 'Identify the handoff most likely to control the schedule or quality.',
+        concept:
+          'A task list hides relationships. Map what each result depends on, who owns the input, when it is needed, and what happens if it arrives late or incomplete. Escalate before a blocked dependency becomes an emergency.',
+        example:
+          'Design cannot finish the flow until policy approves the required disclosure. The approval date—not the drawing effort—may control the launch.',
+        practice:
+          'Name the largest external dependency in one active project and confirm its owner, due date, and fallback.',
+        quiz: {
+          question: 'What makes a dependency actionable?',
+          options: [
+            'Listing it as a general concern.',
+            'Naming the required input, owner, due date, impact, and fallback.',
+            'Adding more internal tasks to the schedule.',
+          ],
+          correctIndex: 1,
+          explanation:
+            'Those details allow the team to monitor, escalate, or change the plan before the dependency fails.',
+        },
+      },
+      {
+        id: 'run-the-control-loop',
+        title: 'Run the control loop',
+        objective: 'Use a lightweight review rhythm to turn new information into explicit decisions.',
+        concept:
+          'Project updates should not merely recite activity. Compare actual progress with the plan, identify the most important variance, decide what changes, record the owner, and communicate the consequence to affected people.',
+        example:
+          'A weekly review finds testing is three days late. The team removes a lower-priority feature, records the scope decision, and informs support about the revised release contents.',
+        practice:
+          'At the next check-in, replace status narration with one variance, one decision, one owner, and one communication action.',
+        quiz: {
+          question: 'Which update is most useful for project control?',
+          options: [
+            'Everyone has been very busy this week.',
+            'Testing is three days late; Sam will remove feature B today so the release date remains unchanged.',
+            'Several tasks are green and two are yellow.',
+          ],
+          correctIndex: 1,
+          explanation:
+            'It connects a measurable variance to a decision, owner, and schedule consequence.',
+        },
+      },
+    ],
+  },
 ];
 
 export function getAllSkillCourses() {

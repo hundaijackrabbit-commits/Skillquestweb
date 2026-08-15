@@ -4,6 +4,7 @@ import { getAllSkillCourses } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
 import { isBlogPostIndexable, isCareerIndexable, isSkillPathIndexable } from '@/lib/content-quality';
 import { TOPICS } from '@/lib/topics';
+import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [skills, careers, industries, posts, paths] = await Promise.all([
@@ -40,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticPages,
     ...skillDirectoryPages.map((page) => ({ url: absoluteUrl(`/skills/page/${page}`), changeFrequency: 'weekly' as const, priority: 0.55 })),
     ...TOPICS.map((topic) => ({ url: absoluteUrl(`/topics/${topic.slug}`), changeFrequency: 'weekly' as const, priority: 0.8 })),
-    ...skills.map((skill) => ({ url: absoluteUrl(`/skills/${skill.slug}`), lastModified: skill.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.7 })),
+    ...skills.map((skill) => ({ url: absoluteUrl(`/skills/${skill.slug}`), lastModified: getSkillIntelligenceBrief(skill.slug)?.reviewedAt ?? skill.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.7 })),
     ...indexableCareers.map((career) => ({ url: absoluteUrl(`/careers/${career.slug}`), lastModified: career.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
     ...industries.map((industry) => ({ url: absoluteUrl(`/industries/${industry.slug}`), lastModified: industry.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.6 })),
     ...indexablePosts.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`), lastModified: post.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),

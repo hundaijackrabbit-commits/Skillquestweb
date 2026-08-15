@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllSkillCourses } from '@/lib/courses';
+import { LearningProgressSummary } from '@/components/learning/learning-progress-summary';
 
 export const metadata: Metadata = {
   title: 'Practice Lab: Short Skill Courses',
@@ -32,6 +33,8 @@ export default function LearnPage() {
             concept, a workplace challenge, and a retrieval check you can finish in about fifteen minutes.
           </p>
         </section>
+
+        <LearningProgressSummary />
 
         <section aria-labelledby="available-sprints">
           <div className="mb-7 flex items-end justify-between gap-4">

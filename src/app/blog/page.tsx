@@ -139,7 +139,7 @@ export default async function BlogPage() {
                             <User className="h-4 w-4 mr-2" />
                             <span>{post.author}</span>
                             <Calendar className="h-4 w-4 ml-4 mr-1" />
-                            <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                            <span>Updated {new Date(`${post.lastUpdated}T12:00:00`).toLocaleDateString()}</span>
                           </div>
                           <Link href={`/blog/${post.slug}`}>
                             <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
@@ -200,7 +200,7 @@ export default async function BlogPage() {
                         </div>
                         <div className="flex items-center text-xs text-gray-500">
                           <Calendar className="h-3 w-3 mr-2" />
-                          <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                          <span>Updated {new Date(`${post.lastUpdated}T12:00:00`).toLocaleDateString()}</span>
                         </div>
                       </div>
 
