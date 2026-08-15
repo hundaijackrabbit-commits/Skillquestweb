@@ -1,8 +1,27 @@
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { Badge } from '@/components/ui/badge';
-import { getSkillBySlug, getAllSkills, getRelatedSkills, getCareersForSkill } from '@/lib/content';
+import { Button } from '@/components/ui/button';
+import {
+  getSkillBySlug,
+  getIndexableSkills,
+  getRelatedSkills,
+  getCareersForSkill,
+  getCanonicalSkillForSlug,
+  getIndustriesForSkill,
+  getSkillPathsForSkill,
+  getBlogPostsForSkill,
+  resolveSkillReferences,
+} from '@/lib/content';
+import { getSkillCourse } from '@/lib/courses';
+import { SkillMission } from '@/components/learning/skill-mission';
+import { CurrentSkillBrief } from '@/components/skills/current-skill-brief';
+import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
+import { getSkillConnectionReason } from '@/lib/skill-connections';
+import { getKnowledgeCheckForSkill } from '@/lib/knowledge-checks';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import {
   formatCategoryName,
   getCategoryColor,
@@ -13,8 +32,12 @@ import SaveSkillButton from '@/components/skills/save-skill-button';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
 import {
-  ArrowLeft,
+  assessSkillContentQuality,
+  isSkillFieldEditoriallyUseful,
+} from '@/lib/content-quality';
+import {
   Briefcase,
   TrendingUp,
   Clock,
@@ -40,6 +63,9 @@ import {
   FileText,
   Search,
   Gauge,
+  ArrowRight,
+  Route,
+  Newspaper,
 } from 'lucide-react';
 
 interface SkillDetailPageProps {
@@ -47,7 +73,7 @@ interface SkillDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  const skills = await getAllSkills();
+  const skills = await getIndexableSkills();
   return skills.map((skill) => ({
     slug: skill.slug,
   }));
@@ -55,7 +81,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: SkillDetailPageProps) {
   const resolvedParams = await params;
-  const skill = await getSkillBySlug(resolvedParams.slug);
+  const [skill, canonicalSkill] = await Promise.all([
+    getSkillBySlug(resolvedParams.slug),
+    getCanonicalSkillForSlug(resolvedParams.slug),
+  ]);
 
   if (!skill) {
     return {
@@ -65,17 +94,19 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
 
   const title = `${skill.name}: Practical Skill Guide`;
   const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
+  const quality = assessSkillContentQuality(skill);
 
   return {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
-    alternates: { canonical: `/skills/${skill.slug}` },
+    alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
+    robots: { index: quality.indexable, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
       description,
       type: 'article',
-      url: `/skills/${skill.slug}`,
+      url: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
     },
     twitter: { card: 'summary_large_image', title: `${title} | Modern Skill Lab`, description },
   };
@@ -89,24 +120,71 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     notFound();
   }
 
-  const [relatedSkills, relatedCareers] = await Promise.all([
+  const canonicalSkill = await getCanonicalSkillForSlug(skill.slug);
+  if (canonicalSkill && canonicalSkill.slug !== skill.slug) {
+    permanentRedirect(`/skills/${canonicalSkill.slug}`);
+  }
+
+  const [relatedSkills, relatedCareers, relatedIndustries, relatedPaths, relatedPosts, stackedSkills] = await Promise.all([
     getRelatedSkills(skill.id),
     getCareersForSkill(skill.slug),
+    getIndustriesForSkill(skill.slug),
+    getSkillPathsForSkill(skill.slug),
+    getBlogPostsForSkill(skill.slug),
+    resolveSkillReferences(skill.skillStacksWell ?? [], 6),
   ]);
+  const course = getSkillCourse(skill.slug);
+  const currentBrief = getSkillIntelligenceBrief(skill.slug);
+  const knowledgeCheck = getKnowledgeCheckForSkill(skill.slug);
+  const nextConnectedSkill = relatedSkills[0];
+  const nextConnection = nextConnectedSkill
+    ? {
+        name: nextConnectedSkill.name,
+        slug: nextConnectedSkill.slug,
+        reason: getSkillConnectionReason(skill, nextConnectedSkill),
+      }
+    : undefined;
+  const missions = [
+    {
+      level: 'Starter' as const,
+      action: skill.beginnerActions[0] || `Use ${skill.name} in one small, low-risk task and note the result.`,
+      xp: 30,
+    },
+    {
+      level: 'Builder' as const,
+      action: skill.intermediateActions[0] || `Ask a colleague for feedback on one visible example of your ${skill.name} practice.`,
+      xp: 60,
+    },
+    {
+      level: 'Stretch' as const,
+      action: skill.advancedActions[0] || `Apply ${skill.name} to a consequential decision and document the evidence you used.`,
+      xp: 90,
+    },
+  ];
+  const canonicalUrl = absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`);
 
   const categoryColors = getCategoryColor(skill.category);
   const riskColors = getRiskLevelColor(skill.automationRisk);
   const difficultyColors = getDifficultyColor(skill.difficulty || 'intermediate');
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${skill.name}: Practical Skill Guide`,
-    description: skill.shortDefinition,
-    mainEntityOfPage: absoluteUrl(`/skills/${skill.slug}`),
-    dateModified: skill.lastUpdated,
-    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    about: skill.name,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${skill.name}: Practical Skill Guide`,
+        description: skill.shortDefinition,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: currentBrief?.reviewedAt ?? skill.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: skill.name,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Skills', url: absoluteUrl('/skills') },
+        { name: skill.name, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (
@@ -114,26 +192,28 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-8">
-          <Link
-            href="/skills"
-            className="group inline-flex items-center text-sm font-medium text-gray-500 transition-colors hover:text-gray-900"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-            Back to Skills Repository
-          </Link>
-        </div>
+        <Breadcrumbs
+          className="mb-8"
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Skills', href: '/skills' },
+            { label: formatCategoryName(skill.category), href: `/topics/${skill.category}` },
+            { label: skill.name },
+          ]}
+        />
 
         <div className="mb-16">
           <div className="relative rounded-2xl border bg-gradient-to-r from-white via-blue-50/50 to-purple-50/50 p-8 shadow-sm">
             <div className="mb-6 flex flex-wrap items-center gap-3">
-              <Badge
-                variant="default"
-                className={`${categoryColors.bg} ${categoryColors.text} px-3 py-1 font-medium`}
-                size="lg"
-              >
-                {formatCategoryName(skill.category)}
-              </Badge>
+              <Link href={`/topics/${skill.category}`}>
+                <Badge
+                  variant="default"
+                  className={`${categoryColors.bg} ${categoryColors.text} px-3 py-1 font-medium`}
+                  size="lg"
+                >
+                  {formatCategoryName(skill.category)}
+                </Badge>
+              </Link>
 
               {skill.featured && (
                 <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 font-medium text-white">
@@ -217,9 +297,42 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
         <ManagedAdSlot placement="skill-inline" />
 
+        {currentBrief && <CurrentSkillBrief skillName={skill.name} brief={currentBrief} />}
+
+        {knowledgeCheck && <KnowledgeCheckCard check={knowledgeCheck} className="mb-12" />}
+
+        {course && (
+          <section className="mb-12 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-r from-slate-950 via-blue-950 to-violet-950 p-7 text-white shadow-lg sm:p-9">
+            <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-3xl">
+                <div className="mb-3 inline-flex items-center rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-200">
+                  <GraduationCap className="mr-2 h-4 w-4" />
+                  New · Interactive Skill Sprint
+                </div>
+                <h2 className="text-3xl font-bold tracking-tight">Practice {skill.name}, don’t just read about it.</h2>
+                <p className="mt-3 leading-7 text-blue-100">
+                  {course.description} Complete {course.lessons.length} practice rounds in about {course.estimatedMinutes} minutes.
+                </p>
+              </div>
+              <Link href={`/skills/${skill.slug}/learn`} className="flex-none">
+                <Button size="lg" className="w-full bg-white text-slate-950 hover:bg-blue-50 lg:w-auto">
+                  Start the free sprint <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </section>
+        )}
+
+        <SkillMission
+          skillSlug={skill.slug}
+          skillName={skill.name}
+          missions={missions}
+          nextSkill={nextConnection}
+        />
+
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <section>
+            {isSkillFieldEditoriallyUseful(skill, 'whyItMatters') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <Target className="mr-2 h-6 w-6 text-blue-600" />
                 Why This Skill Matters
@@ -227,9 +340,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.whyItMatters}</p>
               </div>
-            </section>
+            </section>}
 
-            <section>
+            {isSkillFieldEditoriallyUseful(skill, 'fullDefinition') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <BookOpen className="mr-2 h-6 w-6 text-blue-600" />
                 Comprehensive Definition
@@ -237,9 +350,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.fullDefinition}</p>
               </div>
-            </section>
+            </section>}
 
-            <section>
+            {isSkillFieldEditoriallyUseful(skill, 'modernRelevance') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <TrendingUp className="mr-2 h-6 w-6 text-blue-600" />
                 Modern Relevance
@@ -247,18 +360,18 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.modernRelevance}</p>
               </div>
-            </section>
+            </section>}
 
-            <section>
+            {(isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') || isSkillFieldEditoriallyUseful(skill, 'humanAdvantage')) && <section>
               <h2 className="mb-4 text-2xl font-bold text-gray-900">AI Era Context</h2>
               <div className="prose max-w-none">
-                <p className="text-gray-700">{skill.aiEraRelevance}</p>
-                <div className="mt-4 rounded-lg bg-blue-50 p-4">
+                {isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') && <p className="text-gray-700">{skill.aiEraRelevance}</p>}
+                {isSkillFieldEditoriallyUseful(skill, 'humanAdvantage') && <div className="mt-4 rounded-lg bg-blue-50 p-4">
                   <h4 className="mb-2 font-semibold text-blue-900">Human Advantage</h4>
                   <p className="text-sm text-blue-800">{skill.humanAdvantage}</p>
-                </div>
+                </div>}
               </div>
-            </section>
+            </section>}
 
             <section>
               <h2 className="mb-6 flex items-center text-2xl font-bold text-gray-900">
@@ -660,11 +773,19 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {skill.skillStacksWell.map((skillName, index) => (
-                      <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
-                        {skillName}
-                      </Badge>
-                    ))}
+                    {stackedSkills.length > 0
+                      ? stackedSkills.map((stackedSkill) => (
+                          <Link key={stackedSkill.slug} href={`/skills/${stackedSkill.slug}`}>
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700 transition hover:bg-blue-100">
+                              {stackedSkill.name}
+                            </Badge>
+                          </Link>
+                        ))
+                      : skill.skillStacksWell.map((skillName, index) => (
+                          <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
+                            {skillName}
+                          </Badge>
+                        ))}
                   </div>
                 </CardContent>
               </Card>
@@ -672,22 +793,87 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
             <Card>
               <CardHeader>
-                <CardTitle>Related Skills</CardTitle>
+                <CardTitle>Connected Skills</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {relatedSkills.map((relatedSkill) => (
                     <Link
                       key={relatedSkill.id}
                       href={`/skills/${relatedSkill.slug}`}
-                      className="block text-sm text-blue-600 hover:text-blue-800"
+                      className="group block rounded-xl border border-slate-200 p-3 transition hover:border-blue-300 hover:bg-blue-50"
                     >
-                      {relatedSkill.name}
+                      <span className="block text-sm font-bold text-blue-700 group-hover:text-blue-950">
+                        {relatedSkill.name}
+                      </span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-500">
+                        {getSkillConnectionReason(skill, relatedSkill)}
+                      </span>
                     </Link>
                   ))}
                 </div>
               </CardContent>
             </Card>
+
+            {relatedPaths.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Route className="mr-2 h-5 w-5" />
+                    Learning Paths
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {relatedPaths.map((path) => (
+                    <Link
+                      key={path.id}
+                      href={`/paths/${path.id}`}
+                      className="block rounded-xl border border-slate-200 p-3 transition hover:border-blue-300 hover:bg-blue-50"
+                    >
+                      <span className="block text-sm font-semibold text-slate-900">{path.name}</span>
+                      <span className="mt-1 block text-xs text-slate-500">{path.skills.length} connected skills · {path.estimatedTime}</span>
+                    </Link>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {relatedPosts.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Newspaper className="mr-2 h-5 w-5" />
+                    Related Articles
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {relatedPosts.map((post) => (
+                    <Link key={post.slug} href={`/blog/${post.slug}`} className="block group">
+                      <span className="block text-sm font-semibold text-blue-700 group-hover:text-blue-900">{post.title}</span>
+                      <span className="mt-1 block text-xs text-slate-500">{post.readTime} min read</span>
+                    </Link>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {relatedIndustries.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Building2 className="mr-2 h-5 w-5" />
+                    Used Across Industries
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-2">
+                  {relatedIndustries.map((industry) => (
+                    <Link key={industry.slug} href={`/industries/${industry.slug}`}>
+                      <Badge variant="outline" className="transition hover:bg-slate-100">{industry.name}</Badge>
+                    </Link>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
 
             {skill.learningResources && skill.learningResources.length > 0 && (
               <Card>
@@ -710,21 +896,21 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               </Card>
             )}
 
-            <Card className="border-blue-200 bg-blue-50">
+            {(isSkillFieldEditoriallyUseful(skill, 'howToPractice') || isSkillFieldEditoriallyUseful(skill, 'howToMeasureProgress')) && <Card className="border-blue-200 bg-blue-50">
               <CardHeader>
                 <CardTitle className="text-blue-900">Start Developing</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="text-sm text-blue-800">
+                {isSkillFieldEditoriallyUseful(skill, 'howToPractice') && <div className="text-sm text-blue-800">
                   <strong>How to Practice:</strong>
                   <p className="mt-1">{skill.howToPractice}</p>
-                </div>
-                <div className="text-sm text-blue-800">
+                </div>}
+                {isSkillFieldEditoriallyUseful(skill, 'howToMeasureProgress') && <div className="text-sm text-blue-800">
                   <strong>Measure Progress:</strong>
                   <p className="mt-1">{skill.howToMeasureProgress}</p>
-                </div>
+                </div>}
               </CardContent>
-            </Card>
+            </Card>}
           </div>
         </div>
       </div>

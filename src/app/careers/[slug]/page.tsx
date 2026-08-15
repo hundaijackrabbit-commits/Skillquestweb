@@ -3,28 +3,39 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getCareerBySlug, getAllCareers, getSkillsForCareer } from '@/lib/content';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import {
+  getCareerBySlug,
+  getAllCareers,
+  getSkillsForCareer,
+  getIndustriesForCareer,
+  getRelatedCareers,
+  getBlogPostsForCareer,
+  getSkillPathsForCareer,
+} from '@/lib/content';
 import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
-import { formatDate } from '@/lib/utils';
+import { breadcrumbList } from '@/lib/seo';
+import { isCareerIndexable } from '@/lib/content-quality';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { 
-  ArrowLeft, 
   Briefcase, 
   TrendingUp, 
-  DollarSign, 
   MapPin, 
   Users,
   Target,
-  Clock,
   BookOpen,
   Star,
   Building2,
   Zap,
   Award,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  FileText,
+  Route,
 } from 'lucide-react';
 
 interface CareerDetailPageProps {
@@ -35,7 +46,7 @@ interface CareerDetailPageProps {
 export async function generateStaticParams() {
   const careers = await getAllCareers();
   
-  return careers.map((career) => ({
+  return careers.filter(isCareerIndexable).map((career) => ({
     slug: career.slug,
   }));
 }
@@ -56,6 +67,7 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
     title,
     description,
     alternates: { canonical: `/careers/${career.slug}` },
+    robots: { index: isCareerIndexable(career), follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
 }
@@ -68,17 +80,37 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
     notFound();
   }
 
-  const relatedSkills = await getSkillsForCareer(career.slug);
+  const [relatedSkills, relatedIndustries, relatedCareers, relatedPosts, relatedPaths] = await Promise.all([
+    getSkillsForCareer(career.slug),
+    getIndustriesForCareer(career.slug),
+    getRelatedCareers(career.slug),
+    getBlogPostsForCareer(career.slug),
+    getSkillPathsForCareer(career.slug),
+  ]);
+  const canonicalUrl = absoluteUrl(`/careers/${career.slug}`);
+  const careerCheck = buildDefinitionKnowledgeCheck(
+    { type: 'career', slug: career.slug, name: career.title },
+    relatedSkills,
+  );
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${career.title} Career Guide`,
-    description: career.summary,
-    mainEntityOfPage: absoluteUrl(`/careers/${career.slug}`),
-    dateModified: career.lastUpdated,
-    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    about: career.title,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${career.title} Career Guide`,
+        description: career.summary,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: career.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: career.title,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Careers', url: absoluteUrl('/careers') },
+        { name: career.title, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (
@@ -86,16 +118,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Back Navigation */}
-        <div className="mb-8">
-          <Link 
-            href="/careers" 
-            className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors group"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Career Intelligence
-          </Link>
-        </div>
+        <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Careers', href: '/careers' }, { label: career.title }]} />
 
         {/* Hero Header */}
         <div className="mb-16">
@@ -111,18 +134,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 Career Path
               </Badge>
               
-              {career.demandLevel && (
-                <Badge 
-                  variant={
-                    career.demandLevel === 'very-high' ? 'success' :
-                    career.demandLevel === 'high' ? 'warning' : 'secondary'
-                  }
-                  className="font-medium"
-                >
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  {career.demandLevel.replace('-', ' ')} demand
-                </Badge>
-              )}
+              <Badge variant="outline" className="font-medium">Skill-connected profile</Badge>
               
               <Badge variant="outline" className="flex items-center">
                 <Award className="h-3 w-3 mr-1" />
@@ -170,22 +182,20 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 </div>
               </div>
               
-              {career.salaryRange && (
-                <div className="text-center p-4 bg-white/60 rounded-xl">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-yellow-100 mb-2">
-                    <DollarSign className="h-6 w-6 text-yellow-600" />
-                  </div>
-                  <div className="text-sm font-medium text-gray-500 mb-1">Salary Range</div>
-                  <div className="text-sm font-semibold text-yellow-600">
-                    {career.salaryRange}
-                  </div>
+              <div className="text-center p-4 bg-white/60 rounded-xl">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-yellow-100 mb-2">
+                  <Route className="h-6 w-6 text-yellow-700" />
                 </div>
-              )}
+                <div className="text-sm font-medium text-gray-500 mb-1">Learning Paths</div>
+                <div className="text-sm font-semibold text-yellow-700">{relatedPaths.length} connected</div>
+              </div>
             </div>
           </div>
         </div>
 
         <ManagedAdSlot placement="career-inline" />
+
+        {careerCheck && <KnowledgeCheckCard check={careerCheck} className="mb-12" />}
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
@@ -347,12 +357,15 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {career.commonIndustries.map((industry, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span className="text-sm font-medium text-gray-700">
-                        {industry.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                      </span>
-                    </div>
+                  {relatedIndustries.map((industry) => (
+                    <Link
+                      key={industry.slug}
+                      href={`/industries/${industry.slug}`}
+                      className="flex items-center justify-between rounded bg-gray-50 p-2 transition hover:bg-purple-50"
+                    >
+                      <span className="text-sm font-medium text-gray-700">{industry.name}</span>
+                      <ArrowRight className="h-3.5 w-3.5 text-purple-500" />
+                    </Link>
                   ))}
                 </div>
               </CardContent>
@@ -430,6 +443,55 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           relatedSkills={relatedSkills}
           className="mb-16"
         />
+
+        {(relatedPaths.length > 0 || relatedPosts.length > 0 || relatedCareers.length > 0) && (
+          <section className="mb-16">
+            <div className="mb-7">
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Connected next steps</div>
+              <h2 className="mt-2 text-3xl font-bold text-slate-950">Keep exploring {career.title}</h2>
+            </div>
+            <div className="grid gap-6 lg:grid-cols-3">
+              {relatedPaths.length > 0 && (
+                <Card>
+                  <CardHeader><CardTitle className="flex items-center"><Route className="mr-2 h-5 w-5 text-blue-600" />Learning paths</CardTitle></CardHeader>
+                  <CardContent className="space-y-3">
+                    {relatedPaths.map((path) => (
+                      <Link key={path.id} href={`/paths/${path.id}`} className="block rounded-xl border p-3 transition hover:border-blue-300 hover:bg-blue-50">
+                        <span className="block text-sm font-semibold text-slate-900">{path.name}</span>
+                        <span className="mt-1 block text-xs text-slate-500">{path.skills.length} skills · {path.estimatedTime}</span>
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+              {relatedPosts.length > 0 && (
+                <Card>
+                  <CardHeader><CardTitle className="flex items-center"><FileText className="mr-2 h-5 w-5 text-violet-600" />Related articles</CardTitle></CardHeader>
+                  <CardContent className="space-y-3">
+                    {relatedPosts.map((post) => (
+                      <Link key={post.slug} href={`/blog/${post.slug}`} className="block text-sm font-semibold text-blue-700 hover:text-blue-900">
+                        {post.title}
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+              {relatedCareers.length > 0 && (
+                <Card>
+                  <CardHeader><CardTitle className="flex items-center"><Briefcase className="mr-2 h-5 w-5 text-green-600" />Adjacent careers</CardTitle></CardHeader>
+                  <CardContent className="space-y-3">
+                    {relatedCareers.map((relatedCareer) => (
+                      <Link key={relatedCareer.slug} href={`/careers/${relatedCareer.slug}`} className="block rounded-xl border p-3 transition hover:border-green-300 hover:bg-green-50">
+                        <span className="block text-sm font-semibold text-slate-900">{relatedCareer.title}</span>
+                        <span className="mt-1 block text-xs text-slate-500">{relatedCareer.coreSkills.length} core skills</span>
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Action Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">

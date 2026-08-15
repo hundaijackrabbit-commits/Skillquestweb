@@ -6,11 +6,13 @@ Modern Skill Lab is a Next.js skills and career discovery platform built around 
 
 ## Current content library
 
-- 1,541 professional skill guides (`src/data/skills-1000plus.json`)
+- 1,541 source skill records and 1,340 canonical skill topics (`src/data/skills-1000plus.json`)
 - 103 career profiles
 - 8 industry guides
 - 100 learning paths
 - 20 MDX articles
+
+The source totals are not the same as the public discovery totals. Editorial and originality gates currently make 794 canonical skill pages, 21 career profiles, and 26 learning paths eligible for indexing. Other records remain available for revision with `noindex,follow`.
 
 The active skill loader is `src/data/skills-1000plus.json`. Do not replace it with the smaller legacy `skills.json` file.
 
@@ -21,14 +23,15 @@ The active skill loader is `src/data/skills-1000plus.json`. Do not replace it wi
 - Supabase Auth + Postgres / Row Level Security
 - Vercel Analytics + Speed Insights
 - Zod validation
-- Fuse.js client-side skill search
+- Server-rendered skill search and pagination
 - MDX blog content
 
 ## Product features
 
 ### Public site
 
-- Searchable skills repository
+- Paginated skills repository with server-side search
+- 16 topic hubs connecting skills, paths, careers, industries, and practice
 - Career, industry, learning-path, and blog content
 - Member accounts and saved skills
 - Real newsletter signup
@@ -50,7 +53,7 @@ The active skill loader is `src/data/skills-1000plus.json`. Do not replace it wi
 
 ## SEO / canonical setup
 
-The owned domain is the canonical site. `src/proxy.ts` permanently redirects requests from `skillquestweb.vercel.app` to the same path and query on `modernskilllab.space`.
+The owned apex domain is the canonical site. `next.config.ts` permanently redirects requests from `skillquestweb.vercel.app` and `www.modernskilllab.space` to the same path and query on `modernskilllab.space` before route rendering. `src/proxy.ts` is reserved for authentication refreshes.
 
 The project includes:
 
@@ -77,9 +80,14 @@ npm run dev
 Production check:
 
 ```bash
+npm run audit:originality
+npm run audit:seo
+npm run audit:links
+npx tsc --noEmit
 npm run build
-npm run lint
 ```
+
+See [`PATCH_NOTES_2026-08-15_ARCHITECTURE.md`](./PATCH_NOTES_2026-08-15_ARCHITECTURE.md) for the architecture changes, editorial-gate counts, and deployment checklist.
 
 ## Supabase setup
 

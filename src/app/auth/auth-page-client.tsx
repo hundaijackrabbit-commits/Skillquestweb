@@ -92,7 +92,7 @@ export default function AuthPageClient() {
               </h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-blue-600">1,500+</div>
+                  <div className="text-2xl font-bold text-blue-600">1,300+</div>
                   <div className="text-sm text-gray-600">Professional Skills</div>
                 </div>
                 <div>

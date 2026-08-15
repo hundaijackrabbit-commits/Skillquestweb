@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSupabase } from '@/components/providers/supabase-provider';
-import { Search, Menu, X, BookOpen, Users, Briefcase, Building2, PenTool, User, LogOut, Sparkles } from 'lucide-react';
+import { Search, Menu, X, BookOpen, Briefcase, PenTool, User, LogOut, Sparkles, Route, Trophy, Layers3 } from 'lucide-react';
 
 const navigation = [
   { name: 'Skills', href: '/skills', icon: BookOpen },
+  { name: 'Topics', href: '/topics', icon: Layers3 },
+  { name: 'Practice Lab', href: '/learn', icon: Trophy },
   { name: 'Careers', href: '/careers', icon: Briefcase },
-  { name: 'Industries', href: '/industries', icon: Building2 },
+  { name: 'Paths', href: '/paths', icon: Route },
   { name: 'Blog', href: '/blog', icon: PenTool },
-  { name: 'Community', href: '/community', icon: Users },
 ];
 
 export function Header() {

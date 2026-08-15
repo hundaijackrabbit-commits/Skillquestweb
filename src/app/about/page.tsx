@@ -270,7 +270,7 @@ export default function AboutPage() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">1,500+</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">1,300+</div>
                 <div className="text-sm font-medium text-gray-600">Professional Skills</div>
               </div>
               <div className="text-center">

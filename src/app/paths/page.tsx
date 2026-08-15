@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getSkillPaths } from '@/lib/content';
+import { isSkillPathIndexable } from '@/lib/content-quality';
 import { 
   ArrowRight, 
   Target, 
@@ -23,7 +25,7 @@ export const metadata = {
 };
 
 export default async function SkillPathsPage() {
-  const paths = await getSkillPaths();
+  const paths = (await getSkillPaths()).filter(isSkillPathIndexable);
   const featuredPaths = paths.filter(path => path.featured);
   const skillsCovered = new Set(paths.flatMap(path => path.skills)).size;
   
@@ -43,6 +45,7 @@ export default async function SkillPathsPage() {
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Breadcrumbs className="mb-10" items={[{ label: 'Home', href: '/' }, { label: 'Learning Paths' }]} />
         {/* Hero Section */}
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium mb-6">
@@ -140,9 +143,11 @@ export default async function SkillPathsPage() {
                     <div className="text-xs text-gray-500">
                       {path.category.replace('-', ' ').toUpperCase()} PATH
                     </div>
-                    <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
-                      Start Path <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <Link href={`/paths/${path.id}`}>
+                      <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
+                        Start Path <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -204,9 +209,11 @@ export default async function SkillPathsPage() {
                     <div className="text-xs text-gray-500 uppercase tracking-wide">
                       {path.category.replace('-', ' ')}
                     </div>
-                    <Button variant="outline" size="sm">
-                      View Path <ArrowRight className="ml-1 h-3 w-3" />
-                    </Button>
+                    <Link href={`/paths/${path.id}`}>
+                      <Button variant="outline" size="sm">
+                        View Path <ArrowRight className="ml-1 h-3 w-3" />
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -276,7 +283,7 @@ export default async function SkillPathsPage() {
           </h2>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
             Choose a path that aligns with your career goals and start building the skills 
-            that will set you apart in today's competitive market.
+            that will set you apart in today&apos;s competitive market.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/skills"><Button size="lg" className="px-8"><Target className="h-4 w-4 mr-2" />Explore Skills</Button></Link>

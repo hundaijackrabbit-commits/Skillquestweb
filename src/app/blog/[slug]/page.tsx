@@ -4,21 +4,31 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/content';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import {
+  getBlogPostBySlug,
+  getAllBlogPosts,
+  resolveSkillReferences,
+  resolveCareerReferences,
+  resolveIndustryReferences,
+} from '@/lib/content';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
+import { isBlogPostIndexable } from '@/lib/content-quality';
+import { ArticleActions } from '@/components/blog/article-actions';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { getKnowledgeCheckForBlog } from '@/lib/knowledge-checks';
+import { formatContentDate } from '@/lib/dates';
 import {
-  ArrowLeft,
   Calendar,
   Clock,
   User,
-  Heart,
-  Share2,
   BookOpen,
   ArrowRight,
-  MessageCircle,
   Star,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface BlogPostDetailPageProps {
@@ -61,7 +71,7 @@ const mdxComponents = {
 
 export async function generateStaticParams() {
   const blogPosts = await getAllBlogPosts();
-  return blogPosts.map((post) => ({
+  return blogPosts.filter(isBlogPostIndexable).map((post) => ({
     slug: post.slug,
   }));
 }
@@ -81,6 +91,7 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
     title: post.title,
     description,
     alternates: { canonical: `/blog/${post.slug}` },
+    robots: { index: isBlogPostIndexable(post), follow: true },
     openGraph: {
       title: `${post.title} | Modern Skill Lab`,
       description,
@@ -101,20 +112,36 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
     notFound();
   }
 
-  const allPosts = await getAllBlogPosts();
+  const [allPosts, relatedSkills, relatedCareers, relatedIndustries] = await Promise.all([
+    getAllBlogPosts(),
+    resolveSkillReferences(post.relatedSkills, 8),
+    resolveCareerReferences(post.relatedCareers, 6),
+    resolveIndustryReferences(post.relatedIndustries, 6),
+  ]);
   const relatedPosts = allPosts
-    .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
+    .filter((p) => isBlogPostIndexable(p) && p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
+  const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
+  const knowledgeCheck = getKnowledgeCheckForBlog(post.slug);
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt,
-    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
-    datePublished: post.publishedAt,
-    dateModified: post.lastUpdated,
-    author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.excerpt,
+        mainEntityOfPage: canonicalUrl,
+        datePublished: post.publishedAt,
+        dateModified: post.lastUpdated,
+        author: { '@type': 'Organization', name: post.author },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Blog', url: absoluteUrl('/blog') },
+        { name: post.title, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (
@@ -122,12 +149,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="blog_view" itemType="blog" itemSlug={post.slug} />
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
-        <div className="mb-8">
-          <Link href="/blog" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Blog
-          </Link>
-        </div>
+        <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }, { label: post.title }]} />
 
         <div className="mb-12">
           <div className="mb-4 flex flex-wrap items-center gap-3">
@@ -155,20 +177,30 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             </div>
             <div className="flex items-center">
               <Calendar className="mr-2 h-4 w-4" />
-              {new Date(post.publishedAt).toLocaleDateString()}
+              <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
             </div>
             <div className="flex items-center">
               <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
             </div>
+            <div className="flex items-center">
+              <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
+              Editorially reviewed
+            </div>
           </div>
 
-          <div className="flex gap-3 border-b pb-6">
-            <Button variant="outline" size="sm"><Heart className="mr-2 h-4 w-4" />Like</Button>
-            <Button variant="outline" size="sm"><Share2 className="mr-2 h-4 w-4" />Share</Button>
-            <Button variant="outline" size="sm"><MessageCircle className="mr-2 h-4 w-4" />Discuss</Button>
-          </div>
+          {post.publishedAt !== post.lastUpdated && (
+            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Substantially reviewed and updated on the date above.</p>
+          )}
+
+          <ArticleActions slug={post.slug} />
         </div>
+
+        {post.reviewedBy && (
+          <aside className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-sm leading-6 text-emerald-950">
+            <strong>Editorial review:</strong> {post.reviewedBy}. {post.evidenceNote ?? 'Claims with a meaningful date or number are linked to their source in the article.'}
+          </aside>
+        )}
 
         <article className="mb-12 rounded-2xl border bg-white p-8 shadow-sm">
           <div className="prose prose-lg max-w-none">
@@ -176,34 +208,49 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
           </div>
         </article>
 
+        {knowledgeCheck && <KnowledgeCheckCard check={knowledgeCheck} className="mb-12" />}
+
         <ManagedAdSlot placement="blog-inline" />
 
-        {(post.relatedSkills?.length || post.relatedCareers?.length) && (
-          <Card className="mb-12">
+        {(relatedSkills.length > 0 || relatedCareers.length > 0 || relatedIndustries.length > 0) && (
+          <Card id="practice-next" className="mb-12 scroll-mt-28">
             <CardHeader>
-              <CardTitle>Related Content</CardTitle>
+              <CardTitle>Continue through the topic</CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-6 md:grid-cols-2">
-              {post.relatedSkills?.length > 0 && (
+            <CardContent className="grid gap-6 md:grid-cols-3">
+              {relatedSkills.length > 0 && (
                 <div>
-                  <h4 className="mb-3 font-semibold">Skills</h4>
+                  <h4 className="mb-3 font-semibold">Practice the skills</h4>
                   <div className="flex flex-wrap gap-2">
-                    {post.relatedSkills.map((id, i) => (
-                      <Link key={i} href={`/skills/${id}`}>
-                        <Badge variant="outline">{id}</Badge>
+                    {relatedSkills.map((skill) => (
+                      <Link key={skill.slug} href={`/skills/${skill.slug}`}>
+                        <Badge variant="outline" className="transition hover:bg-blue-50">{skill.name}</Badge>
                       </Link>
                     ))}
                   </div>
                 </div>
               )}
 
-              {post.relatedCareers?.length > 0 && (
+              {relatedCareers.length > 0 && (
                 <div>
-                  <h4 className="mb-3 font-semibold">Careers</h4>
+                  <h4 className="mb-3 font-semibold">See the careers</h4>
                   <div className="flex flex-wrap gap-2">
-                    {post.relatedCareers.map((id, i) => (
-                      <Link key={i} href={`/careers/${id}`}>
-                        <Badge variant="outline">{id}</Badge>
+                    {relatedCareers.map((career) => (
+                      <Link key={career.slug} href={`/careers/${career.slug}`}>
+                        <Badge variant="outline" className="transition hover:bg-violet-50">{career.title}</Badge>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {relatedIndustries.length > 0 && (
+                <div>
+                  <h4 className="mb-3 font-semibold">Explore the industries</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {relatedIndustries.map((industry) => (
+                      <Link key={industry.slug} href={`/industries/${industry.slug}`}>
+                        <Badge variant="outline" className="transition hover:bg-emerald-50">{industry.name}</Badge>
                       </Link>
                     ))}
                   </div>

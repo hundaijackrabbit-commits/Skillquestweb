@@ -176,6 +176,8 @@ export const BlogPostSchema = z.object({
   author: z.string(),
   publishedAt: z.string(),
   lastUpdated: z.string(),
+  reviewedBy: z.string().optional(),
+  evidenceNote: z.string().optional(),
   
   // Content Organization
   tags: z.array(z.string()),

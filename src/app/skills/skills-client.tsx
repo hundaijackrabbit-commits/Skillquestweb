@@ -70,7 +70,7 @@ export function SkillsPageClient({ skills }: SkillsPageClientProps) {
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-6">
             <Sparkles className="h-4 w-4 mr-2" />
-            1,500+ Professional Skills Available
+            1,300+ Professional Skills Available
           </div>
           
           <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl mb-6">

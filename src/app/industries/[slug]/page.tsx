@@ -3,10 +3,19 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getIndustryBySlug, getAllIndustries, getCareersForIndustry, getSkillsForIndustry } from '@/lib/content';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import {
+  getIndustryBySlug,
+  getAllIndustries,
+  getCareersForIndustry,
+  getSkillsForIndustry,
+  getBlogPostsForIndustry,
+} from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { 
-  ArrowLeft, 
   Building2, 
   TrendingUp, 
   Users, 
@@ -18,7 +27,7 @@ import {
   Briefcase,
   Award,
   ArrowRight,
-  DollarSign
+  FileText,
 } from 'lucide-react';
 
 interface IndustryDetailPageProps {
@@ -61,36 +70,42 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
     notFound();
   }
 
-  const [relatedCareers, relatedSkills] = await Promise.all([
+  const [relatedCareers, relatedSkills, relatedPosts] = await Promise.all([
     getCareersForIndustry(slug).catch(() => []),
-    getSkillsForIndustry(slug).catch(() => [])
+    getSkillsForIndustry(slug).catch(() => []),
+    getBlogPostsForIndustry(slug).catch(() => []),
   ]);
+  const canonicalUrl = absoluteUrl(`/industries/${industry.slug}`);
+  const industryCheck = buildDefinitionKnowledgeCheck(
+    { type: 'industry', slug: industry.slug, name: industry.name },
+    relatedSkills,
+  );
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${industry.name} Industry Guide`,
-    description: industry.description,
-    mainEntityOfPage: absoluteUrl(`/industries/${industry.slug}`),
-    dateModified: industry.lastUpdated,
-    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    about: industry.name,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${industry.name} Industry Guide`,
+        description: industry.description,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: industry.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: industry.name,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Industries', url: absoluteUrl('/industries') },
+        { name: industry.name, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Back Navigation */}
-        <div className="mb-8">
-          <Link 
-            href="/industries" 
-            className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors group"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Industries
-          </Link>
-        </div>
+        <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Industries', href: '/industries' }, { label: industry.name }]} />
 
         {/* Hero Header */}
         <div className="mb-16">
@@ -138,7 +153,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Key Roles</div>
                 <div className="text-sm font-semibold text-blue-600">
-                  {industry.commonCareers?.length || 0} positions
+                  {relatedCareers.length} profiles
                 </div>
               </div>
               
@@ -148,32 +163,34 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Core Skills</div>
                 <div className="text-sm font-semibold text-green-600">
-                  {industry.criticalSkills?.length || 0} essential
+                  {relatedSkills.length} connected
                 </div>
               </div>
               
               <div className="text-center p-4 bg-white/60 rounded-xl">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 mb-2">
-                  <TrendingUp className="h-6 w-6 text-purple-600" />
+                  <BarChart3 className="h-6 w-6 text-purple-600" />
                 </div>
-                <div className="text-sm font-medium text-gray-500 mb-1">Growth Rate</div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Trends Covered</div>
                 <div className="text-sm font-semibold text-purple-600">
-                  Expanding
+                  {industry.trends.length} listed
                 </div>
               </div>
               
               <div className="text-center p-4 bg-white/60 rounded-xl">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-100 mb-2">
-                  <DollarSign className="h-6 w-6 text-orange-600" />
+                  <Zap className="h-6 w-6 text-orange-600" />
                 </div>
-                <div className="text-sm font-medium text-gray-500 mb-1">Salary Range</div>
+                <div className="text-sm font-medium text-gray-500 mb-1">Opportunities</div>
                 <div className="text-sm font-semibold text-orange-600">
-                  Competitive
+                  {industry.opportunities.length} mapped
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {industryCheck && <KnowledgeCheckCard check={industryCheck} className="mb-12" />}
 
         {/* Content Status for Empty Industry */}
         {!industry.commonCareers?.length && !industry.criticalSkills?.length ? (
@@ -183,19 +200,13 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
               Industry Profile Development in Progress
             </h2>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              We're currently developing comprehensive career and skill intelligence 
+              We&apos;re currently developing comprehensive career and skill intelligence 
               for the {industry.name} industry. This profile will include detailed 
               role hierarchies, skill requirements, and market trends.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button variant="outline">
-                <Target className="h-4 w-4 mr-2" />
-                Notify When Ready
-              </Button>
-              <Button variant="outline">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Browse Other Industries
-              </Button>
+              <Link href="/topics"><Button variant="outline"><Target className="h-4 w-4 mr-2" />Browse skill topics</Button></Link>
+              <Link href="/industries"><Button variant="outline">Browse Other Industries</Button></Link>
             </div>
           </div>
         ) : (
@@ -311,33 +322,25 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <BarChart3 className="h-5 w-5 mr-2 text-blue-600" />
-                      Industry Insights
+                      Profile Coverage
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Market Size</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        Large
-                      </span>
+                      <span className="text-sm text-gray-600">Skill guides</span>
+                      <span className="text-sm font-medium text-gray-900">{relatedSkills.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Growth Rate</span>
-                      <span className="text-sm font-medium text-green-600">
-                        Positive
-                      </span>
+                      <span className="text-sm text-gray-600">Career profiles</span>
+                      <span className="text-sm font-medium text-green-700">{relatedCareers.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Remote Work</span>
-                      <span className="text-sm font-medium text-blue-600">
-                        Hybrid
-                      </span>
+                      <span className="text-sm text-gray-600">Challenges mapped</span>
+                      <span className="text-sm font-medium text-blue-700">{industry.challenges.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">AI Impact</span>
-                      <span className="text-sm font-medium text-purple-600">
-                        Moderate
-                      </span>
+                      <span className="text-sm text-gray-600">Last reviewed</span>
+                      <time dateTime={industry.lastUpdated} className="text-sm font-medium text-purple-700">{new Date(industry.lastUpdated).toLocaleDateString('en-CA', { year: 'numeric', month: 'short' })}</time>
                     </div>
                   </CardContent>
                 </Card>
@@ -363,6 +366,24 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                   </Card>
                 )}
 
+                {relatedPosts.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <FileText className="mr-2 h-5 w-5 text-violet-600" />
+                        Related Articles
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {relatedPosts.map((post) => (
+                        <Link key={post.slug} href={`/blog/${post.slug}`} className="block text-sm font-semibold text-blue-700 hover:text-blue-900">
+                          {post.title}
+                        </Link>
+                      ))}
+                    </CardContent>
+                  </Card>
+                )}
+
                 {/* Quick Actions */}
                 <Card>
                   <CardHeader>
@@ -372,18 +393,24 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Users className="h-4 w-4 mr-2" />
-                      View All Careers
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Target className="h-4 w-4 mr-2" />
-                      Explore Skills
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      Market Trends
-                    </Button>
+                    <Link href="/careers" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Users className="h-4 w-4 mr-2" />
+                        View All Careers
+                      </Button>
+                    </Link>
+                    <Link href="/skills" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Target className="h-4 w-4 mr-2" />
+                        Explore Skills
+                      </Button>
+                    </Link>
+                    <Link href="/blog" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <TrendingUp className="h-4 w-4 mr-2" />
+                        Read Market Insights
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </div>
@@ -404,18 +431,24 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="px-8">
-                <Target className="h-4 w-4 mr-2" />
-                Create Career Plan
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <Briefcase className="h-4 w-4 mr-2" />
-                Explore Careers
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <Zap className="h-4 w-4 mr-2" />
-                View Required Skills
-              </Button>
+              <Link href="/paths">
+                <Button size="lg" className="px-8">
+                  <Target className="h-4 w-4 mr-2" />
+                  Choose a Learning Path
+                </Button>
+              </Link>
+              <Link href="/careers">
+                <Button variant="outline" size="lg" className="px-8">
+                  <Briefcase className="h-4 w-4 mr-2" />
+                  Explore Careers
+                </Button>
+              </Link>
+              <Link href="/skills">
+                <Button variant="outline" size="lg" className="px-8">
+                  <Zap className="h-4 w-4 mr-2" />
+                  View Required Skills
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
