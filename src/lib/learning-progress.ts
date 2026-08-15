@@ -1,4 +1,4 @@
-export type LearningActivityKind = 'mission' | 'course-lesson';
+export type LearningActivityKind = 'mission' | 'course-lesson' | 'knowledge-check';
 
 export type LearningActivity = {
   id: string;
@@ -122,4 +122,3 @@ export function recordLearningActivity(input: RecordActivityInput): LearningProf
 export function hasLearningActivity(profile: LearningProfile, activityId: string) {
   return profile.activities.some((activity) => activity.id === activityId);
 }
-

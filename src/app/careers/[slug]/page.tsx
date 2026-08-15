@@ -19,6 +19,8 @@ import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { isCareerIndexable } from '@/lib/content-quality';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { 
   Briefcase, 
   TrendingUp, 
@@ -86,6 +88,10 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
     getSkillPathsForCareer(career.slug),
   ]);
   const canonicalUrl = absoluteUrl(`/careers/${career.slug}`);
+  const careerCheck = buildDefinitionKnowledgeCheck(
+    { type: 'career', slug: career.slug, name: career.title },
+    relatedSkills,
+  );
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -188,6 +194,8 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
         </div>
 
         <ManagedAdSlot placement="career-inline" />
+
+        {careerCheck && <KnowledgeCheckCard check={careerCheck} className="mb-12" />}
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">

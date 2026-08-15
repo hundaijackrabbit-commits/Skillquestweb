@@ -10,6 +10,7 @@ import { isCareerIndexable } from '@/lib/content-quality';
 import { getHomepageGrowthData } from '@/lib/growth';
 import { getAllSkillCourses } from '@/lib/courses';
 import { TOPICS } from '@/lib/topics';
+import { DailyChallenge } from '@/components/learning/daily-challenge';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,6 +69,17 @@ export default async function HomePage() {
           <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{skills.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">skill guides</p></div>
           <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{careers.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">career profiles</p></div>
           <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{TOPICS.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">connected topic hubs</p></div>
+        </div>
+      </section>
+
+      <section className="pb-16 sm:pb-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">One useful minute</p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-950">Try today’s skill challenge</h2>
+            <p className="mt-2 max-w-2xl text-slate-600">A small retrieval check keeps the library active and gives you one idea to carry into work.</p>
+          </div>
+          <DailyChallenge />
         </div>
       </section>
 

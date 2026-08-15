@@ -20,6 +20,8 @@ import { SkillMission } from '@/components/learning/skill-mission';
 import { CurrentSkillBrief } from '@/components/skills/current-skill-brief';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 import { getSkillConnectionReason } from '@/lib/skill-connections';
+import { getKnowledgeCheckForSkill } from '@/lib/knowledge-checks';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import {
   formatCategoryName,
   getCategoryColor,
@@ -133,6 +135,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
   ]);
   const course = getSkillCourse(skill.slug);
   const currentBrief = getSkillIntelligenceBrief(skill.slug);
+  const knowledgeCheck = getKnowledgeCheckForSkill(skill.slug);
   const nextConnectedSkill = relatedSkills[0];
   const nextConnection = nextConnectedSkill
     ? {
@@ -295,6 +298,8 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
         <ManagedAdSlot placement="skill-inline" />
 
         {currentBrief && <CurrentSkillBrief skillName={skill.name} brief={currentBrief} />}
+
+        {knowledgeCheck && <KnowledgeCheckCard check={knowledgeCheck} className="mb-12" />}
 
         {course && (
           <section className="mb-12 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-r from-slate-950 via-blue-950 to-violet-950 p-7 text-white shadow-lg sm:p-9">

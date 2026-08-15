@@ -18,6 +18,8 @@ import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { isBlogPostIndexable } from '@/lib/content-quality';
 import { ArticleActions } from '@/components/blog/article-actions';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { getKnowledgeCheckForBlog } from '@/lib/knowledge-checks';
 import {
   Calendar,
   Clock,
@@ -119,6 +121,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
     .filter((p) => isBlogPostIndexable(p) && p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
   const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
+  const knowledgeCheck = getKnowledgeCheckForBlog(post.slug);
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -199,6 +202,8 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
+
+        {knowledgeCheck && <KnowledgeCheckCard check={knowledgeCheck} className="mb-12" />}
 
         <ManagedAdSlot placement="blog-inline" />
 

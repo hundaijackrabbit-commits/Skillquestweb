@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { getTopicBySlug, getTopicContent, TOPICS } from '@/lib/topics';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,6 +41,10 @@ export default async function TopicHubPage({ params }: Props) {
   if (!topic) notFound();
   const content = await getTopicContent(topic.slug);
   const canonicalUrl = absoluteUrl(`/topics/${topic.slug}`);
+  const topicCheck = buildDefinitionKnowledgeCheck(
+    { type: 'topic', slug: topic.slug, name: topic.name },
+    content.skills,
+  );
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -87,6 +93,8 @@ export default async function TopicHubPage({ params }: Props) {
         </header>
 
         <main>
+          {topicCheck && <KnowledgeCheckCard check={topicCheck} className="mt-12" />}
+
           <section className="mt-14" aria-labelledby="topic-skills">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>

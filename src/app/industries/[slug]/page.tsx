@@ -13,6 +13,8 @@ import {
 } from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { 
   Building2, 
   TrendingUp, 
@@ -74,6 +76,10 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
     getBlogPostsForIndustry(slug).catch(() => []),
   ]);
   const canonicalUrl = absoluteUrl(`/industries/${industry.slug}`);
+  const industryCheck = buildDefinitionKnowledgeCheck(
+    { type: 'industry', slug: industry.slug, name: industry.name },
+    relatedSkills,
+  );
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -183,6 +189,8 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
             </div>
           </div>
         </div>
+
+        {industryCheck && <KnowledgeCheckCard check={industryCheck} className="mb-12" />}
 
         {/* Content Status for Empty Industry */}
         {!industry.commonCareers?.length && !industry.criticalSkills?.length ? (

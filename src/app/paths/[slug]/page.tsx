@@ -26,6 +26,8 @@ import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { isSkillPathIndexable } from '@/lib/content-quality';
+import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
+import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -64,6 +66,10 @@ export default async function SkillPathDetailPage({ params }: Props) {
     resolveCareerReferences(path.relatedCareers),
   ]);
   const canonicalUrl = absoluteUrl(`/paths/${path.id}`);
+  const pathCheck = buildDefinitionKnowledgeCheck(
+    { type: 'path', slug: path.id, name: path.name },
+    skills,
+  );
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -119,6 +125,8 @@ export default async function SkillPathDetailPage({ params }: Props) {
             </Link>
           )}
         </header>
+
+        {pathCheck && <KnowledgeCheckCard check={pathCheck} className="mt-12" />}
 
         <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
           <main>

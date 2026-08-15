@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllSkillCourses } from '@/lib/courses';
 import { LearningProgressSummary } from '@/components/learning/learning-progress-summary';
+import { DailyChallenge } from '@/components/learning/daily-challenge';
 
 export const metadata: Metadata = {
   title: 'Practice Lab: Short Skill Courses',
@@ -35,6 +36,14 @@ export default function LearnPage() {
         </section>
 
         <LearningProgressSummary />
+
+        <section className="mb-14" aria-labelledby="daily-practice-heading">
+          <div className="mb-6">
+            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Warm up</div>
+            <h2 id="daily-practice-heading" className="mt-2 text-3xl font-bold text-slate-950">Today’s 60-second challenge</h2>
+          </div>
+          <DailyChallenge />
+        </section>
 
         <section aria-labelledby="available-sprints">
           <div className="mb-7 flex items-end justify-between gap-4">
