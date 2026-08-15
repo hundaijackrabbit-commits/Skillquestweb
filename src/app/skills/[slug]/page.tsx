@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { getSkillBySlug, getAllSkills, getRelatedSkills, getCareersForSkill } from '@/lib/content';
+import { getSkillBySlug, getAllSkills, getRelatedSkills, getCareersForSkill, getCanonicalSkillForSlug } from '@/lib/content';
 import {
   formatCategoryName,
   getCategoryColor,
@@ -13,6 +13,7 @@ import SaveSkillButton from '@/components/skills/save-skill-button';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
 import {
   ArrowLeft,
   Briefcase,
@@ -55,7 +56,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: SkillDetailPageProps) {
   const resolvedParams = await params;
-  const skill = await getSkillBySlug(resolvedParams.slug);
+  const [skill, canonicalSkill] = await Promise.all([
+    getSkillBySlug(resolvedParams.slug),
+    getCanonicalSkillForSlug(resolvedParams.slug),
+  ]);
 
   if (!skill) {
     return {
@@ -70,12 +74,12 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
-    alternates: { canonical: `/skills/${skill.slug}` },
+    alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
       description,
       type: 'article',
-      url: `/skills/${skill.slug}`,
+      url: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
     },
     twitter: { card: 'summary_large_image', title: `${title} | Modern Skill Lab`, description },
   };
@@ -93,20 +97,31 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     getRelatedSkills(skill.id),
     getCareersForSkill(skill.slug),
   ]);
+  const canonicalSkill = await getCanonicalSkillForSlug(skill.slug);
+  const canonicalUrl = absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`);
 
   const categoryColors = getCategoryColor(skill.category);
   const riskColors = getRiskLevelColor(skill.automationRisk);
   const difficultyColors = getDifficultyColor(skill.difficulty || 'intermediate');
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${skill.name}: Practical Skill Guide`,
-    description: skill.shortDefinition,
-    mainEntityOfPage: absoluteUrl(`/skills/${skill.slug}`),
-    dateModified: skill.lastUpdated,
-    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    about: skill.name,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${skill.name}: Practical Skill Guide`,
+        description: skill.shortDefinition,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: skill.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: skill.name,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Skills', url: absoluteUrl('/skills') },
+        { name: skill.name, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (

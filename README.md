@@ -6,7 +6,7 @@ Modern Skill Lab is a Next.js skills and career discovery platform built around 
 
 ## Current content library
 
-- 1,541 professional skill guides (`src/data/skills-1000plus.json`)
+- 1,541 source skill records and 1,340 canonical skill topics (`src/data/skills-1000plus.json`)
 - 103 career profiles
 - 8 industry guides
 - 100 learning paths
@@ -50,7 +50,7 @@ The active skill loader is `src/data/skills-1000plus.json`. Do not replace it wi
 
 ## SEO / canonical setup
 
-The owned domain is the canonical site. `src/proxy.ts` permanently redirects requests from `skillquestweb.vercel.app` to the same path and query on `modernskilllab.space`.
+The owned apex domain is the canonical site. `next.config.ts` permanently redirects requests from `skillquestweb.vercel.app` and `www.modernskilllab.space` to the same path and query on `modernskilllab.space` before route rendering. `src/proxy.ts` is reserved for authentication refreshes.
 
 The project includes:
 

@@ -62,7 +62,7 @@ export default async function IndustriesPage() {
               <div className="text-sm font-medium text-gray-600">Career Profiles</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">1,500+</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">1,300+</div>
               <div className="text-sm font-medium text-gray-600">Skills Indexed</div>
             </div>
           </div>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:seo": "node scripts/audit-seo-content.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

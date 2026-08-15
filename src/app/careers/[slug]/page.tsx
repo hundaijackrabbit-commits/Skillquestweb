@@ -8,7 +8,7 @@ import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
-import { formatDate } from '@/lib/utils';
+import { breadcrumbList } from '@/lib/seo';
 import { 
   ArrowLeft, 
   Briefcase, 
@@ -17,7 +17,6 @@ import {
   MapPin, 
   Users,
   Target,
-  Clock,
   BookOpen,
   Star,
   Building2,
@@ -69,16 +68,26 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
   }
 
   const relatedSkills = await getSkillsForCareer(career.slug);
+  const canonicalUrl = absoluteUrl(`/careers/${career.slug}`);
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${career.title} Career Guide`,
-    description: career.summary,
-    mainEntityOfPage: absoluteUrl(`/careers/${career.slug}`),
-    dateModified: career.lastUpdated,
-    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    about: career.title,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${career.title} Career Guide`,
+        description: career.summary,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: career.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: career.title,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Careers', url: absoluteUrl('/careers') },
+        { name: career.title, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (

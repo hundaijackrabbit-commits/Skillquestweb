@@ -8,6 +8,7 @@ import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/content';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
 import {
   ArrowLeft,
   Calendar,
@@ -105,16 +106,26 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
   const relatedPosts = allPosts
     .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
+  const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt,
-    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
-    datePublished: post.publishedAt,
-    dateModified: post.lastUpdated,
-    author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.excerpt,
+        mainEntityOfPage: canonicalUrl,
+        datePublished: post.publishedAt,
+        dateModified: post.lastUpdated,
+        author: { '@type': 'Organization', name: post.author },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Blog', url: absoluteUrl('/blog') },
+        { name: post.title, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (

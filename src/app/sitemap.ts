@@ -1,10 +1,10 @@
 import type { MetadataRoute } from 'next';
-import { getAllBlogPosts, getAllCareers, getAllIndustries, getAllSkills } from '@/lib/content';
+import { getAllBlogPosts, getAllCareers, getAllIndustries, getCanonicalSkills } from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [skills, careers, industries, posts] = await Promise.all([
-    getAllSkills(),
+    getCanonicalSkills(),
     getAllCareers(),
     getAllIndustries(),
     getAllBlogPosts(),

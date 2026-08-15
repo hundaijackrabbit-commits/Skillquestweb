@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
-import { getAllBlogPosts, getAllCareers, getAllSkills } from '@/lib/content';
+import { getAllBlogPosts, getAllCareers, getCanonicalSkills } from '@/lib/content';
 import { getHomepageGrowthData } from '@/lib/growth';
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,7 @@ const pillars = [
 
 export default async function HomePage() {
   const [skills, careers, posts] = await Promise.all([
-    getAllSkills(),
+    getCanonicalSkills(),
     getAllCareers(),
     getAllBlogPosts(),
   ]);

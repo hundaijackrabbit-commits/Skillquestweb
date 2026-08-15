@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getIndustryBySlug, getAllIndustries, getCareersForIndustry, getSkillsForIndustry } from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
 import { 
   ArrowLeft, 
   Building2, 
@@ -65,16 +66,26 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
     getCareersForIndustry(slug).catch(() => []),
     getSkillsForIndustry(slug).catch(() => [])
   ]);
+  const canonicalUrl = absoluteUrl(`/industries/${industry.slug}`);
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: `${industry.name} Industry Guide`,
-    description: industry.description,
-    mainEntityOfPage: absoluteUrl(`/industries/${industry.slug}`),
-    dateModified: industry.lastUpdated,
-    author: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
-    about: industry.name,
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${industry.name} Industry Guide`,
+        description: industry.description,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: industry.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: industry.name,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Industries', url: absoluteUrl('/industries') },
+        { name: industry.name, url: canonicalUrl },
+      ]),
+    ],
   };
 
   return (

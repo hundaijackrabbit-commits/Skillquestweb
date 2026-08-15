@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { cache } from 'react';
 import { Skill, Career, Industry, BlogPost, SkillPath, SkillSchema, CareerSchema, IndustrySchema, BlogPostSchema, SkillPathSchema, SearchResult } from './types';
 import Fuse from 'fuse.js';
 
@@ -12,7 +13,7 @@ const SKILL_PATHS_FILE = path.join(DATA_DIR, 'skill-paths.json');
 const BLOG_DIR = path.join(process.cwd(), 'src', 'content', 'blog');
 
 // Content loading functions
-export async function getAllSkills(): Promise<Skill[]> {
+export const getAllSkills = cache(async (): Promise<Skill[]> => {
   try {
     if (!fs.existsSync(SKILLS_FILE)) {
       console.warn('Skills file not found, returning empty array');
@@ -28,6 +29,99 @@ export async function getAllSkills(): Promise<Skill[]> {
     console.error('Error loading skills:', error);
     return [];
   }
+});
+
+function normalizedSkillName(skill: Skill) {
+  return skill.name.trim().toLocaleLowerCase('en');
+}
+
+function skillContentScore(skill: Skill) {
+  const prose = [
+    skill.shortDefinition,
+    skill.fullDefinition,
+    skill.whyItMatters,
+    skill.modernRelevance,
+    skill.aiEraRelevance,
+    skill.whereItShowsUp,
+    skill.careerApplications,
+    skill.industryVariations,
+    skill.skillInAction,
+    skill.careerImpact,
+    skill.evidenceSummary,
+  ];
+  const lists = [
+    skill.professionalContexts,
+    skill.beginnerActions,
+    skill.intermediateActions,
+    skill.advancedActions,
+    skill.commonMistakes,
+    skill.coreSubskills,
+    skill.realWorldScenarios,
+    skill.learningResources,
+  ];
+
+  const generatedCopyPenalty = [
+    /^The ability to effectively /i,
+    /^The capability to .* teams and organizations/i,
+    /^Professional competency in .* for solving complex challenges and driving results/i,
+  ].some((pattern) => pattern.test(skill.shortDefinition)) ? 1_500 : 0;
+
+  return (
+    prose.reduce((total, value) => total + (value?.trim().length ?? 0), 0) +
+    lists.reduce((total, value) => total + (value?.length ?? 0) * 80, 0) -
+    generatedCopyPenalty
+  );
+}
+
+/**
+ * Return one strongest page for each skill name. The source dataset contains
+ * legacy name duplicates with suffixed slugs; keeping only the best version in
+ * discovery surfaces and the sitemap prevents competing URLs from diluting
+ * indexing signals while preserving the old pages for existing links.
+ */
+export async function getCanonicalSkills(): Promise<Skill[]> {
+  const skills = await getAllSkills();
+  const canonicalByName = new Map<string, Skill>();
+
+  for (const skill of skills) {
+    const key = normalizedSkillName(skill);
+    const current = canonicalByName.get(key);
+
+    if (!current || skillContentScore(skill) > skillContentScore(current)) {
+      canonicalByName.set(key, skill);
+    }
+  }
+
+  return [...canonicalByName.values()];
+}
+
+export async function getCanonicalSkillForSlug(slug: string): Promise<Skill | null> {
+  const skills = await getAllSkills();
+  const requested = skills.find((skill) => skill.slug === slug);
+  if (!requested) return null;
+
+  const matching = skills.filter(
+    (skill) => normalizedSkillName(skill) === normalizedSkillName(requested),
+  );
+
+  return matching.reduce((best, skill) =>
+    skillContentScore(skill) > skillContentScore(best) ? skill : best,
+  );
+}
+
+async function canonicalizeSkillList(skills: Skill[]): Promise<Skill[]> {
+  const canonicalSkills = await getCanonicalSkills();
+  const canonicalByName = new Map(
+    canonicalSkills.map((skill) => [normalizedSkillName(skill), skill]),
+  );
+  const deduplicated = new Map<string, Skill>();
+
+  for (const skill of skills) {
+    const canonical = canonicalByName.get(normalizedSkillName(skill)) ?? skill;
+    deduplicated.set(canonical.slug, canonical);
+  }
+
+  return [...deduplicated.values()];
 }
 
 export async function getSkillBySlug(slug: string): Promise<Skill | null> {
@@ -36,12 +130,12 @@ export async function getSkillBySlug(slug: string): Promise<Skill | null> {
 }
 
 export async function getSkillsByCategory(category: string): Promise<Skill[]> {
-  const skills = await getAllSkills();
+  const skills = await getCanonicalSkills();
   return skills.filter(skill => skill.category === category);
 }
 
 export async function getFeaturedSkills(limit: number = 10): Promise<Skill[]> {
-  const skills = await getAllSkills();
+  const skills = await getCanonicalSkills();
   return skills.filter(skill => skill.featured).slice(0, limit);
 }
 
@@ -191,7 +285,7 @@ export async function searchContent(query: string, types: ('skill' | 'career' | 
   const results: SearchResult[] = [];
   
   if (types.includes('skill')) {
-    const skills = await getAllSkills();
+    const skills = await getCanonicalSkills();
     const skillResults = skills.map(skill => ({
       type: 'skill' as const,
       id: skill.id,
@@ -274,7 +368,7 @@ export async function getRelatedSkills(skillId: string, limit: number = 5): Prom
     )
   );
   
-  return related.slice(0, limit);
+  return (await canonicalizeSkillList(related)).slice(0, limit);
 }
 
 export async function getSkillsForCareer(careerSlug: string): Promise<Skill[]> {
@@ -282,7 +376,7 @@ export async function getSkillsForCareer(careerSlug: string): Promise<Skill[]> {
   if (!career) return [];
   
   const allSkills = await getAllSkills();
-  return allSkills.filter(skill => career.coreSkills.includes(skill.id));
+  return canonicalizeSkillList(allSkills.filter(skill => career.coreSkills.includes(skill.id)));
 }
 
 export async function getCareersForSkill(skillSlug: string): Promise<Career[]> {
@@ -312,9 +406,9 @@ export async function getSkillsForIndustry(industrySlug: string): Promise<Skill[
   if (!industry) return [];
 
   const allSkills = await getAllSkills();
-  return allSkills.filter(skill => 
+  return canonicalizeSkillList(allSkills.filter(skill =>
     industry.criticalSkills?.includes(skill.id) || false
-  );
+  ));
 }
 
 // Utility functions
