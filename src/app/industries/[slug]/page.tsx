@@ -3,7 +3,13 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getIndustryBySlug, getAllIndustries, getCareersForIndustry, getSkillsForIndustry } from '@/lib/content';
+import {
+  getIndustryBySlug,
+  getAllIndustries,
+  getCareersForIndustry,
+  getSkillsForIndustry,
+  getBlogPostsForIndustry,
+} from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { 
@@ -19,7 +25,8 @@ import {
   Briefcase,
   Award,
   ArrowRight,
-  DollarSign
+  DollarSign,
+  FileText,
 } from 'lucide-react';
 
 interface IndustryDetailPageProps {
@@ -62,9 +69,10 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
     notFound();
   }
 
-  const [relatedCareers, relatedSkills] = await Promise.all([
+  const [relatedCareers, relatedSkills, relatedPosts] = await Promise.all([
     getCareersForIndustry(slug).catch(() => []),
-    getSkillsForIndustry(slug).catch(() => [])
+    getSkillsForIndustry(slug).catch(() => []),
+    getBlogPostsForIndustry(slug).catch(() => []),
   ]);
   const canonicalUrl = absoluteUrl(`/industries/${industry.slug}`);
   const structuredData = {
@@ -194,7 +202,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
               Industry Profile Development in Progress
             </h2>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              We're currently developing comprehensive career and skill intelligence 
+              We&apos;re currently developing comprehensive career and skill intelligence 
               for the {industry.name} industry. This profile will include detailed 
               role hierarchies, skill requirements, and market trends.
             </p>
@@ -374,6 +382,24 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                   </Card>
                 )}
 
+                {relatedPosts.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <FileText className="mr-2 h-5 w-5 text-violet-600" />
+                        Related Articles
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {relatedPosts.map((post) => (
+                        <Link key={post.slug} href={`/blog/${post.slug}`} className="block text-sm font-semibold text-blue-700 hover:text-blue-900">
+                          {post.title}
+                        </Link>
+                      ))}
+                    </CardContent>
+                  </Card>
+                )}
+
                 {/* Quick Actions */}
                 <Card>
                   <CardHeader>
@@ -383,18 +409,24 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Users className="h-4 w-4 mr-2" />
-                      View All Careers
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Target className="h-4 w-4 mr-2" />
-                      Explore Skills
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      Market Trends
-                    </Button>
+                    <Link href="/careers" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Users className="h-4 w-4 mr-2" />
+                        View All Careers
+                      </Button>
+                    </Link>
+                    <Link href="/skills" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Target className="h-4 w-4 mr-2" />
+                        Explore Skills
+                      </Button>
+                    </Link>
+                    <Link href="/blog" className="block">
+                      <Button variant="outline" className="w-full justify-start">
+                        <TrendingUp className="h-4 w-4 mr-2" />
+                        Read Market Insights
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </div>
@@ -415,18 +447,24 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="px-8">
-                <Target className="h-4 w-4 mr-2" />
-                Create Career Plan
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <Briefcase className="h-4 w-4 mr-2" />
-                Explore Careers
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <Zap className="h-4 w-4 mr-2" />
-                View Required Skills
-              </Button>
+              <Link href="/paths">
+                <Button size="lg" className="px-8">
+                  <Target className="h-4 w-4 mr-2" />
+                  Choose a Learning Path
+                </Button>
+              </Link>
+              <Link href="/careers">
+                <Button variant="outline" size="lg" className="px-8">
+                  <Briefcase className="h-4 w-4 mr-2" />
+                  Explore Careers
+                </Button>
+              </Link>
+              <Link href="/skills">
+                <Button variant="outline" size="lg" className="px-8">
+                  <Zap className="h-4 w-4 mr-2" />
+                  View Required Skills
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

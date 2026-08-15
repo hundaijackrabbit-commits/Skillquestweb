@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { BookOpen, Users, Briefcase, Building2, PenTool, ShieldCheck } from 'lucide-react';
+import { BookOpen, Users, Briefcase, Building2, PenTool, ShieldCheck, Trophy } from 'lucide-react';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 
 const navigation = {
   platform: [
     { name: 'Skills', href: '/skills', icon: BookOpen },
+    { name: 'Practice Lab', href: '/learn', icon: Trophy },
     { name: 'Careers', href: '/careers', icon: Briefcase },
     { name: 'Industries', href: '/industries', icon: Building2 },
     { name: 'Learning Paths', href: '/paths', icon: BookOpen },

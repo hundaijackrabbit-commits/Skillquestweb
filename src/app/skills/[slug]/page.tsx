@@ -1,8 +1,20 @@
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { getSkillBySlug, getAllSkills, getRelatedSkills, getCareersForSkill, getCanonicalSkillForSlug } from '@/lib/content';
+import { Button } from '@/components/ui/button';
+import {
+  getSkillBySlug,
+  getAllSkills,
+  getRelatedSkills,
+  getCareersForSkill,
+  getCanonicalSkillForSlug,
+  getIndustriesForSkill,
+  getSkillPathsForSkill,
+  getBlogPostsForSkill,
+  resolveSkillReferences,
+} from '@/lib/content';
+import { getSkillCourse } from '@/lib/courses';
 import {
   formatCategoryName,
   getCategoryColor,
@@ -41,6 +53,9 @@ import {
   FileText,
   Search,
   Gauge,
+  ArrowRight,
+  Route,
+  Newspaper,
 } from 'lucide-react';
 
 interface SkillDetailPageProps {
@@ -93,11 +108,20 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     notFound();
   }
 
-  const [relatedSkills, relatedCareers] = await Promise.all([
+  const canonicalSkill = await getCanonicalSkillForSlug(skill.slug);
+  if (canonicalSkill && canonicalSkill.slug !== skill.slug) {
+    permanentRedirect(`/skills/${canonicalSkill.slug}`);
+  }
+
+  const [relatedSkills, relatedCareers, relatedIndustries, relatedPaths, relatedPosts, stackedSkills] = await Promise.all([
     getRelatedSkills(skill.id),
     getCareersForSkill(skill.slug),
+    getIndustriesForSkill(skill.slug),
+    getSkillPathsForSkill(skill.slug),
+    getBlogPostsForSkill(skill.slug),
+    resolveSkillReferences(skill.skillStacksWell ?? [], 6),
   ]);
-  const canonicalSkill = await getCanonicalSkillForSlug(skill.slug);
+  const course = getSkillCourse(skill.slug);
   const canonicalUrl = absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`);
 
   const categoryColors = getCategoryColor(skill.category);
@@ -231,6 +255,28 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
         </div>
 
         <ManagedAdSlot placement="skill-inline" />
+
+        {course && (
+          <section className="mb-12 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-r from-slate-950 via-blue-950 to-violet-950 p-7 text-white shadow-lg sm:p-9">
+            <div className="flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-3xl">
+                <div className="mb-3 inline-flex items-center rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-200">
+                  <GraduationCap className="mr-2 h-4 w-4" />
+                  New · Interactive Skill Sprint
+                </div>
+                <h2 className="text-3xl font-bold tracking-tight">Practice {skill.name}, don’t just read about it.</h2>
+                <p className="mt-3 leading-7 text-blue-100">
+                  {course.description} Complete {course.lessons.length} practice rounds in about {course.estimatedMinutes} minutes.
+                </p>
+              </div>
+              <Link href={`/skills/${skill.slug}/learn`} className="flex-none">
+                <Button size="lg" className="w-full bg-white text-slate-950 hover:bg-blue-50 lg:w-auto">
+                  Start the free sprint <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </section>
+        )}
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
@@ -675,11 +721,19 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {skill.skillStacksWell.map((skillName, index) => (
-                      <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
-                        {skillName}
-                      </Badge>
-                    ))}
+                    {stackedSkills.length > 0
+                      ? stackedSkills.map((stackedSkill) => (
+                          <Link key={stackedSkill.slug} href={`/skills/${stackedSkill.slug}`}>
+                            <Badge variant="outline" className="bg-blue-50 text-blue-700 transition hover:bg-blue-100">
+                              {stackedSkill.name}
+                            </Badge>
+                          </Link>
+                        ))
+                      : skill.skillStacksWell.map((skillName, index) => (
+                          <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700">
+                            {skillName}
+                          </Badge>
+                        ))}
                   </div>
                 </CardContent>
               </Card>
@@ -703,6 +757,66 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 </div>
               </CardContent>
             </Card>
+
+            {relatedPaths.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Route className="mr-2 h-5 w-5" />
+                    Learning Paths
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {relatedPaths.map((path) => (
+                    <Link
+                      key={path.id}
+                      href={`/paths/${path.id}`}
+                      className="block rounded-xl border border-slate-200 p-3 transition hover:border-blue-300 hover:bg-blue-50"
+                    >
+                      <span className="block text-sm font-semibold text-slate-900">{path.name}</span>
+                      <span className="mt-1 block text-xs text-slate-500">{path.skills.length} connected skills · {path.estimatedTime}</span>
+                    </Link>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {relatedPosts.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Newspaper className="mr-2 h-5 w-5" />
+                    Related Articles
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {relatedPosts.map((post) => (
+                    <Link key={post.slug} href={`/blog/${post.slug}`} className="block group">
+                      <span className="block text-sm font-semibold text-blue-700 group-hover:text-blue-900">{post.title}</span>
+                      <span className="mt-1 block text-xs text-slate-500">{post.readTime} min read</span>
+                    </Link>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {relatedIndustries.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Building2 className="mr-2 h-5 w-5" />
+                    Used Across Industries
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-2">
+                  {relatedIndustries.map((industry) => (
+                    <Link key={industry.slug} href={`/industries/${industry.slug}`}>
+                      <Badge variant="outline" className="transition hover:bg-slate-100">{industry.name}</Badge>
+                    </Link>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
 
             {skill.learningResources && skill.learningResources.length > 0 && (
               <Card>

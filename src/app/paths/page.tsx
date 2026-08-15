@@ -140,9 +140,11 @@ export default async function SkillPathsPage() {
                     <div className="text-xs text-gray-500">
                       {path.category.replace('-', ' ').toUpperCase()} PATH
                     </div>
-                    <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
-                      Start Path <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <Link href={`/paths/${path.id}`}>
+                      <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
+                        Start Path <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -204,9 +206,11 @@ export default async function SkillPathsPage() {
                     <div className="text-xs text-gray-500 uppercase tracking-wide">
                       {path.category.replace('-', ' ')}
                     </div>
-                    <Button variant="outline" size="sm">
-                      View Path <ArrowRight className="ml-1 h-3 w-3" />
-                    </Button>
+                    <Link href={`/paths/${path.id}`}>
+                      <Button variant="outline" size="sm">
+                        View Path <ArrowRight className="ml-1 h-3 w-3" />
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
@@ -276,7 +280,7 @@ export default async function SkillPathsPage() {
           </h2>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
             Choose a path that aligns with your career goals and start building the skills 
-            that will set you apart in today's competitive market.
+            that will set you apart in today&apos;s competitive market.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/skills"><Button size="lg" className="px-8"><Target className="h-4 w-4 mr-2" />Explore Skills</Button></Link>

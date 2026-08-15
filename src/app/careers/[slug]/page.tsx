@@ -3,7 +3,15 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getCareerBySlug, getAllCareers, getSkillsForCareer } from '@/lib/content';
+import {
+  getCareerBySlug,
+  getAllCareers,
+  getSkillsForCareer,
+  getIndustriesForCareer,
+  getRelatedCareers,
+  getBlogPostsForCareer,
+  getSkillPathsForCareer,
+} from '@/lib/content';
 import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
@@ -23,7 +31,9 @@ import {
   Zap,
   Award,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  FileText,
+  Route,
 } from 'lucide-react';
 
 interface CareerDetailPageProps {
@@ -67,7 +77,13 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
     notFound();
   }
 
-  const relatedSkills = await getSkillsForCareer(career.slug);
+  const [relatedSkills, relatedIndustries, relatedCareers, relatedPosts, relatedPaths] = await Promise.all([
+    getSkillsForCareer(career.slug),
+    getIndustriesForCareer(career.slug),
+    getRelatedCareers(career.slug),
+    getBlogPostsForCareer(career.slug),
+    getSkillPathsForCareer(career.slug),
+  ]);
   const canonicalUrl = absoluteUrl(`/careers/${career.slug}`);
   const structuredData = {
     '@context': 'https://schema.org',
@@ -356,12 +372,15 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {career.commonIndustries.map((industry, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span className="text-sm font-medium text-gray-700">
-                        {industry.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                      </span>
-                    </div>
+                  {relatedIndustries.map((industry) => (
+                    <Link
+                      key={industry.slug}
+                      href={`/industries/${industry.slug}`}
+                      className="flex items-center justify-between rounded bg-gray-50 p-2 transition hover:bg-purple-50"
+                    >
+                      <span className="text-sm font-medium text-gray-700">{industry.name}</span>
+                      <ArrowRight className="h-3.5 w-3.5 text-purple-500" />
+                    </Link>
                   ))}
                 </div>
               </CardContent>
@@ -439,6 +458,55 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           relatedSkills={relatedSkills}
           className="mb-16"
         />
+
+        {(relatedPaths.length > 0 || relatedPosts.length > 0 || relatedCareers.length > 0) && (
+          <section className="mb-16">
+            <div className="mb-7">
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Connected next steps</div>
+              <h2 className="mt-2 text-3xl font-bold text-slate-950">Keep exploring {career.title}</h2>
+            </div>
+            <div className="grid gap-6 lg:grid-cols-3">
+              {relatedPaths.length > 0 && (
+                <Card>
+                  <CardHeader><CardTitle className="flex items-center"><Route className="mr-2 h-5 w-5 text-blue-600" />Learning paths</CardTitle></CardHeader>
+                  <CardContent className="space-y-3">
+                    {relatedPaths.map((path) => (
+                      <Link key={path.id} href={`/paths/${path.id}`} className="block rounded-xl border p-3 transition hover:border-blue-300 hover:bg-blue-50">
+                        <span className="block text-sm font-semibold text-slate-900">{path.name}</span>
+                        <span className="mt-1 block text-xs text-slate-500">{path.skills.length} skills · {path.estimatedTime}</span>
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+              {relatedPosts.length > 0 && (
+                <Card>
+                  <CardHeader><CardTitle className="flex items-center"><FileText className="mr-2 h-5 w-5 text-violet-600" />Related articles</CardTitle></CardHeader>
+                  <CardContent className="space-y-3">
+                    {relatedPosts.map((post) => (
+                      <Link key={post.slug} href={`/blog/${post.slug}`} className="block text-sm font-semibold text-blue-700 hover:text-blue-900">
+                        {post.title}
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+              {relatedCareers.length > 0 && (
+                <Card>
+                  <CardHeader><CardTitle className="flex items-center"><Briefcase className="mr-2 h-5 w-5 text-green-600" />Adjacent careers</CardTitle></CardHeader>
+                  <CardContent className="space-y-3">
+                    {relatedCareers.map((relatedCareer) => (
+                      <Link key={relatedCareer.slug} href={`/careers/${relatedCareer.slug}`} className="block rounded-xl border p-3 transition hover:border-green-300 hover:bg-green-50">
+                        <span className="block text-sm font-semibold text-slate-900">{relatedCareer.title}</span>
+                        <span className="mt-1 block text-xs text-slate-500">{relatedCareer.coreSkills.length} core skills</span>
+                      </Link>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Action Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">

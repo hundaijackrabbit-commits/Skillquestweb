@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Brain, Briefcase, CheckCircle2, Compass, Flame, LineChart, Sparkles, Target } from 'lucide-react';
+import { ArrowRight, Brain, Clock3, Compass, Flame, LineChart, Sparkles, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { getAllBlogPosts, getAllCareers, getCanonicalSkills } from '@/lib/content';
 import { getHomepageGrowthData } from '@/lib/growth';
+import { getAllSkillCourses } from '@/lib/courses';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +26,7 @@ export default async function HomePage() {
     getAllBlogPosts(),
   ]);
   const growth = await getHomepageGrowthData(skills);
+  const courses = getAllSkillCourses();
 
   const defaultSkills = defaultSlugs
     .map((slug) => skills.find((skill) => skill.slug === slug))
@@ -86,6 +88,34 @@ export default async function HomePage() {
                   <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600">Explore skill <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-violet-100 bg-gradient-to-r from-slate-950 via-blue-950 to-violet-950 py-16 text-white sm:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">New · Practice Lab</p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Turn reading into real comprehension.</h2>
+              <p className="mt-4 leading-7 text-blue-100">Short Skill Sprints combine a practical model, a workplace challenge, and a retrieval check—with progress saved in your browser.</p>
+            </div>
+            <Link href="/learn" className="inline-flex items-center text-sm font-semibold text-white">
+              Browse the Practice Lab <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mt-9 grid gap-5 lg:grid-cols-3">
+            {courses.map((course) => (
+              <Link key={course.skillSlug} href={`/skills/${course.skillSlug}/learn`} className="group rounded-3xl border border-white/15 bg-white/10 p-6 transition hover:-translate-y-1 hover:bg-white/15">
+                <div className="flex items-center justify-between gap-3 text-xs font-semibold text-blue-200">
+                  <span className="inline-flex items-center"><Clock3 className="mr-1.5 h-4 w-4" />{course.estimatedMinutes} minutes</span>
+                  <span className="inline-flex items-center"><Trophy className="mr-1.5 h-4 w-4 text-amber-300" />{course.lessons.length * course.pointsPerLesson} XP</span>
+                </div>
+                <h3 className="mt-4 text-xl font-bold group-hover:text-blue-200">{course.title}</h3>
+                <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-300">{course.description}</p>
+                <span className="mt-5 inline-flex items-center text-sm font-semibold text-white">Start sprint <ArrowRight className="ml-2 h-4 w-4" /></span>
+              </Link>
             ))}
           </div>
         </div>

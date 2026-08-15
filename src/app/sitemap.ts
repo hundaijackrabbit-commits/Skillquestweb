@@ -1,14 +1,17 @@
 import type { MetadataRoute } from 'next';
-import { getAllBlogPosts, getAllCareers, getAllIndustries, getCanonicalSkills } from '@/lib/content';
+import { getAllBlogPosts, getAllCareers, getAllIndustries, getCanonicalSkills, getSkillPaths } from '@/lib/content';
+import { getAllSkillCourses } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [skills, careers, industries, posts] = await Promise.all([
+  const [skills, careers, industries, posts, paths] = await Promise.all([
     getCanonicalSkills(),
     getAllCareers(),
     getAllIndustries(),
     getAllBlogPosts(),
+    getSkillPaths(),
   ]);
+  const courses = getAllSkillCourses();
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl('/'), changeFrequency: 'weekly', priority: 1 },
@@ -16,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl('/careers'), changeFrequency: 'weekly', priority: 0.8 },
     { url: absoluteUrl('/industries'), changeFrequency: 'monthly', priority: 0.7 },
     { url: absoluteUrl('/paths'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: absoluteUrl('/learn'), changeFrequency: 'monthly', priority: 0.75 },
     { url: absoluteUrl('/blog'), changeFrequency: 'weekly', priority: 0.8 },
     { url: absoluteUrl('/about'), changeFrequency: 'monthly', priority: 0.5 },
     { url: absoluteUrl('/community'), changeFrequency: 'monthly', priority: 0.5 },
@@ -28,5 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...careers.map((career) => ({ url: absoluteUrl(`/careers/${career.slug}`), lastModified: career.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
     ...industries.map((industry) => ({ url: absoluteUrl(`/industries/${industry.slug}`), lastModified: industry.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.6 })),
     ...posts.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`), lastModified: post.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
+    ...paths.map((path) => ({ url: absoluteUrl(`/paths/${path.id}`), changeFrequency: 'monthly' as const, priority: 0.68 })),
+    ...courses.map((course) => ({ url: absoluteUrl(`/skills/${course.skillSlug}/learn`), changeFrequency: 'monthly' as const, priority: 0.72 })),
   ];
 }

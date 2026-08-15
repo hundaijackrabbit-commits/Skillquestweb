@@ -4,7 +4,13 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/content';
+import {
+  getBlogPostBySlug,
+  getAllBlogPosts,
+  resolveSkillReferences,
+  resolveCareerReferences,
+  resolveIndustryReferences,
+} from '@/lib/content';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
@@ -102,7 +108,12 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
     notFound();
   }
 
-  const allPosts = await getAllBlogPosts();
+  const [allPosts, relatedSkills, relatedCareers, relatedIndustries] = await Promise.all([
+    getAllBlogPosts(),
+    resolveSkillReferences(post.relatedSkills, 8),
+    resolveCareerReferences(post.relatedCareers, 6),
+    resolveIndustryReferences(post.relatedIndustries, 6),
+  ]);
   const relatedPosts = allPosts
     .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3);
@@ -189,32 +200,45 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
 
         <ManagedAdSlot placement="blog-inline" />
 
-        {(post.relatedSkills?.length || post.relatedCareers?.length) && (
+        {(relatedSkills.length > 0 || relatedCareers.length > 0 || relatedIndustries.length > 0) && (
           <Card className="mb-12">
             <CardHeader>
-              <CardTitle>Related Content</CardTitle>
+              <CardTitle>Continue through the topic</CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-6 md:grid-cols-2">
-              {post.relatedSkills?.length > 0 && (
+            <CardContent className="grid gap-6 md:grid-cols-3">
+              {relatedSkills.length > 0 && (
                 <div>
-                  <h4 className="mb-3 font-semibold">Skills</h4>
+                  <h4 className="mb-3 font-semibold">Practice the skills</h4>
                   <div className="flex flex-wrap gap-2">
-                    {post.relatedSkills.map((id, i) => (
-                      <Link key={i} href={`/skills/${id}`}>
-                        <Badge variant="outline">{id}</Badge>
+                    {relatedSkills.map((skill) => (
+                      <Link key={skill.slug} href={`/skills/${skill.slug}`}>
+                        <Badge variant="outline" className="transition hover:bg-blue-50">{skill.name}</Badge>
                       </Link>
                     ))}
                   </div>
                 </div>
               )}
 
-              {post.relatedCareers?.length > 0 && (
+              {relatedCareers.length > 0 && (
                 <div>
-                  <h4 className="mb-3 font-semibold">Careers</h4>
+                  <h4 className="mb-3 font-semibold">See the careers</h4>
                   <div className="flex flex-wrap gap-2">
-                    {post.relatedCareers.map((id, i) => (
-                      <Link key={i} href={`/careers/${id}`}>
-                        <Badge variant="outline">{id}</Badge>
+                    {relatedCareers.map((career) => (
+                      <Link key={career.slug} href={`/careers/${career.slug}`}>
+                        <Badge variant="outline" className="transition hover:bg-violet-50">{career.title}</Badge>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {relatedIndustries.length > 0 && (
+                <div>
+                  <h4 className="mb-3 font-semibold">Explore the industries</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {relatedIndustries.map((industry) => (
+                      <Link key={industry.slug} href={`/industries/${industry.slug}`}>
+                        <Badge variant="outline" className="transition hover:bg-emerald-50">{industry.name}</Badge>
                       </Link>
                     ))}
                   </div>
