@@ -7,6 +7,7 @@ const skills = readJson('src/data/skills-1000plus.json');
 const careers = readJson('src/data/careers.json');
 const industries = readJson('src/data/industries.json');
 const paths = readJson('src/data/skill-paths.json');
+const acceptedLegacyBaseline = 814;
 
 const normalize = (value) =>
   String(value ?? '')
@@ -84,6 +85,8 @@ console.log(`Skill records with declared connections: ${skillsWithDeclaredConnec
 console.log(`Learning paths: ${paths.length.toLocaleString()}`);
 console.log(`Blog articles checked: ${blogFiles.length.toLocaleString()}`);
 console.log(`Unresolved legacy dataset references: ${broken.length.toLocaleString()}`);
+console.log(`Accepted legacy baseline: ${acceptedLegacyBaseline.toLocaleString()}`);
+console.log(`New unresolved references above baseline: ${Math.max(0, broken.length - acceptedLegacyBaseline).toLocaleString()}`);
 
 if (broken.length > 0) {
   const grouped = new Map();
@@ -99,4 +102,8 @@ if (broken.length > 0) {
   for (const item of broken.slice(0, 60)) {
     console.log(`- ${item.source} -> ${item.type}:${item.reference}`);
   }
+}
+
+if (process.argv.includes('--strict') && broken.length > acceptedLegacyBaseline) {
+  process.exitCode = 1;
 }

@@ -1,21 +1,31 @@
 import type { MetadataRoute } from 'next';
-import { getAllBlogPosts, getAllCareers, getAllIndustries, getCanonicalSkills, getSkillPaths } from '@/lib/content';
+import { getAllBlogPosts, getAllCareers, getAllIndustries, getIndexableSkills, getSkillPaths } from '@/lib/content';
 import { getAllSkillCourses } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
+import { isBlogPostIndexable, isCareerIndexable, isSkillPathIndexable } from '@/lib/content-quality';
+import { TOPICS } from '@/lib/topics';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [skills, careers, industries, posts, paths] = await Promise.all([
-    getCanonicalSkills(),
+    getIndexableSkills(),
     getAllCareers(),
     getAllIndustries(),
     getAllBlogPosts(),
     getSkillPaths(),
   ]);
   const courses = getAllSkillCourses();
+  const indexableCareers = careers.filter(isCareerIndexable);
+  const indexablePosts = posts.filter(isBlogPostIndexable);
+  const indexablePaths = paths.filter(isSkillPathIndexable);
+  const skillDirectoryPages = Array.from(
+    { length: Math.max(0, Math.ceil(skills.length / 30) - 1) },
+    (_, index) => index + 2,
+  );
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl('/'), changeFrequency: 'weekly', priority: 1 },
     { url: absoluteUrl('/skills'), changeFrequency: 'weekly', priority: 0.9 },
+    { url: absoluteUrl('/topics'), changeFrequency: 'weekly', priority: 0.85 },
     { url: absoluteUrl('/careers'), changeFrequency: 'weekly', priority: 0.8 },
     { url: absoluteUrl('/industries'), changeFrequency: 'monthly', priority: 0.7 },
     { url: absoluteUrl('/paths'), changeFrequency: 'monthly', priority: 0.7 },
@@ -28,11 +38,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticPages,
+    ...skillDirectoryPages.map((page) => ({ url: absoluteUrl(`/skills/page/${page}`), changeFrequency: 'weekly' as const, priority: 0.55 })),
+    ...TOPICS.map((topic) => ({ url: absoluteUrl(`/topics/${topic.slug}`), changeFrequency: 'weekly' as const, priority: 0.8 })),
     ...skills.map((skill) => ({ url: absoluteUrl(`/skills/${skill.slug}`), lastModified: skill.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.7 })),
-    ...careers.map((career) => ({ url: absoluteUrl(`/careers/${career.slug}`), lastModified: career.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
+    ...indexableCareers.map((career) => ({ url: absoluteUrl(`/careers/${career.slug}`), lastModified: career.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
     ...industries.map((industry) => ({ url: absoluteUrl(`/industries/${industry.slug}`), lastModified: industry.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.6 })),
-    ...posts.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`), lastModified: post.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
-    ...paths.map((path) => ({ url: absoluteUrl(`/paths/${path.id}`), changeFrequency: 'monthly' as const, priority: 0.68 })),
+    ...indexablePosts.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`), lastModified: post.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.65 })),
+    ...indexablePaths.map((path) => ({ url: absoluteUrl(`/paths/${path.id}`), changeFrequency: 'monthly' as const, priority: 0.68 })),
     ...courses.map((course) => ({ url: absoluteUrl(`/skills/${course.skillSlug}/learn`), changeFrequency: 'monthly' as const, priority: 0.72 })),
   ];
 }

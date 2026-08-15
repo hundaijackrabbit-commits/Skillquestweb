@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import {
   getBlogPostBySlug,
   getAllBlogPosts,
@@ -15,8 +16,8 @@ import { ContentViewTracker } from '@/components/analytics/content-view-tracker'
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
+import { isBlogPostIndexable } from '@/lib/content-quality';
 import {
-  ArrowLeft,
   Calendar,
   Clock,
   User,
@@ -68,7 +69,7 @@ const mdxComponents = {
 
 export async function generateStaticParams() {
   const blogPosts = await getAllBlogPosts();
-  return blogPosts.map((post) => ({
+  return blogPosts.filter(isBlogPostIndexable).map((post) => ({
     slug: post.slug,
   }));
 }
@@ -88,6 +89,7 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
     title: post.title,
     description,
     alternates: { canonical: `/blog/${post.slug}` },
+    robots: { index: isBlogPostIndexable(post), follow: true },
     openGraph: {
       title: `${post.title} | Modern Skill Lab`,
       description,
@@ -144,12 +146,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="blog_view" itemType="blog" itemSlug={post.slug} />
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
-        <div className="mb-8">
-          <Link href="/blog" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Blog
-          </Link>
-        </div>
+        <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }, { label: post.title }]} />
 
         <div className="mb-12">
           <div className="mb-4 flex flex-wrap items-center gap-3">

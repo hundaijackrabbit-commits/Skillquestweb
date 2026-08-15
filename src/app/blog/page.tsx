@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllBlogPosts } from '@/lib/content';
+import { isBlogPostIndexable } from '@/lib/content-quality';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { 
   ArrowRight, 
@@ -25,12 +27,13 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const blogPosts = await getAllBlogPosts();
+  const blogPosts = (await getAllBlogPosts()).filter(isBlogPostIndexable);
   const featuredPosts = blogPosts.filter(post => post.featured);
   
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Breadcrumbs className="mb-10" items={[{ label: 'Home', href: '/' }, { label: 'Blog' }]} />
         {/* Hero Section */}
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium mb-6">
@@ -75,11 +78,11 @@ export default async function BlogPage() {
             <div className="mx-auto max-w-md">
               <BookOpen className="h-24 w-24 text-gray-300 mx-auto mb-6" />
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                Blog Content Coming Soon
+                Editorial refresh in progress
               </h2>
               <p className="text-gray-600 mb-8">
-                We're building practical articles on professional development,
-                career intelligence, and skill building. New insights will appear here as they are published.
+                Existing drafts are being reviewed for originality, usefulness, and accurate sourcing.
+                Articles will return here as they clear the editorial gate.
               </p>
               
               <div className="rounded-xl bg-blue-50 p-6 text-left">
@@ -227,7 +230,7 @@ export default async function BlogPage() {
               Topics We Cover
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Evidence-backed insights across the full spectrum of professional development
+              Practical coverage planned across the professional-development library
             </p>
           </div>
 
@@ -238,7 +241,7 @@ export default async function BlogPage() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Skills Intelligence</h3>
               <p className="text-sm text-gray-600">
-                Market insights and strategic skill development guidance
+                Clear explanations and practical skill-development guidance
               </p>
             </div>
 
@@ -248,7 +251,7 @@ export default async function BlogPage() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Career Strategy</h3>
               <p className="text-sm text-gray-600">
-                Evidence-backed career planning and advancement tactics
+                Career planning connected to concrete skill requirements
               </p>
             </div>
 
@@ -256,9 +259,9 @@ export default async function BlogPage() {
               <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Eye className="h-8 w-8 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Market Analysis</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Workplace Context</h3>
               <p className="text-sm text-gray-600">
-                Labor market trends and economic insights for professionals
+                Examples showing where skills appear in day-to-day work
               </p>
             </div>
 
@@ -268,7 +271,7 @@ export default async function BlogPage() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Learning Science</h3>
               <p className="text-sm text-gray-600">
-                Research-backed approaches to skill acquisition and mastery
+                Practice approaches, reflection prompts, and comprehension checks
               </p>
             </div>
           </div>

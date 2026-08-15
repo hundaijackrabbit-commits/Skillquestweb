@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
-  ArrowLeft,
   ArrowRight,
   BookOpen,
   Briefcase,
@@ -25,6 +24,8 @@ import {
 import { getSkillCourse } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import { isSkillPathIndexable } from '@/lib/content-quality';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -32,7 +33,7 @@ type Props = {
 
 export async function generateStaticParams() {
   const paths = await getSkillPaths();
-  return paths.map((path) => ({ slug: path.id }));
+  return paths.filter(isSkillPathIndexable).map((path) => ({ slug: path.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -43,6 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${path.name}: Learning Path`,
     description: path.description,
     alternates: { canonical: `/paths/${path.id}` },
+    robots: { index: isSkillPathIndexable(path), follow: true },
     openGraph: {
       title: `${path.name} | Modern Skill Lab`,
       description: path.description,
@@ -93,10 +95,7 @@ export default async function SkillPathDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }}
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <Link href="/paths" className="inline-flex items-center text-sm font-semibold text-slate-600 hover:text-blue-700">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to all learning paths
-        </Link>
+        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Learning Paths', href: '/paths' }, { label: path.name }]} />
 
         <header className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-950 via-blue-950 to-violet-950 p-8 text-white shadow-xl sm:p-11">
           <div className="mb-5 flex flex-wrap items-center gap-3">

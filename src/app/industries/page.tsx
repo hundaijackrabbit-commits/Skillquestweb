@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllIndustries } from '@/lib/content';
 import { 
   ArrowRight, 
@@ -10,7 +11,6 @@ import {
   Users,
   Target,
   Globe,
-  Zap,
   Star,
   BarChart3,
   Compass,
@@ -26,10 +26,13 @@ export const metadata = {
 export default async function IndustriesPage() {
   const industries = await getAllIndustries();
   const featuredIndustries = industries.filter(industry => industry.featured);
+  const mappedCareers = new Set(industries.flatMap((industry) => industry.commonCareers)).size;
+  const mappedSkills = new Set(industries.flatMap((industry) => [...industry.criticalSkills, ...industry.emergingSkills])).size;
   
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Breadcrumbs className="mb-10" items={[{ label: 'Home', href: '/' }, { label: 'Industries' }]} />
         {/* Hero Section */}
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium mb-6">
@@ -43,8 +46,8 @@ export default async function IndustriesPage() {
           </h1>
           
           <p className="text-xl leading-8 text-gray-600 mb-8">
-            Explore career paths, skill requirements, and market dynamics across major industries. 
-            Make strategic career decisions with comprehensive sector intelligence and trend analysis.
+            Explore how skills and roles connect across major industries.
+            Each profile organizes sector characteristics, challenges, opportunities, and linked learning resources.
           </p>
 
           {/* Stats */}
@@ -58,12 +61,12 @@ export default async function IndustriesPage() {
               <div className="text-sm font-medium text-gray-600">Featured Industries</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">100+</div>
-              <div className="text-sm font-medium text-gray-600">Career Profiles</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">{mappedCareers}</div>
+              <div className="text-sm font-medium text-gray-600">Career References</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">1,300+</div>
-              <div className="text-sm font-medium text-gray-600">Skills Indexed</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">{mappedSkills}</div>
+              <div className="text-sm font-medium text-gray-600">Skill References</div>
             </div>
           </div>
         </div>
@@ -77,7 +80,7 @@ export default async function IndustriesPage() {
                 Industry Intelligence Coming Soon
               </h2>
               <p className="text-gray-600 mb-8">
-                We're compiling comprehensive industry profiles with career paths, 
+                We&apos;re compiling comprehensive industry profiles with career paths, 
                 skill requirements, and market trends. Our industry intelligence 
                 platform will be available shortly.
               </p>
@@ -162,10 +165,6 @@ export default async function IndustriesPage() {
                             <span>{industry.criticalSkills?.length || 0} essential skills</span>
                           </div>
                           
-                          <div className="flex items-center text-sm text-gray-600">
-                            <BarChart3 className="h-4 w-4 mr-2 text-purple-600" />
-                            <span>Market growth: Expanding</span>
-                          </div>
                         </div>
 
                         <div className="flex items-center justify-between">
@@ -190,7 +189,7 @@ export default async function IndustriesPage() {
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-gray-900">All Industries</h2>
                 <div className="text-sm text-gray-600">
-                  {industries.length} sectors analyzed
+                  {industries.length} sectors profiled
                 </div>
               </div>
               

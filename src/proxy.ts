@@ -6,8 +6,7 @@ export async function proxy(request: NextRequest) {
   const needsAuthRefresh =
     pathname.startsWith('/dashboard') ||
     pathname.startsWith('/admin') ||
-    pathname.startsWith('/auth') ||
-    pathname.startsWith('/skills');
+    pathname.startsWith('/auth');
 
   if (!needsAuthRefresh || !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next();

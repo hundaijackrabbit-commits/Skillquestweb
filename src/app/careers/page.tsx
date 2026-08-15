@@ -2,8 +2,10 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllCareers } from '@/lib/content';
-import { ArrowRight, Briefcase, TrendingUp, DollarSign, MapPin } from 'lucide-react';
+import { isCareerIndexable } from '@/lib/content-quality';
+import { ArrowRight, BookOpen, Briefcase, TrendingUp, MapPin } from 'lucide-react';
 
 export const metadata = {
   title: 'Career Paths & Skill Requirements',
@@ -12,26 +14,27 @@ export const metadata = {
 };
 
 export default async function CareersPage() {
-  const careers = await getAllCareers();
+  const careers = (await getAllCareers()).filter(isCareerIndexable);
 
   return (
     <div className="py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Breadcrumbs className="mb-10" items={[{ label: 'Home', href: '/' }, { label: 'Careers' }]} />
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Career Intelligence Platform
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600">
-            Understand the skills, pathways, and market dynamics of modern professional careers. 
-            Make informed decisions with practical career profiles, skill connections, and role context.
+            Understand what different roles do and how their core, secondary, and transferable skills connect.
+            Use each profile as a starting point for learning and career exploration.
           </p>
         </div>
 
         {/* Stats */}
         <div className="mt-8 flex justify-center">
           <div className="flex items-center space-x-8 text-sm text-gray-600">
-            <span>{careers.length} Career Profiles</span>
+            <span>{careers.length} Editorial-Ready Profiles</span>
             <span>•</span>
             <span>{careers.filter(c => c.featured).length} Featured</span>
             <span>•</span>
@@ -49,18 +52,7 @@ export default async function CareersPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Briefcase className="h-5 w-5 text-blue-600" />
-                      {career.demandLevel && (
-                        <Badge 
-                          variant={
-                            career.demandLevel === 'very-high' ? 'success' :
-                            career.demandLevel === 'high' ? 'warning' :
-                            career.demandLevel === 'moderate' ? 'info' : 'gray'
-                          }
-                          size="sm"
-                        >
-                          {career.demandLevel.replace('-', ' ')} demand
-                        </Badge>
-                      )}
+                      <Badge variant="outline" size="sm">Career profile</Badge>
                     </div>
 
                   </div>
@@ -76,12 +68,6 @@ export default async function CareersPage() {
                       <span className="font-medium mr-2">Core Skills:</span>
                       <span>{career.coreSkills.length} required</span>
                     </div>
-                    {career.salaryRange && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <DollarSign className="h-4 w-4 mr-2" />
-                        <span>{career.salaryRange}</span>
-                      </div>
-                    )}
                     <div className="flex items-center text-sm text-gray-600">
                       <MapPin className="h-4 w-4 mr-2" />
                       <span>{career.commonIndustries.length} industries</span>
@@ -128,16 +114,7 @@ export default async function CareersPage() {
               <Card key={career.id} className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <Badge 
-                      variant={
-                        career.demandLevel === 'very-high' ? 'success' :
-                        career.demandLevel === 'high' ? 'warning' :
-                        career.demandLevel === 'moderate' ? 'info' : 'gray'
-                      }
-                      size="sm"
-                    >
-                      {career.demandLevel?.replace('-', ' ') || 'Moderate'} demand
-                    </Badge>
+                    <Badge variant="outline" size="sm">Skill-connected</Badge>
                   </div>
                   <CardTitle className="text-lg">{career.title}</CardTitle>
                 </CardHeader>
@@ -206,11 +183,11 @@ export default async function CareersPage() {
 
             <div className="text-center">
               <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <DollarSign className="h-6 w-6 text-yellow-600" />
+                <BookOpen className="h-6 w-6 text-yellow-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Market Intelligence</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Role Context</h3>
               <p className="text-sm text-gray-600">
-                Salary ranges, demand levels, and future outlook
+                Responsibilities, work environments, and entry strategies
               </p>
             </div>
           </div>

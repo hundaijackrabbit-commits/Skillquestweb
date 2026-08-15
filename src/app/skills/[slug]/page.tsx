@@ -1,11 +1,12 @@
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   getSkillBySlug,
-  getAllSkills,
+  getIndexableSkills,
   getRelatedSkills,
   getCareersForSkill,
   getCanonicalSkillForSlug,
@@ -27,7 +28,10 @@ import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import {
-  ArrowLeft,
+  assessSkillContentQuality,
+  isSkillFieldEditoriallyUseful,
+} from '@/lib/content-quality';
+import {
   Briefcase,
   TrendingUp,
   Clock,
@@ -63,7 +67,7 @@ interface SkillDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  const skills = await getAllSkills();
+  const skills = await getIndexableSkills();
   return skills.map((skill) => ({
     slug: skill.slug,
   }));
@@ -84,12 +88,14 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
 
   const title = `${skill.name}: Practical Skill Guide`;
   const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
+  const quality = assessSkillContentQuality(skill);
 
   return {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
     alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
+    robots: { index: quality.indexable, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
       description,
@@ -153,26 +159,28 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-8">
-          <Link
-            href="/skills"
-            className="group inline-flex items-center text-sm font-medium text-gray-500 transition-colors hover:text-gray-900"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-            Back to Skills Repository
-          </Link>
-        </div>
+        <Breadcrumbs
+          className="mb-8"
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Skills', href: '/skills' },
+            { label: formatCategoryName(skill.category), href: `/topics/${skill.category}` },
+            { label: skill.name },
+          ]}
+        />
 
         <div className="mb-16">
           <div className="relative rounded-2xl border bg-gradient-to-r from-white via-blue-50/50 to-purple-50/50 p-8 shadow-sm">
             <div className="mb-6 flex flex-wrap items-center gap-3">
-              <Badge
-                variant="default"
-                className={`${categoryColors.bg} ${categoryColors.text} px-3 py-1 font-medium`}
-                size="lg"
-              >
-                {formatCategoryName(skill.category)}
-              </Badge>
+              <Link href={`/topics/${skill.category}`}>
+                <Badge
+                  variant="default"
+                  className={`${categoryColors.bg} ${categoryColors.text} px-3 py-1 font-medium`}
+                  size="lg"
+                >
+                  {formatCategoryName(skill.category)}
+                </Badge>
+              </Link>
 
               {skill.featured && (
                 <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 font-medium text-white">
@@ -280,7 +288,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <section>
+            {isSkillFieldEditoriallyUseful(skill, 'whyItMatters') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <Target className="mr-2 h-6 w-6 text-blue-600" />
                 Why This Skill Matters
@@ -288,9 +296,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.whyItMatters}</p>
               </div>
-            </section>
+            </section>}
 
-            <section>
+            {isSkillFieldEditoriallyUseful(skill, 'fullDefinition') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <BookOpen className="mr-2 h-6 w-6 text-blue-600" />
                 Comprehensive Definition
@@ -298,9 +306,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.fullDefinition}</p>
               </div>
-            </section>
+            </section>}
 
-            <section>
+            {isSkillFieldEditoriallyUseful(skill, 'modernRelevance') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <TrendingUp className="mr-2 h-6 w-6 text-blue-600" />
                 Modern Relevance
@@ -308,18 +316,18 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.modernRelevance}</p>
               </div>
-            </section>
+            </section>}
 
-            <section>
+            {(isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') || isSkillFieldEditoriallyUseful(skill, 'humanAdvantage')) && <section>
               <h2 className="mb-4 text-2xl font-bold text-gray-900">AI Era Context</h2>
               <div className="prose max-w-none">
-                <p className="text-gray-700">{skill.aiEraRelevance}</p>
-                <div className="mt-4 rounded-lg bg-blue-50 p-4">
+                {isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') && <p className="text-gray-700">{skill.aiEraRelevance}</p>}
+                {isSkillFieldEditoriallyUseful(skill, 'humanAdvantage') && <div className="mt-4 rounded-lg bg-blue-50 p-4">
                   <h4 className="mb-2 font-semibold text-blue-900">Human Advantage</h4>
                   <p className="text-sm text-blue-800">{skill.humanAdvantage}</p>
-                </div>
+                </div>}
               </div>
-            </section>
+            </section>}
 
             <section>
               <h2 className="mb-6 flex items-center text-2xl font-bold text-gray-900">
@@ -839,21 +847,21 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               </Card>
             )}
 
-            <Card className="border-blue-200 bg-blue-50">
+            {(isSkillFieldEditoriallyUseful(skill, 'howToPractice') || isSkillFieldEditoriallyUseful(skill, 'howToMeasureProgress')) && <Card className="border-blue-200 bg-blue-50">
               <CardHeader>
                 <CardTitle className="text-blue-900">Start Developing</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="text-sm text-blue-800">
+                {isSkillFieldEditoriallyUseful(skill, 'howToPractice') && <div className="text-sm text-blue-800">
                   <strong>How to Practice:</strong>
                   <p className="mt-1">{skill.howToPractice}</p>
-                </div>
-                <div className="text-sm text-blue-800">
+                </div>}
+                {isSkillFieldEditoriallyUseful(skill, 'howToMeasureProgress') && <div className="text-sm text-blue-800">
                   <strong>Measure Progress:</strong>
                   <p className="mt-1">{skill.howToMeasureProgress}</p>
-                </div>
+                </div>}
               </CardContent>
-            </Card>
+            </Card>}
           </div>
         </div>
       </div>

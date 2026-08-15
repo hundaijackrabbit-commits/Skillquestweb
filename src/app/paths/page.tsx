@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getSkillPaths } from '@/lib/content';
+import { isSkillPathIndexable } from '@/lib/content-quality';
 import { 
   ArrowRight, 
   Target, 
@@ -23,7 +25,7 @@ export const metadata = {
 };
 
 export default async function SkillPathsPage() {
-  const paths = await getSkillPaths();
+  const paths = (await getSkillPaths()).filter(isSkillPathIndexable);
   const featuredPaths = paths.filter(path => path.featured);
   const skillsCovered = new Set(paths.flatMap(path => path.skills)).size;
   
@@ -43,6 +45,7 @@ export default async function SkillPathsPage() {
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <Breadcrumbs className="mb-10" items={[{ label: 'Home', href: '/' }, { label: 'Learning Paths' }]} />
         {/* Hero Section */}
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium mb-6">

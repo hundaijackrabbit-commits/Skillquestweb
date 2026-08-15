@@ -3,6 +3,13 @@ import path from 'path';
 import { cache } from 'react';
 import { Skill, Career, Industry, BlogPost, SkillPath, SkillSchema, CareerSchema, IndustrySchema, BlogPostSchema, SkillPathSchema, SearchResult } from './types';
 import Fuse from 'fuse.js';
+import {
+  compareSkillsForDiscovery,
+  isBlogPostIndexable,
+  isCareerIndexable,
+  isSkillIndexable,
+  isSkillPathIndexable,
+} from './content-quality';
 
 // Data file paths
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
@@ -125,6 +132,11 @@ export async function getCanonicalSkills(): Promise<Skill[]> {
   return [...canonicalByName.values()];
 }
 
+export async function getIndexableSkills(): Promise<Skill[]> {
+  const skills = await getCanonicalSkills();
+  return skills.filter(isSkillIndexable).sort(compareSkillsForDiscovery);
+}
+
 export async function getCanonicalSkillForSlug(slug: string): Promise<Skill | null> {
   const skills = await getAllSkills();
   const requested = skills.find((skill) => skill.slug === slug);
@@ -160,12 +172,12 @@ export async function getSkillBySlug(slug: string): Promise<Skill | null> {
 }
 
 export async function getSkillsByCategory(category: string): Promise<Skill[]> {
-  const skills = await getCanonicalSkills();
+  const skills = await getIndexableSkills();
   return skills.filter(skill => skill.category === category);
 }
 
 export async function getFeaturedSkills(limit: number = 10): Promise<Skill[]> {
-  const skills = await getCanonicalSkills();
+  const skills = await getIndexableSkills();
   return skills.filter(skill => skill.featured).slice(0, limit);
 }
 
@@ -193,7 +205,7 @@ export async function getCareerBySlug(slug: string): Promise<Career | null> {
 
 export async function getFeaturedCareers(limit: number = 10): Promise<Career[]> {
   const careers = await getAllCareers();
-  return careers.filter(career => career.featured).slice(0, limit);
+  return careers.filter((career) => career.featured && isCareerIndexable(career)).slice(0, limit);
 }
 
 export async function getAllIndustries(): Promise<Industry[]> {
@@ -307,14 +319,14 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 
 export async function getFeaturedBlogPosts(limit: number = 5): Promise<BlogPost[]> {
   const posts = await getAllBlogPosts();
-  return posts.filter(post => post.featured).slice(0, limit);
+  return posts.filter((post) => post.featured && isBlogPostIndexable(post)).slice(0, limit);
 }
 
 export async function resolveSkillReferences(
   references: string[],
   limit?: number,
 ): Promise<Skill[]> {
-  const skills = await getCanonicalSkills();
+  const skills = await getIndexableSkills();
   const resolved = references
     .map((reference) => skills.find((skill) => skillMatchesReference(skill, reference)))
     .filter((skill): skill is Skill => Boolean(skill));
@@ -329,7 +341,7 @@ export async function resolveCareerReferences(
   const careers = await getAllCareers();
   const resolved = references
     .map((reference) => careers.find((career) => careerMatchesReference(career, reference)))
-    .filter((career): career is Career => Boolean(career));
+    .filter((career): career is Career => career !== undefined && isCareerIndexable(career));
   const deduplicated = [...new Map(resolved.map((career) => [career.slug, career])).values()];
   return typeof limit === 'number' ? deduplicated.slice(0, limit) : deduplicated;
 }
@@ -351,7 +363,7 @@ export async function searchContent(query: string, types: ('skill' | 'career' | 
   const results: SearchResult[] = [];
   
   if (types.includes('skill')) {
-    const skills = await getCanonicalSkills();
+    const skills = await getIndexableSkills();
     const skillResults = skills.map(skill => ({
       type: 'skill' as const,
       id: skill.id,
@@ -365,7 +377,7 @@ export async function searchContent(query: string, types: ('skill' | 'career' | 
   }
   
   if (types.includes('career')) {
-    const careers = await getAllCareers();
+    const careers = (await getAllCareers()).filter(isCareerIndexable);
     const careerResults = careers.map(career => ({
       type: 'career' as const,
       id: career.id,
@@ -391,7 +403,7 @@ export async function searchContent(query: string, types: ('skill' | 'career' | 
   }
   
   if (types.includes('blog')) {
-    const posts = await getAllBlogPosts();
+    const posts = (await getAllBlogPosts()).filter(isBlogPostIndexable);
     const blogResults = posts.map(post => ({
       type: 'blog' as const,
       id: post.id,
@@ -453,7 +465,7 @@ export async function getRelatedSkills(skillId: string, limit: number = 5): Prom
     .sort((a, b) => b.score - a.score || skillContentScore(b.candidate) - skillContentScore(a.candidate))
     .map(({ candidate }) => candidate);
 
-  return (await canonicalizeSkillList(related)).slice(0, limit);
+  return (await canonicalizeSkillList(related)).filter(isSkillIndexable).slice(0, limit);
 }
 
 export async function getSkillsForCareer(careerSlug: string): Promise<Skill[]> {
@@ -472,7 +484,7 @@ export async function getCareersForSkill(skillSlug: string): Promise<Career[]> {
   if (!skill) return [];
 
   const allCareers = await getAllCareers();
-  const connected = allCareers.filter((career) =>
+  const connected = allCareers.filter((career) => isCareerIndexable(career) &&
     [...career.coreSkills, ...career.secondarySkills, ...career.transferableSkills].some(
       (reference) => skillMatchesReference(skill, reference),
     ),
@@ -485,7 +497,7 @@ export async function getRelatedCareers(careerSlug: string, limit: number = 6): 
   const career = await getCareerBySlug(careerSlug);
   if (!career) return [];
 
-  const careers = await getAllCareers();
+  const careers = (await getAllCareers()).filter(isCareerIndexable);
   const declared = await resolveCareerReferences(career.relatedCareers);
   const scored = careers
     .filter((candidate) => candidate.slug !== career.slug)
@@ -508,10 +520,10 @@ export async function getCareersForIndustry(industrySlug: string): Promise<Caree
   if (!industry) return [];
 
   const allCareers = await getAllCareers();
-  return allCareers.filter(career =>
+  return allCareers.filter(career => isCareerIndexable(career) && (
     career.commonIndustries.includes(industry.slug) ||
     career.commonIndustries.includes(industry.id)
-  );
+  ));
 }
 
 export async function getSkillsForIndustry(industrySlug: string): Promise<Skill[]> {
@@ -522,7 +534,7 @@ export async function getSkillsForIndustry(industrySlug: string): Promise<Skill[
     ...industry.criticalSkills,
     ...industry.emergingSkills,
   ]);
-  const allSkills = await getCanonicalSkills();
+  const allSkills = await getIndexableSkills();
   const reverseLinked = allSkills.filter((skill) =>
     skill.industries.some((reference) => industryMatchesReference(industry, reference)),
   );
@@ -555,7 +567,7 @@ export async function getSkillPathsForSkill(skillSlug: string, limit: number = 4
   if (!skill) return [];
   const paths = await getSkillPaths();
   return paths
-    .filter((path) => path.skills.some((reference) => skillMatchesReference(skill, reference)))
+    .filter((path) => isSkillPathIndexable(path) && path.skills.some((reference) => skillMatchesReference(skill, reference)))
     .slice(0, limit);
 }
 
@@ -564,7 +576,7 @@ export async function getSkillPathsForCareer(careerSlug: string, limit: number =
   if (!career) return [];
   const paths = await getSkillPaths();
   return paths
-    .filter((path) => path.relatedCareers.some((reference) => careerMatchesReference(career, reference)))
+    .filter((path) => isSkillPathIndexable(path) && path.relatedCareers.some((reference) => careerMatchesReference(career, reference)))
     .slice(0, limit);
 }
 
@@ -574,11 +586,11 @@ export async function getBlogPostsForSkill(skillSlug: string, limit: number = 4)
   const posts = await getAllBlogPosts();
   const declaredSlugs = new Set(skill.blogPosts.map(normalizedReference));
   return posts
-    .filter((post) =>
+    .filter((post) => isBlogPostIndexable(post) && (
       post.relatedSkills.some((reference) => skillMatchesReference(skill, reference)) ||
       declaredSlugs.has(normalizedReference(post.slug)) ||
-      post.tags.some((tag) => normalizedReference(tag) === normalizedReference(skill.category)),
-    )
+      post.tags.some((tag) => normalizedReference(tag) === normalizedReference(skill.category))
+    ))
     .slice(0, limit);
 }
 
@@ -587,7 +599,7 @@ export async function getBlogPostsForCareer(careerSlug: string, limit: number = 
   if (!career) return [];
   const posts = await getAllBlogPosts();
   return posts
-    .filter((post) => post.relatedCareers.some((reference) => careerMatchesReference(career, reference)))
+    .filter((post) => isBlogPostIndexable(post) && post.relatedCareers.some((reference) => careerMatchesReference(career, reference)))
     .slice(0, limit);
 }
 
@@ -596,7 +608,7 @@ export async function getBlogPostsForIndustry(industrySlug: string, limit: numbe
   if (!industry) return [];
   const posts = await getAllBlogPosts();
   return posts
-    .filter((post) => post.relatedIndustries.some((reference) => industryMatchesReference(industry, reference)))
+    .filter((post) => isBlogPostIndexable(post) && post.relatedIndustries.some((reference) => industryMatchesReference(industry, reference)))
     .slice(0, limit);
 }
 

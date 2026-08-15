@@ -5,9 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
-import { getAllBlogPosts, getAllCareers, getCanonicalSkills } from '@/lib/content';
+import { getAllCareers, getIndexableSkills } from '@/lib/content';
+import { isCareerIndexable } from '@/lib/content-quality';
 import { getHomepageGrowthData } from '@/lib/growth';
 import { getAllSkillCourses } from '@/lib/courses';
+import { TOPICS } from '@/lib/topics';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,11 +22,11 @@ const pillars = [
 ];
 
 export default async function HomePage() {
-  const [skills, careers, posts] = await Promise.all([
-    getCanonicalSkills(),
+  const [skills, allCareers] = await Promise.all([
+    getIndexableSkills(),
     getAllCareers(),
-    getAllBlogPosts(),
   ]);
+  const careers = allCareers.filter(isCareerIndexable);
   const growth = await getHomepageGrowthData(skills);
   const courses = getAllSkillCourses();
 
@@ -65,7 +67,7 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl gap-4 px-6 sm:grid-cols-3 lg:px-8">
           <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{skills.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">skill guides</p></div>
           <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{careers.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">career profiles</p></div>
-          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{posts.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">in-depth articles</p></div>
+          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{TOPICS.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">connected topic hubs</p></div>
         </div>
       </section>
 

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import {
   getCareerBySlug,
   getAllCareers,
@@ -17,11 +18,10 @@ import { ContentViewTracker } from '@/components/analytics/content-view-tracker'
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
+import { isCareerIndexable } from '@/lib/content-quality';
 import { 
-  ArrowLeft, 
   Briefcase, 
   TrendingUp, 
-  DollarSign, 
   MapPin, 
   Users,
   Target,
@@ -44,7 +44,7 @@ interface CareerDetailPageProps {
 export async function generateStaticParams() {
   const careers = await getAllCareers();
   
-  return careers.map((career) => ({
+  return careers.filter(isCareerIndexable).map((career) => ({
     slug: career.slug,
   }));
 }
@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
     title,
     description,
     alternates: { canonical: `/careers/${career.slug}` },
+    robots: { index: isCareerIndexable(career), follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
 }
@@ -111,16 +112,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Back Navigation */}
-        <div className="mb-8">
-          <Link 
-            href="/careers" 
-            className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors group"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Career Intelligence
-          </Link>
-        </div>
+        <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Careers', href: '/careers' }, { label: career.title }]} />
 
         {/* Hero Header */}
         <div className="mb-16">
@@ -136,18 +128,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 Career Path
               </Badge>
               
-              {career.demandLevel && (
-                <Badge 
-                  variant={
-                    career.demandLevel === 'very-high' ? 'success' :
-                    career.demandLevel === 'high' ? 'warning' : 'secondary'
-                  }
-                  className="font-medium"
-                >
-                  <TrendingUp className="h-3 w-3 mr-1" />
-                  {career.demandLevel.replace('-', ' ')} demand
-                </Badge>
-              )}
+              <Badge variant="outline" className="font-medium">Skill-connected profile</Badge>
               
               <Badge variant="outline" className="flex items-center">
                 <Award className="h-3 w-3 mr-1" />
@@ -195,17 +176,13 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 </div>
               </div>
               
-              {career.salaryRange && (
-                <div className="text-center p-4 bg-white/60 rounded-xl">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-yellow-100 mb-2">
-                    <DollarSign className="h-6 w-6 text-yellow-600" />
-                  </div>
-                  <div className="text-sm font-medium text-gray-500 mb-1">Salary Range</div>
-                  <div className="text-sm font-semibold text-yellow-600">
-                    {career.salaryRange}
-                  </div>
+              <div className="text-center p-4 bg-white/60 rounded-xl">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-yellow-100 mb-2">
+                  <Route className="h-6 w-6 text-yellow-700" />
                 </div>
-              )}
+                <div className="text-sm font-medium text-gray-500 mb-1">Learning Paths</div>
+                <div className="text-sm font-semibold text-yellow-700">{relatedPaths.length} connected</div>
+              </div>
             </div>
           </div>
         </div>
