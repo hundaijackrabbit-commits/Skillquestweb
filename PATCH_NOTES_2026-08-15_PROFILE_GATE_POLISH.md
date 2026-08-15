@@ -3,6 +3,8 @@
 ## Account wall correction
 
 - Replaced the plain member prompt with a full blurred practice preview and centered lock wall.
+- Replaced the fixed-height absolute overlay with a content-sized grid overlay so the entire lock card remains visible at narrow mobile widths.
+- Added phone-specific padding, heading sizes, line heights, break-safe titles, and full-width account buttons.
 - The blurred preview is deliberately inert and contains no working quiz controls.
 - Quiz, mission, sequence, sorting, and Skill Sprint components remain unmounted until the Supabase provider confirms an authenticated user.
 - The loading state is locked too, preventing a brief interactive flash before authentication resolves.
