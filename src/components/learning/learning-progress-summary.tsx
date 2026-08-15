@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Flame, Sparkles, Trophy } from 'lucide-react';
+import { useSupabase } from '@/components/providers/supabase-provider';
 import {
   getLearningProfile,
   LEARNING_PROGRESS_EVENT,
@@ -19,17 +20,21 @@ const initialProfile: LearningProfile = {
 
 export function LearningProgressSummary() {
   const [profile, setProfile] = useState(initialProfile);
+  const { user } = useSupabase();
+  const userId = user?.id;
 
   useEffect(() => {
-    const refresh = () => setProfile(getLearningProfile());
-    refresh();
+    if (!userId) return;
+    const refresh = () => setProfile(getLearningProfile(userId));
+    const frame = window.requestAnimationFrame(refresh);
     window.addEventListener(LEARNING_PROGRESS_EVENT, refresh);
     window.addEventListener('storage', refresh);
     return () => {
+      window.cancelAnimationFrame(frame);
       window.removeEventListener(LEARNING_PROGRESS_EVENT, refresh);
       window.removeEventListener('storage', refresh);
     };
-  }, []);
+  }, [userId]);
 
   return (
     <section className="mb-12 rounded-3xl border border-blue-200 bg-white p-5 shadow-sm sm:p-6" aria-label="Your learning progress">
@@ -57,9 +62,8 @@ export function LearningProgressSummary() {
         </div>
       </div>
       <p className="mt-4 text-xs leading-5 text-slate-500">
-        XP is earned only for completed practice and retrieval checks. Your progress is stored in this browser.
+        XP is earned only for completed practice and retrieval checks. Progress is isolated to your signed-in account on this browser.
       </p>
     </section>
   );
 }
-

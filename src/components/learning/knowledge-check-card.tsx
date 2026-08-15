@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Brain, Check, CheckCircle2, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSupabase } from '@/components/providers/supabase-provider';
+import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import type { KnowledgeCheck } from '@/lib/knowledge-checks';
 import {
   getLearningProfile,
@@ -16,6 +18,8 @@ type Props = {
   check: KnowledgeCheck;
   className?: string;
 };
+
+type ExperienceProps = Props & { userId: string };
 
 const emptyProfile: LearningProfile = {
   version: 1,
@@ -39,18 +43,32 @@ function sessionId() {
 }
 
 export function KnowledgeCheckCard({ check, className = '' }: Props) {
+  const { user } = useSupabase();
+  return (
+    <GamificationAccessGate
+      id="knowledge-check"
+      className={className}
+      featureName={`${check.title} challenge`}
+      description="Sign in to answer this knowledge check, receive corrective feedback, and add the completion to your private learning profile."
+    >
+      {user ? <KnowledgeCheckExperience check={check} className={className} userId={user.id} /> : null}
+    </GamificationAccessGate>
+  );
+}
+
+function KnowledgeCheckExperience({ check, className = '', userId }: ExperienceProps) {
   const [profile, setProfile] = useState(emptyProfile);
   const [selected, setSelected] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
-      const next = getLearningProfile();
+      const next = getLearningProfile(userId);
       setProfile(next);
       setSolved(hasLearningActivity(next, `check:${check.id}`));
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [check.id]);
+  }, [check.id, userId]);
 
   const selectedIsCorrect = selected === check.correctIndex;
   const alreadyRewarded = hasLearningActivity(profile, `check:${check.id}`);
@@ -67,7 +85,7 @@ export function KnowledgeCheckCard({ check, className = '' }: Props) {
       kind: 'knowledge-check',
       skillSlug: check.skillSlug,
       xp: check.xp,
-    });
+    }, userId);
     setProfile(next);
 
     fetch('/api/events', {

@@ -15,6 +15,8 @@ import {
   Trophy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSupabase } from '@/components/providers/supabase-provider';
+import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import type { SkillCourse } from '@/lib/courses';
 import {
   getLearningProfile,
@@ -29,8 +31,10 @@ type Props = {
   relatedSkillHref: string;
 };
 
-function progressKey(skillSlug: string) {
-  return `msl_skill_sprint_${skillSlug}`;
+type ExperienceProps = Props & { userId: string };
+
+function progressKey(skillSlug: string, userId: string) {
+  return `msl_skill_sprint_${userId}_${skillSlug}`;
 }
 
 function recordCourseEvent(skillSlug: string, action: 'start' | 'complete') {
@@ -59,6 +63,18 @@ function recordCourseEvent(skillSlug: string, action: 'start' | 'complete') {
 }
 
 export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
+  const { user } = useSupabase();
+  return (
+    <GamificationAccessGate
+      featureName={`${skillName} Skill Sprint`}
+      description="Create an account to open the lesson rounds, complete workplace exercises, earn XP, and keep your sprint progress private."
+    >
+      {user ? <CourseRunnerExperience course={course} skillName={skillName} relatedSkillHref={relatedSkillHref} userId={user.id} /> : null}
+    </GamificationAccessGate>
+  );
+}
+
+function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }: ExperienceProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -74,35 +90,35 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
 
   useEffect(() => {
     try {
-      const stored = window.localStorage.getItem(progressKey(course.skillSlug));
+      const stored = window.localStorage.getItem(progressKey(course.skillSlug, userId));
       if (stored) {
         const parsed = JSON.parse(stored) as { completed?: string[] };
         const valid = (parsed.completed ?? []).filter((id) =>
           course.lessons.some((lesson) => lesson.id === id),
         );
         setCompleted(valid);
-        let profile = getLearningProfile();
+        let profile = getLearningProfile(userId);
         for (const lessonId of valid) {
           profile = recordLearningActivity({
             id: `course:${course.skillSlug}:${lessonId}`,
             kind: 'course-lesson',
             skillSlug: course.skillSlug,
             xp: course.pointsPerLesson,
-          });
+          }, userId);
         }
         setLearningProfile(profile);
         const firstIncomplete = course.lessons.findIndex((lesson) => !valid.includes(lesson.id));
         if (firstIncomplete >= 0) setCurrentIndex(firstIncomplete);
       } else {
-        setLearningProfile(getLearningProfile());
+        setLearningProfile(getLearningProfile(userId));
         recordCourseEvent(course.skillSlug, 'start');
       }
     } catch {
-      window.localStorage.removeItem(progressKey(course.skillSlug));
+      window.localStorage.removeItem(progressKey(course.skillSlug, userId));
     } finally {
       setHasLoaded(true);
     }
-  }, [course]);
+  }, [course, userId]);
 
   const lesson = course.lessons[currentIndex];
   const isCorrect = selectedAnswer === lesson.quiz.correctIndex;
@@ -123,7 +139,7 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
     const nextCompleted = completedSet.has(lesson.id) ? completed : [...completed, lesson.id];
     setCompleted(nextCompleted);
     window.localStorage.setItem(
-      progressKey(course.skillSlug),
+      progressKey(course.skillSlug, userId),
       JSON.stringify({ completed: nextCompleted, updatedAt: new Date().toISOString() }),
     );
 
@@ -134,7 +150,7 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
           kind: 'course-lesson',
           skillSlug: course.skillSlug,
           xp: course.pointsPerLesson,
-        }),
+        }, userId),
       );
     }
 
@@ -151,7 +167,7 @@ export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
   }
 
   function resetCourse() {
-    window.localStorage.removeItem(progressKey(course.skillSlug));
+    window.localStorage.removeItem(progressKey(course.skillSlug, userId));
     setCompleted([]);
     setCurrentIndex(0);
     setSelectedAnswer(null);

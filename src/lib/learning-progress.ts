@@ -1,4 +1,9 @@
-export type LearningActivityKind = 'mission' | 'course-lesson' | 'knowledge-check';
+export type LearningActivityKind =
+  | 'mission'
+  | 'course-lesson'
+  | 'knowledge-check'
+  | 'sequence-practice'
+  | 'sort-practice';
 
 export type LearningActivity = {
   id: string;
@@ -90,23 +95,28 @@ function normalizeProfile(value: Partial<LearningProfile> | null): LearningProfi
   };
 }
 
-export function getLearningProfile(): LearningProfile {
-  if (typeof window === 'undefined') return emptyProfile;
+function profileStorageKey(userId: string) {
+  return `${STORAGE_KEY}:${userId}`;
+}
+
+export function getLearningProfile(userId: string): LearningProfile {
+  if (typeof window === 'undefined' || !userId) return emptyProfile;
 
   try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
+    const storageKey = profileStorageKey(userId);
+    const stored = window.localStorage.getItem(storageKey);
     return normalizeProfile(stored ? (JSON.parse(stored) as Partial<LearningProfile>) : null);
   } catch {
-    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(profileStorageKey(userId));
     return emptyProfile;
   }
 }
 
 type RecordActivityInput = Omit<LearningActivity, 'completedAt'>;
 
-export function recordLearningActivity(input: RecordActivityInput): LearningProfile {
-  const current = getLearningProfile();
-  if (typeof window === 'undefined' || current.activities.some((activity) => activity.id === input.id)) {
+export function recordLearningActivity(input: RecordActivityInput, userId: string): LearningProfile {
+  const current = getLearningProfile(userId);
+  if (typeof window === 'undefined' || !userId || current.activities.some((activity) => activity.id === input.id)) {
     return current;
   }
 
@@ -130,8 +140,8 @@ export function recordLearningActivity(input: RecordActivityInput): LearningProf
     activities: [...current.activities, { ...input, completedAt: now.toISOString() }],
   };
 
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  window.dispatchEvent(new CustomEvent(LEARNING_PROGRESS_EVENT, { detail: next }));
+  window.localStorage.setItem(profileStorageKey(userId), JSON.stringify(next));
+  window.dispatchEvent(new CustomEvent(LEARNING_PROGRESS_EVENT, { detail: { profile: next, userId } }));
   return next;
 }
 
@@ -164,6 +174,9 @@ export function getLearningAchievements(profile: LearningProfile): LearningAchie
   const knowledgeChecks = profile.activities.filter((activity) => activity.kind === 'knowledge-check').length;
   const courseLessons = profile.activities.filter((activity) => activity.kind === 'course-lesson').length;
   const missions = profile.activities.filter((activity) => activity.kind === 'mission').length;
+  const interactivePractices = profile.activities.filter(
+    (activity) => activity.kind === 'sequence-practice' || activity.kind === 'sort-practice',
+  ).length;
 
   const achievements = [
     {
@@ -207,6 +220,13 @@ export function getLearningAchievements(profile: LearningProfile): LearningAchie
       description: 'Reach a three-day practice streak.',
       current: profile.longestStreak,
       target: 3,
+    },
+    {
+      id: 'pattern-builder',
+      name: 'Pattern Builder',
+      description: 'Complete four sequence or sorting activities.',
+      current: interactivePractices,
+      target: 4,
     },
   ];
 

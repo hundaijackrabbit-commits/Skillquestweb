@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, Flame, Sparkles, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSupabase } from '@/components/providers/supabase-provider';
+import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import {
   getLearningProfile,
   hasLearningActivity,
@@ -24,6 +26,8 @@ type Props = {
   nextSkill?: { name: string; slug: string; reason: string };
 };
 
+type ExperienceProps = Props & { userId: string };
+
 const blankProfile: LearningProfile = {
   version: 1,
   totalXp: 0,
@@ -38,15 +42,29 @@ function missionId(skillSlug: string, index: number) {
 }
 
 export function SkillMission({ skillSlug, skillName, missions, nextSkill }: Props) {
+  const { user } = useSupabase();
+  return (
+    <GamificationAccessGate
+      id="skill-mission"
+      className="mb-12"
+      featureName={`${skillName} skill missions`}
+      description="Create an account to choose a real-world mission, reflect on what changed, and earn private practice XP."
+    >
+      {user ? <SkillMissionExperience skillSlug={skillSlug} skillName={skillName} missions={missions} nextSkill={nextSkill} userId={user.id} /> : null}
+    </GamificationAccessGate>
+  );
+}
+
+function SkillMissionExperience({ skillSlug, skillName, missions, nextSkill, userId }: ExperienceProps) {
   const [profile, setProfile] = useState(blankProfile);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [reflection, setReflection] = useState('');
   const [justCompleted, setJustCompleted] = useState(false);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setProfile(getLearningProfile()));
+    const frame = window.requestAnimationFrame(() => setProfile(getLearningProfile(userId)));
     return () => window.cancelAnimationFrame(frame);
-  }, []);
+  }, [userId]);
 
   const selected = missions[selectedIndex];
   const selectedId = missionId(skillSlug, selectedIndex);
@@ -69,7 +87,7 @@ export function SkillMission({ skillSlug, skillName, missions, nextSkill }: Prop
       kind: 'mission',
       skillSlug,
       xp: selected.xp,
-    });
+    }, userId);
     setProfile(next);
     setJustCompleted(true);
     setReflection('');

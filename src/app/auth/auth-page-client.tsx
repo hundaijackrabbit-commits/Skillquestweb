@@ -4,11 +4,16 @@ import React, { useState } from 'react'
 import { AuthForm } from '@/components/auth/auth-form'
 import { Users, Target, TrendingUp, Star } from 'lucide-react'
 
-export default function AuthPageClient() {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+type Props = {
+  initialMode: 'signin' | 'signup'
+  redirectTo: string
+}
+
+export default function AuthPageClient({ initialMode, redirectTo }: Props) {
+  const [mode, setMode] = useState<'signin' | 'signup'>(initialMode)
 
   const handleAuthSuccess = () => {
-    window.location.href = '/dashboard'
+    window.location.href = redirectTo
   }
 
   return (
@@ -21,6 +26,7 @@ export default function AuthPageClient() {
                 mode={mode}
                 onSuccess={handleAuthSuccess}
                 onModeChange={setMode}
+                redirectTo={redirectTo}
               />
             </div>
           </div>
@@ -31,7 +37,7 @@ export default function AuthPageClient() {
                 Unlock Your Professional Potential
               </h1>
               <p className="text-xl leading-relaxed text-gray-600">
-                Build a personal learning hub with saved skills, career connections, and a clear place to return as your goals change.
+                    Build a personal learning hub with saved skills, interactive practice, private XP, and a clear place to return as your goals change.
               </p>
             </div>
 

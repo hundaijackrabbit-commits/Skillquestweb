@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Flame,
   LockKeyhole,
+  Layers3,
   Medal,
   Route,
 } from 'lucide-react';
@@ -18,6 +19,7 @@ import {
   LEARNING_PROGRESS_EVENT,
   type LearningProfile,
 } from '@/lib/learning-progress';
+import { useSupabase } from '@/components/providers/supabase-provider';
 
 const initialProfile: LearningProfile = {
   version: 1,
@@ -35,13 +37,17 @@ const achievementIcons = {
   'sprint-finisher': BookOpenCheck,
   'evidence-maker': Award,
   'practice-rhythm': Flame,
+  'pattern-builder': Layers3,
 };
 
 export function LearningAchievements() {
   const [profile, setProfile] = useState(initialProfile);
+  const { user } = useSupabase();
+  const userId = user?.id;
 
   useEffect(() => {
-    const refresh = () => setProfile(getLearningProfile());
+    if (!userId) return;
+    const refresh = () => setProfile(getLearningProfile(userId));
     const frame = window.requestAnimationFrame(refresh);
     window.addEventListener(LEARNING_PROGRESS_EVENT, refresh);
     window.addEventListener('storage', refresh);
@@ -50,7 +56,7 @@ export function LearningAchievements() {
       window.removeEventListener(LEARNING_PROGRESS_EVENT, refresh);
       window.removeEventListener('storage', refresh);
     };
-  }, []);
+  }, [userId]);
 
   const level = useMemo(() => getLearningLevel(profile.totalXp), [profile.totalXp]);
   const achievements = useMemo(() => getLearningAchievements(profile), [profile]);
@@ -86,7 +92,7 @@ export function LearningAchievements() {
               <div className="text-xs font-bold uppercase tracking-[0.16em] text-violet-700">Achievement shelf</div>
               <h3 className="mt-1 text-2xl font-bold text-slate-950">{earnedCount} of {achievements.length} unlocked</h3>
             </div>
-            <span className="text-xs font-medium text-slate-500">Stored in this browser</span>
+            <span className="text-xs font-medium text-slate-500">Private to this account</span>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {achievements.map((achievement) => {
