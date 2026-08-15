@@ -99,7 +99,7 @@ export function SkillMission({ skillSlug, skillName, missions, nextSkill }: Prop
   }
 
   return (
-    <section className="mb-12 overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-sm" aria-labelledby={`${skillSlug}-mission-title`}>
+    <section id="skill-mission" className="scroll-mt-28 mb-12 overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-sm" aria-labelledby={`${skillSlug}-mission-title`}>
       <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="bg-gradient-to-br from-slate-950 via-blue-950 to-violet-950 p-7 text-white sm:p-9">
           <div className="inline-flex items-center rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-200">

@@ -6,6 +6,8 @@ import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllBlogPosts } from '@/lib/content';
 import { isBlogPostIndexable } from '@/lib/content-quality';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
+import { getKnowledgeCheckForBlog } from '@/lib/knowledge-checks';
+import { formatContentDate } from '@/lib/dates';
 import { 
   ArrowRight, 
   Clock, 
@@ -17,7 +19,8 @@ import {
   Target,
   Zap,
   Star,
-  Eye
+  Eye,
+  Brain,
 } from 'lucide-react';
 
 export const metadata = {
@@ -27,7 +30,12 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const blogPosts = (await getAllBlogPosts()).filter(isBlogPostIndexable);
+  const blogPosts = (await getAllBlogPosts())
+    .filter(isBlogPostIndexable)
+    .sort((left, right) => {
+      const updatedDifference = new Date(right.lastUpdated).getTime() - new Date(left.lastUpdated).getTime();
+      return updatedDifference || new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime();
+    });
   const featuredPosts = blogPosts.filter(post => post.featured);
   
   return (
@@ -117,6 +125,11 @@ export default async function BlogPage() {
                                 {tag.replace('-', ' ')}
                               </Badge>
                             ))}
+                            {getKnowledgeCheckForBlog(post.slug) && (
+                              <Badge className="bg-violet-100 text-violet-800" size="sm">
+                                <Brain className="mr-1 h-3 w-3" /> Practice included
+                              </Badge>
+                            )}
                           </div>
                           <div className="flex items-center text-sm text-gray-600">
                             <Clock className="h-4 w-4 mr-1" />
@@ -139,7 +152,7 @@ export default async function BlogPage() {
                             <User className="h-4 w-4 mr-2" />
                             <span>{post.author}</span>
                             <Calendar className="h-4 w-4 ml-4 mr-1" />
-                            <span>Updated {new Date(`${post.lastUpdated}T12:00:00`).toLocaleDateString()}</span>
+                            <span>Updated {formatContentDate(post.lastUpdated)}</span>
                           </div>
                           <Link href={`/blog/${post.slug}`}>
                             <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
@@ -175,9 +188,9 @@ export default async function BlogPage() {
                             </Badge>
                           ))}
                         </div>
-                        {post.featured && (
-                          <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                        )}
+                          {post.featured && (
+                            <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                          )}
                       </div>
                       <CardTitle className="text-lg group-hover:text-blue-600 transition-colors line-clamp-2">
                         {post.title}
@@ -200,8 +213,14 @@ export default async function BlogPage() {
                         </div>
                         <div className="flex items-center text-xs text-gray-500">
                           <Calendar className="h-3 w-3 mr-2" />
-                          <span>Updated {new Date(`${post.lastUpdated}T12:00:00`).toLocaleDateString()}</span>
+                          <span>Updated {formatContentDate(post.lastUpdated)}</span>
                         </div>
+                        {getKnowledgeCheckForBlog(post.slug) && (
+                          <div className="flex items-center text-xs font-semibold text-violet-700">
+                            <Brain className="h-3 w-3 mr-2" />
+                            <span>Knowledge check included</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex justify-between items-center">

@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Clock3, Sparkles, Target, Trophy } from 'lucide-react';
+import { ArrowRight, BookOpenCheck, Brain, Clock3, Compass, Sparkles, Target, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllSkillCourses } from '@/lib/courses';
 import { LearningProgressSummary } from '@/components/learning/learning-progress-summary';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
+import { LearningAchievements } from '@/components/learning/learning-achievements';
 
 export const metadata: Metadata = {
   title: 'Practice Lab: Short Skill Courses',
@@ -37,12 +38,67 @@ export default function LearnPage() {
 
         <LearningProgressSummary />
 
+        <LearningAchievements />
+
         <section className="mb-14" aria-labelledby="daily-practice-heading">
           <div className="mb-6">
             <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Warm up</div>
             <h2 id="daily-practice-heading" className="mt-2 text-3xl font-bold text-slate-950">Today’s 60-second challenge</h2>
           </div>
           <DailyChallenge />
+        </section>
+
+        <section className="mb-14" aria-labelledby="practice-map-heading">
+          <div className="mb-7">
+            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">Where to practise</div>
+            <h2 id="practice-map-heading" className="mt-2 text-3xl font-bold text-slate-950">Four ways to turn reading into a rep</h2>
+            <p className="mt-2 max-w-3xl leading-7 text-slate-600">Every activity feeds the same private XP, level, achievement, and practice-rhythm profile.</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                title: 'Scenario checks',
+                description: 'Make a judgment, get an explanation, and retry without losing points.',
+                href: '/skills/ai-literacy#knowledge-check',
+                label: 'Try an AI judgment check',
+                icon: Brain,
+                color: 'bg-violet-100 text-violet-700',
+              },
+              {
+                title: 'Skill Sprints',
+                description: 'Complete short lessons, workplace applications, and retrieval rounds.',
+                href: '/skills/communication/learn',
+                label: 'Open a Skill Sprint',
+                icon: BookOpenCheck,
+                color: 'bg-blue-100 text-blue-700',
+              },
+              {
+                title: 'Skill missions',
+                description: 'Choose a starter, builder, or stretch challenge and reflect on the result.',
+                href: '/skills/communication#skill-mission',
+                label: 'Try a real-world mission',
+                icon: Target,
+                color: 'bg-amber-100 text-amber-700',
+              },
+              {
+                title: 'Connection checks',
+                description: 'Match skill meanings across careers, learning paths, industries, and topics.',
+                href: '/careers/data-analyst#knowledge-check',
+                label: 'Test a career connection',
+                icon: Compass,
+                color: 'bg-emerald-100 text-emerald-700',
+              },
+            ].map((item) => (
+              <article key={item.title} className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div className={`w-fit rounded-xl p-2.5 ${item.color}`}><item.icon className="h-5 w-5" /></div>
+                <h3 className="mt-4 text-lg font-bold text-slate-950">{item.title}</h3>
+                <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{item.description}</p>
+                <Link href={item.href} className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:text-blue-900">
+                  {item.label} <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Link>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section aria-labelledby="available-sprints">

@@ -85,7 +85,7 @@ export function KnowledgeCheckCard({ check, className = '' }: Props) {
   }
 
   return (
-    <section className={`overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-sm ${className}`} aria-labelledby={`${check.id}-title`}>
+    <section id="knowledge-check" className={`scroll-mt-28 overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-sm ${className}`} aria-labelledby={`${check.id}-title`}>
       <div className="grid lg:grid-cols-[0.72fr_1.28fr]">
         <div className="bg-gradient-to-br from-violet-950 via-blue-950 to-slate-950 p-6 text-white sm:p-7">
           <div className="inline-flex items-center rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-violet-200">

@@ -17,6 +17,22 @@ export type LearningProfile = {
   activities: LearningActivity[];
 };
 
+export type LearningLevel = {
+  level: number;
+  name: string;
+  minXp: number;
+  nextXp: number | null;
+};
+
+export type LearningAchievement = {
+  id: string;
+  name: string;
+  description: string;
+  current: number;
+  target: number;
+  earned: boolean;
+};
+
 const STORAGE_KEY = 'msl_learning_profile_v1';
 export const LEARNING_PROGRESS_EVENT = 'msl:learning-progress';
 
@@ -121,4 +137,82 @@ export function recordLearningActivity(input: RecordActivityInput): LearningProf
 
 export function hasLearningActivity(profile: LearningProfile, activityId: string) {
   return profile.activities.some((activity) => activity.id === activityId);
+}
+
+const learningLevels = [
+  { name: 'Starter', minXp: 0 },
+  { name: 'Explorer', minXp: 100 },
+  { name: 'Builder', minXp: 250 },
+  { name: 'Practitioner', minXp: 500 },
+  { name: 'Pathfinder', minXp: 900 },
+] as const;
+
+export function getLearningLevel(totalXp: number): LearningLevel {
+  const levelIndex = learningLevels.findLastIndex((level) => totalXp >= level.minXp);
+  const safeIndex = Math.max(0, levelIndex);
+  const current = learningLevels[safeIndex];
+  return {
+    level: safeIndex + 1,
+    name: current.name,
+    minXp: current.minXp,
+    nextXp: learningLevels[safeIndex + 1]?.minXp ?? null,
+  };
+}
+
+export function getLearningAchievements(profile: LearningProfile): LearningAchievement[] {
+  const uniqueSkills = new Set(profile.activities.map((activity) => activity.skillSlug)).size;
+  const knowledgeChecks = profile.activities.filter((activity) => activity.kind === 'knowledge-check').length;
+  const courseLessons = profile.activities.filter((activity) => activity.kind === 'course-lesson').length;
+  const missions = profile.activities.filter((activity) => activity.kind === 'mission').length;
+
+  const achievements = [
+    {
+      id: 'first-rep',
+      name: 'First Rep',
+      description: 'Complete your first active-practice item.',
+      current: profile.activities.length,
+      target: 1,
+    },
+    {
+      id: 'skill-explorer',
+      name: 'Skill Explorer',
+      description: 'Practice across three different skills.',
+      current: uniqueSkills,
+      target: 3,
+    },
+    {
+      id: 'knowledge-builder',
+      name: 'Knowledge Builder',
+      description: 'Complete five retrieval checks.',
+      current: knowledgeChecks,
+      target: 5,
+    },
+    {
+      id: 'sprint-finisher',
+      name: 'Sprint Finisher',
+      description: 'Complete three Skill Sprint rounds.',
+      current: courseLessons,
+      target: 3,
+    },
+    {
+      id: 'evidence-maker',
+      name: 'Evidence Maker',
+      description: 'Complete three real-world skill missions.',
+      current: missions,
+      target: 3,
+    },
+    {
+      id: 'practice-rhythm',
+      name: 'Practice Rhythm',
+      description: 'Reach a three-day practice streak.',
+      current: profile.longestStreak,
+      target: 3,
+    },
+  ];
+
+  return achievements.map((achievement) => ({
+    ...achievement,
+    current: Math.min(achievement.current, achievement.target),
+    earned: achievement.current >= achievement.target,
+  }));
 }

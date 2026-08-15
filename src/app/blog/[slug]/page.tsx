@@ -20,6 +20,7 @@ import { isBlogPostIndexable } from '@/lib/content-quality';
 import { ArticleActions } from '@/components/blog/article-actions';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { getKnowledgeCheckForBlog } from '@/lib/knowledge-checks';
+import { formatContentDate } from '@/lib/dates';
 import {
   Calendar,
   Clock,
@@ -176,7 +177,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             </div>
             <div className="flex items-center">
               <Calendar className="mr-2 h-4 w-4" />
-              {new Date(post.publishedAt).toLocaleDateString()}
+              <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
             </div>
             <div className="flex items-center">
               <Clock className="mr-2 h-4 w-4" />
@@ -184,9 +185,13 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             </div>
             <div className="flex items-center">
               <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
-              Reviewed {new Date(`${post.lastUpdated}T12:00:00`).toLocaleDateString()}
+              Editorially reviewed
             </div>
           </div>
+
+          {post.publishedAt !== post.lastUpdated && (
+            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Substantially reviewed and updated on the date above.</p>
+          )}
 
           <ArticleActions slug={post.slug} />
         </div>

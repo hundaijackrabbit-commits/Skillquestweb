@@ -9,7 +9,7 @@ import { Search, Menu, X, BookOpen, Briefcase, PenTool, User, LogOut, Sparkles, 
 const navigation = [
   { name: 'Skills', href: '/skills', icon: BookOpen },
   { name: 'Topics', href: '/topics', icon: Layers3 },
-  { name: 'Practice', href: '/learn', icon: Trophy },
+  { name: 'Practice Lab', href: '/learn', icon: Trophy },
   { name: 'Careers', href: '/careers', icon: Briefcase },
   { name: 'Paths', href: '/paths', icon: Route },
   { name: 'Blog', href: '/blog', icon: PenTool },
