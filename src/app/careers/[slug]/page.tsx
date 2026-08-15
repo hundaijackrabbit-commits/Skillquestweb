@@ -43,6 +43,10 @@ interface CareerDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+function humanize(value: string) {
+  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 // Generate static params for all career slugs
 export async function generateStaticParams() {
   const careers = await getAllCareers();
@@ -139,7 +143,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               
               <Badge variant="outline" className="flex items-center">
                 <Award className="h-3 w-3 mr-1" />
-                {career.coreSkills.length} core skills required
+                Capability map included
               </Badge>
             </div>
             
@@ -161,7 +165,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Industries</div>
                 <div className="text-sm font-semibold text-green-600">
-                  {career.commonIndustries.length} sectors
+                  {career.commonIndustries.slice(0, 2).map(humanize).join(' · ')}
                 </div>
               </div>
               
@@ -171,7 +175,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Core Skills</div>
                 <div className="text-sm font-semibold text-blue-600">
-                  {career.coreSkills.length} required
+                  {career.coreSkills.slice(0, 2).map(humanize).join(' · ')}
                 </div>
               </div>
               
@@ -181,7 +185,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Work Environments</div>
                 <div className="text-sm font-semibold text-purple-600">
-                  {career.workEnvironments.length} types
+                  {career.workEnvironments.slice(0, 2).map(humanize).join(' · ')}
                 </div>
               </div>
               
@@ -190,7 +194,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                   <Route className="h-6 w-6 text-yellow-700" />
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Learning Paths</div>
-                <div className="text-sm font-semibold text-yellow-700">{relatedPaths.length} connected</div>
+                <div className="text-sm font-semibold text-yellow-700">{relatedPaths[0]?.name ?? 'Build from related skills'}</div>
               </div>
             </div>
           </div>
@@ -461,7 +465,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                     {relatedPaths.map((path) => (
                       <Link key={path.id} href={`/paths/${path.id}`} className="block rounded-xl border p-3 transition hover:border-blue-300 hover:bg-blue-50">
                         <span className="block text-sm font-semibold text-slate-900">{path.name}</span>
-                        <span className="mt-1 block text-xs text-slate-500">{path.skills.length} skills · {path.estimatedTime}</span>
+                        <span className="mt-1 block text-xs text-slate-500">Structured sequence · {path.estimatedTime}</span>
                       </Link>
                     ))}
                   </CardContent>
@@ -486,7 +490,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
                     {relatedCareers.map((relatedCareer) => (
                       <Link key={relatedCareer.slug} href={`/careers/${relatedCareer.slug}`} className="block rounded-xl border p-3 transition hover:border-green-300 hover:bg-green-50">
                         <span className="block text-sm font-semibold text-slate-900">{relatedCareer.title}</span>
-                        <span className="mt-1 block text-xs text-slate-500">{relatedCareer.coreSkills.length} core skills</span>
+                        <span className="mt-1 block text-xs text-slate-500">Compare role and capability map</span>
                       </Link>
                     ))}
                   </CardContent>

@@ -117,7 +117,7 @@ export default function LearnPage() {
               <h2 id="interactive-library-heading" className="mt-2 text-3xl font-bold text-slate-950">Interactive practice library</h2>
               <p className="mt-2 max-w-3xl leading-7 text-slate-600">Reorder real workflows and categorize ambiguous signals across twelve additional professional skills.</p>
             </div>
-            <Badge variant="outline">{practices.length} activities</Badge>
+            <Badge variant="outline">Hands-on activities</Badge>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {practices.map((practice) => (
@@ -143,7 +143,7 @@ export default function LearnPage() {
               <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Start practicing</div>
               <h2 id="available-sprints" className="mt-2 text-3xl font-bold text-slate-950">Available Skill Sprints</h2>
             </div>
-            <Badge variant="outline">{courses.length} pilot courses</Badge>
+            <Badge variant="outline">Short guided courses</Badge>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">

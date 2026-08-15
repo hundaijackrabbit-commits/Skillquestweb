@@ -107,7 +107,7 @@ export function CareerPathway({ career, relatedSkills, relatedCareers, className
           </h2>
           <Badge variant="outline" className="flex items-center">
             <MapPin className="h-4 w-4 mr-1" />
-            {career.commonIndustries.length} industries
+            Industry-connected role
           </Badge>
         </div>
         
@@ -270,7 +270,7 @@ export function CareerPathway({ career, relatedSkills, relatedCareers, className
                   
                   <div className="flex items-center justify-between">
                     <div className="text-xs text-gray-500">
-                      {relatedCareer.coreSkills.length} core skills
+                      Compare capability map
                     </div>
                     <Link 
                       href={`/careers/${relatedCareer.slug}`}

@@ -292,7 +292,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                   <Briefcase className="h-6 w-6 text-green-600" />
                 </div>
                 <div className="mb-1 text-sm font-medium text-gray-500">Career Impact</div>
-                <div className="text-sm font-semibold text-green-600">{relatedCareers.length} careers</div>
+                <div className="text-sm font-semibold text-green-600">Career-connected</div>
               </div>
             </div>
           </div>
@@ -836,7 +836,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                       className="block rounded-xl border border-slate-200 p-3 transition hover:border-blue-300 hover:bg-blue-50"
                     >
                       <span className="block text-sm font-semibold text-slate-900">{path.name}</span>
-                      <span className="mt-1 block text-xs text-slate-500">{path.skills.length} connected skills · {path.estimatedTime}</span>
+                      <span className="mt-1 block text-xs text-slate-500">Structured sequence · {path.estimatedTime}</span>
                     </Link>
                   ))}
                 </CardContent>

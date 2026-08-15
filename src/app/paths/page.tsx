@@ -24,10 +24,13 @@ export const metadata = {
   alternates: { canonical: '/paths' },
 };
 
+function humanize(value: string) {
+  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 export default async function SkillPathsPage() {
   const paths = (await getSkillPaths()).filter(isSkillPathIndexable);
   const featuredPaths = paths.filter(path => path.featured);
-  const skillsCovered = new Set(paths.flatMap(path => path.skills)).size;
   
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -63,23 +66,18 @@ export default async function SkillPathsPage() {
             Move from foundations toward more advanced capabilities with a clearer roadmap for professional growth.
           </p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">{paths.length}</div>
-              <div className="text-sm font-medium text-gray-600">Learning Paths</div>
+          <div className="grid gap-4 text-left md:grid-cols-3">
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Begin with an outcome</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Choose a path because you want to perform a kind of work, not simply collect disconnected topics.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">{featuredPaths.length}</div>
-              <div className="text-sm font-medium text-gray-600">Featured Paths</div>
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Build in sequence</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Move from foundations into applied capabilities so each new skill has something to attach to.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">{skillsCovered}</div>
-              <div className="text-sm font-medium text-gray-600">Unique Skills Covered</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">3</div>
-              <div className="text-sm font-medium text-gray-600">Difficulty Levels</div>
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Create evidence</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Turn concepts into small work samples, decisions, explanations, and repeatable habits you can inspect.</p>
             </div>
           </div>
         </div>
@@ -123,19 +121,19 @@ export default async function SkillPathsPage() {
                   </p>
                   
                   <div className="space-y-4 mb-6">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Target className="h-4 w-4 mr-2 text-blue-600" />
-                      <span>{path.skills.length} skills to master</span>
+                    <div className="flex items-start text-sm text-gray-600">
+                      <Target className="mt-1 h-4 w-4 mr-2 shrink-0 text-blue-600" />
+                      <span><strong className="font-semibold text-slate-800">Core sequence:</strong> {path.skills.slice(0, 4).map(humanize).join(' → ')}</span>
                     </div>
                     
-                    <div className="flex items-center text-sm text-gray-600">
-                      <TrendingUp className="h-4 w-4 mr-2 text-green-600" />
-                      <span>{path.relatedCareers.length} related career paths</span>
+                    <div className="flex items-start text-sm text-gray-600">
+                      <TrendingUp className="mt-1 h-4 w-4 mr-2 shrink-0 text-green-600" />
+                      <span><strong className="font-semibold text-slate-800">Career direction:</strong> {path.relatedCareers.slice(0, 3).map(humanize).join(', ')}</span>
                     </div>
                     
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Award className="h-4 w-4 mr-2 text-purple-600" />
-                      <span>{path.learningOutcomes.length} key learning outcomes</span>
+                    <div className="flex items-start text-sm text-gray-600">
+                      <Award className="mt-1 h-4 w-4 mr-2 shrink-0 text-purple-600" />
+                      <span><strong className="font-semibold text-slate-800">Outcome:</strong> {path.learningOutcomes[0]}</span>
                     </div>
                   </div>
 
@@ -144,7 +142,7 @@ export default async function SkillPathsPage() {
                       {path.category.replace('-', ' ').toUpperCase()} PATH
                     </div>
                     <Link href={`/paths/${path.id}`}>
-                      <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
+                      <Button asChild className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
                         Start Path <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
@@ -159,9 +157,7 @@ export default async function SkillPathsPage() {
         <div className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">All Learning Paths</h2>
-            <div className="text-sm text-gray-600">
-              {paths.length} paths available
-            </div>
+            <p className="text-sm text-slate-600">Compare outcomes, sequence, difficulty, and time</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -197,11 +193,11 @@ export default async function SkillPathsPage() {
                     </div>
                     <div className="flex items-center text-xs text-gray-500">
                       <BookOpen className="h-3 w-3 mr-2" />
-                      <span>{path.skills.length} skills</span>
+                      <span>{path.skills.slice(0, 3).map(humanize).join(' · ')}</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-500">
+                    <div className="flex items-start text-xs leading-5 text-gray-500">
                       <Users className="h-3 w-3 mr-2" />
-                      <span>{path.relatedCareers.length} career paths</span>
+                      <span>{path.relatedCareers.slice(0, 2).map(humanize).join(' · ')}</span>
                     </div>
                   </div>
 
@@ -210,7 +206,7 @@ export default async function SkillPathsPage() {
                       {path.category.replace('-', ' ')}
                     </div>
                     <Link href={`/paths/${path.id}`}>
-                      <Button variant="outline" size="sm">
+                      <Button asChild variant="outline" size="sm">
                         View Path <ArrowRight className="ml-1 h-3 w-3" />
                       </Button>
                     </Link>

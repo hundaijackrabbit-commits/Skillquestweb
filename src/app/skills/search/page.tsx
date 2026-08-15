@@ -39,10 +39,6 @@ export default async function SkillsSearchPage({ searchParams }: { searchParams:
   const requestedPage = Number(first(values.page) || '1');
 
   const allSkills = await getIndexableSkills();
-  const topicCounts = allSkills.reduce<Record<string, number>>((counts, skill) => {
-    counts[skill.category] = (counts[skill.category] ?? 0) + 1;
-    return counts;
-  }, {});
   const filtered = allSkills.filter((skill) => {
     if (category && skill.category !== category) return false;
     if (!query) return true;
@@ -68,8 +64,6 @@ export default async function SkillsSearchPage({ searchParams }: { searchParams:
       skills={filtered.slice(start, start + 30)}
       currentPage={currentPage}
       totalPages={totalPages}
-      totalSkills={filtered.length}
-      topicCounts={topicCounts}
       searchDefaults={{ query, category, sort }}
       searchResults
     />
