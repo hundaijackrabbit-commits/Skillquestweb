@@ -23,11 +23,13 @@ export const metadata = {
   alternates: { canonical: '/industries' },
 };
 
+function humanize(value: string) {
+  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 export default async function IndustriesPage() {
   const industries = await getAllIndustries();
   const featuredIndustries = industries.filter(industry => industry.featured);
-  const mappedCareers = new Set(industries.flatMap((industry) => industry.commonCareers)).size;
-  const mappedSkills = new Set(industries.flatMap((industry) => [...industry.criticalSkills, ...industry.emergingSkills])).size;
   
   return (
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
@@ -50,23 +52,18 @@ export default async function IndustriesPage() {
             Each profile organizes sector characteristics, challenges, opportunities, and linked learning resources.
           </p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">{industries.length}</div>
-              <div className="text-sm font-medium text-gray-600">Major Industries</div>
+          <div className="grid gap-4 text-left md:grid-cols-3">
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">What is changing?</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Review the forces reshaping the sector, then separate durable shifts from passing headlines.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">{featuredIndustries.length}</div>
-              <div className="text-sm font-medium text-gray-600">Featured Industries</div>
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Where could I contribute?</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Compare the problems, working environments, and career families found across the industry.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">{mappedCareers}</div>
-              <div className="text-sm font-medium text-gray-600">Career References</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">{mappedSkills}</div>
-              <div className="text-sm font-medium text-gray-600">Skill References</div>
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">What should I learn?</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Connect established capabilities with emerging skills before choosing a learning path.</p>
             </div>
           </div>
         </div>
@@ -155,14 +152,14 @@ export default async function IndustriesPage() {
                         </p>
                         
                         <div className="space-y-4 mb-6">
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Users className="h-4 w-4 mr-2 text-blue-600" />
-                            <span>{industry.commonCareers?.length || 0} key career roles</span>
+                          <div className="flex items-start text-sm text-gray-600">
+                            <Users className="mt-1 h-4 w-4 mr-2 shrink-0 text-blue-600" />
+                            <span><strong className="font-semibold text-slate-800">Career examples:</strong> {industry.commonCareers.slice(0, 3).map(humanize).join(', ')}</span>
                           </div>
                           
-                          <div className="flex items-center text-sm text-gray-600">
-                            <Target className="h-4 w-4 mr-2 text-green-600" />
-                            <span>{industry.criticalSkills?.length || 0} essential skills</span>
+                          <div className="flex items-start text-sm text-gray-600">
+                            <Target className="mt-1 h-4 w-4 mr-2 shrink-0 text-green-600" />
+                            <span><strong className="font-semibold text-slate-800">Skill focus:</strong> {industry.criticalSkills.slice(0, 3).map(humanize).join(', ')}</span>
                           </div>
                           
                         </div>
@@ -172,7 +169,7 @@ export default async function IndustriesPage() {
                             Industry Profile
                           </div>
                           <Link href={`/industries/${industry.slug}`}>
-                            <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
+                            <Button asChild className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
                               Explore <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                           </Link>
@@ -188,9 +185,7 @@ export default async function IndustriesPage() {
             <div className="mb-16">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-gray-900">All Industries</h2>
-                <div className="text-sm text-gray-600">
-                  {industries.length} sectors profiled
-                </div>
+                <p className="text-sm text-slate-600">Compare work, change, skills, and opportunity</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -215,18 +210,18 @@ export default async function IndustriesPage() {
                         {industry.description}
                       </p>
                       
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center text-xs text-gray-500">
-                          <Users className="h-3 w-3 mr-2" />
-                          <span>{industry.commonCareers?.length || 0} career roles</span>
+                      <div className="space-y-3 mb-4">
+                        <div className="flex items-start text-xs leading-5 text-gray-500">
+                          <Users className="mt-1 h-3 w-3 mr-2 shrink-0" />
+                          <span><strong className="font-semibold text-slate-700">Roles:</strong> {industry.commonCareers.slice(0, 2).map(humanize).join(', ')}</span>
                         </div>
-                        <div className="flex items-center text-xs text-gray-500">
-                          <Target className="h-3 w-3 mr-2" />
-                          <span>{industry.criticalSkills?.length || 0} core skills</span>
+                        <div className="flex items-start text-xs leading-5 text-gray-500">
+                          <Target className="mt-1 h-3 w-3 mr-2 shrink-0" />
+                          <span><strong className="font-semibold text-slate-700">Skills:</strong> {industry.criticalSkills.slice(0, 2).map(humanize).join(', ')}</span>
                         </div>
-                        <div className="flex items-center text-xs text-gray-500">
-                          <TrendingUp className="h-3 w-3 mr-2" />
-                          <span>{industry.trends?.length || 0} trends tracked</span>
+                        <div className="flex items-start text-xs leading-5 text-gray-500">
+                          <TrendingUp className="mt-1 h-3 w-3 mr-2 shrink-0" />
+                          <span><strong className="font-semibold text-slate-700">Change signal:</strong> {industry.trends[0]}</span>
                         </div>
                       </div>
 
@@ -235,7 +230,7 @@ export default async function IndustriesPage() {
                           Sector Profile
                         </div>
                         <Link href={`/industries/${industry.slug}`}>
-                          <Button variant="outline" size="sm">
+                          <Button asChild variant="outline" size="sm">
                             Explore <ArrowRight className="ml-1 h-3 w-3" />
                           </Button>
                         </Link>
@@ -256,7 +251,7 @@ export default async function IndustriesPage() {
               Industry Intelligence Features
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Comprehensive sector analysis for strategic career planning
+              Every profile is organized to help you move from broad sector curiosity to a practical next question.
             </p>
           </div>
 
@@ -265,9 +260,9 @@ export default async function IndustriesPage() {
               <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Users className="h-8 w-8 text-blue-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Career Mapping</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Work and Roles</h3>
               <p className="text-sm text-gray-600">
-                Detailed role hierarchies and advancement pathways
+                See the recurring problems, environments, and career families inside the sector
               </p>
             </div>
 
@@ -275,9 +270,9 @@ export default async function IndustriesPage() {
               <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Target className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Skill Requirements</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Capability Map</h3>
               <p className="text-sm text-gray-600">
-                Essential and emerging skills for each industry
+                Compare durable foundations with capabilities that are becoming more important
               </p>
             </div>
 
@@ -285,9 +280,9 @@ export default async function IndustriesPage() {
               <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <BarChart3 className="h-8 w-8 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Market Trends</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Change Signals</h3>
               <p className="text-sm text-gray-600">
-                Growth rates, salary ranges, and employment outlook
+                Examine trends alongside constraints and avoid treating change as automatically positive
               </p>
             </div>
 
@@ -295,9 +290,9 @@ export default async function IndustriesPage() {
               <div className="w-16 h-16 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Award className="h-8 w-8 text-orange-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Entry Strategies</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Opportunity Areas</h3>
               <p className="text-sm text-gray-600">
-                Proven pathways for breaking into each industry
+                Use connected careers and learning resources to investigate realistic next steps
               </p>
             </div>
           </div>
@@ -309,12 +304,11 @@ export default async function IndustriesPage() {
             Find Your Industry Fit
           </h2>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Explore industries that match your skills and interests. Get strategic 
-            insights for making informed career transitions and advancement decisions.
+            Compare industries with your interests, preferred work, and existing strengths before committing to a career direction.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/skills"><Button size="lg" className="px-8"><Target className="h-4 w-4 mr-2" />Explore Skills</Button></Link>
-            <Link href="/careers"><Button variant="outline" size="lg" className="px-8"><Compass className="h-4 w-4 mr-2" />Browse Careers</Button></Link>
+            <Link href="/dashboard"><Button asChild size="lg" className="px-8"><Target className="h-4 w-4 mr-2" />Build My Profile</Button></Link>
+            <Link href="/careers"><Button asChild variant="outline" size="lg" className="px-8"><Compass className="h-4 w-4 mr-2" />Browse Careers</Button></Link>
           </div>
         </div>
       </div>

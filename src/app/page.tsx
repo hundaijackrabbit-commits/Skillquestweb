@@ -1,15 +1,13 @@
 import Link from 'next/link';
-import { ArrowRight, Brain, Clock3, Compass, Flame, LineChart, Sparkles, Trophy } from 'lucide-react';
+import { ArrowRight, BookOpen, Brain, Briefcase, Clock3, Compass, Flame, LineChart, Route, Sparkles, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
-import { getAllCareers, getIndexableSkills } from '@/lib/content';
-import { isCareerIndexable } from '@/lib/content-quality';
+import { getIndexableSkills } from '@/lib/content';
 import { getHomepageGrowthData } from '@/lib/growth';
 import { getAllSkillCourses } from '@/lib/courses';
-import { TOPICS } from '@/lib/topics';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
 
 export const dynamic = 'force-dynamic';
@@ -22,12 +20,14 @@ const pillars = [
   { icon: LineChart, title: 'Build a stronger stack', description: 'Save skills, follow connections, and compound capabilities that make you more useful over time.' },
 ];
 
+const waysToExplore = [
+  { icon: BookOpen, title: 'Start with a skill', description: 'Choose something you want to do more clearly, confidently, or consistently.', href: '/skills', action: 'Browse skills' },
+  { icon: Briefcase, title: 'Start with a career', description: 'See what the work involves, which capabilities matter, and how people can enter the field.', href: '/careers', action: 'Explore careers' },
+  { icon: Route, title: 'Start with a destination', description: 'Follow a connected learning sequence when you already know the outcome you want.', href: '/paths', action: 'Follow a path' },
+];
+
 export default async function HomePage() {
-  const [skills, allCareers] = await Promise.all([
-    getIndexableSkills(),
-    getAllCareers(),
-  ]);
-  const careers = allCareers.filter(isCareerIndexable);
+  const skills = await getIndexableSkills();
   const growth = await getHomepageGrowthData(skills);
   const courses = getAllSkillCourses();
 
@@ -48,7 +48,7 @@ export default async function HomePage() {
             <h1 className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">Build skills that actually move you forward.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">Explore a deep library of practical skills, career connections, and learning paths built for work that keeps changing.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/skills"><Button variant="primary" size="lg" className="w-full sm:w-auto">Explore {skills.length.toLocaleString()} skills<ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+              <Link href="/skills"><Button variant="primary" size="lg" className="w-full sm:w-auto">Explore skills<ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
               <Link href="/careers"><Button variant="outline" size="lg" className="w-full border-slate-300 sm:w-auto">Explore careers</Button></Link>
             </div>
           </div>
@@ -64,11 +64,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="mx-auto grid max-w-7xl gap-4 px-6 sm:grid-cols-3 lg:px-8">
-          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{skills.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">skill guides</p></div>
-          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{careers.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">career profiles</p></div>
-          <div className="rounded-2xl border bg-white p-5"><div className="text-3xl font-bold text-slate-900">{TOPICS.length.toLocaleString()}</div><p className="mt-1 text-sm text-slate-600">connected topic hubs</p></div>
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid gap-4 md:grid-cols-3">
+            {waysToExplore.map((item) => (
+              <Link key={item.href} href={item.href} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-md">
+                <div className="inline-flex rounded-2xl bg-blue-50 p-3 text-blue-700"><item.icon className="h-5 w-5" aria-hidden="true" /></div>
+                <h2 className="mt-5 text-xl font-bold text-slate-950">{item.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
+                <span className="mt-5 inline-flex items-center text-sm font-semibold text-blue-700">{item.action}<ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -140,9 +147,9 @@ export default async function HomePage() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex items-center gap-3"><div className="rounded-2xl bg-orange-100 p-2.5 text-orange-700"><Flame className="h-5 w-5" /></div><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Chosen by visitors</p><h2 className="text-3xl font-bold text-slate-900">Trending this week</h2></div></div>
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {growth.trending.map(({ skill, views }, index) => (
+              {growth.trending.map(({ skill }) => (
                 <Link key={skill.slug} href={`/skills/${skill.slug}`} className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
-                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">#{index + 1} · {views} views</p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700">{skill.name}</h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
+                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Popular in the library</p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700">{skill.name}</h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
                 </Link>
               ))}
             </div>

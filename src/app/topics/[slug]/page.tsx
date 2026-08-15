@@ -86,9 +86,9 @@ export default async function TopicHubPage({ params }: Props) {
           <p className="mt-5 max-w-3xl text-lg leading-8 text-indigo-100">{topic.description}</p>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-indigo-200">{topic.startingPoint}</p>
           <div className="mt-7 flex flex-wrap gap-3 text-sm font-semibold text-indigo-100">
-            <span className="rounded-full bg-white/10 px-3 py-1.5">{content.skills.length} skill guides</span>
-            <span className="rounded-full bg-white/10 px-3 py-1.5">{content.paths.length} connected paths</span>
-            <span className="rounded-full bg-white/10 px-3 py-1.5">{content.careers.length} connected careers</span>
+            <span className="rounded-full bg-white/10 px-3 py-1.5">Practical skill guides</span>
+            <span className="rounded-full bg-white/10 px-3 py-1.5">Connected learning paths</span>
+            <span className="rounded-full bg-white/10 px-3 py-1.5">Career applications</span>
           </div>
         </header>
 
@@ -101,7 +101,7 @@ export default async function TopicHubPage({ params }: Props) {
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-700">Build the foundation</p>
                 <h2 id="topic-skills" className="mt-2 text-3xl font-bold text-slate-950">Skills worth starting with</h2>
               </div>
-              <Link href={`/skills/search?category=${topic.slug}`} className="text-sm font-semibold text-indigo-700">Browse all {content.skills.length} guides →</Link>
+              <Link href={`/skills/search?category=${topic.slug}`} className="text-sm font-semibold text-indigo-700">Browse every guide in this topic →</Link>
             </div>
             <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {content.skills.slice(0, 12).map((skill) => <SkillDirectoryCard key={skill.slug} skill={skill} />)}

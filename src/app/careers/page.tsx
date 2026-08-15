@@ -5,13 +5,64 @@ import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllCareers } from '@/lib/content';
 import { isCareerIndexable } from '@/lib/content-quality';
-import { ArrowRight, BookOpen, Briefcase, TrendingUp, MapPin } from 'lucide-react';
+import { ArrowRight, BookOpen, Briefcase, MapPin, Route, Target, Users } from 'lucide-react';
 
 export const metadata = {
   title: 'Career Paths & Skill Requirements',
   description: 'Explore career profiles, core skills, growth paths, work environments, and practical routes into modern careers.',
   alternates: { canonical: '/careers' },
 };
+
+const careerDirections = [
+  {
+    title: 'Build digital products',
+    description: 'Shape software, systems, and user experiences with a mix of technical judgment and collaboration.',
+    icon: Briefcase,
+    roles: [
+      ['Product Manager', 'product-manager'],
+      ['Software Engineer', 'software-engineer'],
+      ['UX Designer', 'ux-designer'],
+      ['DevOps Engineer', 'devops-engineer'],
+    ],
+  },
+  {
+    title: 'Turn evidence into decisions',
+    description: 'Investigate patterns, explain tradeoffs, and help teams make defensible choices.',
+    icon: Target,
+    roles: [
+      ['Data Analyst', 'data-analyst'],
+      ['Data Scientist', 'data-scientist'],
+      ['Business Analyst', 'business-analyst'],
+      ['Financial Analyst', 'financial-analyst'],
+    ],
+  },
+  {
+    title: 'Grow trust and demand',
+    description: 'Understand people, communicate value, and strengthen customer or audience relationships.',
+    icon: Users,
+    roles: [
+      ['Account Manager', 'account-manager'],
+      ['Customer Success Manager', 'customer-success-manager'],
+      ['Sales Representative', 'sales-representative'],
+      ['Digital Marketing Manager', 'digital-marketing-manager'],
+    ],
+  },
+  {
+    title: 'Coordinate people and delivery',
+    description: 'Create clarity around work, resources, hiring, and reliable execution.',
+    icon: Route,
+    roles: [
+      ['Project Manager', 'project-manager'],
+      ['Operations Manager', 'operations-manager'],
+      ['HR Manager', 'hr-manager'],
+      ['Recruiter', 'recruiter'],
+    ],
+  },
+] as const;
+
+function humanize(value: string) {
+  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
 
 export default async function CareersPage() {
   const careers = (await getAllCareers()).filter(isCareerIndexable);
@@ -31,16 +82,27 @@ export default async function CareersPage() {
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="mt-8 flex justify-center">
-          <div className="flex items-center space-x-8 text-sm text-gray-600">
-            <span>{careers.length} Editorial-Ready Profiles</span>
-            <span>•</span>
-            <span>{careers.filter(c => c.featured).length} Featured</span>
-            <span>•</span>
-            <span>Skill-Connected</span>
+        <section className="mt-12" aria-labelledby="career-directions">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">Browse by the work you want to do</p>
+            <h2 id="career-directions" className="mt-2 text-3xl font-bold text-slate-950">Choose a direction before choosing a title</h2>
+            <p className="mt-3 leading-7 text-slate-600">Job titles vary between organizations. Start with the kind of problems and working relationships that interest you, then compare the roles inside that direction.</p>
           </div>
-        </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {careerDirections.map((direction) => (
+              <div key={direction.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="inline-flex rounded-2xl bg-blue-50 p-3 text-blue-700"><direction.icon className="h-5 w-5" aria-hidden="true" /></div>
+                <h3 className="mt-4 text-xl font-bold text-slate-950">{direction.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{direction.description}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {direction.roles.map(([label, slug]) => (
+                    <Link key={slug} href={`/careers/${slug}`} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700">{label}</Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Featured Careers Section */}
         <div className="mt-16">
@@ -63,14 +125,16 @@ export default async function CareersPage() {
                     {career.summary}
                   </p>
                   
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <span className="font-medium mr-2">Core Skills:</span>
-                      <span>{career.coreSkills.length} required</span>
+                  <div className="mb-5 space-y-4">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Core focus</p>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {career.coreSkills.slice(0, 3).map((skill) => <Badge key={skill} variant="outline" size="sm">{humanize(skill)}</Badge>)}
+                      </div>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span>{career.commonIndustries.length} industries</span>
+                    <div>
+                      <p className="flex items-center text-xs font-semibold uppercase tracking-wide text-slate-500"><MapPin className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />Common settings</p>
+                      <p className="mt-1.5 text-sm leading-6 text-slate-600">{career.commonIndustries.slice(0, 3).map(humanize).join(' · ')}</p>
                     </div>
                   </div>
 
@@ -81,11 +145,6 @@ export default async function CareersPage() {
                           {industry.replace('-', ' ')}
                         </Badge>
                       ))}
-                      {career.commonIndustries.length > 2 && (
-                        <Badge variant="outline" size="sm">
-                          +{career.commonIndustries.length - 2}
-                        </Badge>
-                      )}
                     </div>
                     <Link 
                       href={`/careers/${career.slug}`}
@@ -104,9 +163,7 @@ export default async function CareersPage() {
         <div className="mt-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">All Career Paths</h2>
-            <div className="text-sm text-gray-600">
-              {careers.length} careers
-            </div>
+            <Link href="/dashboard" className="text-sm font-semibold text-blue-700">Build your personal fit profile <ArrowRight className="ml-1 inline h-4 w-4" aria-hidden="true" /></Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -123,9 +180,7 @@ export default async function CareersPage() {
                     {career.summary.substring(0, 120)}...
                   </p>
                   <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-500">
-                      {career.coreSkills.length} core skills
-                    </div>
+                    <div className="text-xs text-gray-500">Skills, entry routes, and growth options</div>
                     <Link 
                       href={`/careers/${career.slug}`}
                       className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500"
@@ -146,7 +201,7 @@ export default async function CareersPage() {
               Career Intelligence Features
             </h2>
             <p className="text-gray-600">
-              Every career profile includes comprehensive intelligence for strategic career planning
+              Use each profile to compare the work itself, the evidence employers can inspect, and the next practical move you could make.
             </p>
           </div>
 
@@ -163,11 +218,11 @@ export default async function CareersPage() {
 
             <div className="text-center">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="h-6 w-6 text-green-600" />
+                <Target className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Growth Paths</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Evidence of Ability</h3>
               <p className="text-sm text-gray-600">
-                Clear progression routes and advancement opportunities
+                Practical skills, tools, projects, and signals you can make visible
               </p>
             </div>
 
@@ -175,9 +230,9 @@ export default async function CareersPage() {
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <MapPin className="h-6 w-6 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Industry Context</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Working Context</h3>
               <p className="text-sm text-gray-600">
-                Industry variations and work environment insights
+                Common industries, team environments, and role variations
               </p>
             </div>
 
@@ -185,9 +240,9 @@ export default async function CareersPage() {
               <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <BookOpen className="h-6 w-6 text-yellow-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Role Context</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Routes Forward</h3>
               <p className="text-sm text-gray-600">
-                Responsibilities, work environments, and entry strategies
+                Entry strategies, alternative routes, and adjacent careers to compare
               </p>
             </div>
           </div>
@@ -199,11 +254,11 @@ export default async function CareersPage() {
             Ready to explore your career path?
           </h2>
           <p className="text-gray-600 mb-8">
-            Connect your skills to career opportunities and build a strategic development plan
+            Use the personal profile to connect your interests and saved skills with career directions worth investigating.
           </p>
-          <div className="flex justify-center space-x-4">
-            <Link href="/skills"><Button>Explore Skills</Button></Link>
-            <Link href="/industries"><Button variant="outline">Browse Industries</Button></Link>
+          <div className="flex flex-col justify-center gap-3 sm:flex-row">
+            <Link href="/dashboard"><Button asChild>Build My Profile</Button></Link>
+            <Link href="/industries"><Button asChild variant="outline">Browse Industries</Button></Link>
           </div>
         </div>
       </div>

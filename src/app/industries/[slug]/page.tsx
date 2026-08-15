@@ -153,7 +153,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Key Roles</div>
                 <div className="text-sm font-semibold text-blue-600">
-                  {relatedCareers.length} profiles
+                  Career map
                 </div>
               </div>
               
@@ -163,7 +163,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Core Skills</div>
                 <div className="text-sm font-semibold text-green-600">
-                  {relatedSkills.length} connected
+                  Capability map
                 </div>
               </div>
               
@@ -173,7 +173,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Trends Covered</div>
                 <div className="text-sm font-semibold text-purple-600">
-                  {industry.trends.length} listed
+                  Change signals
                 </div>
               </div>
               
@@ -183,7 +183,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                 </div>
                 <div className="text-sm font-medium text-gray-500 mb-1">Opportunities</div>
                 <div className="text-sm font-semibold text-orange-600">
-                  {industry.opportunities.length} mapped
+                  Areas to investigate
                 </div>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                               </p>
                               <div className="flex items-center mt-2 text-xs text-gray-500">
                                 <Target className="h-3 w-3 mr-1" />
-                                {career.coreSkills.length} skills required
+                                Core skills mapped
                               </div>
                             </div>
                           </Link>
@@ -328,17 +328,17 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Skill guides</span>
-                      <span className="text-sm font-medium text-gray-900">{relatedSkills.length}</span>
+                    <div className="flex justify-between items-center gap-4">
+                      <span className="text-sm text-gray-600">Skill guidance</span>
+                      <span className="text-sm font-medium text-gray-900">Connected</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Career profiles</span>
-                      <span className="text-sm font-medium text-green-700">{relatedCareers.length}</span>
+                    <div className="flex justify-between items-center gap-4">
+                      <span className="text-sm text-gray-600">Career directions</span>
+                      <span className="text-sm font-medium text-green-700">Mapped</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Challenges mapped</span>
-                      <span className="text-sm font-medium text-blue-700">{industry.challenges.length}</span>
+                    <div className="flex justify-between items-center gap-4">
+                      <span className="text-sm text-gray-600">Sector constraints</span>
+                      <span className="text-sm font-medium text-blue-700">Explained</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-600">Last reviewed</span>

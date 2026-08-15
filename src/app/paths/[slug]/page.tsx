@@ -112,7 +112,7 @@ export default async function SkillPathDetailPage({ params }: Props) {
             </span>
             <span className="inline-flex items-center text-sm text-blue-200">
               <Route className="mr-1.5 h-4 w-4" />
-              {skills.length} connected skills
+              Connected skill sequence
             </span>
           </div>
           <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl">{path.name}</h1>
@@ -224,7 +224,7 @@ export default async function SkillPathDetailPage({ params }: Props) {
                   {careers.map((career) => (
                     <Link key={career.slug} href={`/careers/${career.slug}`} className="block rounded-xl border p-3 transition hover:border-violet-300 hover:bg-violet-50">
                       <span className="block text-sm font-semibold text-slate-900">{career.title}</span>
-                      <span className="mt-1 block text-xs text-slate-500">{career.coreSkills.length} core skills</span>
+                      <span className="mt-1 block text-xs text-slate-500">Compare role and capability map</span>
                     </Link>
                   ))}
                 </CardContent>

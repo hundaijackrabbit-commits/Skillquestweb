@@ -29,10 +29,6 @@ export default async function PaginatedSkillsPage({ params }: Props) {
   const totalPages = Math.ceil(skills.length / 30);
   if (!Number.isInteger(page) || page < 2 || page > totalPages) notFound();
 
-  const topicCounts = skills.reduce<Record<string, number>>((counts, skill) => {
-    counts[skill.category] = (counts[skill.category] ?? 0) + 1;
-    return counts;
-  }, {});
   const start = (page - 1) * 30;
 
   return (
@@ -40,8 +36,6 @@ export default async function PaginatedSkillsPage({ params }: Props) {
       skills={skills.slice(start, start + 30)}
       currentPage={page}
       totalPages={totalPages}
-      totalSkills={skills.length}
-      topicCounts={topicCounts}
     />
   );
 }

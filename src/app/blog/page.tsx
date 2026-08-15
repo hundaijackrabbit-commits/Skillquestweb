@@ -59,23 +59,18 @@ export default async function BlogPage() {
             Use the blog to connect useful concepts with the deeper skill and career library.
           </p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">{blogPosts.length}</div>
-              <div className="text-sm font-medium text-gray-600">Published Articles</div>
+          <div className="grid gap-4 text-left md:grid-cols-3">
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Understand the idea</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Start with a clear model, the limits of the concept, and the context needed to use it responsibly.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">{featuredPosts.length}</div>
-              <div className="text-sm font-medium text-gray-600">Featured Insights</div>
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Connect it to work</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Follow links into skills, career profiles, industries, and practical workplace examples.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">Practical</div>
-              <div className="text-sm font-medium text-gray-600">Modern Work Focus</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">Connected</div>
-              <div className="text-sm font-medium text-gray-600">Skills & Careers</div>
+            <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <h2 className="font-bold text-slate-950">Test your understanding</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Use retrieval checks and reflection prompts where an article has a connected practice activity.</p>
             </div>
           </div>
         </div>
@@ -171,9 +166,7 @@ export default async function BlogPage() {
             <div className="mb-16">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-gray-900">Latest Articles</h2>
-                <div className="text-sm text-gray-600">
-                  {blogPosts.length} articles published
-                </div>
+                <p className="text-sm text-slate-600">Recently reviewed and updated</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

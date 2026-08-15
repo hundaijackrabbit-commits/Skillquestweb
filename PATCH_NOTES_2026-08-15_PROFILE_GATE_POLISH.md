@@ -3,6 +3,8 @@
 ## Account wall correction
 
 - Replaced the plain member prompt with a full blurred practice preview and centered lock wall.
+- Replaced the fixed-height absolute overlay with a content-sized grid overlay so the entire lock card remains visible at narrow mobile widths.
+- Added phone-specific padding, heading sizes, line heights, break-safe titles, and full-width account buttons.
 - The blurred preview is deliberately inert and contains no working quiz controls.
 - Quiz, mission, sequence, sorting, and Skill Sprint components remain unmounted until the Supabase provider confirms an authenticated user.
 - The loading state is locked too, preventing a brief interactive flash before authentication resolves.
@@ -58,13 +60,22 @@ Answers use existing `profiles` columns (`career_interests`, `selected_industrie
 - Deleted unused legacy dashboard and save-button components.
 - Added `scripts/audit-interactive-controls.mjs` and `npm run audit:controls` to prevent future dead buttons or placeholder links.
 
+## Mobile navigation
+
+- Moved the phone navigation drawer outside the sticky, blurred header so mobile browsers position it against the viewport instead of clipping it inside the header.
+- Switched the drawer to the dynamic viewport height and added safe-area padding for phones with display cutouts and home indicators.
+- Locked background scrolling while the menu is open and automatically releases it when the drawer closes or the layout crosses the desktop breakpoint.
+- Added working backdrop, close-button, and Escape-key dismissal plus keyboard focus containment and focus restoration.
+- Added active-page styling, larger touch targets, a scrollable drawer, and full-width account actions that remain usable on narrow screens.
+- Removed nested button elements from header links so taps have one valid interactive target.
+
 ## Privacy
 
 - Updated `/privacy` to describe stored profile-assessment signals, recommendation use, saved careers, and browser-local practice progress.
 
 ## Verification
 
-- Next.js 16.2.3 production build: passed (936 routes)
+- Next.js 16.2.3 production build: passed after the responsive unlock-wall and mobile-menu fixes (936 routes)
 - TypeScript: passed
 - Changed-file ESLint: passed
 - Interactive-control audit: 58 TSX files checked, 0 dead or placeholder controls

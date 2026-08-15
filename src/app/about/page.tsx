@@ -262,29 +262,29 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Platform Stats */}
+        {/* Platform principles */}
         <section className="mb-16">
           <div className="bg-gray-50 rounded-2xl p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Platform Overview
+              What the library is designed to do
             </h2>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">1,300+</div>
-                <div className="text-sm font-medium text-gray-600">Professional Skills</div>
+                <div className="font-bold text-blue-700 mb-2">Explain capabilities clearly</div>
+                <div className="text-sm leading-6 text-gray-600">Move beyond a label into context, application, practice, and observable evidence.</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">100+</div>
-                <div className="text-sm font-medium text-gray-600">Career Profiles</div>
+                <div className="font-bold text-blue-700 mb-2">Connect learning to work</div>
+                <div className="text-sm leading-6 text-gray-600">Show how skills combine inside careers, industries, and everyday professional situations.</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">8</div>
-                <div className="text-sm font-medium text-gray-600">Industry Guides</div>
+                <div className="font-bold text-blue-700 mb-2">Make exploration easier</div>
+                <div className="text-sm leading-6 text-gray-600">Offer several entry points so visitors can begin with a skill, role, topic, or destination.</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">100</div>
-                <div className="text-sm font-medium text-gray-600">Learning Paths</div>
+                <div className="font-bold text-blue-700 mb-2">Support active practice</div>
+                <div className="text-sm leading-6 text-gray-600">Add short activities that help members retrieve, apply, reflect, and build a private record of progress.</div>
               </div>
             </div>
           </div>
