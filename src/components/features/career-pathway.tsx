@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Career, Skill } from '@/lib/types';
 import { 
   ArrowRight, 
@@ -15,7 +14,6 @@ import {
   MapPin,
   Clock,
   Briefcase,
-  Star,
   Zap
 } from 'lucide-react';
 
@@ -288,35 +286,6 @@ export function CareerPathway({ career, relatedSkills, relatedCareers, className
         </div>
       )}
 
-      {/* Action Items */}
-      <div className="mt-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-8">
-        <div className="max-w-3xl">
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-            <Star className="h-6 w-6 mr-3 text-yellow-500" />
-            Get Started on Your Path
-          </h3>
-          
-          <p className="text-gray-700 mb-6">
-            Ready to begin your {career.title} journey? Start by developing the foundational skills 
-            and gaining relevant experience in your target industry.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button className="flex items-center">
-              <Target className="h-4 w-4 mr-2" />
-              Assess Your Skills
-            </Button>
-            <Button variant="outline" className="flex items-center">
-              <TrendingUp className="h-4 w-4 mr-2" />
-              View Skill Requirements
-            </Button>
-            <Button variant="outline" className="flex items-center">
-              <Users className="h-4 w-4 mr-2" />
-              Connect with Professionals
-            </Button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

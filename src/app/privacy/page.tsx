@@ -21,7 +21,8 @@ export default function PrivacyPage() {
         <div className="mt-10 space-y-9 text-sm leading-7 text-slate-700">
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Accounts</h2>
-            <p className="mt-2">If you create an account, account and profile information is stored through Supabase. Saved skills and learning activity may also be associated with your account so the site can remember your progress.</p>
+            <p className="mt-2">If you create an account, account and profile information is stored through Supabase. This can include your selected career interests, industries, work-style preferences, strengths, current goal, saved skills, and saved careers. Those answers are used to generate explainable content recommendations inside your private dashboard.</p>
+            <p className="mt-2">Practice XP and activity completions are currently stored in the browser and separated by signed-in account identifier. They do not yet synchronize across devices.</p>
           </section>
 
           <section>
@@ -46,7 +47,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Changes</h2>
-            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: August 12, 2026.</p>
+            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: August 15, 2026.</p>
           </section>
         </div>
 

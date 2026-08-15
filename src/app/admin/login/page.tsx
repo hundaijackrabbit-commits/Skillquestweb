@@ -19,7 +19,7 @@ export default function AdminLoginPage() {
         </div>
         <AuthForm mode="signin" redirectTo="/admin" hideModeToggle />
         <p className="mt-6 text-center text-sm text-slate-500">
-          Not an administrator? <Link href="/auth" className="font-medium text-blue-600">Use member sign in</Link>.
+          Not an administrator? <Link href="/auth?mode=signin&redirect=%2Fdashboard" className="font-medium text-blue-600">Use member sign in</Link>.
         </p>
       </div>
     </div>

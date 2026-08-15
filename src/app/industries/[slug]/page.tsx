@@ -304,10 +304,12 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
                       </div>
                       {relatedCareers.length > 6 && (
                         <div className="mt-4 text-center">
-                          <Button variant="outline">
-                            View All {relatedCareers.length} Career Paths
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
+                          <Link href="/careers">
+                            <Button variant="outline">
+                              Browse All Career Profiles
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                          </Link>
                         </div>
                       )}
                     </CardContent>
@@ -418,40 +420,6 @@ export default async function IndustryDetailPage({ params }: IndustryDetailPageP
           </>
         )}
 
-        {/* Action Section */}
-        <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Ready to Enter {industry.name}?
-            </h3>
-            
-            <p className="text-gray-700 mb-8">
-              Develop the right skills and explore career paths in this industry. 
-              Our platform can help you create a strategic entry plan.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/paths">
-                <Button size="lg" className="px-8">
-                  <Target className="h-4 w-4 mr-2" />
-                  Choose a Learning Path
-                </Button>
-              </Link>
-              <Link href="/careers">
-                <Button variant="outline" size="lg" className="px-8">
-                  <Briefcase className="h-4 w-4 mr-2" />
-                  Explore Careers
-                </Button>
-              </Link>
-              <Link href="/skills">
-                <Button variant="outline" size="lg" className="px-8">
-                  <Zap className="h-4 w-4 mr-2" />
-                  View Required Skills
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

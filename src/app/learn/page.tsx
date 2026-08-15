@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, BookOpenCheck, Brain, Clock3, Compass, Sparkles, Target, Trophy } from 'lucide-react';
+import { ArrowRight, BookOpenCheck, Brain, Clock3, Compass, Layers3, ListOrdered, Sparkles, Target, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +8,8 @@ import { getAllSkillCourses } from '@/lib/courses';
 import { LearningProgressSummary } from '@/components/learning/learning-progress-summary';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { LearningAchievements } from '@/components/learning/learning-achievements';
+import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
+import { getAllInteractivePractices } from '@/lib/interactive-practice';
 
 export const metadata: Metadata = {
   title: 'Practice Lab: Short Skill Courses',
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
 
 export default function LearnPage() {
   const courses = getAllSkillCourses();
+  const practices = getAllInteractivePractices();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/40 to-white py-12">
@@ -36,6 +39,12 @@ export default function LearnPage() {
           </p>
         </section>
 
+        <GamificationAccessGate
+          className="mb-14"
+          featureName="the full Practice Lab"
+          description="Create a free account to access daily challenges, Skill Sprints, sequence builders, sorting activities, missions, XP, streaks, levels, and achievements."
+        >
+          <div>
         <LearningProgressSummary />
 
         <LearningAchievements />
@@ -97,6 +106,33 @@ export default function LearnPage() {
                   {item.label} <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
               </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-14" aria-labelledby="interactive-library-heading">
+          <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700">More than quizzes</div>
+              <h2 id="interactive-library-heading" className="mt-2 text-3xl font-bold text-slate-950">Interactive practice library</h2>
+              <p className="mt-2 max-w-3xl leading-7 text-slate-600">Reorder real workflows and categorize ambiguous signals across twelve additional professional skills.</p>
+            </div>
+            <Badge variant="outline">{practices.length} activities</Badge>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {practices.map((practice) => (
+              <Link key={practice.id} href={`/skills/${practice.skillSlug}#interactive-practice`} className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md">
+                <div className="flex items-center justify-between gap-3">
+                  <span className={`rounded-xl p-2.5 ${practice.kind === 'sequence' ? 'bg-cyan-100 text-cyan-700' : 'bg-fuchsia-100 text-fuchsia-700'}`}>
+                    {practice.kind === 'sequence' ? <ListOrdered className="h-5 w-5" /> : <Layers3 className="h-5 w-5" />}
+                  </span>
+                  <Badge variant="outline">{practice.xp} XP</Badge>
+                </div>
+                <div className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">{practice.skillName}</div>
+                <h3 className="mt-1 text-lg font-bold text-slate-950 group-hover:text-cyan-800">{practice.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{practice.instruction}</p>
+                <span className="mt-4 inline-flex items-center text-sm font-bold text-cyan-800">Open activity <ArrowRight className="ml-1.5 h-4 w-4" /></span>
+              </Link>
             ))}
           </div>
         </section>
@@ -172,6 +208,8 @@ export default function LearnPage() {
             </div>
           </div>
         </section>
+          </div>
+        </GamificationAccessGate>
       </div>
     </div>
   );

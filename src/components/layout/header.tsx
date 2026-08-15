@@ -70,7 +70,7 @@ export function Header() {
               <Link href="/dashboard">
                 <Button variant="ghost" size="sm" className="text-slate-700">
                   <User className="mr-2 h-4 w-4" />
-                  Dashboard
+                  My Profile
                 </Button>
               </Link>
               <Button variant="outline" size="sm" onClick={() => signOut()}>
@@ -80,12 +80,12 @@ export function Header() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/auth">
+              <Link href="/auth?mode=signin&redirect=%2Fdashboard">
                 <Button variant="outline" size="sm">
                   Sign In
                 </Button>
               </Link>
-              <Link href="/auth">
+              <Link href="/auth?mode=signup&redirect=%2Fdashboard">
                 <Button variant="primary" size="sm">
                   <Sparkles className="mr-2 h-4 w-4" />
                   Get Started
@@ -157,7 +157,7 @@ export function Header() {
                     <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
                       <Button variant="ghost" size="sm" className="w-full justify-center">
                         <User className="mr-2 h-4 w-4" />
-                        Dashboard
+                        My Profile
                       </Button>
                     </Link>
                     <Button
@@ -175,12 +175,12 @@ export function Header() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <Link href="/auth" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/auth?mode=signin&redirect=%2Fdashboard" onClick={() => setMobileMenuOpen(false)}>
                       <Button variant="outline" size="sm" className="w-full justify-center">
                         Sign In
                       </Button>
                     </Link>
-                    <Link href="/auth" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/auth?mode=signup&redirect=%2Fdashboard" onClick={() => setMobileMenuOpen(false)}>
                       <Button variant="primary" size="sm" className="w-full justify-center">
                         <Sparkles className="mr-2 h-4 w-4" />
                         Get Started

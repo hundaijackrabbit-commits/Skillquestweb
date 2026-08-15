@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type PostgrestError } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
@@ -21,6 +21,13 @@ export interface UserProfile {
     email_notifications?: boolean
     weekly_suggestions?: boolean
     theme?: 'light' | 'dark' | 'auto'
+    profile_assessment?: {
+      version: 1
+      goal: 'explore' | 'get-hired' | 'switch' | 'grow' | 'lead' | 'build-business'
+      workStyles: Array<'collaborative' | 'independent' | 'structured' | 'fast-moving' | 'remote-flexible' | 'hands-on'>
+      strengths: Array<'communicator' | 'analyst' | 'organizer' | 'creator' | 'technologist' | 'leader'>
+      completedAt: string
+    }
   }
 }
 
@@ -96,7 +103,7 @@ export const auth = {
 
 // Profile helpers
 export const profiles = {
-  async getProfile(userId: string): Promise<{ data: UserProfile | null, error: any }> {
+  async getProfile(userId: string): Promise<{ data: UserProfile | null, error: PostgrestError | null }> {
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
