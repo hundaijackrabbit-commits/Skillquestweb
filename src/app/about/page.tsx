@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -28,7 +29,7 @@ export default function AboutPage() {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             The professional skills repository and career intelligence platform designed for 
-            ambitious professionals navigating today's evolving economy.
+            ambitious professionals navigating today’s evolving economy.
           </p>
         </div>
 
@@ -46,9 +47,9 @@ export default function AboutPage() {
 
           <div className="bg-blue-50 rounded-2xl p-8">
             <blockquote className="text-lg italic text-blue-900 text-center">
-              "Skills are not just labels—they are complex, multi-dimensional professional capabilities 
+              “Skills are not just labels—they are complex, multi-dimensional professional capabilities 
               that require deep understanding, structured development, and strategic application. 
-              Modern Skill Lab treats every skill as a comprehensive knowledge object deserving serious analysis."
+              Modern Skill Lab treats every skill as a comprehensive knowledge object deserving serious analysis.”
             </blockquote>
             <div className="text-center mt-4 text-blue-700 font-semibold">
               — The Modern Skill Lab Philosophy
@@ -124,7 +125,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Modern</h3>
               <p className="text-sm text-gray-600">
-                Focused on skills and careers relevant to today's economy
+                Focused on skills and careers relevant to today’s economy
               </p>
             </div>
 
@@ -299,12 +300,8 @@ export default function AboutPage() {
             strategic decisions about their career development.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg">
-              Explore Skills Repository
-            </Button>
-            <Button variant="outline" size="lg">
-              Browse Career Paths
-            </Button>
+            <Link href="/skills"><Button size="lg">Explore Skills Repository</Button></Link>
+            <Link href="/careers"><Button variant="outline" size="lg">Browse Career Profiles</Button></Link>
           </div>
         </section>
       </div>

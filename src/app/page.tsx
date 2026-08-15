@@ -167,7 +167,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="rounded-[2rem] bg-slate-900 px-6 py-10 text-white sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between">
             <div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">Make it yours</p><h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Save skills and keep building.</h2><p className="mt-4 text-base leading-7 text-slate-300">Create a free account to save useful skills and return to them from your dashboard.</p></div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto">Browse skills</Button></Link><Link href="/auth"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto">Create account</Button></Link></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto">Browse skills</Button></Link><Link href="/auth?mode=signup&redirect=%2Fdashboard"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto">Create account</Button></Link></div>
           </div>
         </div>
       </section>

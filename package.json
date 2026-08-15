@@ -9,7 +9,8 @@
     "lint": "eslint",
     "audit:seo": "node scripts/audit-seo-content.mjs",
     "audit:links": "node scripts/audit-content-links.mjs --strict",
-    "audit:originality": "node scripts/audit-content-originality.mjs --strict"
+    "audit:originality": "node scripts/audit-content-originality.mjs --strict",
+    "audit:controls": "node scripts/audit-interactive-controls.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

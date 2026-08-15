@@ -21,6 +21,7 @@ import { breadcrumbList } from '@/lib/seo';
 import { isCareerIndexable } from '@/lib/content-quality';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
+import { SaveCareerButton } from '@/components/careers/save-career-button';
 import { 
   Briefcase, 
   TrendingUp, 
@@ -150,6 +151,8 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               {career.summary}
             </p>
 
+            <SaveCareerButton careerSlug={career.slug} />
+
             {/* Key Metrics Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
               <div className="text-center p-4 bg-white/60 rounded-xl">
@@ -202,7 +205,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* What They Do */}
-            <Card>
+            <Card id="skills-required" className="scroll-mt-28">
               <CardHeader>
                 <CardTitle className="flex items-center text-2xl">
                   <BookOpen className="h-6 w-6 mr-3 text-blue-600" />
@@ -506,18 +509,18 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="px-8">
-                <Target className="h-4 w-4 mr-2" />
-                Assess Your Skills
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <BookOpen className="h-4 w-4 mr-2" />
-                View Required Skills
-              </Button>
-              <Button variant="outline" size="lg" className="px-8">
-                <Users className="h-4 w-4 mr-2" />
-                Connect with Professionals
-              </Button>
+              <Link href="/dashboard#profile-assessment">
+                <Button size="lg" className="px-8">
+                  <Target className="h-4 w-4 mr-2" />
+                  Check Your Career Fit
+                </Button>
+              </Link>
+              <Link href="#skills-required">
+                <Button variant="outline" size="lg" className="px-8">
+                  <BookOpen className="h-4 w-4 mr-2" />
+                  View Required Skills
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
