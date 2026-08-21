@@ -15,7 +15,6 @@ const CareerGuideRequestSchema = z.object({
   email: z.string().trim().email().max(254),
   source: z.string().trim().max(80).optional(),
   marketingConsent: z.boolean().optional().default(false),
-  company: z.string().max(200).optional(),
 });
 
 type DeliveryStatus = 'sent' | 'failed';
@@ -26,8 +25,8 @@ function firstNameFrom(name?: string) {
 
 function idempotencyKey(email: string) {
   const day = new Date().toISOString().slice(0, 10);
-  const digest = createHash('sha256').update(`${email}:${day}:link-only-v2`).digest('hex').slice(0, 32);
-  return `career-guide-v2-${digest}`;
+  const digest = createHash('sha256').update(`${email}:${day}:delivery-v3`).digest('hex').slice(0, 32);
+  return `career-guide-v3-${digest}`;
 }
 
 async function createDeliveryRecord(input: z.infer<typeof CareerGuideRequestSchema>) {
@@ -87,10 +86,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, message: 'Enter a valid email address.' }, { status: 400 });
     }
 
-    if (parsed.data.company) {
-      return NextResponse.json({ ok: true, message: 'Check your inbox for the guide.' });
-    }
-
     const input = { ...parsed.data, email: parsed.data.email.toLowerCase() };
     const deliveryId = await createDeliveryRecord(input);
     const resend = getResendClient();
@@ -131,6 +126,10 @@ export async function POST(request: Request) {
       );
     }
 
+    console.info('Career guide email accepted by provider.', {
+      resendEmailId: data?.id || null,
+      source: input.source || 'career-guide-page',
+    });
     await recordDeliveryResult(deliveryId, 'sent', data?.id);
     return NextResponse.json({ ok: true, message: 'Your guide is on its way. Check your inbox.' });
   } catch (error) {

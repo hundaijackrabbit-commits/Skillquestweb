@@ -33,7 +33,6 @@ export function CareerGuideForm({ source = 'career-guide-page', className }: Car
         body: JSON.stringify({
           name: String(formData.get('name') || ''),
           email: String(formData.get('email') || ''),
-          company: String(formData.get('company') || ''),
           source,
           marketingConsent: formData.get('marketingConsent') === 'on',
         }),
@@ -86,11 +85,6 @@ export function CareerGuideForm({ source = 'career-guide-page', className }: Car
           <input name="email" type="email" inputMode="email" autoComplete="email" required maxLength={254} placeholder="you@example.com" className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-base font-normal text-slate-950 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-4 focus:ring-violet-100" />
         </label>
       </div>
-
-      <label className="sr-only" aria-hidden="true">
-        Company
-        <input name="company" tabIndex={-1} autoComplete="off" />
-      </label>
 
       <label className="flex items-start gap-3 rounded-xl bg-slate-50 p-3 text-sm leading-5 text-slate-600">
         <input name="marketingConsent" type="checkbox" className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-violet-600 focus:ring-violet-500" />
