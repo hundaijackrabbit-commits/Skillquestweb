@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { render } from '@react-email/components';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { CareerGuideEmail, careerGuideEmailText } from '@/emails/career-guide-email';
@@ -103,14 +104,16 @@ export async function POST(request: Request) {
     }
 
     const downloadUrl = getCareerGuideDownloadUrl();
+    const emailProps = { firstName: firstNameFrom(input.name), downloadUrl };
+    const html = await render(CareerGuideEmail(emailProps));
     const { data, error } = await resend.emails.send(
       {
         from: process.env.RESEND_FROM_EMAIL || 'Modern Skill Lab <guide@mail.modernskilllab.space>',
         to: input.email,
         replyTo: process.env.RESEND_REPLY_TO_EMAIL || undefined,
         subject: 'Your requested Modern Skill Lab guide',
-        react: CareerGuideEmail({ firstName: firstNameFrom(input.name), downloadUrl }),
-        text: careerGuideEmailText({ firstName: firstNameFrom(input.name), downloadUrl }),
+        html,
+        text: careerGuideEmailText(emailProps),
         tags: [
           { name: 'resource', value: 'career-life-map' },
           { name: 'source', value: (input.source || 'career-guide-page').replace(/[^a-zA-Z0-9_-]/g, '-').slice(0, 80) },
