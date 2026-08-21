@@ -53,17 +53,43 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
 
         if (error) {
           setMessage({ type: 'error', text: error.message })
-        } else if (data.session) {
-          setMessage({ type: 'success', text: 'Account created. Opening your practice area…' })
-          setTimeout(() => {
-            if (onSuccess) onSuccess()
-            else window.location.href = redirectTo
-          }, 300)
         } else {
-          setMessage({
-            type: 'success',
-            text: 'Account created! Check your email.',
-          })
+          let guideSent = false
+          try {
+            const guideResponse = await fetch('/api/career-guide', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                source: 'account-signup',
+                marketingConsent: false,
+              }),
+            })
+            guideSent = guideResponse.ok
+          } catch {
+            // Guide delivery must never block account creation.
+          }
+
+          if (data.session) {
+            setMessage({
+              type: 'success',
+              text: guideSent
+                ? 'Account created. Your Career & Life Map is on its way. Opening your practice area…'
+                : 'Account created. Opening your practice area…',
+            })
+            setTimeout(() => {
+              if (onSuccess) onSuccess()
+              else window.location.href = redirectTo
+            }, 300)
+          } else {
+            setMessage({
+              type: 'success',
+              text: guideSent
+                ? 'Account created! Check your email for confirmation and your Career & Life Map.'
+                : 'Account created! Check your email.',
+            })
+          }
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -105,7 +131,7 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
         </CardTitle>
         <CardDescription className="text-center">
           {mode === 'signup'
-            ? 'Start your personalized skills journey'
+            ? 'Start your personalized skills journey and receive the free Career & Life Map'
             : 'Continue your professional development'}
         </CardDescription>
       </CardHeader>

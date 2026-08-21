@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Privacy',
-  description: 'How Modern Skill Lab handles account, newsletter, analytics, and advertising data.',
+  description: 'How Modern Skill Lab handles account, requested-resource, newsletter, analytics, and advertising data.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -26,6 +26,12 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2 className="text-xl font-semibold text-slate-900">Requested guides and resources</h2>
+            <p className="mt-2">If you request the Career &amp; Life Map, Modern Skill Lab stores the email address, optional name, request source, delivery status, and time needed to send and troubleshoot that resource. The requested guide email is transactional and separate from newsletter consent.</p>
+            <p className="mt-2">If you select the optional newsletter checkbox, that choice is also recorded and your email is added to the newsletter list. Leaving it unchecked does not affect guide delivery.</p>
+          </section>
+
+          <section>
             <h2 className="text-xl font-semibold text-slate-900">Email updates</h2>
             <p className="mt-2">If you join the newsletter, Modern Skill Lab stores your email address, signup source, subscription status, and signup time. You can unsubscribe from future emails when newsletter delivery is active.</p>
           </section>
@@ -42,12 +48,12 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Service providers</h2>
-            <p className="mt-2">Modern Skill Lab relies on infrastructure providers such as Vercel for hosting and analytics and Supabase for authentication and database services. Data handled by those services is also subject to their applicable privacy and security practices.</p>
+            <p className="mt-2">Modern Skill Lab relies on infrastructure providers such as Vercel for hosting and analytics, Supabase for authentication and database services, and Resend for requested-resource and transactional email delivery. Data handled by those services is also subject to their applicable privacy and security practices.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Changes</h2>
-            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: August 15, 2026.</p>
+            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: August 21, 2026.</p>
           </section>
         </div>
 

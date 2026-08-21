@@ -5,6 +5,7 @@ import {
   BarChart3,
   BookOpen,
   ExternalLink,
+  FileDown,
   Mail,
   Megaphone,
   ShieldCheck,
@@ -21,6 +22,8 @@ type TrendingSkillRow = {
   views: number | string | null;
 };
 
+const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
 export const metadata: Metadata = {
   title: 'Growth Console',
   description: 'Modern Skill Lab administration and growth controls.',
@@ -33,8 +36,6 @@ export default async function AdminPage() {
   const db = privileged || supabase;
   const skills = await getAllSkills();
   const skillBySlug = new Map(skills.map((skill) => [skill.slug, skill]));
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-
   const [
     profilesResult,
     subscribersResult,
@@ -46,6 +47,9 @@ export default async function AdminPage() {
     adsResult,
     recentUsersResult,
     recentSubscribersResult,
+    guideRequestsResult,
+    guideSentResult,
+    recentGuideDeliveriesResult,
   ] = await Promise.all([
     db.from('profiles').select('id', { count: 'exact', head: true }),
     db.from('newsletter_subscribers').select('id', { count: 'exact', head: true }),
@@ -57,11 +61,15 @@ export default async function AdminPage() {
     db.from('ad_placements').select('*').order('label'),
     db.from('profiles').select('id, email, name, created_at, saved_skills, saved_careers, is_admin').order('created_at', { ascending: false }).limit(12),
     db.from('newsletter_subscribers').select('id, email, source, status, created_at').order('created_at', { ascending: false }).limit(12),
+    db.from('career_guide_deliveries').select('id', { count: 'exact', head: true }),
+    db.from('career_guide_deliveries').select('id', { count: 'exact', head: true }).eq('status', 'sent'),
+    db.from('career_guide_deliveries').select('id, email, name, source, status, requested_at, sent_at').order('requested_at', { ascending: false }).limit(16),
   ]);
 
   const marketingResult = await db.from('site_settings').select('value').eq('key', 'marketing').maybeSingle();
   const marketing = (marketingResult.data?.value || {}) as { newsletterHeadline?: string; newsletterDescription?: string };
   const setupMissing = [subscribersResult, weeklyEventsResult, featuredResult, adsResult].some((result) => Boolean(result.error));
+  const guideSetupMissing = Boolean(guideRequestsResult.error);
   const monthlyTrendingRows = (monthlyTrendingResult.data || []) as TrendingSkillRow[];
   const weeklyTrendingRows = (weeklyTrendingResult.data || []) as TrendingSkillRow[];
   const topSkills = monthlyTrendingRows.slice(0, 8).map((row) => [String(row.item_slug), Number(row.views)] as const);
@@ -70,12 +78,14 @@ export default async function AdminPage() {
   const adPlacements = adsResult.data || [];
   const users = recentUsersResult.data || [];
   const subscribers = recentSubscribersResult.data || [];
+  const guideDeliveries = recentGuideDeliveriesResult.data || [];
 
   const stats = [
     { label: 'Accounts', value: profilesResult.count ?? 0, icon: Users, detail: 'Registered members' },
     { label: 'Email subscribers', value: activeSubscribersResult.count ?? 0, icon: Mail, detail: `${subscribersResult.count ?? 0} total records` },
     { label: 'Tracked activity', value: weeklyEventsResult.count ?? 0, icon: Activity, detail: 'Last 7 days' },
     { label: 'Skill library', value: skills.length, icon: BookOpen, detail: 'Public skill guides' },
+    { label: 'Guide deliveries', value: guideSentResult.count ?? 0, icon: FileDown, detail: `${guideRequestsResult.count ?? 0} total requests` },
   ];
 
   return (
@@ -107,6 +117,12 @@ export default async function AdminPage() {
           </div>
         )}
 
+        {guideSetupMissing && (
+          <div className="rounded-2xl border border-violet-200 bg-violet-50 p-5 text-sm leading-6 text-violet-950">
+            <strong>Career guide delivery tracking is not live yet.</strong> Run <code className="rounded bg-violet-100 px-1.5 py-0.5">supabase/migrations/004_career_guide_delivery.sql</code> in the Supabase SQL editor. Email delivery can still work, but requests will not appear here until the migration is installed.
+          </div>
+        )}
+
         <section>
           <div className="mb-5 flex items-center justify-between">
             <div>
@@ -114,7 +130,7 @@ export default async function AdminPage() {
               <h2 className="mt-1 text-2xl font-bold text-slate-900">What is happening now</h2>
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             {stats.map((stat) => (
               <div key={stat.label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex items-start justify-between gap-4">
@@ -262,6 +278,42 @@ export default async function AdminPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section id="guide-deliveries" className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-violet-600"><FileDown className="h-5 w-5" /><span className="text-sm font-semibold uppercase tracking-[0.16em]">Lead resource</span></div>
+              <h2 className="mt-2 text-2xl font-bold text-slate-900">Career &amp; Life Map deliveries</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Monitor requested, sent, and failed guide emails. Newsletter consent remains a separate choice.</p>
+            </div>
+            <Link href="/free-career-guide" className="inline-flex items-center text-sm font-semibold text-violet-700">View landing page <ExternalLink className="ml-2 h-4 w-4" /></Link>
+          </div>
+          <div className="mt-6 overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+              <thead>
+                <tr className="text-xs uppercase tracking-wide text-slate-500">
+                  <th className="px-3 py-3 font-semibold">Recipient</th>
+                  <th className="px-3 py-3 font-semibold">Source</th>
+                  <th className="px-3 py-3 font-semibold">Status</th>
+                  <th className="px-3 py-3 font-semibold">Requested</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {guideDeliveries.length === 0 && (
+                  <tr><td colSpan={4} className="px-3 py-6 text-slate-500">No guide requests have been recorded yet.</td></tr>
+                )}
+                {guideDeliveries.map((delivery) => (
+                  <tr key={delivery.id}>
+                    <td className="px-3 py-3"><p className="font-semibold text-slate-900">{delivery.name || delivery.email}</p>{delivery.name && <p className="text-xs text-slate-500">{delivery.email}</p>}</td>
+                    <td className="px-3 py-3 text-slate-600">{delivery.source}</td>
+                    <td className="px-3 py-3"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${delivery.status === 'sent' ? 'bg-emerald-100 text-emerald-800' : delivery.status === 'failed' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`}>{delivery.status}</span></td>
+                    <td className="px-3 py-3 whitespace-nowrap text-slate-600">{new Date(delivery.requested_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
 

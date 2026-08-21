@@ -261,6 +261,18 @@ Update your production URLs in:
 
 ## 📚 Additional Resources
 
+## Career guide delivery tracking
+
+After the existing schema and Growth Console migrations, run:
+
+```text
+supabase/migrations/004_career_guide_delivery.sql
+```
+
+This creates `career_guide_deliveries`, the public request function used by the guide form, admin-only row-level security, and the delivery status fields shown in `/admin`. The public request function accepts a guide request but does not expose the delivery table. The server uses `SUPABASE_SERVICE_ROLE_KEY` only to mark a request as sent or failed after the email provider responds.
+
+Guide delivery and newsletter consent are deliberately separate. Only a checked optional marketing box calls `subscribe_newsletter`.
+
 - [Supabase Documentation](https://supabase.com/docs)
 - [Next.js + Supabase Guide](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs)
 - [Row Level Security Guide](https://supabase.com/docs/guides/auth/row-level-security)

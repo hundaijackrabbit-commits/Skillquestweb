@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllCareers } from '@/lib/content';
 import { isCareerIndexable } from '@/lib/content-quality';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { ArrowRight, BookOpen, Briefcase, MapPin, Route, Target, Users } from 'lucide-react';
 
 export const metadata = {
@@ -247,6 +248,8 @@ export default async function CareersPage() {
             </div>
           </div>
         </div>
+
+        <CareerGuidePromo className="mt-20" eyebrow="Free career planning workbook" />
 
         {/* CTA Section */}
         <div className="mt-20 text-center">
