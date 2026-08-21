@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BookOpen, Users, Briefcase, Building2, Layers3, PenTool, ShieldCheck, Trophy } from 'lucide-react';
+import { BookOpen, Users, Briefcase, Building2, Gift, Layers3, PenTool, ShieldCheck, Trophy } from 'lucide-react';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 
 const navigation = {
@@ -12,6 +12,7 @@ const navigation = {
     { name: 'Learning Paths', href: '/paths', icon: BookOpen },
     { name: 'Blog', href: '/blog', icon: PenTool },
     { name: 'Community', href: '/community', icon: Users },
+    { name: 'Free Career Guide', href: '/free-career-guide', icon: Gift },
   ],
   company: [
     { name: 'About', href: '/about' },

@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllBlogPosts } from '@/lib/content';
 import { isBlogPostIndexable } from '@/lib/content-quality';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { getKnowledgeCheckForBlog } from '@/lib/knowledge-checks';
 import { formatContentDate } from '@/lib/dates';
 import { 
@@ -288,6 +289,8 @@ export default async function BlogPage() {
             </div>
           </div>
         </div>
+
+        <CareerGuidePromo className="mb-16" eyebrow="Put the ideas into practice" />
 
         {/* CTA Section */}
         <div className="mx-auto max-w-2xl rounded-3xl border border-slate-200 bg-slate-50 p-8 text-center">

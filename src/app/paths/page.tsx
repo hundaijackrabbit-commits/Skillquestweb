@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getSkillPaths } from '@/lib/content';
 import { isSkillPathIndexable } from '@/lib/content-quality';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { 
   ArrowRight, 
   Target, 
@@ -271,6 +272,8 @@ export default async function SkillPathsPage() {
             </div>
           </div>
         </div>
+
+        <CareerGuidePromo className="mb-16" eyebrow="Plan before you commit" />
 
         {/* CTA Section */}
         <div className="text-center">

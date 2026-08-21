@@ -19,6 +19,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: '/downloads/ModernSkillLab_Career_and_Life_Map.pdf',
+        headers: [
+          { key: 'Content-Disposition', value: 'attachment; filename="ModernSkillLab_Career_and_Life_Map.pdf"' },
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

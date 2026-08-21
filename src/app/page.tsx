@@ -9,6 +9,7 @@ import { getIndexableSkills } from '@/lib/content';
 import { getHomepageGrowthData } from '@/lib/growth';
 import { getAllSkillCourses } from '@/lib/courses';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 
 export const dynamic = 'force-dynamic';
 
@@ -89,6 +90,10 @@ export default async function HomePage() {
           <DailyChallenge />
         </div>
       </section>
+
+      <div className="mx-auto max-w-7xl px-6 pb-16 lg:px-8 sm:pb-20">
+        <CareerGuidePromo eyebrow="New · Free member resource" />
+      </div>
 
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">

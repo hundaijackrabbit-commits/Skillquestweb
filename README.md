@@ -94,7 +94,9 @@ See [`PATCH_NOTES_2026-08-15_ARCHITECTURE.md`](./PATCH_NOTES_2026-08-15_ARCHITEC
 On a new Supabase project, run the migrations in order:
 
 1. `supabase/migrations/001_initial_schema.sql`
-2. `supabase/migrations/003_growth_admin.sql`
+2. `supabase/migrations/002_seed_skill_paths.sql`
+3. `supabase/migrations/003_growth_admin.sql`
+4. `supabase/migrations/004_career_guide_delivery.sql`
 
 If `public.profiles` already exists from an older deployment, `001_initial_schema.sql` is idempotent and can be rerun safely before 003.
 
@@ -122,6 +124,19 @@ SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
 Never expose the service-role key with a `NEXT_PUBLIC_` prefix.
+
+### Career & Life Map email delivery
+
+The free 60-page workbook is promoted at `/free-career-guide`, sent after a successful request, and also requested automatically after a new account is created. Configure Resend in Vercel:
+
+```env
+NEXT_PUBLIC_SITE_URL=https://modernskilllab.space
+RESEND_API_KEY=re_...
+RESEND_FROM_EMAIL=Modern Skill Lab <guide@mail.modernskilllab.space>
+RESEND_REPLY_TO_EMAIL=hello@modernskilllab.space
+```
+
+Verify the sending subdomain in Resend before using the production `from` address. The PDF is attached to the email and the email includes a backup download link. Run migration 004 and configure `SUPABASE_SERVICE_ROLE_KEY` to record sent/failed delivery status in the Growth Console.
 
 ### Optional AdSense
 

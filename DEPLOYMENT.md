@@ -145,6 +145,27 @@ For non-Vercel platforms, ensure Node.js 18+ support.
 
 ## 🔒 Security Configuration
 
+### Career guide delivery
+
+Before promoting the guide funnel to production:
+
+1. Run `supabase/migrations/004_career_guide_delivery.sql` after migrations 001–003.
+2. Install the Resend integration in Vercel or add `RESEND_API_KEY` manually.
+3. In Resend, verify `mail.modernskilllab.space` and publish the DNS records it supplies (SPF/DKIM and any requested MX record).
+4. Add these Production environment variables and redeploy:
+
+```env
+NEXT_PUBLIC_SITE_URL=https://modernskilllab.space
+RESEND_API_KEY=re_...
+RESEND_FROM_EMAIL=Modern Skill Lab <guide@mail.modernskilllab.space>
+RESEND_REPLY_TO_EMAIL=hello@modernskilllab.space
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+5. Open `/free-career-guide`, submit a real inbox, confirm the attachment and fallback link, then create a test account and confirm the automatic copy is not duplicated.
+
+Requested-guide delivery is transactional. The newsletter checkbox is optional and unchecked by default; only checked requests call the newsletter subscription function.
+
 Security headers are pre-configured in `vercel.json`:
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
