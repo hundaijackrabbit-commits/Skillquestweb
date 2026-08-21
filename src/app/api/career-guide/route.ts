@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { CareerGuideEmail } from '@/emails/career-guide-email';
+import { CareerGuideEmail, careerGuideEmailText } from '@/emails/career-guide-email';
 import { createPrivilegedClient } from '@/lib/admin';
-import { CAREER_GUIDE_FILENAME, getCareerGuideDownloadUrl } from '@/lib/career-guide';
+import { getCareerGuideDownloadUrl } from '@/lib/career-guide';
 import { getResendClient } from '@/lib/resend';
 import { createClient } from '@/lib/supabase/server';
 
@@ -25,8 +25,8 @@ function firstNameFrom(name?: string) {
 
 function idempotencyKey(email: string) {
   const day = new Date().toISOString().slice(0, 10);
-  const digest = createHash('sha256').update(`${email}:${day}`).digest('hex').slice(0, 32);
-  return `career-guide-${digest}`;
+  const digest = createHash('sha256').update(`${email}:${day}:link-only-v2`).digest('hex').slice(0, 32);
+  return `career-guide-v2-${digest}`;
 }
 
 async function createDeliveryRecord(input: z.infer<typeof CareerGuideRequestSchema>) {
@@ -108,9 +108,9 @@ export async function POST(request: Request) {
         from: process.env.RESEND_FROM_EMAIL || 'Modern Skill Lab <guide@mail.modernskilllab.space>',
         to: input.email,
         replyTo: process.env.RESEND_REPLY_TO_EMAIL || undefined,
-        subject: 'Your Modern Skill Lab Career & Life Map',
+        subject: 'Your requested Modern Skill Lab guide',
         react: CareerGuideEmail({ firstName: firstNameFrom(input.name), downloadUrl }),
-        attachments: [{ filename: CAREER_GUIDE_FILENAME, path: downloadUrl }],
+        text: careerGuideEmailText({ firstName: firstNameFrom(input.name), downloadUrl }),
         tags: [
           { name: 'resource', value: 'career-life-map' },
           { name: 'source', value: (input.source || 'career-guide-page').replace(/[^a-zA-Z0-9_-]/g, '-').slice(0, 80) },
@@ -138,4 +138,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
