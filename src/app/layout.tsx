@@ -7,6 +7,7 @@ import './globals.css';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SupabaseProvider } from '@/components/providers/supabase-provider';
+import { CartesiaNavigationBridge } from '@/components/voice/cartesia-navigation-bridge';
 import { SkillGuideOrb } from '@/components/voice/skill-guide-orb';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <CartesiaNavigationBridge />
           <SkillGuideOrb />
         </SupabaseProvider>
         <Analytics />
