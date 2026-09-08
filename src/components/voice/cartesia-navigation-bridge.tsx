@@ -11,9 +11,7 @@ const ALLOWED_ROUTES = new Set([
   '/', '/about', '/blog', '/careers', '/community', '/dashboard', '/free-career-guide',
   '/industries', '/learn', '/paths', '/privacy', '/skills', '/topics',
 ]);
-const CLIENT_FUNCTION_EVENTS = new Set([
-  'client_function_call', 'client_tool_call', 'tool_call', 'function_call', 'agent_tool_called',
-]);
+const NAVIGATION_TOOL_NAMES = new Set(['navigate_page', 'validate_navigation', 'navigate', 'open_page']);
 
 function asRecord(value: unknown): UnknownRecord {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as UnknownRecord : {};
@@ -27,7 +25,7 @@ function maybeParse(value: unknown): unknown {
 }
 
 function collectRecords(value: unknown, depth = 0, records: UnknownRecord[] = []): UnknownRecord[] {
-  if (depth > 7) return records;
+  if (depth > 9) return records;
   const parsed = maybeParse(value);
   if (Array.isArray(parsed)) {
     for (const item of parsed) collectRecords(item, depth + 1, records);
@@ -76,22 +74,22 @@ function normalizeInternalPath(value: unknown) {
   return allowed ? path : null;
 }
 
+function toolNameFromRecord(record: UnknownRecord) {
+  const fn = asRecord(record.function);
+  const name = firstString(record.name, record.tool_name, record.function_name, fn.name, record.action, record.tool);
+  return name?.toLowerCase();
+}
+
 function extractNavigation(payload: UnknownRecord) {
   const records = collectRecords(payload);
-  const rootEvent = firstString(payload.event, payload.type)?.toLowerCase();
-
   let hasNavigateMarker = false;
   let path: string | null = null;
   let label: string | undefined;
   let permissionGranted: boolean | undefined;
 
   for (const record of records) {
-    const markerValues = [record.name, record.tool_name, record.function_name, record.action, record.tool, record.function];
-    for (const marker of markerValues) {
-      if (typeof marker === 'string' && ['navigate_page', 'navigate', 'open_page'].includes(marker.trim().toLowerCase())) {
-        hasNavigateMarker = true;
-      }
-    }
+    const toolName = toolNameFromRecord(record);
+    if (toolName && NAVIGATION_TOOL_NAMES.has(toolName)) hasNavigateMarker = true;
 
     if (!path) {
       path = normalizeInternalPath(firstString(record.path, record.url, record.destination, record.href, record.route, record.pathname));
@@ -109,25 +107,45 @@ function extractNavigation(payload: UnknownRecord) {
     }
   }
 
-  const looksLikeClientFunction = Boolean(rootEvent && CLIENT_FUNCTION_EVENTS.has(rootEvent));
-  if (!path || (!hasNavigateMarker && !looksLikeClientFunction)) return null;
+  if (!path || !hasNavigateMarker) return null;
 
   return {
     path,
     label: label || 'that page',
     permissionGranted,
-    trustedInvocation: hasNavigateMarker && looksLikeClientFunction,
-    eventType: rootEvent || 'unknown',
+  };
+}
+
+function extractToolDiagnostics(payload: UnknownRecord) {
+  const records = collectRecords(payload);
+  const names = new Set<string>();
+  const argumentKeySets: string[][] = [];
+
+  for (const record of records) {
+    const name = toolNameFromRecord(record);
+    if (name) names.add(name.slice(0, 80));
+
+    const args = maybeParse(record.arguments ?? record.args ?? record.tool_args);
+    if (args && typeof args === 'object' && !Array.isArray(args)) {
+      argumentKeySets.push(Object.keys(args as UnknownRecord).slice(0, 16));
+    }
+  }
+
+  return {
+    toolNames: Array.from(names).slice(0, 12),
+    argumentKeySets: argumentKeySets.slice(0, 8),
   };
 }
 
 function summarizeShape(payload: UnknownRecord, matchedNavigation: boolean) {
   const records = collectRecords(payload);
+  const diagnostics = extractToolDiagnostics(payload);
   return {
     eventType: firstString(payload.event, payload.type) || 'unknown',
     topLevelKeys: Object.keys(payload).slice(0, 24),
-    nestedKeySets: records.slice(0, 8).map((record) => Object.keys(record).slice(0, 16)),
+    nestedKeySets: records.slice(0, 10).map((record) => Object.keys(record).slice(0, 18)),
     matchedNavigation,
+    ...diagnostics,
   };
 }
 
@@ -152,7 +170,7 @@ export function CartesiaNavigationBridge() {
             try { payload = asRecord(JSON.parse(event.data)); } catch { return; }
 
             const eventType = firstString(payload.event, payload.type)?.toLowerCase();
-            if (eventType === 'media_output' || eventType === 'ack' || eventType === 'clear') return;
+            if (eventType === 'media_output' || eventType === 'ack' || eventType === 'clear' || eventType === 'turn_output_text_delta') return;
 
             const navigation = extractNavigation(payload);
             const summary = summarizeShape(payload, Boolean(navigation));
@@ -172,7 +190,7 @@ export function CartesiaNavigationBridge() {
             const alreadyThere = navigation.path.split(/[?#]/)[0] === pathname;
             if (alreadyThere) return;
 
-            if (navigation.permissionGranted === true || (navigation.permissionGranted === undefined && navigation.trustedInvocation)) {
+            if (navigation.permissionGranted === true) {
               router.prefetch(navigation.path);
               router.push(navigation.path);
               setPending(null);
@@ -202,11 +220,7 @@ export function CartesiaNavigationBridge() {
       <p className="text-sm font-semibold text-slate-900">Open {pending.label}?</p>
       <p className="mt-1 text-xs leading-5 text-slate-600">The Skill Guide found this page. You decide whether to leave the current page.</p>
       <div className="mt-3 flex gap-2">
-        <button
-          type="button"
-          onClick={() => setPending(null)}
-          className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
-        >
+        <button type="button" onClick={() => setPending(null)} className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700">
           Stay here
         </button>
         <button
