@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const DEFAULT_CARTESIA_VERSION = '2025-04-16';
+const DEFAULT_CARTESIA_VERSION = '2026-08-14';
 const DEFAULT_WEBSOCKET_BASE_URL = 'wss://agents.cartesia.ai';
 
 export async function POST() {
@@ -36,18 +36,26 @@ export async function POST() {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      console.error('Cartesia access-token request failed', response.status, data);
+      console.error('Cartesia access-token request failed', {
+        status: response.status,
+        version,
+        body: data,
+      });
       return NextResponse.json(
-        { error: 'Could not start the voice assistant.' },
+        {
+          error: 'Could not start the voice assistant.',
+          code: 'cartesia_token_failed',
+          status: response.status,
+        },
         { status: 502 },
       );
     }
 
     const accessToken = data.token || data.access_token;
     if (!accessToken) {
-      console.error('Cartesia access-token response did not include a token');
+      console.error('Cartesia access-token response did not include a token', data);
       return NextResponse.json(
-        { error: 'Could not start the voice assistant.' },
+        { error: 'Could not start the voice assistant.', code: 'cartesia_token_missing' },
         { status: 502 },
       );
     }
@@ -61,7 +69,7 @@ export async function POST() {
   } catch (error) {
     console.error('Cartesia session error', error);
     return NextResponse.json(
-      { error: 'Could not start the voice assistant.' },
+      { error: 'Could not start the voice assistant.', code: 'cartesia_session_error' },
       { status: 502 },
     );
   }
