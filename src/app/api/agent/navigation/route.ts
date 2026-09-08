@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const ALLOWED_TOP_LEVEL = new Set([
   '/', '/about', '/blog', '/careers', '/community', '/dashboard',
-  '/free-career-guide', '/industries', '/learn', '/paths', '/skills',
+  '/free-career-guide', '/industries', '/learn', '/paths', '/privacy', '/skills', '/topics',
 ]);
 
-const ALLOWED_PREFIXES = ['/blog/', '/careers/', '/industries/', '/learn/', '/paths/', '/skills/'];
+const ALLOWED_PREFIXES = [
+  '/blog/', '/careers/', '/industries/', '/learn/', '/paths/', '/skills/', '/topics/',
+];
 
 function normalizePath(input: unknown) {
   if (typeof input !== 'string') return null;
@@ -31,8 +33,7 @@ function normalizePath(input: unknown) {
 function isAuthorized(request: NextRequest) {
   const expected = process.env.CARTESIA_NAVIGATION_WEBHOOK_TOKEN;
   if (!expected) return false;
-  const authorization = request.headers.get('authorization');
-  return authorization === `Bearer ${expected}`;
+  return request.headers.get('authorization') === `Bearer ${expected}`;
 }
 
 export async function POST(request: NextRequest) {
@@ -60,6 +61,6 @@ export async function POST(request: NextRequest) {
     path,
     label,
     navigation: { path, label },
-    message: `Navigation request accepted for ${label}. The website must receive user permission before changing pages.`,
+    message: `Navigation request accepted for ${label}. The browser must receive the corresponding client action before changing pages.`,
   });
 }
