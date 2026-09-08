@@ -14,6 +14,14 @@ function sanitizeKeyList(value: unknown) {
     .map((item) => item.slice(0, 64));
 }
 
+function sanitizeStringList(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item): item is string => typeof item === 'string')
+    .slice(0, 12)
+    .map((item) => item.slice(0, 80));
+}
+
 export async function POST(request: NextRequest) {
   const fetchSite = request.headers.get('sec-fetch-site');
   if (fetchSite && !['same-origin', 'same-site', 'none'].includes(fetchSite)) {
@@ -22,13 +30,18 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json().catch(() => ({}));
   const nested = Array.isArray(body.nestedKeySets)
-    ? body.nestedKeySets.slice(0, 8).map(sanitizeKeyList)
+    ? body.nestedKeySets.slice(0, 10).map(sanitizeKeyList)
+    : [];
+  const argumentKeySets = Array.isArray(body.argumentKeySets)
+    ? body.argumentKeySets.slice(0, 8).map(sanitizeKeyList)
     : [];
 
   console.info('Cartesia client event shape', {
     eventType: sanitizeString(body.eventType),
     topLevelKeys: sanitizeKeyList(body.topLevelKeys),
     nestedKeySets: nested,
+    toolNames: sanitizeStringList(body.toolNames),
+    argumentKeySets,
     matchedNavigation: body.matchedNavigation === true,
   });
 
