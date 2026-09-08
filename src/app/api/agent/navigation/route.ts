@@ -28,7 +28,18 @@ function normalizePath(input: unknown) {
   return safe ? value : null;
 }
 
+function isAuthorized(request: NextRequest) {
+  const expected = process.env.CARTESIA_NAVIGATION_WEBHOOK_TOKEN;
+  if (!expected) return false;
+  const authorization = request.headers.get('authorization');
+  return authorization === `Bearer ${expected}`;
+}
+
 export async function POST(request: NextRequest) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ ok: false, error: 'Unauthorized.' }, { status: 401 });
+  }
+
   const body = await request.json().catch(() => ({}));
   const path = normalizePath(body.path ?? body.url ?? body.destination);
 
@@ -48,6 +59,7 @@ export async function POST(request: NextRequest) {
     action: 'request_navigation_permission',
     path,
     label,
-    message: `Ask the user for permission before navigating to ${label}.`,
+    navigation: { path, label },
+    message: `Navigation request accepted for ${label}. The website must receive user permission before changing pages.`,
   });
 }
