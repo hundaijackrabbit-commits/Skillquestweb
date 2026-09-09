@@ -107102,7 +107102,9 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "careers": [],
+    "industries": []
   },
   {
     "id": "human-ai-collaboration",
@@ -107232,7 +107234,9 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "careers": [],
+    "industries": []
   },
   {
     "id": "ai-delegation-agent-briefing",
@@ -107362,7 +107366,9 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "careers": [],
+    "industries": []
   },
   {
     "id": "ai-data-privacy",
@@ -107492,7 +107498,9 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "careers": [],
+    "industries": []
   },
   {
     "id": "ai-adoption-change-management",
@@ -107625,13 +107633,15 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "careers": [],
+    "industries": []
   },
   {
     "id": "cloud-services-infrastructure",
     "slug": "cloud-services-infrastructure",
     "name": "Cloud Services & Infrastructure",
-    "category": "digital",
+    "category": "digital-literacy",
     "shortDefinition": "The ability to design, deploy, operate and improve computing workloads using cloud infrastructure, managed services, networking, storage, identity and cost controls.",
     "fullDefinition": "Cloud services and infrastructure is the practical skill of turning application and business requirements into reliable cloud environments. It includes compute, storage, networking, identity, managed databases, messaging, serverless services, observability, resilience, security, automation and cost management. Strong practitioners understand not only how to provision services but how architecture choices affect availability, performance, scalability, operational burden, security boundaries and spend. The durable skill is provider-neutral reasoning about distributed infrastructure, even though day-to-day work may use AWS, Azure, Google Cloud or another platform.",
     "whyItMatters": "Cloud infrastructure underpins modern software, data platforms and AI systems. Organizations need people who can move beyond basic deployment and make sound decisions about reliability, security, scalability and cost.",
@@ -107734,13 +107744,21 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "professionalContexts": [
+      "Web applications, APIs, data platforms, AI workloads, internal platforms, disaster recovery, hybrid environments and enterprise modernization."
+    ],
+    "careers": [],
+    "industries": [],
+    "resumeRelevance": "Show Cloud Services & Infrastructure through specific projects, responsibilities, decisions, or measurable outcomes rather than listing the skill alone.",
+    "interviewRelevance": "Be ready to explain a concrete example of using Cloud Services & Infrastructure, the trade-offs you considered, what you did, and what changed as a result.",
+    "humanAdvantage": "Human judgment remains important for context, trade-offs, accountability, and deciding when Cloud Services & Infrastructure should be applied or challenged."
   },
   {
     "id": "governance-risk-compliance-management",
     "slug": "governance-risk-compliance-management",
     "name": "Governance, Risk & Compliance Management",
-    "category": "business",
+    "category": "business-strategy",
     "shortDefinition": "The ability to identify obligations and risks, design proportionate controls, document accountability and provide evidence that an organization is operating within its policies and requirements.",
     "fullDefinition": "Governance, risk and compliance management connects business objectives with policy, control design, assurance and evidence. Practitioners identify applicable obligations, assess risks, define ownership, choose preventive and detective controls, document exceptions, test effectiveness and communicate residual risk to decision-makers. Strong GRC work avoids both box-ticking and vague risk language: controls should be tied to real risks, responsibilities should be clear, and evidence should support whether a process actually works.",
     "whyItMatters": "Digital systems, cybersecurity, privacy and AI have increased the number of cross-functional risks organizations must manage. GRC provides the operating structure for making those responsibilities visible and auditable.",
@@ -107843,13 +107861,21 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "professionalContexts": [
+      "Cybersecurity programs, audits, vendor risk, privacy, AI governance, financial controls, policy management and enterprise risk."
+    ],
+    "careers": [],
+    "industries": [],
+    "resumeRelevance": "Show Governance, Risk & Compliance Management through specific projects, responsibilities, decisions, or measurable outcomes rather than listing the skill alone.",
+    "interviewRelevance": "Be ready to explain a concrete example of using Governance, Risk & Compliance Management, the trade-offs you considered, what you did, and what changed as a result.",
+    "humanAdvantage": "Human judgment remains important for context, trade-offs, accountability, and deciding when Governance, Risk & Compliance Management should be applied or challenged."
   },
   {
     "id": "data-quality",
     "slug": "data-quality",
     "name": "Data Quality",
-    "category": "data",
+    "category": "analytics-research",
     "shortDefinition": "The ability to define, measure, diagnose and improve whether data is accurate, complete, consistent, timely, valid and fit for its intended use.",
     "fullDefinition": "Data quality is the discipline of making data trustworthy enough for decisions, operations and AI. Practitioners define quality expectations based on use cases, profile datasets, detect anomalies, establish validation rules, trace defects to upstream causes, assign ownership and monitor quality over time. Strong data-quality work avoids the idea that one universal score makes data good or bad. A dataset can be complete but stale, accurate but inaccessible, or valid syntactically while still misleading for a specific business decision.",
     "whyItMatters": "Poor-quality data undermines analytics, machine learning and generative AI. As organizations automate more decisions, small data defects can propagate farther and faster.",
@@ -107952,13 +107978,21 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "professionalContexts": [
+      "Analytics, reporting, data engineering, AI training data, RAG corpora, customer data, finance, operations and regulatory reporting."
+    ],
+    "careers": [],
+    "industries": [],
+    "resumeRelevance": "Show Data Quality through specific projects, responsibilities, decisions, or measurable outcomes rather than listing the skill alone.",
+    "interviewRelevance": "Be ready to explain a concrete example of using Data Quality, the trade-offs you considered, what you did, and what changed as a result.",
+    "humanAdvantage": "Human judgment remains important for context, trade-offs, accountability, and deciding when Data Quality should be applied or challenged."
   },
   {
     "id": "data-cleansing",
     "slug": "data-cleansing",
     "name": "Data Cleansing",
-    "category": "data",
+    "category": "analytics-research",
     "shortDefinition": "The ability to detect, correct, standardize and document data defects so datasets become more reliable without obscuring uncertainty or destroying useful information.",
     "fullDefinition": "Data cleansing is the hands-on practice of repairing data defects such as duplicates, malformed values, inconsistent categories, missing fields, invalid dates, unit mismatches and corrupted records. Strong practitioners combine profiling, domain knowledge, reproducible transformations and validation. They distinguish correction from imputation, preserve raw data, document assumptions and avoid silently forcing messy real-world information into clean-looking but inaccurate categories.",
     "whyItMatters": "Most real datasets are messy. Poor cleansing can be as harmful as no cleansing because undocumented fixes can introduce bias or erase meaningful variation.",
@@ -108059,7 +108093,15 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": false,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "professionalContexts": [
+      "ETL pipelines, analytics, CRM migration, survey data, finance, ecommerce catalogs, machine learning and research datasets."
+    ],
+    "careers": [],
+    "industries": [],
+    "resumeRelevance": "Show Data Cleansing through specific projects, responsibilities, decisions, or measurable outcomes rather than listing the skill alone.",
+    "interviewRelevance": "Be ready to explain a concrete example of using Data Cleansing, the trade-offs you considered, what you did, and what changed as a result.",
+    "humanAdvantage": "Human judgment remains important for context, trade-offs, accountability, and deciding when Data Cleansing should be applied or challenged."
   },
   {
     "id": "debugging-ai-assisted-debugging",
@@ -108169,6 +108211,14 @@
     "blogPosts": [],
     "lastUpdated": "2026-09-09",
     "featured": true,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "professionalContexts": [
+      "Software development, DevOps, data pipelines, cloud services, mobile applications, AI systems, APIs and production incidents."
+    ],
+    "careers": [],
+    "industries": [],
+    "resumeRelevance": "Show Debugging & AI-Assisted Debugging through specific projects, responsibilities, decisions, or measurable outcomes rather than listing the skill alone.",
+    "interviewRelevance": "Be ready to explain a concrete example of using Debugging & AI-Assisted Debugging, the trade-offs you considered, what you did, and what changed as a result.",
+    "humanAdvantage": "Human judgment remains important for context, trade-offs, accountability, and deciding when Debugging & AI-Assisted Debugging should be applied or challenged."
   }
 ]
