@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/enrich-priority-skills.mjs",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/enrich-priority-skills.mjs && node scripts/audit-seo-content.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "audit:skills": "node scripts/complete-legacy-skill-guides.mjs && node scripts/enrich-priority-skills.mjs",
+    "audit:skills": "node scripts/complete-legacy-skill-guides.mjs && node scripts/enrich-priority-skills.mjs && node scripts/audit-seo-content.mjs",
     "audit:seo": "node scripts/audit-seo-content.mjs",
     "audit:links": "node scripts/audit-content-links.mjs --strict",
     "audit:originality": "node scripts/audit-content-originality.mjs --strict",
