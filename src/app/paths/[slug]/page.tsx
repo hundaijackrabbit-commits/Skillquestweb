@@ -7,7 +7,9 @@ import {
   Briefcase,
   CheckCircle2,
   Clock3,
+  Compass,
   GraduationCap,
+  Network,
   Route,
   Sparkles,
   Target,
@@ -28,10 +30,27 @@ import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { isSkillPathIndexable } from '@/lib/content-quality';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
+import { getTopicBySlug } from '@/lib/topics';
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+function referenceKey(value: string) {
+  return value
+    .trim()
+    .toLocaleLowerCase('en')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function relatedPathScore(currentSkills: Set<string>, candidateSkills: string[]) {
+  return candidateSkills.reduce(
+    (score, skill) => score + (currentSkills.has(referenceKey(skill)) ? 1 : 0),
+    0,
+  );
+}
 
 export async function generateStaticParams() {
   const paths = await getSkillPaths();
@@ -61,10 +80,26 @@ export default async function SkillPathDetailPage({ params }: Props) {
   const path = await getSkillPathBySlug(slug);
   if (!path) notFound();
 
+  const allPaths = (await getSkillPaths()).filter(isSkillPathIndexable);
+  const currentSkillReferences = new Set(path.skills.map(referenceKey));
+  const relatedPaths = allPaths
+    .filter((candidate) => candidate.id !== path.id)
+    .map((candidate) => ({
+      path: candidate,
+      score:
+        relatedPathScore(currentSkillReferences, candidate.skills) * 2 +
+        (referenceKey(candidate.category) === referenceKey(path.category) ? 2 : 0),
+    }))
+    .filter(({ score }) => score > 0)
+    .sort((left, right) => right.score - left.score || left.path.name.localeCompare(right.path.name))
+    .slice(0, 6)
+    .map(({ path: candidate }) => candidate);
+
   const [skills, careers] = await Promise.all([
     resolveSkillReferences(path.skills),
     resolveCareerReferences(path.relatedCareers),
   ]);
+  const topic = getTopicBySlug(path.category);
   const canonicalUrl = absoluteUrl(`/paths/${path.id}`);
   const pathCheck = buildDefinitionKnowledgeCheck(
     { type: 'path', slug: path.id, name: path.name },
@@ -117,13 +152,23 @@ export default async function SkillPathDetailPage({ params }: Props) {
           </div>
           <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl">{path.name}</h1>
           <p className="mt-5 max-w-3xl text-xl leading-8 text-blue-100">{path.description}</p>
-          {skills[0] && (
-            <Link href={`/skills/${skills[0].slug}`} className="mt-7 inline-block">
-              <Button size="lg" className="bg-white text-slate-950 hover:bg-blue-50">
-                Start with {skills[0].name} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          )}
+          <div className="mt-7 flex flex-wrap gap-3">
+            {skills[0] && (
+              <Link href={`/skills/${skills[0].slug}`}>
+                <Button size="lg" className="bg-white text-slate-950 hover:bg-blue-50">
+                  Start with {skills[0].name} <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+            {topic && (
+              <Link href={`/topics/${topic.slug}`}>
+                <Button size="lg" variant="outline" className="border-white/30 bg-white/5 text-white hover:bg-white/10 hover:text-white">
+                  <Compass className="mr-2 h-4 w-4" />
+                  Explore {topic.name}
+                </Button>
+              </Link>
+            )}
+          </div>
         </header>
 
         {pathCheck && <KnowledgeCheckCard check={pathCheck} className="mt-12" />}
@@ -133,12 +178,13 @@ export default async function SkillPathDetailPage({ params }: Props) {
             <div className="mb-7">
               <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Recommended sequence</div>
               <h2 className="mt-2 text-3xl font-bold text-slate-950">Build the stack one skill at a time</h2>
-              <p className="mt-2 text-slate-600">Each guide connects forward to careers, industries, articles, and related skills.</p>
+              <p className="mt-2 text-slate-600">Each guide connects forward to careers, industries, articles, lessons, and related skills.</p>
             </div>
 
             <ol className="space-y-5">
               {skills.map((skill, index) => {
                 const course = getSkillCourse(skill.slug);
+                const nextSkill = skills[index + 1];
                 return (
                   <li key={skill.slug} className="relative rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-blue-300 hover:shadow-md sm:p-7">
                     <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
@@ -164,6 +210,12 @@ export default async function SkillPathDetailPage({ params }: Props) {
                               Open skill guide
                             </Button>
                           </Link>
+                          <Link href={`/skills/${skill.slug}/lessons/how-to`}>
+                            <Button variant="outline">How to develop</Button>
+                          </Link>
+                          <Link href={`/skills/${skill.slug}/lessons/examples`}>
+                            <Button variant="outline">See examples</Button>
+                          </Link>
                           {course && (
                             <Link href={`/skills/${skill.slug}/learn`}>
                               <Button>
@@ -173,12 +225,41 @@ export default async function SkillPathDetailPage({ params }: Props) {
                             </Link>
                           )}
                         </div>
+                        {nextSkill && (
+                          <p className="mt-5 text-sm leading-6 text-slate-500">
+                            Next in sequence: <Link href={`/skills/${nextSkill.slug}`} className="font-semibold text-blue-700 hover:underline">{nextSkill.name}</Link>
+                          </p>
+                        )}
                       </div>
                     </div>
                   </li>
                 );
               })}
             </ol>
+
+            {relatedPaths.length > 0 && (
+              <section className="mt-14" aria-labelledby="related-paths">
+                <div className="flex items-center gap-3">
+                  <Network className="h-6 w-6 text-indigo-700" />
+                  <h2 id="related-paths" className="text-3xl font-bold text-slate-950">Continue with related learning paths</h2>
+                </div>
+                <p className="mt-2 max-w-3xl text-slate-600">
+                  These paths overlap with this skill stack or live in the same topic, giving both learners and search engines clear routes between adjacent knowledge areas.
+                </p>
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  {relatedPaths.map((relatedPath) => (
+                    <Link key={relatedPath.id} href={`/paths/${relatedPath.id}`} className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-indigo-300 hover:shadow-sm">
+                      <div className="flex items-center justify-between gap-3">
+                        <Badge variant="outline" className="capitalize">{relatedPath.difficulty}</Badge>
+                        <span className="text-xs text-slate-500">{relatedPath.estimatedTime}</span>
+                      </div>
+                      <h3 className="mt-3 text-lg font-bold text-slate-950">{relatedPath.name}</h3>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{relatedPath.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
           </main>
 
           <aside className="space-y-6">
@@ -227,6 +308,18 @@ export default async function SkillPathDetailPage({ params }: Props) {
                       <span className="mt-1 block text-xs text-slate-500">Compare role and capability map</span>
                     </Link>
                   ))}
+                </CardContent>
+              </Card>
+            )}
+
+            {topic && (
+              <Card>
+                <CardHeader><CardTitle>Topic hub</CardTitle></CardHeader>
+                <CardContent>
+                  <Link href={`/topics/${topic.slug}`} className="block rounded-xl border p-3 transition hover:border-blue-300 hover:bg-blue-50">
+                    <span className="block text-sm font-semibold text-slate-900">{topic.name}</span>
+                    <span className="mt-1 block text-xs leading-5 text-slate-500">Browse the broader skill, career, industry, article, and path network around this topic.</span>
+                  </Link>
                 </CardContent>
               </Card>
             )}
