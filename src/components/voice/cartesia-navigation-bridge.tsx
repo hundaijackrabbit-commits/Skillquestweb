@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 type UnknownRecord = Record<string, unknown>;
 type PendingNavigation = { path: string; label: string } | null;
+type ResolvedNavigation = { path: string; label: string };
 
 const ALLOWED_PREFIXES = ['/blog/', '/careers/', '/industries/', '/learn/', '/paths/', '/skills/', '/topics/'];
 const ALLOWED_ROUTES = new Set([
@@ -12,6 +13,24 @@ const ALLOWED_ROUTES = new Set([
   '/industries', '/learn', '/paths', '/privacy', '/skills', '/topics',
 ]);
 const NAVIGATION_TOOL_NAMES = new Set(['navigate_page', 'validate_navigation', 'navigate', 'open_page']);
+
+const KNOWN_DESTINATIONS: Array<{ path: string; label: string; terms: RegExp[] }> = [
+  { path: '/skills', label: 'Skills', terms: [/\bskills?\b/i, /\bskill library\b/i] },
+  { path: '/careers', label: 'Careers', terms: [/\bcareers?\b/i, /\bcareer library\b/i] },
+  { path: '/industries', label: 'Industries', terms: [/\bindustr(?:y|ies)\b/i] },
+  { path: '/learn', label: 'Learn', terms: [/\blearn(?:ing)?\b/i, /\blearning hub\b/i] },
+  { path: '/paths', label: 'Learning Paths', terms: [/\blearning paths?\b/i, /\bskill paths?\b/i, /\bpaths?\b/i] },
+  { path: '/blog', label: 'Blog', terms: [/\bblog\b/i, /\barticles?\b/i] },
+  { path: '/community', label: 'Community', terms: [/\bcommunity\b/i] },
+  { path: '/dashboard', label: 'Dashboard', terms: [/\bdashboard\b/i, /\bmy account\b/i, /\bprofile\b/i] },
+  { path: '/free-career-guide', label: 'Free Career Guide', terms: [/\bfree career guide\b/i, /\bcareer guide\b/i] },
+  { path: '/topics', label: 'Topics', terms: [/\btopics?\b/i] },
+  { path: '/about', label: 'About', terms: [/\babout(?: us)?\b/i] },
+  { path: '/privacy', label: 'Privacy', terms: [/\bprivacy\b/i] },
+  { path: '/', label: 'Home', terms: [/\bhome(?:page)?\b/i, /\bmain page\b/i] },
+];
+
+const DIRECT_NAVIGATION_INTENT = /\b(?:take me(?:\s+to)?|go(?:\s+to)?|open|show me|navigate(?:\s+me)?(?:\s+to)?|bring me(?:\s+to)?|visit|head(?:\s+to)?|send me(?:\s+to)?)\b/i;
 
 function asRecord(value: unknown): UnknownRecord {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as UnknownRecord : {};
@@ -80,7 +99,44 @@ function toolNameFromRecord(record: UnknownRecord) {
   return name?.toLowerCase();
 }
 
-function extractNavigation(payload: UnknownRecord) {
+function resolveKnownDestination(text: string | undefined): ResolvedNavigation | null {
+  if (!text) return null;
+  const normalized = text.trim();
+  if (!normalized) return null;
+  for (const destination of KNOWN_DESTINATIONS) {
+    if (destination.terms.some((term) => term.test(normalized))) {
+      return { path: destination.path, label: destination.label };
+    }
+  }
+  return null;
+}
+
+function isDirectNavigationRequest(text: string | undefined) {
+  return Boolean(text && DIRECT_NAVIGATION_INTENT.test(text));
+}
+
+function extractUserUtterance(payload: UnknownRecord) {
+  const records = collectRecords(payload);
+  const eventType = firstString(payload.event, payload.type)?.toLowerCase() || '';
+
+  for (const record of records) {
+    const role = firstString(record.role, record.speaker)?.toLowerCase();
+    if (role !== 'user' && role !== 'human') continue;
+    const text = firstString(record.text, record.transcript, record.utterance, record.message, record.content);
+    if (text) return text;
+  }
+
+  if (/(?:user|input).*(?:transcript|speech|text)|(?:transcript|speech).*(?:user|input)/i.test(eventType)) {
+    for (const record of records) {
+      const text = firstString(record.text, record.transcript, record.utterance, record.message, record.content);
+      if (text) return text;
+    }
+  }
+
+  return undefined;
+}
+
+function extractNavigation(payload: UnknownRecord, latestUserText?: string) {
   const records = collectRecords(payload);
   let hasNavigateMarker = false;
   let path: string | null = null;
@@ -107,7 +163,21 @@ function extractNavigation(payload: UnknownRecord) {
     }
   }
 
-  if (!path || !hasNavigateMarker) return null;
+  if (!hasNavigateMarker) return null;
+
+  // Cartesia's Agent Builder can currently create a client function without editable
+  // parameters in some UI states. In that case, resolve the requested top-level page
+  // from the visitor's latest recognized utterance instead of requiring tool arguments.
+  if (!path) {
+    const fallback = resolveKnownDestination(latestUserText);
+    if (fallback) {
+      path = fallback.path;
+      label = fallback.label;
+      if (isDirectNavigationRequest(latestUserText)) permissionGranted = true;
+    }
+  }
+
+  if (!path) return null;
 
   return {
     path,
@@ -137,7 +207,7 @@ function extractToolDiagnostics(payload: UnknownRecord) {
   };
 }
 
-function summarizeShape(payload: UnknownRecord, matchedNavigation: boolean) {
+function summarizeShape(payload: UnknownRecord, matchedNavigation: boolean, capturedUserText: boolean) {
   const records = collectRecords(payload);
   const diagnostics = extractToolDiagnostics(payload);
   return {
@@ -145,6 +215,7 @@ function summarizeShape(payload: UnknownRecord, matchedNavigation: boolean) {
     topLevelKeys: Object.keys(payload).slice(0, 24),
     nestedKeySets: records.slice(0, 10).map((record) => Object.keys(record).slice(0, 18)),
     matchedNavigation,
+    capturedUserText,
     ...diagnostics,
   };
 }
@@ -154,9 +225,19 @@ export function CartesiaNavigationBridge() {
   const pathname = usePathname();
   const [pending, setPending] = useState<PendingNavigation>(null);
   const reportedShapes = useRef(new Set<string>());
+  const latestUserText = useRef('');
+  const lastDirectNavigation = useRef('');
 
   useEffect(() => {
     const NativeWebSocket = window.WebSocket;
+
+    const goTo = (target: ResolvedNavigation) => {
+      const alreadyThere = target.path.split(/[?#]/)[0] === pathname;
+      if (alreadyThere) return;
+      router.prefetch(target.path);
+      router.push(target.path);
+      setPending(null);
+    };
 
     const PatchedWebSocket = new Proxy(NativeWebSocket, {
       construct(Target, args) {
@@ -170,10 +251,27 @@ export function CartesiaNavigationBridge() {
             try { payload = asRecord(JSON.parse(event.data)); } catch { return; }
 
             const eventType = firstString(payload.event, payload.type)?.toLowerCase();
-            if (eventType === 'media_output' || eventType === 'ack' || eventType === 'clear' || eventType === 'turn_output_text_delta') return;
+            if (eventType === 'media_output' || eventType === 'ack' || eventType === 'clear') return;
 
-            const navigation = extractNavigation(payload);
-            const summary = summarizeShape(payload, Boolean(navigation));
+            const userText = extractUserUtterance(payload);
+            if (userText) latestUserText.current = userText;
+
+            // Reliable local fallback for direct commands to known top-level pages.
+            // This means "take me to Skills" works even if Cartesia emits a parameterless
+            // client function or fails to include the function arguments.
+            if (userText && isDirectNavigationRequest(userText)) {
+              const directTarget = resolveKnownDestination(userText);
+              const dedupeKey = directTarget ? `${userText}|${directTarget.path}` : '';
+              if (directTarget && dedupeKey !== lastDirectNavigation.current) {
+                lastDirectNavigation.current = dedupeKey;
+                goTo(directTarget);
+              }
+            }
+
+            if (eventType === 'turn_output_text_delta') return;
+
+            const navigation = extractNavigation(payload, latestUserText.current);
+            const summary = summarizeShape(payload, Boolean(navigation), Boolean(userText));
             const shapeKey = JSON.stringify(summary);
             if (!reportedShapes.current.has(shapeKey)) {
               reportedShapes.current.add(shapeKey);
@@ -191,9 +289,7 @@ export function CartesiaNavigationBridge() {
             if (alreadyThere) return;
 
             if (navigation.permissionGranted === true) {
-              router.prefetch(navigation.path);
-              router.push(navigation.path);
-              setPending(null);
+              goTo({ path: navigation.path, label: navigation.label });
               return;
             }
 
