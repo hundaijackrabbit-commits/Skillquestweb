@@ -21,20 +21,20 @@ const ALLOWED_ROUTES = new Set([
 ]);
 const NAVIGATION_TOOL_NAMES = new Set(['navigate_page', 'validate_navigation', 'navigate', 'open_page']);
 
-const KNOWN_DESTINATIONS: Array<{ path: string; label: string; terms: RegExp[] }> = [
-  { path: '/skills', label: 'Skills', terms: [/\bskills?\s+(?:page|library|section)\b/i, /\bskills?\s+library\b/i, /\b(?:the\s+)?skills?\b/i] },
-  { path: '/careers', label: 'Careers', terms: [/\bcareers?\s+(?:page|library|section)\b/i, /\bcareer\s+library\b/i, /\b(?:the\s+)?careers?\b/i] },
-  { path: '/industries', label: 'Industries', terms: [/\bindustr(?:y|ies)\s+(?:page|section)\b/i, /\b(?:the\s+)?industr(?:y|ies)\b/i] },
-  { path: '/learn', label: 'Learn', terms: [/\blearning\s+hub\b/i, /\blearn\s+(?:page|section)\b/i] },
-  { path: '/paths', label: 'Learning Paths', terms: [/\blearning\s+paths?\b/i, /\bskill\s+paths?\b/i] },
-  { path: '/blog', label: 'Blog', terms: [/\bblog\s+(?:page|section)?\b/i, /\barticles?\s+(?:page|section|library)\b/i] },
-  { path: '/community', label: 'Community', terms: [/\bcommunity\b/i] },
-  { path: '/dashboard', label: 'Dashboard', terms: [/\bdashboard\b/i, /\bmy\s+account\b/i, /\bprofile\b/i] },
-  { path: '/free-career-guide', label: 'Free Career Guide', terms: [/\bfree\s+career\s+guide\b/i, /\bcareer\s+guide\b/i] },
-  { path: '/topics', label: 'Topics', terms: [/\btopics?\s+(?:page|section)?\b/i] },
-  { path: '/about', label: 'About', terms: [/\babout(?:\s+us)?\b/i] },
-  { path: '/privacy', label: 'Privacy', terms: [/\bprivacy(?:\s+policy)?\b/i] },
-  { path: '/', label: 'Home', terms: [/\bhome(?:page)?\b/i, /\bmain\s+page\b/i] },
+const TOP_LEVEL_DESTINATIONS: Array<{ path: string; label: string; aliases: string[] }> = [
+  { path: '/skills', label: 'Skills', aliases: ['skill', 'skills', 'skills page', 'skill page', 'skill library', 'skills library', 'skills section'] },
+  { path: '/careers', label: 'Careers', aliases: ['career', 'careers', 'career page', 'careers page', 'career library', 'careers section'] },
+  { path: '/industries', label: 'Industries', aliases: ['industry', 'industries', 'industry page', 'industries page', 'industries section'] },
+  { path: '/learn', label: 'Learn', aliases: ['learn', 'learn page', 'learning hub'] },
+  { path: '/paths', label: 'Learning Paths', aliases: ['path', 'paths', 'learning path', 'learning paths', 'skill path', 'skill paths'] },
+  { path: '/blog', label: 'Blog', aliases: ['blog', 'blog page', 'articles', 'article library'] },
+  { path: '/community', label: 'Community', aliases: ['community', 'community page'] },
+  { path: '/dashboard', label: 'Dashboard', aliases: ['dashboard', 'my dashboard', 'my account', 'profile'] },
+  { path: '/free-career-guide', label: 'Free Career Guide', aliases: ['free career guide', 'career guide'] },
+  { path: '/topics', label: 'Topics', aliases: ['topic', 'topics', 'topics page', 'topics section'] },
+  { path: '/about', label: 'About', aliases: ['about', 'about us', 'about page'] },
+  { path: '/privacy', label: 'Privacy', aliases: ['privacy', 'privacy policy', 'privacy page'] },
+  { path: '/', label: 'Home', aliases: ['home', 'homepage', 'home page', 'main page'] },
 ];
 
 const DIRECT_NAVIGATION_INTENT = /\b(?:take me(?:\s+to)?|go(?:\s+to)?|open|show me|navigate(?:\s+me)?(?:\s+to)?|bring me(?:\s+to)?|visit|head(?:\s+to)?|send me(?:\s+to)?)\b/i;
@@ -81,6 +81,15 @@ function firstBoolean(...values: unknown[]) {
   return undefined;
 }
 
+function normalizeText(value: string) {
+  return value
+    .toLocaleLowerCase('en')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function normalizeInternalPath(value: unknown) {
   if (typeof value !== 'string') return null;
   let path = value.trim();
@@ -110,21 +119,28 @@ function isDirectNavigationRequest(text: string | undefined) {
   return Boolean(text && DIRECT_NAVIGATION_INTENT.test(text));
 }
 
+function navigationDestinationText(text: string) {
+  return normalizeText(text)
+    .replace(/^(?:please\s+)?(?:take me(?:\s+to)?|go(?:\s+to)?|open|show me|navigate(?:\s+me)?(?:\s+to)?|bring me(?:\s+to)?|visit|head(?:\s+to)?|send me(?:\s+to)?)\s+/, '')
+    .replace(/^the\s+/, '')
+    .replace(/\s+(?:for me|please)$/, '')
+    .trim();
+}
+
 function resolveKnownDestination(text: string | undefined): ResolvedNavigation | null {
   if (!text) return null;
-  const normalized = text.trim();
-  if (!normalized) return null;
+  const requested = navigationDestinationText(text);
+  if (!requested) return null;
 
-  // Only use the fast path when the request clearly names a top-level section.
-  // Specific content such as "AI Literacy skill page" intentionally falls through
-  // to the canonical resolver instead of being swallowed by the word "skill".
-  const looksSpecific = /\b(?:skill|career|industry|topic|article|blog post|learning path)\s+page\b/i.test(normalized)
-    && !/^\s*(?:please\s+)?(?:take me(?:\s+to)?|go(?:\s+to)?|open|show me|navigate(?:\s+me)?(?:\s+to)?|bring me(?:\s+to)?|visit|head(?:\s+to)?|send me(?:\s+to)?)\s+(?:the\s+)?(?:skills?|careers?|industr(?:y|ies)|topics?|blog|learn|learning paths?)\s+(?:page|section|library)?\s*[.!?]?\s*$/i.test(normalized);
-  if (looksSpecific) return null;
-
-  for (const destination of KNOWN_DESTINATIONS) {
-    if (destination.terms.some((term) => term.test(normalized))) return { path: destination.path, label: destination.label };
+  // Fast-path only exact top-level section requests. Anything more specific —
+  // for example "cross cultural leadership skill" — must go through the
+  // canonical resolver so the word "skill" never swallows the actual title.
+  for (const destination of TOP_LEVEL_DESTINATIONS) {
+    if (destination.aliases.some((alias) => normalizeText(alias) === requested)) {
+      return { path: destination.path, label: destination.label };
+    }
   }
+
   return null;
 }
 
