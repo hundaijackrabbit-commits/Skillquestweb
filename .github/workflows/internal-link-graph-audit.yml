@@ -1,0 +1,45 @@
+name: Internal link graph audit
+
+on:
+  push:
+    branches:
+      - seo-crawl-graph-audit
+    paths:
+      - 'scripts/audit-internal-link-graph.mjs'
+      - '.github/workflows/internal-link-graph-audit.yml'
+      - 'src/app/topics/**'
+      - 'src/data/**'
+      - 'src/content/blog/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit relationship graph
+        run: node scripts/audit-internal-link-graph.mjs
+      - name: Verify audit output
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('reports/internal-link-graph.json', 'utf8'));
+          if (report.totals.skills < 1300) throw new Error(`Unexpected skill count: ${report.totals.skills}`);
+          if (!report.skills || !report.careers || !report.paths) throw new Error('Incomplete graph report');
+          console.log('Internal-link graph audit completed without modifying source content.');
+          NODE
+      - name: Install dependencies
+        run: npm ci
+      - name: Production build
+        run: npm run build
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: internal-link-graph-report
+          path: reports/internal-link-graph.json

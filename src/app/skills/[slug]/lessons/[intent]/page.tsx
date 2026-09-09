@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getSkillBySlug, getRelatedSkills } from '@/lib/content';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
+import { absoluteUrl } from '@/lib/site';
+import { breadcrumbList } from '@/lib/seo';
 
 const intents = {
   'how-to': { label: 'How to develop', intro: 'Turn the skill into repeatable behaviour with a staged practice plan.' },
@@ -17,13 +19,41 @@ const clean = (values: Array<string | undefined | null>) => values.filter((value
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; intent: string }> }): Promise<Metadata> {
   const { slug, intent } = await params; const skill = await getSkillBySlug(slug); const config = intents[intent as Intent];
   if (!skill || !config) return { title: 'Lesson not found' };
-  return { title: `${config.label} ${skill.name}`, description: `${config.intro} A practical ${skill.name} lesson from Modern Skill Lab.`, alternates: { canonical: `/skills/${skill.slug}/lessons/${intent}` } };
+  const canonicalUrl = absoluteUrl(`/skills/${skill.slug}/lessons/${intent}`);
+  return {
+    title: `${config.label} ${skill.name}`,
+    description: `${config.intro} A practical ${skill.name} lesson from Modern Skill Lab.`,
+    alternates: { canonical: canonicalUrl },
+    openGraph: { title: `${config.label} ${skill.name} | Modern Skill Lab`, description: config.intro, type: 'article', url: canonicalUrl },
+  };
 }
 
 export default async function SkillIntentLesson({ params }: { params: Promise<{ slug: string; intent: string }> }) {
   const { slug, intent } = await params; const skill = await getSkillBySlug(slug); const config = intents[intent as Intent];
   if (!skill || !config) notFound();
   const related = (await getRelatedSkills(skill.id)).slice(0, 6);
+  const canonicalUrl = absoluteUrl(`/skills/${skill.slug}/lessons/${intent}`);
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: `${config.label} ${skill.name}`,
+        description: config.intro,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: skill.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: skill.name,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Skills', url: absoluteUrl('/skills') },
+        { name: skill.name, url: absoluteUrl(`/skills/${skill.slug}`) },
+        { name: config.label, url: canonicalUrl },
+      ]),
+    ],
+  };
   const sections: Record<Intent, { title: string; items: string[] }[]> = {
     'how-to': [{ title: 'Start here', items: skill.beginnerActions },{ title: 'Build working proficiency', items: skill.intermediateActions },{ title: 'Stretch toward advanced practice', items: skill.advancedActions }],
     examples: [{ title: 'Real-world situations', items: skill.realWorldScenarios?.length ? skill.realWorldScenarios : clean([skill.whereItShowsUp]) },{ title: 'What strong execution looks like', items: clean([skill.skillInAction, skill.careerApplications]) }],
@@ -31,7 +61,7 @@ export default async function SkillIntentLesson({ params }: { params: Promise<{ 
     mistakes: [{ title: `Mistakes that weaken ${skill.name}`, items: skill.commonMistakes }],
     exercises: [{ title: 'Beginner exercises', items: skill.beginnerActions },{ title: 'Applied exercises', items: skill.intermediateActions },{ title: 'Measure your progress', items: clean([skill.howToMeasureProgress]) }],
   };
-  return <main className="min-h-screen bg-white py-12"><div className="mx-auto max-w-4xl px-6 lg:px-8">
+  return <main className="min-h-screen bg-white py-12"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} /><div className="mx-auto max-w-4xl px-6 lg:px-8">
     <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Skills',href:'/skills'},{label:skill.name,href:`/skills/${skill.slug}`},{label:config.label}]} />
     <header className="mt-8"><p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-700">Practical lesson</p><h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">{config.label} {skill.name}</h1><p className="mt-5 text-lg leading-8 text-slate-600">{config.intro}</p></header>
     <div className="mt-10 rounded-2xl border border-blue-100 bg-blue-50 p-6"><h2 className="font-bold text-slate-950">The idea in one minute</h2><p className="mt-2 leading-7 text-slate-700">{skill.fullDefinition}</p>{related.length>0&&<p className="mt-4 text-sm leading-6 text-blue-900">This capability connects directly with {related.slice(0,3).map((item,index)=><span key={item.slug}>{index>0?', ':''}<Link href={`/skills/${item.slug}`} className="font-bold underline decoration-blue-300 underline-offset-2">{item.name}</Link></span>)}. Open those concepts when the lesson depends on them rather than treating {skill.name} as an isolated ability.</p>}</div>
