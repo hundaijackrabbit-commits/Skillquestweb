@@ -14,18 +14,24 @@ const waves = wavePaths.flatMap((wavePath) => fs.existsSync(wavePath)
   : []);
 
 const normalize = (value = '') => value.trim().toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-const keys = (skill) => [normalize(skill.id), normalize(skill.slug), normalize(skill.name)].filter(Boolean);
+const identityKeys = (skill) => [normalize(skill.id), normalize(skill.slug), normalize(skill.name)].filter(Boolean);
+const primaryKey = (skill) => normalize(skill.slug || skill.id || skill.name);
 
-const researchedKeys = new Set(waves.flatMap(keys));
-const preserved = canonical.filter((skill) => !keys(skill).some((key) => researchedKeys.has(key)));
+// Replace an older canonical record whenever a researched edition matches any
+// of its identity fields. This lets the audit waves upgrade existing pages.
+const researchedKeys = new Set(waves.flatMap(identityKeys));
+const preserved = canonical.filter((skill) => !identityKeys(skill).some((key) => researchedKeys.has(key)));
 const merged = [...preserved, ...waves];
 
-const seen = new Set();
+// Validate actual record identity without treating legitimate cross-field
+// values (for example one skill named "Communication" and another skill whose
+// id happens to be "communication") as duplicate records.
+const seenPrimary = new Set();
 for (const skill of merged) {
-  for (const key of keys(skill)) {
-    if (seen.has(key)) throw new Error(`Duplicate skill key after merge: ${key}`);
-    seen.add(key);
-  }
+  const key = primaryKey(skill);
+  if (!key) throw new Error('Skill is missing id, slug, and name');
+  if (seenPrimary.has(key)) throw new Error(`Duplicate skill record after merge: ${key}`);
+  seenPrimary.add(key);
 }
 
 if (JSON.stringify(canonical) === JSON.stringify(merged)) {
