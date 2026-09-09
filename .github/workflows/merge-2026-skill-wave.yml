@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'src/data/skills-2026-wave1.json'
+      - 'src/data/skills-2026-wave2.json'
       - 'scripts/merge-2026-skill-wave.mjs'
       - '.github/workflows/merge-2026-skill-wave.yml'
 
@@ -25,15 +26,15 @@ jobs:
       - name: Merge researched skills into canonical dataset
         run: node scripts/merge-2026-skill-wave.mjs
       - name: Validate JSON
-        run: node -e "JSON.parse(require('fs').readFileSync('src/data/skills-1000plus.json','utf8')); JSON.parse(require('fs').readFileSync('src/data/skills-2026-wave1.json','utf8')); console.log('JSON valid')"
+        run: node -e "const fs=require('fs'); ['src/data/skills-1000plus.json','src/data/skills-2026-wave1.json','src/data/skills-2026-wave2.json'].forEach(p=>JSON.parse(fs.readFileSync(p,'utf8'))); console.log('JSON valid')"
       - name: Commit canonical dataset when changed
         run: |
           if git diff --quiet -- src/data/skills-1000plus.json; then
-            echo 'Canonical dataset already contains this wave.'
+            echo 'Canonical dataset already contains all researched waves.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add src/data/skills-1000plus.json
-          git commit -m 'Merge first researched 2026 skill expansion wave'
+          git commit -m 'Merge second researched 2026 skill expansion wave'
           git push origin HEAD:main
