@@ -6,6 +6,13 @@ import { usePathname, useRouter } from 'next/navigation';
 type UnknownRecord = Record<string, unknown>;
 type PendingNavigation = { path: string; label: string } | null;
 type ResolvedNavigation = { path: string; label: string };
+type ResolverResponse = {
+  found?: boolean;
+  path?: string;
+  label?: string;
+  type?: string;
+  confidence?: number;
+};
 
 const ALLOWED_PREFIXES = ['/blog/', '/careers/', '/industries/', '/learn/', '/paths/', '/skills/', '/topics/'];
 const ALLOWED_ROUTES = new Set([
@@ -13,22 +20,6 @@ const ALLOWED_ROUTES = new Set([
   '/industries', '/learn', '/paths', '/privacy', '/skills', '/topics',
 ]);
 const NAVIGATION_TOOL_NAMES = new Set(['navigate_page', 'validate_navigation', 'navigate', 'open_page']);
-
-const KNOWN_DESTINATIONS: Array<{ path: string; label: string; terms: RegExp[] }> = [
-  { path: '/skills', label: 'Skills', terms: [/\bskills?\b/i, /\bskill library\b/i] },
-  { path: '/careers', label: 'Careers', terms: [/\bcareers?\b/i, /\bcareer library\b/i] },
-  { path: '/industries', label: 'Industries', terms: [/\bindustr(?:y|ies)\b/i] },
-  { path: '/learn', label: 'Learn', terms: [/\blearn(?:ing)?\b/i, /\blearning hub\b/i] },
-  { path: '/paths', label: 'Learning Paths', terms: [/\blearning paths?\b/i, /\bskill paths?\b/i, /\bpaths?\b/i] },
-  { path: '/blog', label: 'Blog', terms: [/\bblog\b/i, /\barticles?\b/i] },
-  { path: '/community', label: 'Community', terms: [/\bcommunity\b/i] },
-  { path: '/dashboard', label: 'Dashboard', terms: [/\bdashboard\b/i, /\bmy account\b/i, /\bprofile\b/i] },
-  { path: '/free-career-guide', label: 'Free Career Guide', terms: [/\bfree career guide\b/i, /\bcareer guide\b/i] },
-  { path: '/topics', label: 'Topics', terms: [/\btopics?\b/i] },
-  { path: '/about', label: 'About', terms: [/\babout(?: us)?\b/i] },
-  { path: '/privacy', label: 'Privacy', terms: [/\bprivacy\b/i] },
-  { path: '/', label: 'Home', terms: [/\bhome(?:page)?\b/i, /\bmain page\b/i] },
-];
 
 const DIRECT_NAVIGATION_INTENT = /\b(?:take me(?:\s+to)?|go(?:\s+to)?|open|show me|navigate(?:\s+me)?(?:\s+to)?|bring me(?:\s+to)?|visit|head(?:\s+to)?|send me(?:\s+to)?)\b/i;
 
@@ -99,18 +90,6 @@ function toolNameFromRecord(record: UnknownRecord) {
   return name?.toLowerCase();
 }
 
-function resolveKnownDestination(text: string | undefined): ResolvedNavigation | null {
-  if (!text) return null;
-  const normalized = text.trim();
-  if (!normalized) return null;
-  for (const destination of KNOWN_DESTINATIONS) {
-    if (destination.terms.some((term) => term.test(normalized))) {
-      return { path: destination.path, label: destination.label };
-    }
-  }
-  return null;
-}
-
 function isDirectNavigationRequest(text: string | undefined) {
   return Boolean(text && DIRECT_NAVIGATION_INTENT.test(text));
 }
@@ -136,7 +115,7 @@ function extractUserUtterance(payload: UnknownRecord) {
   return undefined;
 }
 
-function extractNavigation(payload: UnknownRecord, latestUserText?: string) {
+function extractNavigation(payload: UnknownRecord) {
   const records = collectRecords(payload);
   let hasNavigateMarker = false;
   let path: string | null = null;
@@ -163,21 +142,9 @@ function extractNavigation(payload: UnknownRecord, latestUserText?: string) {
     }
   }
 
-  if (!hasNavigateMarker) return null;
-
-  // Cartesia's Agent Builder can currently create a client function without editable
-  // parameters in some UI states. In that case, resolve the requested top-level page
-  // from the visitor's latest recognized utterance instead of requiring tool arguments.
-  if (!path) {
-    const fallback = resolveKnownDestination(latestUserText);
-    if (fallback) {
-      path = fallback.path;
-      label = fallback.label;
-      if (isDirectNavigationRequest(latestUserText)) permissionGranted = true;
-    }
-  }
-
-  if (!path) return null;
+  // Parameterless client functions intentionally do not guess a page here. The
+  // visitor's utterance is resolved against the site's canonical content API.
+  if (!hasNavigateMarker || !path) return null;
 
   return {
     path,
@@ -227,6 +194,7 @@ export function CartesiaNavigationBridge() {
   const reportedShapes = useRef(new Set<string>());
   const latestUserText = useRef('');
   const lastDirectNavigation = useRef('');
+  const resolverSequence = useRef(0);
 
   useEffect(() => {
     const NativeWebSocket = window.WebSocket;
@@ -237,6 +205,26 @@ export function CartesiaNavigationBridge() {
       router.prefetch(target.path);
       router.push(target.path);
       setPending(null);
+    };
+
+    const resolveAndNavigate = async (text: string) => {
+      const requestId = ++resolverSequence.current;
+      try {
+        const response = await fetch('/api/agent/resolve-page', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: text }),
+        });
+        if (!response.ok || requestId !== resolverSequence.current) return;
+
+        const result = await response.json() as ResolverResponse;
+        if (!result.found || !result.path || requestId !== resolverSequence.current) return;
+        const path = normalizeInternalPath(result.path);
+        if (!path) return;
+        goTo({ path, label: result.label?.slice(0, 100) || 'that page' });
+      } catch {
+        // Voice navigation should fail quietly; the agent can continue the conversation.
+      }
     };
 
     const PatchedWebSocket = new Proxy(NativeWebSocket, {
@@ -256,21 +244,20 @@ export function CartesiaNavigationBridge() {
             const userText = extractUserUtterance(payload);
             if (userText) latestUserText.current = userText;
 
-            // Reliable local fallback for direct commands to known top-level pages.
-            // This means "take me to Skills" works even if Cartesia emits a parameterless
-            // client function or fails to include the function arguments.
+            // Direct navigation commands are resolved against the same canonical
+            // content sources that generate the sitemap. This supports individual
+            // skills, careers, industries, blog posts, topics and learning paths.
             if (userText && isDirectNavigationRequest(userText)) {
-              const directTarget = resolveKnownDestination(userText);
-              const dedupeKey = directTarget ? `${userText}|${directTarget.path}` : '';
-              if (directTarget && dedupeKey !== lastDirectNavigation.current) {
+              const dedupeKey = userText.trim().toLocaleLowerCase('en');
+              if (dedupeKey && dedupeKey !== lastDirectNavigation.current) {
                 lastDirectNavigation.current = dedupeKey;
-                goTo(directTarget);
+                void resolveAndNavigate(userText);
               }
             }
 
             if (eventType === 'turn_output_text_delta') return;
 
-            const navigation = extractNavigation(payload, latestUserText.current);
+            const navigation = extractNavigation(payload);
             const summary = summarizeShape(payload, Boolean(navigation), Boolean(userText));
             const shapeKey = JSON.stringify(summary);
             if (!reportedShapes.current.has(shapeKey)) {
