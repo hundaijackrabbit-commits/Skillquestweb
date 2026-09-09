@@ -8,6 +8,7 @@ const wavePaths = [
   path.join(root, 'src/data/skills-2026-wave2.json'),
   path.join(root, 'src/data/skills-2026-wave3.json'),
   path.join(root, 'src/data/skills-2026-wave4.json'),
+  path.join(root, 'src/data/skills-2026-wave5.json'),
 ];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
