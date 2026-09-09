@@ -2,41 +2,415 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Bookmark, CheckCircle2, ChevronDown, Heart, MessageCircle, Plus, Search, Send, Sparkles, Users } from 'lucide-react';
+import {
+  Bookmark,
+  ChevronDown,
+  Heart,
+  Medal,
+  MessageCircle,
+  Plus,
+  Search,
+  Send,
+  Sparkles,
+  Trophy,
+  Users,
+} from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-type Discussion = { id:string; author_id:string|null; title:string; body:string; category:string; skill_slug:string|null; discussion_type:string; is_pinned:boolean; is_starter:boolean; created_at:string; author?:{name:string|null}|null; reply_count:number; reaction_count:number; reacted:boolean; followed:boolean };
-type Reply = { id:string; discussion_id:string; author_id:string|null; body:string; created_at:string; author?:{name:string|null}|null };
+type MemberCard = {
+  user_id: string;
+  name: string;
+  identified_skills: string[];
+  completed_skill_count: number;
+  knowledge_check_count: number;
+  practice_activity_count: number;
+};
 
-const categories=['All','AI & Automation','Communication','Critical Thinking','Collaboration','Learning & Practice','Careers','Wins & Progress','Challenges','Resources','Community'];
-const typeLabels:Record<string,string>={discussion:'Discussion',question:'Question',win:'Win',resource:'Resource',challenge:'Challenge'};
-const fallback:Discussion[]=[
- {id:'starter-ai',author_id:null,title:'What is one thing AI genuinely saves you time on?',body:'Skip the hype. Share one real workflow where AI has saved you time, what you used, and what still needed human judgment.',category:'AI & Automation',skill_slug:'ai-literacy',discussion_type:'discussion',is_pinned:false,is_starter:true,created_at:new Date().toISOString(),reply_count:0,reaction_count:0,reacted:false,followed:false},
- {id:'starter-win',author_id:null,title:'Skill win of the week: what did you finally figure out?',body:'Small wins count. Share something you can do this week that you could not do a month ago, and the practice that made the difference.',category:'Wins & Progress',skill_slug:null,discussion_type:'win',is_pinned:false,is_starter:true,created_at:new Date().toISOString(),reply_count:0,reaction_count:0,reacted:false,followed:false},
- {id:'starter-learning',author_id:null,title:'What skill are you learning right now, and why that one?',body:'Tell the community what you picked, the outcome you want, and where you are getting stuck. Someone here may have a useful next step.',category:'Learning & Practice',skill_slug:null,discussion_type:'discussion',is_pinned:false,is_starter:true,created_at:new Date().toISOString(),reply_count:0,reaction_count:0,reacted:false,followed:false},
- {id:'starter-career',author_id:null,title:'Career switchers: which transferable skill surprised you most?',body:'If you have moved roles or industries, which skill carried over better than expected? If you are planning a switch, what skill will bridge the gap?',category:'Careers',skill_slug:null,discussion_type:'discussion',is_pinned:false,is_starter:true,created_at:new Date().toISOString(),reply_count:0,reaction_count:0,reacted:false,followed:false},
+type Discussion = {
+  id: string;
+  author_id: string | null;
+  title: string;
+  body: string;
+  category: string;
+  skill_slug: string | null;
+  discussion_type: string;
+  is_pinned: boolean;
+  is_starter: boolean;
+  created_at: string;
+  author?: { name: string | null } | null;
+  reply_count: number;
+  reaction_count: number;
+  reacted: boolean;
+  followed: boolean;
+};
+
+type Reply = {
+  id: string;
+  discussion_id: string;
+  author_id: string | null;
+  body: string;
+  created_at: string;
+  author?: { name: string | null } | null;
+};
+
+const categories = [
+  'All',
+  'AI & Automation',
+  'Communication',
+  'Critical Thinking',
+  'Collaboration',
+  'Learning & Practice',
+  'Careers',
+  'Wins & Progress',
+  'Challenges',
+  'Resources',
+  'Community',
 ];
 
-export function CommunityHub(){
- const supabase=useMemo(()=>createClient(),[]); const [userId,setUserId]=useState<string|null>(null); const [items,setItems]=useState<Discussion[]>([]); const [loading,setLoading]=useState(true); const [category,setCategory]=useState('All'); const [sort,setSort]=useState('active'); const [query,setQuery]=useState(''); const [composer,setComposer]=useState(false); const [title,setTitle]=useState(''); const [body,setBody]=useState(''); const [newCategory,setNewCategory]=useState('Learning & Practice'); const [newType,setNewType]=useState('discussion'); const [open,setOpen]=useState<string|null>(null); const [replies,setReplies]=useState<Record<string,Reply[]>>({}); const [reply,setReply]=useState(''); const [notice,setNotice]=useState('');
- const signIn='/auth?mode=signup&redirect=%2Fcommunity';
- const load=useCallback(async()=>{setLoading(true); const {data:{user}}=await supabase.auth.getUser(); setUserId(user?.id??null); const {data,error}=await supabase.from('community_discussions').select('id,author_id,title,body,category,skill_slug,discussion_type,is_pinned,is_starter,created_at,profiles:author_id(name)').order('is_pinned',{ascending:false}).order('created_at',{ascending:false}).limit(100); if(error){setItems(fallback);setLoading(false);return;} const ids=(data??[]).map((d:any)=>d.id); let rs:any[]=[];let reacts:any[]=[];let follows:any[]=[]; if(ids.length){const [r,a,f]=await Promise.all([supabase.from('community_replies').select('discussion_id').in('discussion_id',ids),supabase.from('community_reactions').select('discussion_id,user_id').in('discussion_id',ids),user?supabase.from('community_follows').select('discussion_id').eq('user_id',user.id):Promise.resolve({data:[]}) as any]);rs=r.data??[];reacts=a.data??[];follows=f.data??[];} const mapped=(data??[]).map((d:any)=>({...d,author:Array.isArray(d.profiles)?d.profiles[0]:d.profiles,reply_count:rs.filter(x=>x.discussion_id===d.id).length,reaction_count:reacts.filter(x=>x.discussion_id===d.id).length,reacted:!!user&&reacts.some(x=>x.discussion_id===d.id&&x.user_id===user.id),followed:follows.some(x=>x.discussion_id===d.id)})); setItems(mapped.length?mapped:fallback);setLoading(false)},[supabase]);
- useEffect(()=>{void load()},[load]);
- const visible=useMemo(()=>{let list=items.filter(x=>(category==='All'||x.category===category)&&(!query||`${x.title} ${x.body} ${x.category}`.toLowerCase().includes(query.toLowerCase()))); if(sort==='popular') list=[...list].sort((a,b)=>(b.reaction_count+b.reply_count)-(a.reaction_count+a.reply_count)); if(sort==='new') list=[...list].sort((a,b)=>+new Date(b.created_at)-+new Date(a.created_at)); return list},[items,category,query,sort]);
- async function createDiscussion(e:FormEvent){e.preventDefault();if(!userId){location.href=signIn;return} if(title.trim().length<4||body.trim().length<4)return; const {error}=await supabase.from('community_discussions').insert({author_id:userId,title:title.trim(),body:body.trim(),category:newCategory,discussion_type:newType});if(error){setNotice('Could not post yet. Make sure the community database migration has been applied.');return}setTitle('');setBody('');setComposer(false);setNotice('Discussion posted.');void load()}
- async function react(d:Discussion){if(!userId){location.href=signIn;return} if(d.id.startsWith('starter-')){setNotice('Apply migration 005 to activate starter discussions.');return} if(d.reacted)await supabase.from('community_reactions').delete().eq('user_id',userId).eq('discussion_id',d.id).eq('reaction','useful');else await supabase.from('community_reactions').insert({user_id:userId,discussion_id:d.id,reaction:'useful'});void load()}
- async function follow(d:Discussion){if(!userId){location.href=signIn;return} if(d.id.startsWith('starter-'))return; if(d.followed)await supabase.from('community_follows').delete().eq('user_id',userId).eq('discussion_id',d.id);else await supabase.from('community_follows').insert({user_id:userId,discussion_id:d.id});void load()}
- async function toggleReplies(d:Discussion){if(open===d.id){setOpen(null);return}setOpen(d.id);if(d.id.startsWith('starter-'))return;const {data}=await supabase.from('community_replies').select('id,discussion_id,author_id,body,created_at,profiles:author_id(name)').eq('discussion_id',d.id).order('created_at');setReplies(v=>({...v,[d.id]:(data??[]).map((r:any)=>({...r,author:Array.isArray(r.profiles)?r.profiles[0]:r.profiles}))}))}
- async function sendReply(d:Discussion){if(!userId){location.href=signIn;return}if(!reply.trim()||d.id.startsWith('starter-'))return;await supabase.from('community_replies').insert({discussion_id:d.id,author_id:userId,body:reply.trim()});setReply('');setOpen(null);await load();void toggleReplies(d)}
- return <div className="min-h-screen bg-slate-50">
-  <section className="border-b border-slate-800 bg-gradient-to-br from-slate-950 via-blue-950 to-violet-950 text-white"><div className="mx-auto max-w-7xl px-6 py-14 lg:px-8"><Badge className="bg-white/10 text-blue-100">Member community</Badge><div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end"><div><h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl">Learn skills with people who are learning too.</h1><p className="mt-4 max-w-3xl text-lg leading-8 text-blue-100">Ask practical questions, compare approaches, share resources, celebrate progress and turn skill guides into conversations.</p></div><Button size="lg" onClick={()=>userId?setComposer(true):(location.href=signIn)} className="bg-white text-slate-950 hover:bg-blue-50"><Plus className="mr-2 h-4 w-4"/>Start a discussion</Button></div><div className="mt-8 flex flex-wrap gap-3 text-sm text-blue-100"><span className="inline-flex items-center gap-2"><Users className="h-4 w-4"/>Member-led</span><span>•</span><span>Useful over viral</span><span>•</span><span>Questions, wins, resources & challenges</span></div></div></section>
-  <main className="mx-auto max-w-7xl px-6 py-10 lg:px-8"><div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]"><div>
-   {notice&&<div className="mb-5 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">{notice}</div>}
-   {composer&&<form onSubmit={createDiscussion} className="mb-6 rounded-3xl border border-blue-200 bg-white p-6 shadow-sm"><div className="flex items-center justify-between"><h2 className="text-xl font-bold text-slate-950">Start a useful conversation</h2><button type="button" onClick={()=>setComposer(false)} className="text-sm text-slate-500">Cancel</button></div><div className="mt-5 grid gap-3 sm:grid-cols-2"><select value={newType} onChange={e=>setNewType(e.target.value)} className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"><option value="discussion">Discussion</option><option value="question">Question</option><option value="win">Win</option><option value="resource">Resource</option><option value="challenge">Challenge</option></select><select value={newCategory} onChange={e=>setNewCategory(e.target.value)} className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm">{categories.slice(1).map(c=><option key={c}>{c}</option>)}</select></div><input value={title} onChange={e=>setTitle(e.target.value)} maxLength={180} placeholder="What do you want to discuss?" className="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-semibold outline-none focus:border-blue-400"/><textarea value={body} onChange={e=>setBody(e.target.value)} rows={5} placeholder="Add context, what you have tried, or what you want other members to weigh in on..." className="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-400"/><div className="mt-4 flex justify-end"><Button type="submit">Post discussion<Send className="ml-2 h-4 w-4"/></Button></div></form>}
-   <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm"><div className="flex flex-col gap-3 sm:flex-row"><div className="relative flex-1"><Search className="absolute left-3 top-3 h-4 w-4 text-slate-400"/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search conversations" className="w-full rounded-xl border border-slate-200 py-2.5 pl-9 pr-3 text-sm"/></div><div className="relative"><select value={sort} onChange={e=>setSort(e.target.value)} className="appearance-none rounded-xl border border-slate-200 py-2.5 pl-3 pr-9 text-sm"><option value="active">Active</option><option value="new">Newest</option><option value="popular">Most useful</option></select><ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-slate-400"/></div></div><div className="mt-4 flex gap-2 overflow-x-auto pb-1">{categories.map(c=><button key={c} onClick={()=>setCategory(c)} className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold ${category===c?'bg-slate-950 text-white':'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{c}</button>)}</div></div>
-   <div className="mt-5 space-y-4">{loading?<div className="rounded-3xl border bg-white p-8 text-slate-500">Loading conversations…</div>:visible.map(d=><article key={d.id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><div className="flex flex-wrap items-center gap-2 text-xs"><Badge variant="outline">{typeLabels[d.discussion_type]??'Discussion'}</Badge><span className="font-semibold text-blue-700">{d.category}</span>{d.is_pinned&&<span className="font-semibold text-violet-700">Pinned</span>}{d.is_starter&&<span className="inline-flex items-center gap-1 text-emerald-700"><Sparkles className="h-3 w-3"/>Starter discussion</span>}</div><h2 className="mt-3 text-xl font-bold text-slate-950">{d.title}</h2><p className="mt-2 line-clamp-3 leading-7 text-slate-600">{d.body}</p><div className="mt-4 text-xs text-slate-500">{d.is_starter?'Modern Skill Lab prompt':d.author?.name||'Community member'} · {new Date(d.created_at).toLocaleDateString()}</div><div className="mt-5 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4"><button onClick={()=>void react(d)} className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${d.reacted?'bg-rose-50 text-rose-700':'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}><Heart className="h-4 w-4"/>{d.reaction_count} Useful</button><button onClick={()=>void toggleReplies(d)} className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100"><MessageCircle className="h-4 w-4"/>{d.reply_count} Replies</button><button onClick={()=>void follow(d)} className={`ml-auto inline-flex items-center gap-1.5 text-sm ${d.followed?'font-semibold text-blue-700':'text-slate-500'}`}><Bookmark className="h-4 w-4"/>{d.followed?'Following':'Follow'}</button></div>{open===d.id&&<div className="mt-5 rounded-2xl bg-slate-50 p-4"><div className="space-y-3">{(replies[d.id]??[]).map(r=><div key={r.id} className="rounded-xl bg-white p-4"><div className="text-xs font-semibold text-slate-500">{r.author?.name||'Community member'}</div><p className="mt-1 text-sm leading-6 text-slate-700">{r.body}</p></div>)}</div>{userId?<div className="mt-3 flex gap-2"><input value={reply} onChange={e=>setReply(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')void sendReply(d)}} placeholder="Add a helpful reply…" className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm"/><Button size="sm" onClick={()=>void sendReply(d)}>Reply</Button></div>:<Link href={signIn} className="mt-3 inline-block text-sm font-semibold text-blue-700">Join to reply →</Link>}</div>}</article>)}{!loading&&!visible.length&&<div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center"><h3 className="font-bold text-slate-900">No conversations here yet.</h3><p className="mt-2 text-sm text-slate-500">That is a pretty good reason to start one.</p></div>}</div>
-  </div><aside className="space-y-5"><div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><h3 className="font-bold text-slate-950">Community principles</h3><div className="mt-4 space-y-3 text-sm leading-6 text-slate-600">{['Share what you tried, not just opinions.','Critique ideas without attacking people.','Give context when recommending tools or resources.','Celebrate progress without turning the feed into self-promotion.'].map(x=><div key={x} className="flex gap-2"><CheckCircle2 className="mt-1 h-4 w-4 flex-none text-emerald-600"/><span>{x}</span></div>)}</div></div><div className="rounded-3xl bg-slate-950 p-6 text-white"><Sparkles className="h-5 w-5 text-cyan-300"/><h3 className="mt-3 font-bold">Need something to talk about?</h3><p className="mt-2 text-sm leading-6 text-slate-300">Pick a skill you are learning, share one thing that confused you, and ask how someone else would approach it.</p><Link href="/skills" className="mt-4 inline-block text-sm font-bold text-cyan-300">Browse skills →</Link></div><div className="rounded-3xl border border-slate-200 bg-white p-6"><h3 className="font-bold text-slate-950">Why this community exists</h3><p className="mt-2 text-sm leading-6 text-slate-600">Skill guides explain. Practice builds ability. Community adds the part neither can replace: other people’s experience.</p></div></aside></div></main>
- </div>
+const typeLabels: Record<string, string> = {
+  discussion: 'Discussion',
+  question: 'Question',
+  win: 'Win',
+  resource: 'Resource',
+  challenge: 'Challenge',
+};
+
+const fallback: Discussion[] = [
+  {
+    id: 'starter-ai', author_id: null,
+    title: 'What is one thing AI genuinely saves you time on?',
+    body: 'Skip the hype. Share one real workflow where AI has saved you time, what you used, and what still needed human judgment.',
+    category: 'AI & Automation', skill_slug: 'ai-literacy', discussion_type: 'discussion',
+    is_pinned: false, is_starter: true, created_at: new Date().toISOString(),
+    reply_count: 0, reaction_count: 0, reacted: false, followed: false,
+  },
+  {
+    id: 'starter-win', author_id: null,
+    title: 'Skill win of the week: what did you finally figure out?',
+    body: 'Small wins count. Share something you can do this week that you could not do a month ago, and the practice that made the difference.',
+    category: 'Wins & Progress', skill_slug: null, discussion_type: 'win',
+    is_pinned: false, is_starter: true, created_at: new Date().toISOString(),
+    reply_count: 0, reaction_count: 0, reacted: false, followed: false,
+  },
+  {
+    id: 'starter-learning', author_id: null,
+    title: 'What skill are you learning right now, and why that one?',
+    body: 'Tell the community what you picked, the outcome you want, and where you are getting stuck. Someone here may have a useful next step.',
+    category: 'Learning & Practice', skill_slug: null, discussion_type: 'discussion',
+    is_pinned: false, is_starter: true, created_at: new Date().toISOString(),
+    reply_count: 0, reaction_count: 0, reacted: false, followed: false,
+  },
+  {
+    id: 'starter-career', author_id: null,
+    title: 'Career switchers: which transferable skill surprised you most?',
+    body: 'If you have moved roles or industries, which skill carried over better than expected? If you are planning a switch, what skill will bridge the gap?',
+    category: 'Careers', skill_slug: null, discussion_type: 'discussion',
+    is_pinned: false, is_starter: true, created_at: new Date().toISOString(),
+    reply_count: 0, reaction_count: 0, reacted: false, followed: false,
+  },
+];
+
+function humanizeSkill(slug: string) {
+  return slug
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function LearningIdentity({ card, compact = false }: { card?: MemberCard; compact?: boolean }) {
+  if (!card) return null;
+  const practiceTotal = Number(card.knowledge_check_count || 0) + Number(card.practice_activity_count || 0);
+  const hasSignals = card.identified_skills?.length || card.completed_skill_count || practiceTotal;
+  if (!hasSignals) return null;
+
+  return (
+    <div className={compact ? 'mt-2' : 'mt-3 rounded-2xl bg-slate-50 p-3'}>
+      {!!card.identified_skills?.length && (
+        <div className="flex flex-wrap gap-1.5">
+          {card.identified_skills.slice(0, compact ? 3 : 5).map((skill) => (
+            <span
+              key={skill}
+              title="Skill this member has identified with"
+              className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-800"
+            >
+              <Medal className="mr-1 h-3 w-3" />
+              {humanizeSkill(skill)}
+            </span>
+          ))}
+        </div>
+      )}
+      {(Number(card.completed_skill_count || 0) > 0 || practiceTotal > 0) && (
+        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium text-slate-500">
+          {Number(card.completed_skill_count || 0) > 0 && (
+            <span className="inline-flex items-center"><Trophy className="mr-1 h-3 w-3 text-amber-600" />{card.completed_skill_count} completed skill{Number(card.completed_skill_count) === 1 ? '' : 's'}</span>
+          )}
+          {Number(card.knowledge_check_count || 0) > 0 && <span>{card.knowledge_check_count} knowledge check{Number(card.knowledge_check_count) === 1 ? '' : 's'}</span>}
+          {Number(card.practice_activity_count || 0) > 0 && <span>{card.practice_activity_count} practice activit{Number(card.practice_activity_count) === 1 ? 'y' : 'ies'}</span>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function CommunityHub() {
+  const supabase = useMemo(() => createClient(), []);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [items, setItems] = useState<Discussion[]>([]);
+  const [memberCards, setMemberCards] = useState<Record<string, MemberCard>>({});
+  const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState('All');
+  const [sort, setSort] = useState('active');
+  const [query, setQuery] = useState('');
+  const [composer, setComposer] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [newCategory, setNewCategory] = useState('Learning & Practice');
+  const [newType, setNewType] = useState('discussion');
+  const [open, setOpen] = useState<string | null>(null);
+  const [replies, setReplies] = useState<Record<string, Reply[]>>({});
+  const [reply, setReply] = useState('');
+  const [notice, setNotice] = useState('');
+
+  const signUp = '/auth?mode=signup&redirect=%2Fcommunity';
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    setUserId(user?.id ?? null);
+
+    const { data, error } = await supabase
+      .from('community_discussions')
+      .select('id,author_id,title,body,category,skill_slug,discussion_type,is_pinned,is_starter,created_at,profiles:author_id(name)')
+      .order('is_pinned', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    if (error) {
+      setItems(fallback);
+      setLoading(false);
+      return;
+    }
+
+    const ids = (data ?? []).map((d: any) => d.id);
+    const authorIds = Array.from(new Set((data ?? []).map((d: any) => d.author_id).filter(Boolean))) as string[];
+    if (user?.id && !authorIds.includes(user.id)) authorIds.push(user.id);
+
+    let rs: any[] = [];
+    let reacts: any[] = [];
+    let follows: any[] = [];
+
+    if (ids.length) {
+      const [r, a, f] = await Promise.all([
+        supabase.from('community_replies').select('discussion_id').in('discussion_id', ids),
+        supabase.from('community_reactions').select('discussion_id,user_id').in('discussion_id', ids),
+        user
+          ? supabase.from('community_follows').select('discussion_id').eq('user_id', user.id)
+          : Promise.resolve({ data: [] }) as any,
+      ]);
+      rs = r.data ?? [];
+      reacts = a.data ?? [];
+      follows = f.data ?? [];
+    }
+
+    if (authorIds.length) {
+      const { data: cards } = await supabase.rpc('get_community_member_cards', { p_user_ids: authorIds });
+      if (cards) {
+        setMemberCards(Object.fromEntries((cards as MemberCard[]).map((card) => [card.user_id, card])));
+      }
+    }
+
+    const mapped = (data ?? []).map((d: any) => ({
+      ...d,
+      author: Array.isArray(d.profiles) ? d.profiles[0] : d.profiles,
+      reply_count: rs.filter((x) => x.discussion_id === d.id).length,
+      reaction_count: reacts.filter((x) => x.discussion_id === d.id).length,
+      reacted: !!user && reacts.some((x) => x.discussion_id === d.id && x.user_id === user.id),
+      followed: follows.some((x) => x.discussion_id === d.id),
+    }));
+
+    setItems(mapped.length ? mapped : fallback);
+    setLoading(false);
+  }, [supabase]);
+
+  useEffect(() => { void load(); }, [load]);
+
+  const visible = useMemo(() => {
+    let list = items.filter((x) =>
+      (category === 'All' || x.category === category) &&
+      (!query || `${x.title} ${x.body} ${x.category}`.toLowerCase().includes(query.toLowerCase()))
+    );
+    if (sort === 'popular') list = [...list].sort((a, b) => (b.reaction_count + b.reply_count) - (a.reaction_count + a.reply_count));
+    if (sort === 'new') list = [...list].sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at));
+    return list;
+  }, [items, category, query, sort]);
+
+  async function createDiscussion(e: FormEvent) {
+    e.preventDefault();
+    if (!userId) { location.href = signUp; return; }
+    if (title.trim().length < 4 || body.trim().length < 4) return;
+    const { error } = await supabase.from('community_discussions').insert({
+      author_id: userId,
+      title: title.trim(),
+      body: body.trim(),
+      category: newCategory,
+      discussion_type: newType,
+    });
+    if (error) { setNotice('Could not post yet. Make sure the community database migrations have been applied.'); return; }
+    setTitle(''); setBody(''); setComposer(false); setNotice('Discussion posted.'); void load();
+  }
+
+  async function react(d: Discussion) {
+    if (!userId) { location.href = signUp; return; }
+    if (d.id.startsWith('starter-')) { setNotice('Apply migration 005 to activate starter discussions.'); return; }
+    if (d.reacted) await supabase.from('community_reactions').delete().eq('user_id', userId).eq('discussion_id', d.id).eq('reaction', 'useful');
+    else await supabase.from('community_reactions').insert({ user_id: userId, discussion_id: d.id, reaction: 'useful' });
+    void load();
+  }
+
+  async function follow(d: Discussion) {
+    if (!userId) { location.href = signUp; return; }
+    if (d.id.startsWith('starter-')) return;
+    if (d.followed) await supabase.from('community_follows').delete().eq('user_id', userId).eq('discussion_id', d.id);
+    else await supabase.from('community_follows').insert({ user_id: userId, discussion_id: d.id });
+    void load();
+  }
+
+  async function toggleReplies(d: Discussion) {
+    if (open === d.id) { setOpen(null); return; }
+    setOpen(d.id);
+    if (d.id.startsWith('starter-')) return;
+    const { data } = await supabase
+      .from('community_replies')
+      .select('id,discussion_id,author_id,body,created_at,profiles:author_id(name)')
+      .eq('discussion_id', d.id)
+      .order('created_at');
+    const next = (data ?? []).map((r: any) => ({ ...r, author: Array.isArray(r.profiles) ? r.profiles[0] : r.profiles }));
+    setReplies((current) => ({ ...current, [d.id]: next }));
+
+    const replyAuthors = Array.from(new Set(next.map((r) => r.author_id).filter(Boolean))) as string[];
+    const missing = replyAuthors.filter((id) => !memberCards[id]);
+    if (missing.length) {
+      const { data: cards } = await supabase.rpc('get_community_member_cards', { p_user_ids: missing });
+      if (cards) setMemberCards((current) => ({ ...current, ...Object.fromEntries((cards as MemberCard[]).map((card) => [card.user_id, card])) }));
+    }
+  }
+
+  async function sendReply(d: Discussion) {
+    if (!userId) { location.href = signUp; return; }
+    if (!reply.trim() || d.id.startsWith('starter-')) return;
+    await supabase.from('community_replies').insert({ discussion_id: d.id, author_id: userId, body: reply.trim() });
+    setReply(''); setOpen(null); await load(); void toggleReplies(d);
+  }
+
+  const myCard = userId ? memberCards[userId] : undefined;
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <section className="border-b border-slate-800 bg-gradient-to-br from-slate-950 via-blue-950 to-violet-950 text-white">
+        <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+          <Badge className="bg-white/10 text-blue-100">Member community</Badge>
+          <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl">Learn skills with people who are learning too.</h1>
+              <p className="mt-4 max-w-3xl text-lg leading-8 text-blue-100">Ask practical questions, compare approaches, share resources, and let your learning record travel with you across the site.</p>
+            </div>
+            <Button size="lg" onClick={() => userId ? setComposer(true) : (location.href = signUp)} className="bg-white text-slate-950 hover:bg-blue-50">
+              <Plus className="mr-2 h-4 w-4" />Start a discussion
+            </Button>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3 text-sm text-blue-100">
+            <span className="inline-flex items-center gap-2"><Users className="h-4 w-4" />Member-led</span><span>•</span><span>Useful over viral</span><span>•</span><span>Your skills and practice follow your profile</span>
+          </div>
+        </div>
+      </section>
+
+      <main className="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div>
+            {notice && <div className="mb-5 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900">{notice}</div>}
+
+            {composer && (
+              <form onSubmit={createDiscussion} className="mb-6 rounded-3xl border border-blue-200 bg-white p-6 shadow-sm">
+                <div className="flex items-center justify-between"><h2 className="text-xl font-bold text-slate-950">Start a useful conversation</h2><button type="button" onClick={() => setComposer(false)} className="text-sm text-slate-500">Cancel</button></div>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <select value={newType} onChange={(e) => setNewType(e.target.value)} className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm"><option value="discussion">Discussion</option><option value="question">Question</option><option value="win">Win</option><option value="resource">Resource</option><option value="challenge">Challenge</option></select>
+                  <select value={newCategory} onChange={(e) => setNewCategory(e.target.value)} className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm">{categories.slice(1).map((c) => <option key={c}>{c}</option>)}</select>
+                </div>
+                <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={180} placeholder="What do you want to discuss?" className="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 font-semibold outline-none focus:border-blue-400" />
+                <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={5} placeholder="Add context, what you have tried, or what you want other members to weigh in on..." className="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-400" />
+                <div className="mt-4 flex justify-end"><Button type="submit">Post discussion<Send className="ml-2 h-4 w-4" /></Button></div>
+              </form>
+            )}
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="relative flex-1"><Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search conversations" className="w-full rounded-xl border border-slate-200 py-2.5 pl-9 pr-3 text-sm" /></div>
+                <div className="relative"><select value={sort} onChange={(e) => setSort(e.target.value)} className="appearance-none rounded-xl border border-slate-200 py-2.5 pl-3 pr-9 text-sm"><option value="active">Active</option><option value="new">Newest</option><option value="popular">Most useful</option></select><ChevronDown className="pointer-events-none absolute right-3 top-3 h-4 w-4 text-slate-400" /></div>
+              </div>
+              <div className="mt-4 flex gap-2 overflow-x-auto pb-1">{categories.map((c) => <button key={c} onClick={() => setCategory(c)} className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold ${category === c ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{c}</button>)}</div>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              {loading ? <div className="rounded-3xl border bg-white p-8 text-slate-500">Loading conversations…</div> : visible.map((d) => {
+                const authorCard = d.author_id ? memberCards[d.author_id] : undefined;
+                return (
+                  <article key={d.id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="flex flex-wrap items-center gap-2 text-xs"><Badge variant="outline">{typeLabels[d.discussion_type] ?? 'Discussion'}</Badge><span className="font-semibold text-blue-700">{d.category}</span>{d.is_pinned && <span className="font-semibold text-violet-700">Pinned</span>}{d.is_starter && <span className="inline-flex items-center gap-1 text-emerald-700"><Sparkles className="h-3 w-3" />Starter discussion</span>}</div>
+                    <h2 className="mt-3 text-xl font-bold text-slate-950">{d.title}</h2>
+                    <p className="mt-2 line-clamp-3 leading-7 text-slate-600">{d.body}</p>
+                    <div className="mt-4">
+                      <div className="text-xs text-slate-500">{d.is_starter ? 'Modern Skill Lab prompt' : authorCard?.name || d.author?.name || 'Community member'} · {new Date(d.created_at).toLocaleDateString()}</div>
+                      {!d.is_starter && <LearningIdentity card={authorCard} compact />}
+                    </div>
+                    <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+                      <button onClick={() => void react(d)} className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${d.reacted ? 'bg-rose-50 text-rose-700' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}><Heart className="h-4 w-4" />{d.reaction_count} Useful</button>
+                      <button onClick={() => void toggleReplies(d)} className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100"><MessageCircle className="h-4 w-4" />{d.reply_count} Replies</button>
+                      <button onClick={() => void follow(d)} className={`ml-auto inline-flex items-center gap-1.5 text-sm ${d.followed ? 'font-semibold text-blue-700' : 'text-slate-500'}`}><Bookmark className="h-4 w-4" />{d.followed ? 'Following' : 'Follow'}</button>
+                    </div>
+                    {open === d.id && (
+                      <div className="mt-5 rounded-2xl bg-slate-50 p-4">
+                        <div className="space-y-3">{(replies[d.id] ?? []).map((r) => <div key={r.id} className="rounded-xl bg-white p-4"><div className="text-xs font-semibold text-slate-500">{r.author_id ? memberCards[r.author_id]?.name || r.author?.name || 'Community member' : 'Community member'}</div>{r.author_id && <LearningIdentity card={memberCards[r.author_id]} compact />}<p className="mt-2 text-sm leading-6 text-slate-700">{r.body}</p></div>)}</div>
+                        {userId ? <div className="mt-3 flex gap-2"><input value={reply} onChange={(e) => setReply(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') void sendReply(d); }} placeholder="Add a helpful reply…" className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm" /><Button size="sm" onClick={() => void sendReply(d)}>Reply</Button></div> : <Link href={signUp} className="mt-3 inline-block text-sm font-semibold text-blue-700">Join free to reply →</Link>}
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+              {!loading && !visible.length && <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center"><h3 className="font-bold text-slate-900">No conversations here yet.</h3><p className="mt-2 text-sm text-slate-500">Try another topic, or start the first one.</p></div>}
+            </div>
+          </div>
+
+          <aside className="space-y-5">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="text-xs font-bold uppercase tracking-[0.18em] text-violet-700">Learning identity</div>
+              <h2 className="mt-2 text-xl font-bold text-slate-950">Your work shows up with you.</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Skills you save and practice you complete become quiet signals on your community profile — more like notches on a belt than a leaderboard.</p>
+              {userId ? (
+                <>
+                  <LearningIdentity card={myCard} />
+                  <div className="mt-4 flex gap-3"><Link href="/skills" className="text-sm font-semibold text-blue-700">Identify skills</Link><Link href="/learn" className="text-sm font-semibold text-violet-700">Practice</Link></div>
+                </>
+              ) : (
+                <div className="mt-4 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+                  A free membership opens the member-only parts of Modern Skill Lab: community participation, practice, XP, saved progress, and your learning identity.
+                  <Link href={signUp} className="mt-3 block font-bold text-blue-700">Create free account →</Link>
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="font-bold text-slate-950">A useful community, not a noisy one</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Ask specific questions, share what worked, explain your reasoning, and mark replies useful when they genuinely help.</p>
+            </div>
+
+            <div className="rounded-3xl border border-blue-200 bg-blue-50 p-6">
+              <div className="text-sm font-bold text-blue-950">One free membership</div>
+              <p className="mt-1 text-sm leading-6 text-blue-900">There are no paid member tiers to navigate. Sign in once and the member features across Modern Skill Lab are available.</p>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  );
 }
