@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SkillsDirectory } from '@/components/skills/skills-directory';
-import { getIndexableSkills } from '@/lib/content';
+import { getCanonicalSkills } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Professional Skills Library',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SkillsPage() {
-  const skills = await getIndexableSkills();
+  const skills = await getCanonicalSkills();
   return <>
     <section className="border-b border-blue-100 bg-blue-50/50">
       <div className="mx-auto grid max-w-7xl gap-3 px-6 py-5 sm:grid-cols-3 lg:px-8">
