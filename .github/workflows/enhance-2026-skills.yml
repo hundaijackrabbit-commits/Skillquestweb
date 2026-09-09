@@ -1,0 +1,26 @@
+name: Apply researched skill enhancements
+on:
+  push:
+    paths:
+      - 'src/data/skills-2026-enhancements.json'
+      - 'scripts/apply-2026-skill-enhancements.mjs'
+permissions:
+  contents: write
+jobs:
+  enhance:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/apply-2026-skill-enhancements.mjs
+      - run: node -e "const fs=require('fs'); ['src/data/skills-1000plus.json','src/data/skills-2026-wave1.json','src/data/skills-2026-wave2.json'].forEach(p=>JSON.parse(fs.readFileSync(p,'utf8')))"
+      - run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+          git add src/data/skills-1000plus.json src/data/skills-2026-wave1.json src/data/skills-2026-wave2.json
+          git diff --cached --quiet || (git commit -m 'Deepen researched AI skill guides' && git push)
