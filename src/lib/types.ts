@@ -92,7 +92,7 @@ export const SkillSchema = z.object({
   humanAdvantage: z.string(),
   
   // Enhanced Metadata
-  transferabilityLevel: z.enum(['low', 'medium', 'high']).optional(),
+  transferabilityLevel: z.enum(['low', 'medium', 'high', 'very-high']).optional(),
   demandLevel: z.enum(['low', 'moderate', 'high', 'very-high']).optional(),
   futureProofScore: z.number().min(1).max(10).optional(),
   leadershipRelevance: z.number().min(1).max(10).optional(),
