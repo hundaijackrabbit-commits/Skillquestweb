@@ -91,12 +91,12 @@ function AccessCard({ loading, featureName, description, signUpHref, signInHref 
         <>
           <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5">Member practice</p>
           <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">Checking your access…</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">The activity stays locked until your account session is confirmed.</p>
+          <p className="mt-3 text-sm leading-6 text-slate-600">The activity will open as soon as your account session is confirmed.</p>
         </>
       ) : (
         <>
-          <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5">Account required</p>
-          <h2 className="mt-2 break-words text-[1.35rem] font-bold leading-tight tracking-tight text-slate-950 min-[380px]:text-2xl sm:text-3xl">Unlock {featureName}</h2>
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5">Free membership</p>
+          <h2 className="mt-2 break-words text-[1.35rem] font-bold leading-tight tracking-tight text-slate-950 min-[380px]:text-2xl sm:text-3xl">Open {featureName}</h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{description}</p>
 
           <div className="mt-4 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:gap-3">
@@ -110,7 +110,7 @@ function AccessCard({ loading, featureName, description, signUpHref, signInHref 
 
           <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-emerald-50 p-3 text-left text-xs leading-5 text-emerald-950 sm:mt-5 sm:rounded-2xl sm:p-4 sm:text-sm sm:leading-6">
             <ShieldCheck className="mt-0.5 h-4 w-4 flex-none text-emerald-700 sm:h-5 sm:w-5" />
-            <p>Guides remain free to read. An account adds practice, feedback, XP, achievements, and saved progress.</p>
+            <p>One free membership opens the member features across Modern Skill Lab: practice, feedback, XP, achievements, saved progress, and community participation. There is no paid member tier.</p>
           </div>
 
           <p className="mt-3 inline-flex items-start text-left text-[11px] leading-4 text-slate-500 sm:mt-4 sm:items-center sm:text-xs sm:leading-5">
@@ -127,7 +127,7 @@ export function GamificationAccessGate({
   children,
   id,
   featureName = 'interactive practice',
-  description = 'Create a free account to unlock this activity, earn account-scoped XP, and build your private practice record.',
+  description = 'Create a free account to open this activity, earn account-scoped XP, and keep your learning progress connected across the site.',
   className = '',
 }: Props) {
   const { user, loading } = useSupabase();
@@ -143,7 +143,7 @@ export function GamificationAccessGate({
     <section
       id={id}
       className={`scroll-mt-28 rounded-3xl border border-violet-200 bg-white shadow-lg ${className}`}
-      aria-label={loading ? 'Checking member access' : `${featureName} requires an account`}
+      aria-label={loading ? 'Checking member access' : `${featureName} requires a free account`}
       aria-busy={loading}
     >
       <div className="sm:hidden">
