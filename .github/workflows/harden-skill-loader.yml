@@ -1,0 +1,51 @@
+name: Harden skill loader
+
+on:
+  push:
+    branches:
+      - harden-skill-loader
+    paths:
+      - 'scripts/harden-skill-loader.mjs'
+      - '.github/workflows/harden-skill-loader.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: harden-skill-loader
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply resilient loader patch
+        run: node scripts/harden-skill-loader.mjs
+      - name: Verify loader shape
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const source = fs.readFileSync('src/lib/content.ts', 'utf8');
+          if (!source.includes('SkillSchema.safeParse(rawSkill)')) throw new Error('safeParse loader missing');
+          if (source.includes('rawSkills.map((skill: unknown) => SkillSchema.parse(skill))')) throw new Error('all-or-nothing loader still present');
+          console.log('Resilient loader verification passed');
+          NODE
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Commit hardened loader
+        run: |
+          if git diff --quiet -- src/lib/content.ts; then
+            echo 'No loader changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/lib/content.ts
+          git commit -m 'Make skill loading resilient to invalid records'
+          git push origin HEAD:harden-skill-loader
