@@ -40,11 +40,11 @@ export const SkillSchema = z.object({
   economicRelevance: z.string().optional(),
   
   // Enhanced Content Sections
-  whereItShowsUp: z.string().optional(),
-  careerApplications: z.string().optional(),
-  industryVariations: z.string().optional(),
-  realWorldScenarios: z.array(z.string()).optional(),
-  skillInAction: z.string().optional(),
+  whereItShowsUp: z.string().optional(), // Real workplace examples
+  careerApplications: z.string().optional(), // How it's used across careers
+  industryVariations: z.string().optional(), // How skill differs by industry
+  realWorldScenarios: z.array(z.string()).optional(), // Specific use cases
+  skillInAction: z.string().optional(), // What strong execution looks like
   
   // Professional Context
   professionalContexts: z.array(z.string()),
@@ -70,17 +70,17 @@ export const SkillSchema = z.object({
   estimatedTimeToDevelop: z.string(),
   
   // Enhanced Development Content
-  coreSubskills: z.array(z.string()).optional(),
-  developmentMethods: z.string().optional(),
-  skillStacksWell: z.array(z.string()).optional(),
-  learningResources: z.array(z.string()).optional(),
-  practiceOpportunities: z.string().optional(),
+  coreSubskills: z.array(z.string()).optional(), // Breaking down the skill
+  developmentMethods: z.string().optional(), // Specific practice approaches
+  skillStacksWell: z.array(z.string()).optional(), // Complementary skills
+  learningResources: z.array(z.string()).optional(), // Platforms, books, courses
+  practiceOpportunities: z.string().optional(), // Where to gain experience
   
   // Employer & Career Context
-  howEmployersEvaluate: z.string().optional(),
-  signalsOfMastery: z.array(z.string()).optional(),
-  careerImpact: z.string().optional(),
-  salaryImpact: z.string().optional(),
+  howEmployersEvaluate: z.string().optional(), // Interview, portfolio, performance
+  signalsOfMastery: z.array(z.string()).optional(), // Observable evidence
+  careerImpact: z.string().optional(), // How it affects career progression
+  salaryImpact: z.string().optional(), // Economic value information
   
   // Professional Relevance
   resumeRelevance: z.string(),
@@ -91,14 +91,14 @@ export const SkillSchema = z.object({
   automationRisk: AutomationRiskSchema,
   humanAdvantage: z.string(),
   
-  // Enhanced Metadata. Transferability has historical free-form values in the
-  // library, so preserve them instead of making one legacy record invalidate
-  // the entire data file at runtime.
+  // Enhanced Metadata
+  // Metadata labels evolved across the large historical library. Keep these
+  // tolerant so a harmless editorial label can never invalidate every skill.
   transferabilityLevel: z.string().optional(),
-  demandLevel: z.enum(['low', 'moderate', 'high', 'very-high']).optional(),
+  demandLevel: z.string().optional(),
   futureProofScore: z.number().min(1).max(10).optional(),
   leadershipRelevance: z.number().min(1).max(10).optional(),
-  creativeVsAnalytical: z.enum(['creative', 'analytical', 'hybrid']).optional(),
+  creativeVsAnalytical: z.string().optional(),
   
   // Metadata
   blogPosts: z.array(z.string()),
@@ -114,20 +114,30 @@ export const CareerSchema = z.object({
   title: z.string(),
   summary: z.string(),
   whatTheyDo: z.string(),
+  
+  // Context
   commonIndustries: z.array(z.string()),
   workEnvironments: z.array(z.string()),
+  
+  // Skills
   coreSkills: z.array(z.string()),
   secondarySkills: z.array(z.string()),
   transferableSkills: z.array(z.string()),
+  
+  // Professional Development
   tools: z.array(z.string()),
   educationNotes: z.string().optional(),
   alternativePaths: z.array(z.string()),
   beginnerEntryStrategies: z.array(z.string()),
   growthOpportunities: z.array(z.string()),
   relatedCareers: z.array(z.string()),
+  
+  // Market Information
   futureOutlook: z.string().optional(),
   salaryRange: z.string().optional(),
   demandLevel: z.enum(['low', 'moderate', 'high', 'very-high']).optional(),
+  
+  // Metadata
   lastUpdated: z.string(),
   featured: z.boolean().default(false),
 });
@@ -139,13 +149,19 @@ export const IndustrySchema = z.object({
   name: z.string(),
   description: z.string(),
   keyCharacteristics: z.array(z.string()),
+  
+  // Skills & Careers
   criticalSkills: z.array(z.string()),
   emergingSkills: z.array(z.string()),
   commonCareers: z.array(z.string()),
+  
+  // Context
   tools: z.array(z.string()),
   trends: z.array(z.string()),
   challenges: z.array(z.string()),
   opportunities: z.array(z.string()),
+  
+  // Metadata
   lastUpdated: z.string(),
   featured: z.boolean().default(false),
 });
@@ -156,21 +172,28 @@ export const BlogPostSchema = z.object({
   slug: z.string(),
   title: z.string(),
   excerpt: z.string(),
-  content: z.string(),
+  content: z.string(), // MDX content
+  
+  // Author & Publishing
   author: z.string(),
   publishedAt: z.string(),
   lastUpdated: z.string(),
   reviewedBy: z.string().optional(),
   evidenceNote: z.string().optional(),
+  
+  // Content Organization
   tags: z.array(z.string()),
   relatedSkills: z.array(z.string()),
   relatedCareers: z.array(z.string()),
   relatedIndustries: z.array(z.string()),
+  
+  // Metadata
   readTime: z.number(),
   featured: z.boolean().default(false),
   category: z.string().optional(),
 });
 
+// Export TypeScript types
 export type Skill = z.infer<typeof SkillSchema>;
 export type Career = z.infer<typeof CareerSchema>;
 export type Industry = z.infer<typeof IndustrySchema>;
@@ -179,6 +202,7 @@ export type SkillCategory = z.infer<typeof SkillCategorySchema>;
 export type AutomationRisk = z.infer<typeof AutomationRiskSchema>;
 export type DifficultyLevel = z.infer<typeof DifficultyLevelSchema>;
 
+// Search Result Types
 export interface SearchResult {
   type: 'skill' | 'career' | 'industry' | 'blog';
   id: string;
@@ -189,6 +213,7 @@ export interface SearchResult {
   relevance?: number;
 }
 
+// Skill Path Types
 export const SkillPathSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -205,6 +230,7 @@ export const SkillPathSchema = z.object({
 
 export type SkillPath = z.infer<typeof SkillPathSchema>;
 
+// Content Statistics
 export interface ContentStats {
   totalSkills: number;
   totalCareers: number;
