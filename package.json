@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs",
+    "prebuild": "node scripts/enhance-careers-wave-a.mjs && node scripts/complete-legacy-skill-guides.mjs && node scripts/audit-career-content.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
