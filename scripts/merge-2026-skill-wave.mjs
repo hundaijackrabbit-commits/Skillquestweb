@@ -9,46 +9,29 @@ const wavePaths = [
 ];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
-const waves = wavePaths.flatMap((wavePath) => {
-  if (!fs.existsSync(wavePath)) return [];
-  return JSON.parse(fs.readFileSync(wavePath, 'utf8'));
-});
+const waves = wavePaths.flatMap((wavePath) => fs.existsSync(wavePath)
+  ? JSON.parse(fs.readFileSync(wavePath, 'utf8'))
+  : []);
 
-const normalize = (value = '') => value
-  .trim()
-  .toLowerCase()
-  .replace(/&/g, ' and ')
-  .replace(/[^a-z0-9]+/g, '-')
-  .replace(/^-+|-+$/g, '');
+const normalize = (value = '') => value.trim().toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const keys = (skill) => [normalize(skill.id), normalize(skill.slug), normalize(skill.name)].filter(Boolean);
 
-const existingIds = new Set(canonical.map((skill) => normalize(skill.id)));
-const existingSlugs = new Set(canonical.map((skill) => normalize(skill.slug)));
-const existingNames = new Set(canonical.map((skill) => normalize(skill.name)));
-const accepted = [];
+const researchedKeys = new Set(waves.flatMap(keys));
+const preserved = canonical.filter((skill) => !keys(skill).some((key) => researchedKeys.has(key)));
+const merged = [...preserved, ...waves];
 
-for (const skill of waves) {
-  const keys = [normalize(skill.id), normalize(skill.slug), normalize(skill.name)];
-  if (existingIds.has(keys[0]) || existingSlugs.has(keys[1]) || existingNames.has(keys[2])) {
-    console.log(`Skipping duplicate skill: ${skill.name}`);
-    continue;
+const seen = new Set();
+for (const skill of merged) {
+  for (const key of keys(skill)) {
+    if (seen.has(key)) throw new Error(`Duplicate skill key after merge: ${key}`);
+    seen.add(key);
   }
-  if (accepted.some((candidate) => {
-    const candidateKeys = [normalize(candidate.id), normalize(candidate.slug), normalize(candidate.name)];
-    return candidateKeys[0] === keys[0] || candidateKeys[1] === keys[1] || candidateKeys[2] === keys[2];
-  })) {
-    throw new Error(`Duplicate inside researched wave files: ${skill.name}`);
-  }
-  accepted.push(skill);
-  existingIds.add(keys[0]);
-  existingSlugs.add(keys[1]);
-  existingNames.add(keys[2]);
 }
 
-if (!accepted.length) {
-  console.log('No new skills to merge.');
+if (JSON.stringify(canonical) === JSON.stringify(merged)) {
+  console.log('Canonical dataset already matches researched editions.');
   process.exit(0);
 }
 
-const merged = [...canonical, ...accepted];
 fs.writeFileSync(canonicalPath, `${JSON.stringify(merged, null, 2)}\n`);
-console.log(`Merged ${accepted.length} new researched skills into canonical dataset.`);
+console.log(`Refreshed canonical dataset with ${waves.length} researched skill editions.`);
