@@ -6,6 +6,7 @@ const canonicalPath = path.join(root, 'src/data/skills-1000plus.json');
 const wavePaths = [
   path.join(root, 'src/data/skills-2026-wave1.json'),
   path.join(root, 'src/data/skills-2026-wave2.json'),
+  path.join(root, 'src/data/skills-2026-wave3.json'),
 ];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
@@ -24,8 +25,7 @@ const preserved = canonical.filter((skill) => !identityKeys(skill).some((key) =>
 const merged = [...preserved, ...waves];
 
 // Validate actual record identity without treating legitimate cross-field
-// values (for example one skill named "Communication" and another skill whose
-// id happens to be "communication") as duplicate records.
+// values as duplicate records.
 const seenPrimary = new Set();
 for (const skill of merged) {
   const key = primaryKey(skill);
