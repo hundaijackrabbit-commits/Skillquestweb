@@ -1,0 +1,23 @@
+name: Library preservation audit
+
+on:
+  push:
+    branches:
+      - wave-b-safe-expansion
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Audit existing skill library
+        run: node scripts/audit-library-preservation.mjs
