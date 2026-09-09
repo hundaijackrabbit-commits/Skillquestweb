@@ -104,7 +104,8 @@ export const SkillSchema = z.object({
   blogPosts: z.array(z.string()),
   lastUpdated: z.string(),
   featured: z.boolean().default(false),
-  difficulty: DifficultyLevelSchema.optional(),
+  // Keep historical/editorial difficulty labels tolerant for backward compatibility.
+  difficulty: z.string().optional(),
 });
 
 // Career Schema
