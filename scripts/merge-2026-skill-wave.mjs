@@ -12,9 +12,67 @@ const wavePaths = [
 ];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
-const waves = wavePaths.flatMap((wavePath) => fs.existsSync(wavePath)
+const rawWaves = wavePaths.flatMap((wavePath) => fs.existsSync(wavePath)
   ? JSON.parse(fs.readFileSync(wavePath, 'utf8'))
   : []);
+
+const allowedCategories = new Set([
+  'communication',
+  'leadership',
+  'critical-thinking',
+  'collaboration',
+  'personal-effectiveness',
+  'business-strategy',
+  'sales-marketing',
+  'finance-operations',
+  'human-resources',
+  'customer-success',
+  'digital-literacy',
+  'content-media',
+  'design-ux',
+  'technical',
+  'analytics-research',
+  'remote-work',
+  'entrepreneurship',
+  'freelance-gig',
+  'ai-era',
+  'future-resistant',
+]);
+
+const categoryAliases = {
+  digital: 'digital-literacy',
+  business: 'business-strategy',
+  data: 'analytics-research',
+  analytics: 'analytics-research',
+  ai: 'ai-era',
+};
+
+function sanitizeResearchSkill(skill) {
+  const category = categoryAliases[skill.category] ?? skill.category;
+  if (!allowedCategories.has(category)) {
+    throw new Error(`Unsupported researched skill category: ${skill.name} -> ${skill.category}`);
+  }
+
+  const professionalContexts = Array.isArray(skill.professionalContexts) && skill.professionalContexts.length
+    ? skill.professionalContexts
+    : skill.whereItShowsUp
+      ? [skill.whereItShowsUp]
+      : [];
+
+  return {
+    ...skill,
+    category,
+    professionalContexts,
+    careers: Array.isArray(skill.careers) ? skill.careers : [],
+    industries: Array.isArray(skill.industries) ? skill.industries : [],
+    resumeRelevance: skill.resumeRelevance || `Show ${skill.name} through specific projects, responsibilities, decisions, or measurable outcomes rather than listing the skill alone.`,
+    interviewRelevance: skill.interviewRelevance || `Be ready to explain a concrete example of using ${skill.name}, the trade-offs you considered, what you did, and what changed as a result.`,
+    humanAdvantage: skill.humanAdvantage || `Human judgment remains important for context, trade-offs, accountability, and deciding when ${skill.name} should be applied or challenged.`,
+    blogPosts: Array.isArray(skill.blogPosts) ? skill.blogPosts : [],
+  };
+}
+
+const waves = rawWaves.map(sanitizeResearchSkill);
 
 const normalize = (value = '') => value.trim().toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 const identityKeys = (skill) => [normalize(skill.id), normalize(skill.slug), normalize(skill.name)].filter(Boolean);
