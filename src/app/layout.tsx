@@ -8,6 +8,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SupabaseProvider } from '@/components/providers/supabase-provider';
 import { CartesiaNavigationBridge } from '@/components/voice/cartesia-navigation-bridge';
+import { NavigationRecovery } from '@/components/voice/navigation-recovery';
 import { ResolvedNavigationFallback } from '@/components/voice/resolved-navigation-fallback';
 import { SkillGuideOrb } from '@/components/voice/skill-guide-orb';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Footer />
           <ResolvedNavigationFallback />
           <CartesiaNavigationBridge />
+          <NavigationRecovery />
           <SkillGuideOrb />
         </SupabaseProvider>
         <Analytics />
