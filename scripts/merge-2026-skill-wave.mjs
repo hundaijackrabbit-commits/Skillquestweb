@@ -3,23 +3,30 @@ import path from 'node:path';
 
 const root = process.cwd();
 const canonicalPath = path.join(root, 'src/data/skills-1000plus.json');
-const wavePath = path.join(root, 'src/data/skills-2026-wave1.json');
+const wavePaths = [
+  path.join(root, 'src/data/skills-2026-wave1.json'),
+  path.join(root, 'src/data/skills-2026-wave2.json'),
+];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
-const wave = JSON.parse(fs.readFileSync(wavePath, 'utf8'));
+const waves = wavePaths.flatMap((wavePath) => {
+  if (!fs.existsSync(wavePath)) return [];
+  return JSON.parse(fs.readFileSync(wavePath, 'utf8'));
+});
 
 const normalize = (value = '') => value
   .trim()
   .toLowerCase()
   .replace(/&/g, ' and ')
-  .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '');
 
 const existingIds = new Set(canonical.map((skill) => normalize(skill.id)));
 const existingSlugs = new Set(canonical.map((skill) => normalize(skill.slug)));
 const existingNames = new Set(canonical.map((skill) => normalize(skill.name)));
 const accepted = [];
 
-for (const skill of wave) {
+for (const skill of waves) {
   const keys = [normalize(skill.id), normalize(skill.slug), normalize(skill.name)];
   if (existingIds.has(keys[0]) || existingSlugs.has(keys[1]) || existingNames.has(keys[2])) {
     console.log(`Skipping duplicate skill: ${skill.name}`);
@@ -29,7 +36,7 @@ for (const skill of wave) {
     const candidateKeys = [normalize(candidate.id), normalize(candidate.slug), normalize(candidate.name)];
     return candidateKeys[0] === keys[0] || candidateKeys[1] === keys[1] || candidateKeys[2] === keys[2];
   })) {
-    throw new Error(`Duplicate inside wave file: ${skill.name}`);
+    throw new Error(`Duplicate inside researched wave files: ${skill.name}`);
   }
   accepted.push(skill);
   existingIds.add(keys[0]);
@@ -44,4 +51,4 @@ if (!accepted.length) {
 
 const merged = [...canonical, ...accepted];
 fs.writeFileSync(canonicalPath, `${JSON.stringify(merged, null, 2)}\n`);
-console.log(`Merged ${accepted.length} new skills into canonical dataset.`);
+console.log(`Merged ${accepted.length} new researched skills into canonical dataset.`);
