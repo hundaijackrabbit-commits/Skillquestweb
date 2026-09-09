@@ -56,7 +56,7 @@ export default async function TopicHubPage({ params }: Props) {
         mainEntity: {
           '@type': 'ItemList',
           numberOfItems: content.skills.length,
-          itemListElement: content.skills.slice(0, 20).map((skill, index) => ({
+          itemListElement: content.skills.map((skill, index) => ({
             '@type': 'ListItem',
             position: index + 1,
             name: skill.name,
@@ -107,6 +107,30 @@ export default async function TopicHubPage({ params }: Props) {
               {content.skills.slice(0, 12).map((skill) => <SkillDirectoryCard key={skill.slug} skill={skill} />)}
             </div>
           </section>
+
+          {content.skills.length > 12 && (
+            <section className="mt-14 rounded-3xl border border-slate-200 bg-white p-6 sm:p-8" aria-labelledby="topic-skill-atlas">
+              <div className="max-w-3xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Complete knowledge atlas</p>
+                <h2 id="topic-skill-atlas" className="mt-2 text-3xl font-bold text-slate-950">Every {topic.name} guide in this cluster</h2>
+                <p className="mt-3 leading-7 text-slate-600">Use this compact index to move from the broad topic into a precise capability. Each guide also links into practical lessons, careers, learning paths, industries and adjacent skills.</p>
+              </div>
+              <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {content.skills.slice(12).map((skill) => (
+                  <div key={skill.slug} className="rounded-2xl border border-slate-200 p-4">
+                    <Link href={`/skills/${skill.slug}`} className="font-semibold text-slate-950 hover:text-blue-700">
+                      {skill.name}
+                    </Link>
+                    <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
+                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold">
+                      <Link href={`/skills/${skill.slug}/lessons/how-to`} className="text-blue-700 hover:text-blue-900">How to develop</Link>
+                      <Link href={`/skills/${skill.slug}/lessons/examples`} className="text-violet-700 hover:text-violet-900">Examples</Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {content.paths.length > 0 && (
             <section className="mt-16" aria-labelledby="topic-paths">
