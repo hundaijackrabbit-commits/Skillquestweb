@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl('/skills/a-z'), changeFrequency: 'weekly', priority: 0.82 },
     { url: absoluteUrl('/skills/clusters'), changeFrequency: 'weekly', priority: 0.84 },
     { url: absoluteUrl('/skills/diagnostic'), changeFrequency: 'monthly', priority: 0.78 },
+    { url: absoluteUrl('/skill-path'), changeFrequency: 'monthly', priority: 0.88 },
     { url: absoluteUrl('/topics'), changeFrequency: 'weekly', priority: 0.85 },
     { url: absoluteUrl('/careers'), changeFrequency: 'weekly', priority: 0.8 },
     { url: absoluteUrl('/industries'), changeFrequency: 'monthly', priority: 0.7 },

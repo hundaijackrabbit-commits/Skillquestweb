@@ -80,6 +80,23 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="pb-4 sm:pb-8">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                <Sparkles className="h-4 w-4" aria-hidden="true" /> Free skill-path diagnostic
+              </div>
+              <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Not sure where to start?</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">Turn your goal, strengths, constraints, and available time into a focused skill stack, a practical 30-day roadmap, and one proof-of-work project.</p>
+            </div>
+            <Link href="/skill-path" className="mt-6 inline-flex shrink-0 lg:mt-0">
+              <Button variant="primary" size="lg">Find my skill path<ArrowRight className="ml-2 h-4 w-4" /></Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="pb-16 sm:pb-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-6">
