@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* Keep the focused skill-path diagnostic landing page compact. */
+body:has([data-skill-path-page]) footer {
+  display: none;
+}
