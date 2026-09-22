@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function SkillPathPage() {
   return (
-    <>
+    <div data-skill-path-page>
       <section className="relative overflow-hidden border-b border-blue-100 bg-gradient-to-b from-blue-50/80 via-white to-white">
         <div className="absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.12),transparent_60%)]" />
         <div className="relative mx-auto max-w-5xl px-6 py-8 text-center sm:py-10 lg:px-8 lg:py-11">
@@ -30,7 +30,7 @@ export default function SkillPathPage() {
           <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs font-semibold text-slate-600 sm:text-sm">
             <span className="inline-flex items-center"><CheckCircle2 className="mr-1.5 h-4 w-4 text-emerald-600" />Free to use</span>
             <span className="inline-flex items-center"><CheckCircle2 className="mr-1.5 h-4 w-4 text-emerald-600" />Personalized result</span>
-            <span className="inline-flex items-center"><CheckCircle2 className="mr-1.5 h-4 w-4 text-emerald-600" />About 3 minutes</span>
+            <span className="inline-flex items-center"><CheckCircle2 className="mr-1.5 h-4 w-4 text-emerald-600" />3 short steps</span>
           </div>
         </div>
       </section>
@@ -49,6 +49,6 @@ export default function SkillPathPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
