@@ -11,7 +11,7 @@ export function MagnetlySkillPathEmbed() {
         id="smart-wraap-container"
         data-uuid={MAGNETLY_TOOL_ID}
         data-border-radius="14"
-        className="h-[760px] w-full sm:h-[700px] lg:h-[calc(100vh-8rem)] lg:min-h-[560px] lg:max-h-[680px]"
+        className="h-[820px] w-full sm:h-[760px] lg:h-[calc(100vh-7rem)] lg:min-h-[620px] lg:max-h-[720px]"
         aria-label="Modern Skill Lab skill-path diagnostic"
       />
       <Script
