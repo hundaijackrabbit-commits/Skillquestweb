@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Privacy',
-  description: 'How Modern Skill Lab handles account, requested-resource, newsletter, analytics, and advertising data.',
+  description: 'How Modern Skill Lab handles account, diagnostic, requested-resource, newsletter, analytics, and advertising data.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -23,6 +23,12 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-slate-900">Accounts</h2>
             <p className="mt-2">If you create an account, account and profile information is stored through Supabase. This can include your selected career interests, industries, work-style preferences, strengths, current goal, saved skills, and saved careers. Those answers are used to generate explainable content recommendations inside your private dashboard.</p>
             <p className="mt-2">Practice XP and activity completions are currently stored in the browser and separated by signed-in account identifier. They do not yet synchronize across devices.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-slate-900">Skill-path diagnostic</h2>
+            <p className="mt-2">If you use the free skill-path diagnostic, the answers you submit can include your career stage, goal, strongest starting point, current constraint, target field or role, available learning time, desired pace, and email address. Those inputs are used to generate the personalized skill-stack and roadmap shown to you.</p>
+            <p className="mt-2">The diagnostic is delivered through Magnetly, which processes the submitted information needed to run the tool and generate the result. Do not include sensitive personal information in the optional free-text field.</p>
           </section>
 
           <section>
@@ -48,12 +54,12 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Service providers</h2>
-            <p className="mt-2">Modern Skill Lab relies on infrastructure providers such as Vercel for hosting and analytics, Supabase for authentication and database services, and Resend for requested-resource and transactional email delivery. Data handled by those services is also subject to their applicable privacy and security practices.</p>
+            <p className="mt-2">Modern Skill Lab relies on infrastructure providers such as Vercel for hosting and analytics, Supabase for authentication and database services, Resend for requested-resource and transactional email delivery, and Magnetly for the skill-path diagnostic. Data handled by those services is also subject to their applicable privacy and security practices.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Changes</h2>
-            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: August 21, 2026.</p>
+            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: September 22, 2026.</p>
           </section>
         </div>
 
