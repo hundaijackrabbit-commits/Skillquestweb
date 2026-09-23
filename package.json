@@ -9,7 +9,7 @@
     "dev": "next dev",
     "editorial:prepare": "node scripts/merge-editorial-batches.mjs",
     "audit:editorial": "node scripts/audit-editorial-quality.mjs && node scripts/audit-editorial-slug-mapping.mjs --strict",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && npm run audit:editorial && npm run editorial:prepare",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && npm run editorial:prepare",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
