@@ -5,14 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "editorial:prepare": "node scripts/merge-editorial-batches.mjs",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && npm run editorial:prepare",
+    "audit:editorial": "node scripts/audit-editorial-quality.mjs",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && npm run audit:editorial && npm run editorial:prepare",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "audit:skills": "node scripts/complete-legacy-skill-guides.mjs",
-    "audit:seo": "npm run editorial:prepare && node scripts/audit-seo-content.mjs",
-    "audit:links": "npm run editorial:prepare && node scripts/audit-content-links.mjs --strict",
-    "audit:originality": "npm run editorial:prepare && node scripts/audit-content-originality.mjs --strict",
+    "audit:seo": "npm run audit:editorial && npm run editorial:prepare && node scripts/audit-seo-content.mjs",
+    "audit:links": "npm run audit:editorial && npm run editorial:prepare && node scripts/audit-content-links.mjs --strict",
+    "audit:originality": "npm run audit:editorial && npm run editorial:prepare && node scripts/audit-content-originality.mjs --strict",
     "audit:controls": "node scripts/audit-interactive-controls.mjs"
   },
   "dependencies": {
