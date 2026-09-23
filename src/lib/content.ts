@@ -14,10 +14,27 @@ import {
 // Data file paths
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 const SKILLS_FILE = path.join(DATA_DIR, 'skills-1000plus.json');
+const SKILL_EDITORIAL_OVERRIDES_FILE = path.join(DATA_DIR, 'skill-editorial-overrides.json');
 const CAREERS_FILE = path.join(DATA_DIR, 'careers.json');
 const INDUSTRIES_FILE = path.join(DATA_DIR, 'industries.json');
 const SKILL_PATHS_FILE = path.join(DATA_DIR, 'skill-paths.json');
 const BLOG_DIR = path.join(process.cwd(), 'src', 'content', 'blog');
+
+function loadSkillEditorialOverrides(): Record<string, Record<string, unknown>> {
+  if (!fs.existsSync(SKILL_EDITORIAL_OVERRIDES_FILE)) return {};
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(SKILL_EDITORIAL_OVERRIDES_FILE, 'utf8'));
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      console.warn('Skill editorial overrides must be an object keyed by slug');
+      return {};
+    }
+    return parsed as Record<string, Record<string, unknown>>;
+  } catch (error) {
+    console.error('Unable to parse skill editorial overrides:', error);
+    return {};
+  }
+}
 
 // Content loading functions
 export const getAllSkills = cache(async (): Promise<Skill[]> => {
@@ -39,20 +56,25 @@ export const getAllSkills = cache(async (): Promise<Skill[]> => {
     return [];
   }
 
+  const editorialOverrides = loadSkillEditorialOverrides();
   const validSkills: Skill[] = [];
   let invalidCount = 0;
 
   rawSkills.forEach((rawSkill, index) => {
-    const parsed = SkillSchema.safeParse(rawSkill);
+    const candidate = rawSkill && typeof rawSkill === 'object'
+      ? rawSkill as Record<string, unknown>
+      : null;
+    const slug = typeof candidate?.slug === 'string' ? candidate.slug : undefined;
+    const override = slug ? editorialOverrides[slug] : undefined;
+    const mergedSkill = candidate && override ? { ...candidate, ...override } : rawSkill;
+    const parsed = SkillSchema.safeParse(mergedSkill);
+
     if (parsed.success) {
       validSkills.push(parsed.data);
       return;
     }
 
     invalidCount += 1;
-    const candidate = rawSkill && typeof rawSkill === 'object'
-      ? rawSkill as Record<string, unknown>
-      : null;
     const identity = candidate?.slug ?? candidate?.id ?? candidate?.name ?? `record-${index}`;
     console.error(
       `Invalid skill record skipped: ${String(identity)}`,
@@ -665,10 +687,10 @@ function parseFrontmatter(frontmatter: string): Record<string, any> {
         // Parse arrays
         result[key.trim()] = value.slice(1, -1)
           .split(',')
-          .map(s => s.trim().replace(/['"]/g, ''))
+          .map(s => s.trim().replace(/['\"]/g, ''))
           .filter(s => s.length > 0);
       }
-      else result[key.trim()] = value.replace(/^['"]|['"]$/g, '');
+      else result[key.trim()] = value.replace(/^['\"]|['\"]$/g, '');
     }
   });
   
