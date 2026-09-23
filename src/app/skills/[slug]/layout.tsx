@@ -18,13 +18,13 @@ export default function SkillDetailLayout({ children }: SkillDetailLayoutProps) 
   return (
     <>
       <SkillPageSkipLink targetId="skill-page-content" />
-      <div
+      <main
         id="skill-page-content"
         tabIndex={-1}
         className="scroll-mt-24 focus:outline-none [&_h1]:break-words [&_h1]:text-3xl sm:[&_h1]:text-4xl lg:[&_h1]:text-5xl"
       >
         {children}
-      </div>
+      </main>
     </>
   );
 }
