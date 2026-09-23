@@ -7,6 +7,13 @@ const files = fs.readdirSync(dataDir)
   .filter((name) => name === 'skill-editorial-overrides.json' || /^skill-editorial-batch-\d+\.json$/.test(name))
   .sort();
 
+// A duplicate slug between numbered batches is an error unless the later file
+// is explicitly registered as a reviewed replacement. This prevents accidental
+// last-write-wins behavior while allowing a documented QA revision.
+const reviewedRevisions = new Map([
+  ['ai-evaluation', 'skill-editorial-batch-07.json'],
+]);
+
 const records = [];
 const seenSlugs = new Map();
 const errors = [];
@@ -38,14 +45,23 @@ for (const file of files) {
       errors.push(`${file}: ${slug} must be an object`);
       continue;
     }
-    // A slug may exist in the base file and be intentionally extended by one batch,
-    // but two numbered batches must never silently compete for the same skill.
     const prior = seenSlugs.get(slug);
     if (prior && prior !== 'skill-editorial-overrides.json' && file !== 'skill-editorial-overrides.json') {
-      errors.push(`Duplicate batch slug ${slug}: ${prior} and ${file}`);
+      const approvedRevisionFile = reviewedRevisions.get(slug);
+      if (approvedRevisionFile !== file) {
+        errors.push(`Duplicate batch slug ${slug}: ${prior} and ${file}`);
+      } else {
+        warnings.push(`${slug}: reviewed revision supersedes ${prior} with ${file}`);
+      }
     }
     seenSlugs.set(slug, file);
     records.push({ slug, file, value });
+  }
+}
+
+for (const [slug, expectedFile] of reviewedRevisions) {
+  if (seenSlugs.get(slug) !== expectedFile) {
+    errors.push(`Reviewed revision ${slug} must resolve to ${expectedFile}`);
   }
 }
 
@@ -110,8 +126,9 @@ for (const { slug, value } of records) {
 console.log(`Editorial QA inspected ${records.length} reviewed record(s) across ${files.length} file(s).`);
 for (const warning of warnings) console.warn(`WARN: ${warning}`);
 if (errors.length) {
-  console.error(`Editorial QA failed with ${errors.length} issue(s):`);
-  for (const error of [...new Set(errors)]) console.error(`- ${error}`);
+  const uniqueErrors = [...new Set(errors)];
+  console.error(`Editorial QA failed with ${uniqueErrors.length} issue(s):`);
+  for (const error of uniqueErrors) console.error(`- ${error}`);
   process.exit(1);
 }
 console.log('Editorial QA passed.');
