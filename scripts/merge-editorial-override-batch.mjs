@@ -8,9 +8,13 @@ const batchFiles = [
   'skill-editorial-overrides-problem-project.json',
   'skill-editorial-overrides-decision-org-development.json',
 ];
+const patchFiles = [
+  'skill-editorial-overrides-decision-org-polish.json',
+];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
 let mergedCount = 0;
+let patchedFieldCount = 0;
 
 for (const batchFile of batchFiles) {
   const batchPath = path.join(dataDir, batchFile);
@@ -33,7 +37,30 @@ for (const batchFile of batchFiles) {
   }
 }
 
+for (const patchFile of patchFiles) {
+  const patchPath = path.join(dataDir, patchFile);
+  const patches = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
+
+  for (const [slug, patch] of Object.entries(patches)) {
+    if (!Object.prototype.hasOwnProperty.call(canonical, slug)) {
+      throw new Error(
+        `Editorial polish target ${slug} is missing before applying ${patchFile}`,
+      );
+    }
+
+    for (const [field, value] of Object.entries(patch)) {
+      if (Object.prototype.hasOwnProperty.call(canonical[slug], field)) {
+        throw new Error(
+          `Editorial polish conflict for ${slug}.${field}: ${patchFile} would overwrite an existing override field`,
+        );
+      }
+      canonical[slug][field] = value;
+      patchedFieldCount += 1;
+    }
+  }
+}
+
 fs.writeFileSync(canonicalPath, `${JSON.stringify(canonical, null, 2)}\n`);
 console.log(
-  `[editorial-overrides] merged ${mergedCount} new override(s) from ${batchFiles.length} batch file(s); ${Object.keys(canonical).length} total`,
+  `[editorial-overrides] merged ${mergedCount} new override(s), added ${patchedFieldCount} guarded polish field(s), ${Object.keys(canonical).length} total`,
 );
