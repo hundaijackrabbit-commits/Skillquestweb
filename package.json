@@ -2,16 +2,21 @@
   "name": "modern-skill-lab",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs",
+    "editorial:prepare": "node scripts/merge-editorial-batches.mjs",
+    "audit:editorial": "node scripts/audit-editorial-quality.mjs && node scripts/audit-editorial-slug-mapping.mjs --strict",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && npm run editorial:prepare",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "audit:skills": "node scripts/complete-legacy-skill-guides.mjs",
-    "audit:seo": "node scripts/audit-seo-content.mjs",
-    "audit:links": "node scripts/audit-content-links.mjs --strict",
-    "audit:originality": "node scripts/audit-content-originality.mjs --strict",
+    "audit:seo": "npm run audit:editorial && npm run editorial:prepare && node scripts/audit-seo-content.mjs",
+    "audit:links": "npm run audit:editorial && npm run editorial:prepare && node scripts/audit-content-links.mjs --strict",
+    "audit:originality": "npm run audit:editorial && npm run editorial:prepare && node scripts/audit-content-originality.mjs --strict",
     "audit:controls": "node scripts/audit-interactive-controls.mjs"
   },
   "dependencies": {
