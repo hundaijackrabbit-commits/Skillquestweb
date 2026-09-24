@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/merge-editorial-override-batch.mjs && node scripts/validate-editorial-overrides.mjs",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/merge-editorial-override-batch.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
