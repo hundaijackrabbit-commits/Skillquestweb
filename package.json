@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/merge-editorial-override-batch.mjs",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/fix-skill-path-references.mjs && node scripts/merge-editorial-override-batch.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "audit:skills": "node scripts/complete-legacy-skill-guides.mjs",
     "audit:legacy-quality": "node scripts/audit-legacy-content-quality.mjs",
     "audit:seo": "node scripts/audit-seo-content.mjs",
-    "audit:links": "node scripts/audit-content-links.mjs --strict",
+    "audit:links": "node scripts/fix-skill-path-references.mjs && node scripts/audit-content-links.mjs --strict",
+    "audit:graph": "node scripts/fix-skill-path-references.mjs && node scripts/audit-internal-link-graph.mjs",
     "audit:originality": "node scripts/audit-content-originality.mjs --strict",
     "audit:controls": "node scripts/audit-interactive-controls.mjs"
   },
