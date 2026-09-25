@@ -1,13 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { loadEffectiveSkillGraph } from './lib/effective-skills.mjs';
 
 const root = process.cwd();
 const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
-const skills = readJson('src/data/skills-1000plus.json');
+const {
+  allSkills,
+  canonicalSkills: skills,
+  resolveSkillReference,
+} = loadEffectiveSkillGraph();
 const careers = readJson('src/data/careers.json');
 const industries = readJson('src/data/industries.json');
 const paths = readJson('src/data/skill-paths.json');
-const acceptedLegacyBaseline = 814;
+const acceptedEffectiveBaseline = 813;
 
 const normalize = (value) =>
   String(value ?? '')
@@ -20,7 +25,6 @@ const normalize = (value) =>
 const makeReferenceSet = (records, fields) =>
   new Set(records.flatMap((record) => fields.map((field) => normalize(record[field]))));
 
-const skillReferences = makeReferenceSet(skills, ['id', 'slug', 'name']);
 const careerReferences = makeReferenceSet(careers, ['id', 'slug', 'title']);
 const industryReferences = makeReferenceSet(industries, ['id', 'slug', 'name']);
 
@@ -34,31 +38,38 @@ function parseArray(frontmatter, key) {
 }
 
 const broken = [];
-const check = (source, type, references, valid) => {
-  for (const reference of references) {
+const checkSet = (source, type, references, valid) => {
+  for (const reference of references ?? []) {
     if (!valid.has(normalize(reference))) broken.push({ source, type, reference });
+  }
+};
+const checkSkills = (source, references) => {
+  for (const reference of references ?? []) {
+    if (!resolveSkillReference(reference)) broken.push({ source, type: 'skill', reference });
   }
 };
 
 for (const learningPath of paths) {
-  check(`path:${learningPath.id}`, 'skill', learningPath.skills, skillReferences);
-  check(`path:${learningPath.id}`, 'career', learningPath.relatedCareers, careerReferences);
+  checkSkills(`path:${learningPath.id}`, learningPath.skills);
+  checkSet(`path:${learningPath.id}`, 'career', learningPath.relatedCareers, careerReferences);
 }
 
 for (const industry of industries) {
-  check(`industry:${industry.slug}`, 'skill', [...industry.criticalSkills, ...industry.emergingSkills], skillReferences);
-  check(`industry:${industry.slug}`, 'career', industry.commonCareers, careerReferences);
+  checkSkills(`industry:${industry.slug}`, [
+    ...(industry.criticalSkills ?? []),
+    ...(industry.emergingSkills ?? []),
+  ]);
+  checkSet(`industry:${industry.slug}`, 'career', industry.commonCareers, careerReferences);
 }
 
 for (const career of careers) {
-  check(
-    `career:${career.slug}`,
-    'skill',
-    [...career.coreSkills, ...career.secondarySkills, ...career.transferableSkills],
-    skillReferences,
-  );
-  check(`career:${career.slug}`, 'industry', career.commonIndustries, industryReferences);
-  check(`career:${career.slug}`, 'career', career.relatedCareers, careerReferences);
+  checkSkills(`career:${career.slug}`, [
+    ...(career.coreSkills ?? []),
+    ...(career.secondarySkills ?? []),
+    ...(career.transferableSkills ?? []),
+  ]);
+  checkSet(`career:${career.slug}`, 'industry', career.commonIndustries, industryReferences);
+  checkSet(`career:${career.slug}`, 'career', career.relatedCareers, careerReferences);
 }
 
 const blogDirectory = path.join(root, 'src', 'content', 'blog');
@@ -66,27 +77,27 @@ const blogFiles = fs.readdirSync(blogDirectory).filter((file) => file.endsWith('
 for (const file of blogFiles) {
   const source = fs.readFileSync(path.join(blogDirectory, file), 'utf8');
   const frontmatter = source.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '';
-  check(`blog:${file}`, 'skill', parseArray(frontmatter, 'relatedSkills'), skillReferences);
-  check(`blog:${file}`, 'career', parseArray(frontmatter, 'relatedCareers'), careerReferences);
-  check(`blog:${file}`, 'industry', parseArray(frontmatter, 'relatedIndustries'), industryReferences);
+  checkSkills(`blog:${file}`, parseArray(frontmatter, 'relatedSkills'));
+  checkSet(`blog:${file}`, 'career', parseArray(frontmatter, 'relatedCareers'), careerReferences);
+  checkSet(`blog:${file}`, 'industry', parseArray(frontmatter, 'relatedIndustries'), industryReferences);
 }
 
 const skillsWithDeclaredConnections = skills.filter(
   (skill) =>
-    skill.relatedSkills.length > 0 ||
-    skill.prerequisiteSkills.length > 0 ||
-    skill.careers.length > 0 ||
-    skill.industries.length > 0 ||
-    skill.blogPosts.length > 0,
+    (skill.relatedSkills?.length ?? 0) > 0 ||
+    (skill.prerequisiteSkills?.length ?? 0) > 0 ||
+    (skill.careers?.length ?? 0) > 0 ||
+    (skill.industries?.length ?? 0) > 0 ||
+    (skill.blogPosts?.length ?? 0) > 0,
 ).length;
 
 console.log('Modern Skill Lab content-link audit');
-console.log(`Skill records with declared connections: ${skillsWithDeclaredConnections.toLocaleString()} / ${skills.length.toLocaleString()}`);
+console.log(`Effective canonical skills: ${skills.length.toLocaleString()} / ${allSkills.length.toLocaleString()} source records`);
+console.log(`Canonical skills with declared connections: ${skillsWithDeclaredConnections.toLocaleString()} / ${skills.length.toLocaleString()}`);
 console.log(`Learning paths: ${paths.length.toLocaleString()}`);
 console.log(`Blog articles checked: ${blogFiles.length.toLocaleString()}`);
-console.log(`Unresolved legacy dataset references: ${broken.length.toLocaleString()}`);
-console.log(`Accepted legacy baseline: ${acceptedLegacyBaseline.toLocaleString()}`);
-console.log(`New unresolved references above baseline: ${Math.max(0, broken.length - acceptedLegacyBaseline).toLocaleString()}`);
+console.log(`Unresolved effective-graph references: ${broken.length.toLocaleString()}`);
+console.log(`Accepted effective-graph baseline: ${acceptedEffectiveBaseline.toLocaleString()}`);
 
 if (broken.length > 0) {
   const grouped = new Map();
@@ -104,6 +115,6 @@ if (broken.length > 0) {
   }
 }
 
-if (process.argv.includes('--strict') && broken.length > acceptedLegacyBaseline) {
+if (process.argv.includes('--strict') && broken.length > acceptedEffectiveBaseline) {
   process.exitCode = 1;
 }

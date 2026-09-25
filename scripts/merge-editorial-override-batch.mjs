@@ -1,25 +1,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  editorialBatchFiles,
+  editorialPatchFiles,
+} from './lib/editorial-override-files.mjs';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
 const canonicalPath = path.join(dataDir, 'skill-editorial-overrides.json');
-const batchFiles = [
-  'skill-editorial-overrides-problem-project.json',
-  'skill-editorial-overrides-decision-org-development.json',
-  'skill-editorial-overrides-information-workflows.json',
-  'skill-editorial-overrides-team-performance.json',
-];
-const patchFiles = [
-  'skill-editorial-overrides-decision-org-polish.json',
-  'skill-editorial-overrides-information-workflow-careers.json',
-];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
 let mergedCount = 0;
 let patchedFieldCount = 0;
 
-for (const batchFile of batchFiles) {
+for (const batchFile of editorialBatchFiles) {
   const batchPath = path.join(dataDir, batchFile);
   const batch = JSON.parse(fs.readFileSync(batchPath, 'utf8'));
 
@@ -40,7 +34,7 @@ for (const batchFile of batchFiles) {
   }
 }
 
-for (const patchFile of patchFiles) {
+for (const patchFile of editorialPatchFiles) {
   const patchPath = path.join(dataDir, patchFile);
   const patches = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
 
