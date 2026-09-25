@@ -1,0 +1,205 @@
+{
+  "team-building-1": {
+    "shortDefinition": "Team building is the ability to create the conditions in which a group can coordinate reliably, speak candidly, make clear commitments, resolve friction, learn together, and deliver a shared outcome.",
+    "fullDefinition": "Team building is not a one-off social activity. It is the ongoing design and reinforcement of how a team works together. Strong team builders clarify purpose, roles, decision rights and working agreements; create enough psychological safety for people to surface risks and mistakes; establish dependable handoffs and commitments; make constructive disagreement possible; and build feedback and reflection into the team's operating rhythm. The skill includes diagnosing whether a team's problem is caused by unclear goals, role ambiguity, weak information flow, conflict avoidance, overloaded coordination, lack of trust, or incentives that reward individual heroics over collective performance. Effective practitioners change the system around the team as well as the behavior inside it.",
+    "whyItMatters": "Teams create value through coordinated work, so individual talent cannot compensate indefinitely for unclear ownership, hidden risks, weak handoffs or unresolved conflict. The World Economic Forum's 2025 skills outlook continues to place leadership and social influence among employers' most important core capabilities. Team building turns those capabilities into observable operating practices: people know what the team is trying to achieve, who owns which decisions, how concerns are raised, and how commitments are reviewed. The practical payoff is less avoidable rework, faster issue discovery, more reliable execution and a stronger ability to adapt when conditions change.",
+    "modernRelevance": "Hybrid work, cross-functional delivery and AI-assisted workflows make team design more explicit, not less important. Teams increasingly coordinate across locations, functions and tools while some work is delegated to AI systems or agents. That raises new questions about ownership, verification, escalation and shared context. Modern team building therefore includes defining which decisions remain human-owned, how AI-generated work is checked, how asynchronous information reaches everyone who needs it, and how the team prevents speed from outrunning judgment or trust.",
+    "whereItShowsUp": "Team building appears in project kickoffs, onboarding, cross-functional launches, recurring delivery teams, retrospectives, reorganizations, incident recovery, hybrid and remote collaboration, conflict resolution, leadership transitions, change initiatives and any situation where several people must depend on one another to deliver a shared result.",
+    "careerApplications": "Project managers use team building to establish roles, handoffs, decision rights and delivery norms. People managers use it to create clarity, feedback habits and healthy conflict. HR and organizational-development professionals use it to diagnose team conditions and support leaders. Product, engineering, operations and client-service leads use it to coordinate specialists who do not report through one hierarchy. Senior leaders use it to shape the interfaces between teams so that local success does not create organization-wide friction.",
+    "industryVariations": "The principles transfer across industries, but the cost of coordination failure changes the method. Safety-critical teams require clearer escalation, verification and role discipline. Creative and product teams may need more room for debate and experimentation. Customer-facing teams need shared service standards and rapid handoffs. Distributed knowledge-work teams rely more heavily on written norms, asynchronous context and explicit decision records. Strong practitioners preserve clarity, candor and accountability while adapting the operating rhythm to the environment.",
+    "realWorldScenarios": [
+      "A new cross-functional team keeps missing handoffs because everyone assumes someone else owns the final decision. The lead creates a short team charter, maps decision rights and owners, and reviews the highest-risk dependencies at each weekly planning session.",
+      "Meetings appear polite, but risks surface only after deadlines slip. The manager changes facilitation by collecting concerns before meetings, inviting dissent explicitly, using round-robin input on high-risk decisions and responding to bad news without punishing the messenger.",
+      "A high-output specialist regularly dismisses colleagues and creates rework. The manager separates individual output from team behavior, gives specific feedback on the impact, resets expectations and tracks whether collaboration and handoff quality improve.",
+      "A hybrid team is overloaded with meetings but still lacks shared context. The team audits recurring meetings, moves status reporting to an asynchronous channel, records decisions and owners, and protects synchronous time for ambiguity, conflict and decisions that genuinely benefit from discussion."
+    ],
+    "skillInAction": "Strong team building is visible in the team's operating system. Goals are understood, roles and decision rights are explicit, commitments have owners, people can raise uncertainty without unnecessary interpersonal risk, disagreement produces better decisions instead of avoidance, and the team regularly examines how it is working. A capable practitioner notices patterns such as repeated handoff failures, silent meetings, unclear escalation or dependence on one heroic individual and changes the underlying norms or structure rather than simply asking people to communicate more.",
+    "professionalContexts": [
+      "Project kickoffs and team charters",
+      "Cross-functional handoffs and dependencies",
+      "Hybrid and remote collaboration",
+      "Retrospectives and continuous improvement",
+      "Conflict and difficult conversations",
+      "Onboarding and role transitions",
+      "Change initiatives and reorganizations",
+      "Human-AI team workflows"
+    ],
+    "tools": [
+      "Team charters and working agreements",
+      "RACI, DACI or other decision-rights maps",
+      "Retrospectives and after-action reviews",
+      "Team health and psychological-safety pulse checks",
+      "Decision and dependency logs",
+      "One-to-one and feedback routines",
+      "Shared collaboration boards",
+      "Meeting and asynchronous-communication norms"
+    ],
+    "careers": [
+      "project-manager",
+      "hr-manager"
+    ],
+    "evidenceSummary": "Google's Project Aristotle research found that team effectiveness inside Google was associated more with how teams worked together than with who was on the team, highlighting psychological safety, dependability, structure and clarity, meaning and impact. The findings are useful as a diagnostic model rather than a universal formula because they came from Google's own organizational context. The World Economic Forum's 2025 skills outlook also continues to rank leadership and social influence among employers' leading core skills. Microsoft's 2025 Work Trend Index describes a move toward more fluid, outcome-driven human-agent teams, reinforcing the need for explicit ownership, coordination and verification as AI enters team workflows.",
+    "scholarlyNotes": [
+      "World Economic Forum (2025), Future of Jobs Report 2025: Skills Outlook. https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/",
+      "Google re:Work, Understand team effectiveness (Project Aristotle). https://rework.withgoogle.com/en/guides/understanding-team-effectiveness",
+      "Microsoft WorkLab (2025), The year the Frontier Firm is born. https://www.microsoft.com/en-us/worklab/work-trend-index/2025-the-year-the-frontier-firm-is-born"
+    ],
+    "beginnerActions": [
+      "Observe one recurring team meeting and record where ownership, decisions or next steps become ambiguous; rewrite those points with a named owner, deadline and decision rule.",
+      "Create a one-page working agreement for a small team covering communication channels, response expectations, meeting purpose, escalation and how decisions are recorded.",
+      "Run a 15-minute retrospective after a real piece of work: what helped, what created friction, what should change next time, and who owns the change."
+    ],
+    "intermediateActions": [
+      "Diagnose a recurring team problem by separating goal clarity, role clarity, decision rights, information flow, capacity, skills, incentives and interpersonal trust before choosing an intervention.",
+      "Facilitate a disagreement so competing assumptions are made explicit, quieter members contribute, a decision owner is clear and the final trade-off is documented.",
+      "Create a lightweight team-health pulse covering psychological safety, dependability, clarity, meaning and impact; discuss patterns with the team and select one behavior to improve."
+    ],
+    "advancedActions": [
+      "Redesign the interface between two teams that repeatedly create delays for each other by clarifying service expectations, handoffs, escalation paths and shared measures.",
+      "Coach team leads to recognize when performance problems come from the operating system rather than individual motivation, then test structural changes and review the evidence.",
+      "Design human-AI working norms that specify delegation boundaries, verification requirements, accountable humans, data-handling rules and escalation when an AI-generated output is uncertain or consequential."
+    ],
+    "howToPractice": "Practice on real team interactions instead of simulated bonding exercises. Pick one recurring coordination pattern, establish a baseline, change one norm or structural element and observe whether the problem improves. Rotate through meeting design, decision rights, feedback, conflict, handoffs, onboarding and retrospectives. Keep a short team-building log that records the friction observed, the intervention, the behavior you expected to change and what happened afterward.",
+    "howToMeasureProgress": "Track team-level evidence such as commitment reliability, decision latency, unresolved dependencies, rework caused by handoffs, defects or incidents linked to communication, retrospective action closure and meeting load. Pair operational measures with periodic team-health feedback so a fast team is not mistaken for a healthy one. Progress means the team can surface problems earlier, coordinate with less friction and maintain performance without depending on constant intervention from one leader.",
+    "commonMistakes": [
+      "Treating social events as a substitute for clear roles, healthy norms and reliable work practices.",
+      "Confusing psychological safety with avoiding disagreement or lowering performance standards.",
+      "Leaving decision rights implicit and then blaming communication when work stalls.",
+      "Seeking consensus on every decision instead of matching participation to decision ownership and risk.",
+      "Rewarding individual heroics while ignoring the system that creates repeated emergencies.",
+      "Allowing hybrid or remote team members to receive important context later than people in the room.",
+      "Adding AI or automation without defining who verifies outputs and remains accountable for the result."
+    ],
+    "estimatedTimeToDevelop": "Several weeks to establish core team practices; months across different teams, conflicts and operating conditions.",
+    "coreSubskills": [
+      "Purpose and goal clarity",
+      "Role and decision-rights design",
+      "Psychological safety and candor",
+      "Dependability and commitment management",
+      "Constructive conflict and facilitation",
+      "Feedback and coaching",
+      "Handoff and dependency design",
+      "Team learning and retrospectives"
+    ],
+    "developmentMethods": "Develop team building through repeated observation, facilitation and system redesign. Study how effective teams create clarity and surface risk, then practice one mechanism at a time: working agreements, decision-rights maps, retrospectives, feedback routines, conflict facilitation and team-health reviews. Use team data to test whether a change actually reduces friction instead of relying on whether an activity felt engaging.",
+    "practiceOpportunities": "Volunteer to facilitate a project kickoff, retrospective, cross-functional dependency review or onboarding session. Help a team write working agreements, audit recurring meetings, clarify a contested decision or resolve a repeated handoff problem. Community groups, volunteer teams and study groups also provide useful low-risk settings because coordination problems are real even when the commercial stakes are lower.",
+    "howEmployersEvaluate": "Employers evaluate team building through evidence that you improved how a group worked, not through claims that you are a team player. Strong examples explain the team's starting condition, the coordination or trust problem, the intervention you chose, how you handled resistance or disagreement and what changed in delivery, decision quality, retention of commitments or team feedback. For leadership roles, employers also look for the ability to build teams that perform without constant personal intervention.",
+    "signalsOfMastery": [
+      "Creates clear goals, roles, decision rights and working agreements without over-bureaucratizing the team.",
+      "Makes it safer to surface mistakes, dissent and uncertainty while maintaining high standards.",
+      "Facilitates conflict without turning every disagreement into consensus or personal tension.",
+      "Diagnoses whether a team problem is behavioral, structural, capability-related or incentive-driven before acting.",
+      "Improves handoffs and commitments with observable changes in rework, delays or decision speed.",
+      "Builds team routines that continue to work when the leader is not present.",
+      "Integrates AI tools with explicit human ownership and verification."
+    ],
+    "careerImpact": "Team building becomes increasingly important as a professional's work shifts from individual execution to coordinating people with different expertise and incentives. Strong evidence can support progression into project leadership, people management, operations, product leadership and organizational-development work because it demonstrates that the person can improve the conditions under which others perform, not merely deliver their own tasks.",
+    "resumeRelevance": "Show team building through specific coordination problems solved, teams or functions aligned, operating practices introduced and measurable improvements in delivery, decision speed, quality or engagement.",
+    "interviewRelevance": "Prepare examples of building a new team, repairing a struggling team, facilitating conflict, clarifying ownership and improving a recurring cross-functional handoff. Explain what evidence showed the intervention worked.",
+    "aiEraRelevance": "AI increases the value of team design because faster output creates more work to coordinate and more decisions about delegation, verification and accountability. Strong team builders define the boundary between human judgment and AI assistance, preserve shared context and ensure that automated speed does not hide weak ownership or unresolved risk.",
+    "humanAdvantage": "Humans interpret trust, status, conflict, motivation, fairness and context; decide which tensions need discussion; and remain accountable for consequences that affect other people. Those capabilities are central to building a team that can use technology without outsourcing judgment or responsibility.",
+    "lastUpdated": "2026-09-25"
+  },
+  "performance-management-1": {
+    "shortDefinition": "Performance management is the continuous practice of aligning expectations, observing evidence, giving timely feedback, removing barriers, developing capability and making fair decisions about how work is progressing.",
+    "fullDefinition": "Performance management is an ongoing management system rather than an annual rating event. It connects organizational priorities to clear individual or team expectations, appropriate measures, regular check-ins, coaching, feedback, development and accountable follow-through. Strong practitioners distinguish outcomes from activity, use several sources of evidence instead of one proxy metric, diagnose whether underperformance comes from clarity, capability, capacity, resources, incentives or behavior, and update goals when priorities change. They also use calibration and documentation to make high-stakes decisions more consistent and fair while keeping performance conversations useful to the person doing the work.",
+    "whyItMatters": "People cannot perform reliably when expectations are vague, feedback arrives months late or measures reward the wrong behavior. Effective performance management creates a shared definition of good work, helps problems surface while they can still be corrected and turns development into part of normal work. CIPD's 2026 guidance describes performance management as a continuous cycle rather than an isolated event, with objectives that evolve alongside business priorities and feedback that is regular, timely and improvement-focused. The value is not the review form itself; it is better clarity, capability, accountability and decisions.",
+    "modernRelevance": "AI-assisted work makes performance management more complex because output volume can rise while quality, judgment and accountability remain human concerns. Managers need to avoid treating message counts, screen time, AI-generated volume or other activity proxies as performance. They must update expectations as roles change, define which work requires human verification, measure outcomes and quality as well as speed, and distinguish a person's capability from the performance of the tools around them. Frequent evidence-based conversations become more important when work changes faster than annual goal cycles.",
+    "whereItShowsUp": "Performance management appears in goal setting, one-to-one meetings, coaching, project reviews, feedback after significant work, development planning, underperformance diagnosis, probation, promotion and readiness discussions, role changes, calibration meetings, reward decisions and team-level reviews of whether priorities and measures still make sense.",
+    "careerApplications": "People managers use performance management to set expectations, coach and make fair decisions. HR professionals design frameworks, train managers, review consistency and support difficult cases. Project and functional leaders use it to align temporary or cross-functional teams around outcomes. Senior leaders use performance evidence to understand organizational capability, succession risk and whether incentives are producing the intended behavior. Individual contributors also benefit because they can clarify expectations, request feedback and build evidence of growth rather than waiting for an annual review.",
+    "industryVariations": "Performance systems must fit the work. Sales environments may include quantitative targets but still need quality and conduct checks. Knowledge work often requires a mix of outcome evidence, peer or stakeholder feedback and judgment because output is not fully countable. Safety-critical environments place more weight on standards, compliance and error prevention. Public and nonprofit organizations may balance service outcomes, policy constraints and fairness. Strong systems use measures that fit the role and avoid pretending that every contribution can be reduced to one score.",
+    "realWorldScenarios": [
+      "An employee hits delivery targets but repeatedly creates conflict and rework for colleagues. The manager separates results from behavior, documents specific examples, explains the impact, sets a clear behavioral expectation and reviews both output and collaboration evidence at the next check-in.",
+      "A team misses a goal after priorities changed twice and a critical dependency slipped. Instead of labeling the team as low-performing, the manager reconstructs the conditions, separates controllable performance from system constraints and resets the goal and support plan.",
+      "AI assistance doubles draft output but customer corrections increase. The manager replaces volume as the headline measure with quality, first-pass acceptance, verification and customer outcome measures so automation does not reward fast rework.",
+      "Two managers rate similar performance very differently. A calibration discussion compares documented outcomes and behaviors against a shared rubric, challenges recency and halo effects, and records the reasoning behind the final decision."
+    ],
+    "skillInAction": "Strong performance management is visible between review cycles. Expectations are written in observable terms, priorities are revisited when conditions change, managers gather evidence from outcomes and behavior, feedback is close enough to the event to be useful, and development actions have owners and follow-up dates. When performance falls short, the practitioner diagnoses the cause before choosing coaching, resources, clearer expectations or a more formal response. High-stakes decisions can be explained with evidence rather than vague impressions.",
+    "professionalContexts": [
+      "Goal and expectation setting",
+      "Regular one-to-one performance check-ins",
+      "Coaching and development planning",
+      "Timely positive and corrective feedback",
+      "Underperformance diagnosis",
+      "Performance reviews and calibration",
+      "Promotion and readiness decisions",
+      "AI-assisted work quality and accountability"
+    ],
+    "tools": [
+      "Outcome-based goals and OKRs",
+      "One-to-one agendas and check-in notes",
+      "Performance evidence logs",
+      "Competency and behavior rubrics",
+      "Feedback frameworks and follow-up plans",
+      "Development plans",
+      "Calibration notes",
+      "Balanced performance dashboards"
+    ],
+    "careers": [
+      "hr-manager",
+      "project-manager"
+    ],
+    "evidenceSummary": "CIPD's January 2026 performance-management guidance describes effective performance management as a continuous cycle involving planning, monitoring, development and adjustment rather than a single annual event. It emphasizes that employees need clear expectations plus the motivation, skills, resources and support to succeed, and that feedback should be regular, timely and focused on improvement. Its companion guidance on performance reviews treats formal reviews as one element within that broader cycle. Microsoft's 2025 Work Trend Index adds a current technology context: as human-agent work expands, roles and workflows are changing quickly, increasing the need to measure meaningful outcomes and maintain explicit human accountability rather than relying on raw activity volume.",
+    "scholarlyNotes": [
+      "CIPD (2026), Performance management: an introduction. https://www.cipd.org/en/knowledge/factsheets/performance-factsheet/",
+      "CIPD (2026), Performance reviews. https://www.cipd.org/en/knowledge/factsheets/appraisals-factsheet/",
+      "Microsoft WorkLab (2025), The year the Frontier Firm is born. https://www.microsoft.com/en-us/worklab/work-trend-index/2025-the-year-the-frontier-firm-is-born"
+    ],
+    "beginnerActions": [
+      "Rewrite one vague expectation such as 'be more proactive' into an observable outcome or behavior, a timeframe and the evidence that would show improvement.",
+      "Give one piece of feedback close to the event using specific behavior, its impact and an agreed next step; check later whether the change occurred.",
+      "Keep a simple evidence log for your own work that records outcomes, stakeholder feedback, quality indicators and development examples instead of relying on memory at review time."
+    ],
+    "intermediateActions": [
+      "Run a monthly performance check-in that reviews changing priorities, progress, barriers, feedback, development and the next commitments rather than simply reporting status.",
+      "Diagnose a real performance gap across clarity, capability, capacity, resources, incentives, process and behavior before deciding whether the response should be coaching, support or formal accountability.",
+      "Design a balanced set of measures for a role that includes outcomes, quality and important behaviors while identifying how each metric could be gamed or misread."
+    ],
+    "advancedActions": [
+      "Facilitate a calibration discussion across several managers using common evidence and rubrics, explicitly checking for recency, halo, similarity and visibility bias.",
+      "Audit a performance system for unintended incentives, metric gaming and fairness across different roles or working arrangements, then redesign the weakest measures.",
+      "Redesign expectations for an AI-assisted role by separating human-owned judgment, verification and relationship work from tasks delegated to tools, and define evidence for both quality and accountability."
+    ],
+    "howToPractice": "Use real work cycles. Practice turning priorities into observable expectations, collecting evidence while work is happening, giving feedback quickly and diagnosing gaps before assigning blame. After each important conversation, record the expectation, evidence, agreed action and follow-up date. Review completed cases to see whether your intervention changed performance or merely produced more documentation.",
+    "howToMeasureProgress": "Measure the quality of the management process as well as employee outcomes. Useful indicators include goal clarity, how quickly priorities are updated, feedback latency, follow-through on agreed actions, quality and customer or stakeholder outcomes, development progress, repeated performance issues and consistency across manager ratings. For system-level review, examine whether particular groups receive systematically different ratings or opportunities without a defensible work-related explanation.",
+    "commonMistakes": [
+      "Treating the annual review as the performance-management system instead of one checkpoint in a continuous cycle.",
+      "Setting vague goals or changing priorities without explicitly resetting expectations.",
+      "Using one convenient metric as a complete measure of performance.",
+      "Relying on recent events, visibility or personal similarity instead of accumulated evidence.",
+      "Confusing effort, online activity or AI-generated volume with useful outcomes.",
+      "Saving feedback for formal reviews instead of giving it while the event is still actionable.",
+      "Assuming underperformance is a motivation problem without checking clarity, capability, capacity, tools or process constraints.",
+      "Avoiding difficult conversations until the situation is too serious for ordinary coaching."
+    ],
+    "estimatedTimeToDevelop": "Several weeks for core expectation-and-feedback habits; months to build sound judgment across coaching, calibration and difficult cases.",
+    "coreSubskills": [
+      "Expectation and goal setting",
+      "Performance evidence and measurement",
+      "Timely feedback",
+      "Coaching and development",
+      "Underperformance diagnosis",
+      "Difficult performance conversations",
+      "Calibration and bias checking",
+      "Fair documentation and decision-making"
+    ],
+    "developmentMethods": "Develop performance management by practicing the full cycle rather than only learning review forms. Write better expectations, observe work evidence, rehearse and deliver feedback, coach toward a specific change, revisit goals when conditions shift and compare ratings against shared standards. Use case reviews and calibration exercises to expose bias and strengthen judgment before the stakes involve promotion, pay or formal discipline.",
+    "practiceOpportunities": "Use your own goals and feedback history as a starting point even if you do not manage people. Managers can practice in one-to-ones, project reviews and development conversations. HR or aspiring managers can use anonymized cases to diagnose causes of underperformance, rewrite weak goals, compare rating evidence and role-play difficult conversations. Volunteer or community leadership also provides lower-risk opportunities to practice expectations and coaching.",
+    "howEmployersEvaluate": "Employers evaluate performance-management skill through examples of setting standards, coaching, giving difficult feedback, improving underperformance, developing people and making fair decisions. Strong examples show what evidence you used, how you distinguished an individual problem from a system problem, what conversation or intervention you chose, how you followed up and what changed. Senior roles may also be assessed on calibration, succession, team capability and whether the system encourages the right behavior.",
+    "signalsOfMastery": [
+      "Translates priorities into clear outcomes and behaviors that people can understand and influence.",
+      "Gives specific, timely feedback and follows up on the agreed change.",
+      "Diagnoses the cause of a performance gap before selecting an intervention.",
+      "Uses multiple relevant evidence sources rather than one proxy metric or vague impression.",
+      "Handles difficult conversations directly while preserving dignity and clarity.",
+      "Calibrates high-stakes decisions against shared standards and actively checks for bias.",
+      "Updates performance expectations when AI or other workflow changes alter what good work looks like."
+    ],
+    "careerImpact": "Performance-management skill is central to progression into people leadership and HR, and it also strengthens project and functional leadership because it shows that a professional can turn priorities into expectations, develop capability and address problems fairly. At higher levels, the skill becomes less about supervising tasks and more about designing conditions, measures and management routines that help many people perform well.",
+    "resumeRelevance": "Show performance management through people or team outcomes: goals clarified, underperformance improved, capability developed, feedback or review systems strengthened, fair calibration led, or measurable quality and delivery improvements achieved.",
+    "interviewRelevance": "Prepare examples involving a performance gap, a difficult feedback conversation, a development case and a decision where competing evidence had to be weighed. Explain how you avoided relying on assumptions or a single metric.",
+    "aiEraRelevance": "AI can draft goals, summarize evidence and support coaching preparation, but it can also amplify weak metrics and produce false precision. Managers remain responsible for deciding what good performance means, checking context and fairness, verifying AI-assisted work and making consequential judgments about people. The strongest systems use AI to reduce administrative burden while keeping accountable human review around evaluation and decisions.",
+    "humanAdvantage": "Performance management requires context, empathy, ethical judgment, trust and responsibility for decisions that affect another person's work and career. Humans must interpret incomplete evidence, understand constraints, conduct difficult conversations and balance organizational needs with fair treatment in ways that cannot be safely delegated to a score or generated recommendation.",
+    "lastUpdated": "2026-09-25"
+  }
+}
