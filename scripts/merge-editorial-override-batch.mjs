@@ -8,6 +8,7 @@ const batchFiles = [
   'skill-editorial-overrides-problem-project.json',
   'skill-editorial-overrides-decision-org-development.json',
   'skill-editorial-overrides-information-workflows.json',
+  'skill-editorial-overrides-team-performance.json',
 ];
 const patchFiles = [
   'skill-editorial-overrides-decision-org-polish.json',
