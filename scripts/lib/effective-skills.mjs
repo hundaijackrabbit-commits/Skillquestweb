@@ -92,9 +92,12 @@ function loadEditorialOverrides() {
 
       for (const [field, value] of Object.entries(patch)) {
         if (Object.prototype.hasOwnProperty.call(canonical[slug], field)) {
-          throw new Error(
-            `Editorial polish conflict for ${slug}.${field}: ${patchFile} would overwrite an existing override field`,
-          );
+          if (JSON.stringify(canonical[slug][field]) !== JSON.stringify(value)) {
+            throw new Error(
+              `Editorial polish conflict for ${slug}.${field}: ${patchFile} differs from the effective canonical value`,
+            );
+          }
+          continue;
         }
         canonical[slug][field] = value;
       }
