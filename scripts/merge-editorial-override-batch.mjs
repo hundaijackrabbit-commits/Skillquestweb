@@ -7,6 +7,7 @@ const canonicalPath = path.join(dataDir, 'skill-editorial-overrides.json');
 const batchFiles = [
   'skill-editorial-overrides-problem-project.json',
   'skill-editorial-overrides-decision-org-development.json',
+  'skill-editorial-overrides-information-workflows.json',
 ];
 const patchFiles = [
   'skill-editorial-overrides-decision-org-polish.json',
