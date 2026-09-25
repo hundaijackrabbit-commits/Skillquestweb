@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Normalize industry references
+        run: node scripts/normalize-industry-references.mjs
       - name: Audit relationship graph
         run: node scripts/audit-internal-link-graph.mjs
       - name: Verify audit output
