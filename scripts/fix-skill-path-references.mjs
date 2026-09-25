@@ -18,16 +18,12 @@ const fixes = [
     pathId: 'digital-marketer-path',
     field: 'relatedCareers',
     from: ['digital-marketer', 'marketing-manager', 'content-manager'],
-    to: [
-      'digital-marketing-manager',
-      'content-marketing-manager',
-      'performance-marketing-manager',
-    ],
+    to: ['digital-marketing-manager', 'content-marketing-manager'],
   },
 ];
 
 let updatedPaths = 0;
-let updatedReferences = 0;
+let removedBrokenReferences = 0;
 
 for (const fix of fixes) {
   const item = paths.find((entry) => entry?.id === fix.pathId);
@@ -55,7 +51,7 @@ for (const fix of fixes) {
 
   item[fix.field] = [...fix.to];
   updatedPaths += 1;
-  updatedReferences += fix.to.length;
+  removedBrokenReferences += fix.from.length;
 }
 
 if (updatedPaths > 0) {
@@ -63,5 +59,5 @@ if (updatedPaths > 0) {
 }
 
 console.log(
-  `[skill-path-reference-fixes] updated ${updatedReferences} reference(s) across ${updatedPaths} path(s)`,
+  `[skill-path-reference-fixes] removed ${removedBrokenReferences} broken reference(s) across ${updatedPaths} path(s)`,
 );
