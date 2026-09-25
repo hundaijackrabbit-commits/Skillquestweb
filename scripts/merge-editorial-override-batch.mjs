@@ -61,3 +61,7 @@ fs.writeFileSync(canonicalPath, `${JSON.stringify(canonical, null, 2)}\n`);
 console.log(
   `[editorial-overrides] merged ${mergedCount} new override(s), added ${patchedFieldCount} guarded polish field(s), ${Object.keys(canonical).length} total`,
 );
+
+console.log('[preview-audit] measuring effective canonical graph');
+await import('./audit-content-links.mjs');
+await import('./audit-internal-link-graph.mjs');
