@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/merge-editorial-override-batch.mjs",
+    "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/merge-editorial-override-batch.mjs && node scripts/audit-content-links.mjs && node scripts/audit-internal-link-graph.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
-    "@heroicons/react": "^2.2.0",
+    "@heroicons/react": "^2.2.9",
     "@hookform/resolvers": "^5.2.2",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.6",
