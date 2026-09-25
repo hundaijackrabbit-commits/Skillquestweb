@@ -519,7 +519,11 @@ export async function getRelatedSkills(skillId: string, limit: number = 5): Prom
     .sort((a, b) => b.score - a.score || skillContentScore(b.candidate) - skillContentScore(a.candidate))
     .map(({ candidate }) => candidate);
 
-  return (await canonicalizeSkillList(related)).filter(isSkillIndexable).slice(0, limit);
+  return (await canonicalizeSkillList(related))
+    .filter((candidate) =>
+      isSkillIndexable(candidate) && normalizedSkillName(candidate) !== normalizedSkillName(skill),
+    )
+    .slice(0, limit);
 }
 
 export async function getSkillsForCareer(careerSlug: string): Promise<Skill[]> {
