@@ -58,7 +58,12 @@ for (const career of careers) {
 for (const item of paths) {
   for (const reference of item.skills ?? []) {
     const target = resolveSkillReference(reference);
-    if (target) add(refs, `skill:${target.slug}`, `path:${item.id}`);
+    if (target) {
+      add(refs, `skill:${target.slug}`, `path:${item.id}`);
+      // Skill pages render paths that contain the skill, so the declared
+      // path -> skill relationship creates a reciprocal crawl edge in UI.
+      add(refs, `path:${item.id}`, `skill:${target.slug}`);
+    }
   }
   for (const slug of item.relatedCareers ?? []) {
     if (careerBySlug.has(norm(slug))) add(refs, `career:${norm(slug)}`, `path:${item.id}`);
@@ -106,7 +111,7 @@ const summarize = (type, records, keyOf, labelOf) => {
 
 const report = {
   generatedAt: new Date().toISOString(),
-  note: 'Effective-graph relationship audit. Editorial overrides are applied and duplicate skill names are collapsed to the same canonical winner used by the app. Directory pagination, topic hubs, A-Z pages, breadcrumbs, global navigation and rendered contextual links can provide additional crawl paths not counted here.',
+  note: 'Effective-graph relationship audit. Editorial overrides are applied and duplicate skill names are collapsed to the same canonical winner used by the app. Path membership counts the reciprocal skill-page link rendered from that relationship. Directory pagination, topic hubs, A-Z pages, breadcrumbs, global navigation and other rendered contextual links can provide additional crawl paths not counted here.',
   skills: summarize('skill', skills, (skill) => skill.slug, (skill) => skill.name),
   careers: summarize('career', careers, (career) => career.slug, (career) => career.title),
   industries: summarize('industry', industries, (industry) => industry.slug, (industry) => industry.name),
