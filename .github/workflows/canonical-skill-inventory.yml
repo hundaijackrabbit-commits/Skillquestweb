@@ -1,0 +1,39 @@
+name: Canonical skill alias inventory
+
+on:
+  push:
+    branches:
+      - audit/canonical-skill-inventory
+    paths:
+      - 'scripts/audit-canonical-skill-aliases.mjs'
+      - 'scripts/lib/effective-skills.mjs'
+      - 'src/data/**'
+      - 'src/content/blog/**'
+      - '.github/workflows/canonical-skill-inventory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build canonical alias inventory
+        run: node scripts/audit-canonical-skill-aliases.mjs
+      - name: Print inventory summary
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('reports/canonical-skill-alias-inventory.json', 'utf8'));
+          console.log(JSON.stringify(report, null, 2));
+          NODE
+      - name: Upload inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-skill-alias-inventory
+          path: reports/canonical-skill-alias-inventory.json
