@@ -3,6 +3,7 @@ import path from 'node:path';
 import {
   editorialBatchFiles,
   editorialPatchFiles,
+  resolveEditorialBatchSlug,
 } from './lib/editorial-override-files.mjs';
 
 const root = process.cwd();
@@ -17,13 +18,14 @@ for (const batchFile of editorialBatchFiles) {
   const batchPath = path.join(dataDir, batchFile);
   const batch = JSON.parse(fs.readFileSync(batchPath, 'utf8'));
 
-  for (const [slug, override] of Object.entries(batch)) {
+  for (const [sourceSlug, override] of Object.entries(batch)) {
+    const slug = resolveEditorialBatchSlug(batchFile, sourceSlug);
     if (Object.prototype.hasOwnProperty.call(canonical, slug)) {
       const canonicalText = JSON.stringify(canonical[slug]);
       const batchText = JSON.stringify(override);
       if (canonicalText !== batchText) {
         throw new Error(
-          `Editorial override conflict for ${slug}: canonical and ${batchFile} differ`,
+          `Editorial override conflict for ${slug}: canonical and ${batchFile}:${sourceSlug} differ`,
         );
       }
       continue;
