@@ -11,6 +11,7 @@ const batchFiles = [
 ];
 const patchFiles = [
   'skill-editorial-overrides-decision-org-polish.json',
+  'skill-editorial-overrides-information-workflow-careers.json',
 ];
 
 const canonical = JSON.parse(fs.readFileSync(canonicalPath, 'utf8'));
