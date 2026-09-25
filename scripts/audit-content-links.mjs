@@ -12,9 +12,7 @@ const {
 const careers = readJson('src/data/careers.json');
 const industries = readJson('src/data/industries.json');
 const paths = readJson('src/data/skill-paths.json');
-// Temporary guardrail inherited from the raw-dataset audit. Once the effective
-// graph has been measured in CI, replace this with its own observed baseline.
-const acceptedLegacyBaseline = 814;
+const acceptedEffectiveBaseline = 813;
 
 const normalize = (value) =>
   String(value ?? '')
@@ -99,7 +97,7 @@ console.log(`Canonical skills with declared connections: ${skillsWithDeclaredCon
 console.log(`Learning paths: ${paths.length.toLocaleString()}`);
 console.log(`Blog articles checked: ${blogFiles.length.toLocaleString()}`);
 console.log(`Unresolved effective-graph references: ${broken.length.toLocaleString()}`);
-console.log(`Historical raw-dataset strict ceiling: ${acceptedLegacyBaseline.toLocaleString()}`);
+console.log(`Accepted effective-graph baseline: ${acceptedEffectiveBaseline.toLocaleString()}`);
 
 if (broken.length > 0) {
   const grouped = new Map();
@@ -117,6 +115,6 @@ if (broken.length > 0) {
   }
 }
 
-if (process.argv.includes('--strict') && broken.length > acceptedLegacyBaseline) {
+if (process.argv.includes('--strict') && broken.length > acceptedEffectiveBaseline) {
   process.exitCode = 1;
 }
