@@ -70,10 +70,15 @@ function loadEditorialOverrides() {
     const batch = readJson(path.join(dataDir, batchFile));
     for (const [slug, override] of Object.entries(batch)) {
       if (Object.prototype.hasOwnProperty.call(canonical, slug)) {
-        if (JSON.stringify(canonical[slug]) !== JSON.stringify(override)) {
-          throw new Error(
-            `Editorial override conflict for ${slug}: canonical and ${batchFile} differ`,
-          );
+        for (const [field, value] of Object.entries(override)) {
+          if (
+            !Object.prototype.hasOwnProperty.call(canonical[slug], field) ||
+            JSON.stringify(canonical[slug][field]) !== JSON.stringify(value)
+          ) {
+            throw new Error(
+              `Editorial override conflict for ${slug}.${field}: canonical and ${batchFile} differ`,
+            );
+          }
         }
         continue;
       }
