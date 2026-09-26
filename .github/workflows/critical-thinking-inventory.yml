@@ -1,4 +1,4 @@
-name: Critical Thinking inventory
+name: Critical Thinking final validation
 
 on:
   push:
@@ -10,39 +10,57 @@ permissions:
   contents: read
 
 jobs:
-  inventory:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Inventory Critical Thinking
+      - name: Verify Critical Thinking polish and flagship regressions
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
 
-          const rawSkills = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
-          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
-          const paths = JSON.parse(fs.readFileSync('./src/data/skill-paths.json', 'utf8'));
           const { resolveSkillReference } = loadEffectiveSkillGraph();
-          const effective = resolveSkillReference('critical-thinking');
-          const rawFamily = rawSkills.filter((skill) => {
-            const name = String(skill?.name ?? '').trim().toLowerCase();
-            const slug = String(skill?.slug ?? '').trim().toLowerCase();
-            return name.includes('critical thinking') || slug === 'critical-thinking' || slug.startsWith('critical-thinking-');
-          });
-          const refs = ['critical-thinking','critical-thinking-1','critical-thinking-2']
-            .map((ref) => ({ref, resolved: resolveSkillReference(ref)}))
-            .map(({ref,resolved}) => ({ref, resolved: resolved ? {id:resolved.id,slug:resolved.slug,name:resolved.name} : null}));
-          const careerRefs = careers.filter((career) => JSON.stringify(career).toLowerCase().includes('critical-thinking')).map((career) => ({id:career.id,slug:career.slug,title:career.title ?? career.name,coreSkills:career.coreSkills,secondarySkills:career.secondarySkills,commonIndustries:career.commonIndustries}));
-          const pathRefs = paths.filter((p) => JSON.stringify(p).toLowerCase().includes('critical-thinking')).map((p) => ({id:p.id,slug:p.slug,name:p.name ?? p.title,skillSequence:p.skillSequence,relatedCareers:p.relatedCareers}));
-          const payload = {effective,rawFamily,refs,careerRefs,pathRefs};
-          fs.writeFileSync('critical-thinking-inventory.json',JSON.stringify(payload,null,2));
-          console.log(JSON.stringify(payload,null,2));
+          const skill = resolveSkillReference('critical-thinking');
+          if (!skill) throw new Error('critical-thinking does not resolve');
+          if (skill.slug !== 'critical-thinking') throw new Error(`critical-thinking resolved to ${skill.slug}`);
+          if (!skill.shortDefinition?.startsWith('Critical thinking is the ability to examine a claim or decision')) throw new Error('Reviewed Critical Thinking guide is not effective');
+          if (skill.lastUpdated !== '2026-09-23') throw new Error(`Critical Thinking reviewed date changed unexpectedly: ${skill.lastUpdated}`);
+          if (skill.employerSignalValue !== 9) throw new Error(`Expected employerSignalValue 9; received ${skill.employerSignalValue}`);
+          if (skill.featured !== true) throw new Error('Critical Thinking should be featured');
+
+          const expectedRelated = ['data-analysis','problem-solving','ai-literacy','decision-making','research-methodology'];
+          if (JSON.stringify(skill.relatedSkills ?? []) !== JSON.stringify(expectedRelated)) throw new Error(`Related skills differ: ${JSON.stringify(skill.relatedSkills ?? [])}`);
+          for (const related of expectedRelated) {
+            const resolved = resolveSkillReference(related);
+            if (!resolved) throw new Error(`Related skill ${related} does not resolve`);
+          }
+
+          const expectedCareers = ['product-manager','data-analyst','business-analyst','data-scientist','user-researcher'];
+          if (JSON.stringify(skill.careers ?? []) !== JSON.stringify(expectedCareers)) throw new Error(`Career relationships differ: ${JSON.stringify(skill.careers ?? [])}`);
+          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
+          const careerSlugs = new Set(careers.flatMap((career) => [career.slug, career.id].filter(Boolean)));
+          for (const career of expectedCareers) if (!careerSlugs.has(career)) throw new Error(`Declared career ${career} is missing`);
+
+          const regressions = [
+            ['communication', 'communication'],
+            ['professional-communication', 'communication'],
+            ['team-building-1', 'team-building'],
+            ['performance-management-1', 'performance-management'],
+            ['strategic-planning-1', 'strategic-planning'],
+            ['change-management-2', 'change-management'],
+            ['innovation-management-1', 'innovation-management'],
+          ];
+          for (const [reference, expected] of regressions) {
+            const resolved = resolveSkillReference(reference);
+            if (resolved?.slug !== expected) throw new Error(`${reference}: expected ${expected}, received ${resolved?.slug ?? 'null'}`);
+          }
+          console.log('Critical Thinking polish and flagship regressions passed.');
           NODE
-      - uses: actions/upload-artifact@v4
-        with:
-          name: critical-thinking-inventory
-          path: critical-thinking-inventory.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Production build
+        run: npm run build
