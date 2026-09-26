@@ -5,6 +5,7 @@ export const editorialBatchFiles = [
   'skill-editorial-overrides-team-performance.json',
   'skill-editorial-overrides-strategic-planning.json',
   'skill-editorial-overrides-change-management.json',
+  'skill-editorial-overrides-innovation-management.json',
 ];
 
 export const editorialPatchFiles = [
@@ -22,6 +23,9 @@ const editorialBatchSlugTargets = {
   },
   'skill-editorial-overrides-change-management.json': {
     'change-management-2': 'change-management',
+  },
+  'skill-editorial-overrides-innovation-management.json': {
+    'innovation-management-1': 'innovation-management',
   },
 };
 
