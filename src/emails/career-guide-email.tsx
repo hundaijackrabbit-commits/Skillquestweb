@@ -9,7 +9,7 @@ import {
   Link,
   Preview,
   Text,
-} from '@react-email/components';
+} from 'react-email';
 
 type CareerGuideEmailProps = {
   firstName?: string;
