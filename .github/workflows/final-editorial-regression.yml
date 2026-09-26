@@ -17,6 +17,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Trace remaining relationship issues
+        run: |
+          node --input-type=module <<'NODE'
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+          const { resolveSkillReference } = loadEffectiveSkillGraph();
+          const slugs = ['ai-ethics','ai-literacy','decision-making','digital-literacy','document-collaboration','problem-solving','project-management','team-building'];
+          const candidates = ['digital-literacy','data-analysis','critical-thinking','problem-solving','decision-making','research-methodology','active-listening','emotional-intelligence','conflict-resolution','stakeholder-management','stakeholder-engagement','risk-management','communication','collaboration','team-collaboration','written-communication','project-planning'];
+          console.log('CURRENT_RELATIONSHIPS=' + JSON.stringify(slugs.map((slug) => {
+            const skill = resolveSkillReference(slug);
+            return {slug, canonical: skill?.slug ?? null, relatedSkills: skill?.relatedSkills ?? []};
+          })));
+          console.log('CANDIDATE_RESOLUTION=' + JSON.stringify(candidates.map((ref) => {
+            const skill = resolveSkillReference(ref);
+            return {ref, canonical: skill?.slug ?? null, name: skill?.name ?? null};
+          })));
+          NODE
       - name: Verify all editorially touched skills
         run: |
           node --input-type=module <<'NODE'
