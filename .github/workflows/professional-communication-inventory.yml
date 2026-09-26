@@ -1,0 +1,148 @@
+name: Professional Communication inventory
+
+on:
+  push:
+    branches:
+      - audit/editorial-professional-communication
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inventory Professional Communication
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+
+          const rawSkills = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
+          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
+          const paths = JSON.parse(fs.readFileSync('./src/data/skill-paths.json', 'utf8'));
+          const { resolveSkillReference } = loadEffectiveSkillGraph();
+
+          const effective = resolveSkillReference('communication');
+          const rawFamily = rawSkills.filter((skill) => {
+            const name = String(skill?.name ?? '').trim().toLowerCase();
+            const slug = String(skill?.slug ?? '').trim().toLowerCase();
+            return name.includes('communication') || slug === 'communication' || slug.startsWith('communication-');
+          });
+
+          const refs = ['communication', 'communication-1', 'professional-communication', 'communication-skills']
+            .map((ref) => ({ ref, resolved: resolveSkillReference(ref) }))
+            .map(({ ref, resolved }) => ({ ref, resolved: resolved ? { id: resolved.id, slug: resolved.slug, name: resolved.name } : null }));
+
+          const careerRefs = careers
+            .filter((career) => JSON.stringify(career).toLowerCase().includes('communication'))
+            .map((career) => ({
+              id: career.id,
+              slug: career.slug,
+              title: career.title ?? career.name,
+              coreSkills: career.coreSkills,
+              secondarySkills: career.secondarySkills,
+              commonIndustries: career.commonIndustries,
+            }));
+
+          const pathRefs = paths
+            .filter((learningPath) => JSON.stringify(learningPath).toLowerCase().includes('communication'))
+            .map((learningPath) => ({
+              id: learningPath.id,
+              slug: learningPath.slug,
+              name: learningPath.name ?? learningPath.title,
+              skillSequence: learningPath.skillSequence,
+              relatedCareers: learningPath.relatedCareers,
+            }));
+
+          const genericPatterns = [
+            /professional software/i,
+            /collaboration tools/i,
+            /various industries/i,
+            /professional roles requiring/i,
+            /in today's rapidly evolving/i,
+            /essential skill/i,
+            /competitive job market/i,
+            /digital transformation/i,
+            /increasingly important/i,
+          ];
+
+          const stringFields = Object.entries(effective ?? {}).filter(([, value]) => typeof value === 'string');
+          const genericHits = [];
+          for (const [field, value] of stringFields) {
+            for (const pattern of genericPatterns) {
+              if (pattern.test(value)) genericHits.push({ field, pattern: String(pattern), value });
+            }
+          }
+
+          const payload = {
+            effective: effective ? {
+              id: effective.id,
+              slug: effective.slug,
+              name: effective.name,
+              category: effective.category,
+              difficulty: effective.difficulty,
+              shortDefinition: effective.shortDefinition,
+              fullDefinition: effective.fullDefinition,
+              whyItMatters: effective.whyItMatters,
+              modernRelevance: effective.modernRelevance,
+              whereItShowsUp: effective.whereItShowsUp,
+              careerApplications: effective.careerApplications,
+              industryVariations: effective.industryVariations,
+              realWorldScenarios: effective.realWorldScenarios,
+              skillInAction: effective.skillInAction,
+              professionalContexts: effective.professionalContexts,
+              relatedSkills: effective.relatedSkills,
+              careers: effective.careers,
+              industries: effective.industries,
+              tools: effective.tools,
+              evidenceSummary: effective.evidenceSummary,
+              scholarlyNotes: effective.scholarlyNotes,
+              beginnerActions: effective.beginnerActions,
+              intermediateActions: effective.intermediateActions,
+              advancedActions: effective.advancedActions,
+              howToPractice: effective.howToPractice,
+              howToMeasureProgress: effective.howToMeasureProgress,
+              commonMistakes: effective.commonMistakes,
+              coreSubskills: effective.coreSubskills,
+              developmentMethods: effective.developmentMethods,
+              practiceOpportunities: effective.practiceOpportunities,
+              howEmployersEvaluate: effective.howEmployersEvaluate,
+              signalsOfMastery: effective.signalsOfMastery,
+              careerImpact: effective.careerImpact,
+              resumeRelevance: effective.resumeRelevance,
+              interviewRelevance: effective.interviewRelevance,
+              aiEraRelevance: effective.aiEraRelevance,
+              humanAdvantage: effective.humanAdvantage,
+              lastUpdated: effective.lastUpdated,
+            } : null,
+            rawFamily,
+            refs,
+            careerRefs,
+            pathRefs,
+            quality: {
+              scholarlyNotesCount: effective?.scholarlyNotes?.length ?? 0,
+              realWorldScenarioCount: effective?.realWorldScenarios?.length ?? 0,
+              beginnerActionCount: effective?.beginnerActions?.length ?? 0,
+              intermediateActionCount: effective?.intermediateActions?.length ?? 0,
+              advancedActionCount: effective?.advancedActions?.length ?? 0,
+              relatedSkillsCount: effective?.relatedSkills?.length ?? 0,
+              careersCount: effective?.careers?.length ?? 0,
+              industriesCount: effective?.industries?.length ?? 0,
+              toolsCount: effective?.tools?.length ?? 0,
+              genericHits,
+            },
+          };
+
+          fs.writeFileSync('professional-communication-inventory.json', JSON.stringify(payload, null, 2));
+          console.log(JSON.stringify(payload, null, 2));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: professional-communication-inventory
+          path: professional-communication-inventory.json
