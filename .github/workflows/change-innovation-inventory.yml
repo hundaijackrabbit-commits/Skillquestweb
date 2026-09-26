@@ -1,0 +1,111 @@
+name: Change and Innovation Management inventory
+
+on:
+  push:
+    branches:
+      - audit/change-innovation-inventory
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect duplicate families and relationships
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+
+          const rawSkills = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
+          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
+          const paths = JSON.parse(fs.readFileSync('./src/data/skill-paths.json', 'utf8'));
+          const graph = loadEffectiveSkillGraph();
+          const families = ['change management', 'innovation management'];
+
+          for (const familyName of families) {
+            console.log(`\n===== ${familyName.toUpperCase()} RAW FAMILY =====`);
+            const family = rawSkills.filter((skill) => String(skill?.name ?? '').trim().toLowerCase() === familyName);
+            console.log(JSON.stringify(family, null, 2));
+
+            const slug = familyName.replace(/\s+/g, '-');
+            console.log(`===== ${familyName.toUpperCase()} EFFECTIVE RESOLUTION =====`);
+            for (const ref of [slug, `${slug}-1`]) {
+              const resolved = graph.resolveSkillReference(ref);
+              console.log(`${ref} -> ${resolved?.slug ?? 'null'}`);
+              if (resolved) {
+                console.log(JSON.stringify({
+                  slug: resolved.slug,
+                  shortDefinition: resolved.shortDefinition,
+                  fullDefinition: resolved.fullDefinition,
+                  whyItMatters: resolved.whyItMatters,
+                  modernRelevance: resolved.modernRelevance,
+                  tools: resolved.tools,
+                  careers: resolved.careers,
+                  scholarlyNotes: resolved.scholarlyNotes,
+                  evidenceSummary: resolved.evidenceSummary,
+                  beginnerActions: resolved.beginnerActions,
+                  intermediateActions: resolved.intermediateActions,
+                  advancedActions: resolved.advancedActions,
+                  lastUpdated: resolved.lastUpdated,
+                }, null, 2));
+              }
+            }
+
+            console.log(`===== ${familyName.toUpperCase()} CAREER REFERENCES =====`);
+            for (const career of careers) {
+              const text = JSON.stringify(career).toLowerCase();
+              if (text.includes(slug) || text.includes(`${slug}-1`)) {
+                console.log(JSON.stringify({
+                  id: career.id,
+                  slug: career.slug,
+                  title: career.title ?? career.name,
+                  coreSkills: career.coreSkills,
+                  secondarySkills: career.secondarySkills,
+                  commonIndustries: career.commonIndustries,
+                }, null, 2));
+              }
+            }
+
+            console.log(`===== ${familyName.toUpperCase()} PATH REFERENCES =====`);
+            for (const learningPath of paths) {
+              const text = JSON.stringify(learningPath).toLowerCase();
+              if (text.includes(slug) || text.includes(`${slug}-1`)) {
+                console.log(JSON.stringify({
+                  id: learningPath.id,
+                  slug: learningPath.slug,
+                  name: learningPath.name ?? learningPath.title,
+                  skillSequence: learningPath.skillSequence,
+                  relatedCareers: learningPath.relatedCareers,
+                }, null, 2));
+              }
+            }
+          }
+
+          console.log('\n===== AUTHORED REFERENCE LINES =====');
+          const needles = ['change-management', 'change-management-1', 'innovation-management', 'innovation-management-1'];
+          const roots = ['./src/data', './src/lib'];
+          const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+            const full = path.join(dir, entry.name);
+            return entry.isDirectory() ? walk(full) : [full];
+          });
+          for (const root of roots) {
+            for (const file of walk(root)) {
+              if (!/\.(json|ts|tsx|js|mjs)$/.test(file)) continue;
+              const text = fs.readFileSync(file, 'utf8');
+              const lines = text.split('\n');
+              for (const needle of needles) {
+                lines.forEach((line, index) => {
+                  if (line.includes(needle)) console.log(`${file}:${index + 1}: ${line.trim().slice(0, 600)}`);
+                });
+              }
+            }
+          }
+          NODE
