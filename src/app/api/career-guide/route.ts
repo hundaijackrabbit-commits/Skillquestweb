@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { render } from '@react-email/components';
+import { render } from '@react-email/render';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { CareerGuideEmail, careerGuideEmailText } from '@/emails/career-guide-email';
