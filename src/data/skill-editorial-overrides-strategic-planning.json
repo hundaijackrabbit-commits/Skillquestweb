@@ -1,0 +1,103 @@
+{
+  "strategic-planning-1": {
+    "shortDefinition": "Strategic planning is the practice of turning a changing situation into a small set of coherent choices about where to focus, what to deprioritize, how resources will be allocated, which assumptions must hold, and how progress will be reviewed.",
+    "fullDefinition": "Strategic planning is not the production of a long document or a list of goals. It is a disciplined process for diagnosing the situation, deciding what matters most, making trade-offs, allocating scarce resources, translating choices into coordinated action, and revisiting those choices as evidence changes. Strong practitioners separate strategy from forecasting and routine operational planning. They make the logic behind a direction explicit: what problem or opportunity is being addressed, which customers or stakeholders matter most, what the organization will and will not do, what capabilities or investments are required, what assumptions create risk, and what evidence would trigger adaptation. The output may be a concise strategy, portfolio of priorities, roadmap, set of measures, or decision cadence, but the core skill is the quality and coherence of the choices behind those artifacts.",
+    "whyItMatters": "Organizations have more possible initiatives than time, attention, people, and capital. Strategic planning creates a method for choosing among those possibilities and aligning work around the choices. Without clear trade-offs, teams can pursue incompatible priorities, protect legacy work by default, or mistake activity for progress. Good strategic planning improves the odds that resources reinforce one another, important assumptions are made visible, and teams know which outcomes matter enough to change course when evidence contradicts the plan.",
+    "modernRelevance": "Rapid technology change, shorter planning cycles, distributed teams, and AI-assisted analysis make static multi-year plans less useful while increasing the value of strategic discipline. AI can accelerate research, summarize scenarios, surface patterns, and generate options, but it cannot own the organization's priorities or consequences. Modern strategic planning therefore emphasizes explicit assumptions, scenario thinking, resource choices, leading indicators, and review cadences that let leaders adapt without changing direction impulsively every time new information appears.",
+    "whereItShowsUp": "Strategic planning appears in annual and quarterly planning, portfolio reviews, market entry decisions, product and service strategy, budget allocation, transformation programs, operating-model changes, capability investment, nonprofit and public-sector priorities, growth planning, turnaround situations, and any context where several worthwhile options compete for limited resources.",
+    "careerApplications": "Management consultants use strategic planning to diagnose client situations, frame choices, test assumptions, and connect recommendations to implementation. Product managers use it to connect market and user evidence to product direction, sequencing, investment, and trade-offs. Functional leaders use it to translate organizational priorities into a focused portfolio of work. Executives use it to choose where the organization will compete, which capabilities deserve investment, and how resources should shift when conditions change. Project and operations leaders use strategic context to decide which initiatives deserve capacity rather than treating every request as equally important.",
+    "industryVariations": "The planning horizon and evidence change by industry. Technology and digital businesses may revisit assumptions frequently because customer behavior and capabilities can shift quickly. Healthcare, finance, infrastructure, and regulated environments must account for compliance, safety, capital intensity, and long implementation cycles. Retail and consumer businesses may rely more heavily on demand, channel, assortment, and unit-economics evidence. Consulting often emphasizes diagnosis and choice architecture across varied client contexts. The transferable skill is preserving coherent choices while adapting the evidence, constraints, and review cadence to the environment.",
+    "realWorldScenarios": [
+      "A leadership team has twelve proposed growth initiatives but enough people to execute four well. The strategist defines decision criteria, estimates strategic fit and resource requirements, identifies dependencies, and recommends a portfolio that reinforces one clear direction instead of spreading investment across all twelve.",
+      "A product organization has a three-year roadmap built on an assumption that a particular customer segment will expand. New evidence weakens that assumption. The team documents what changed, revisits the strategic logic, reallocates investment, and updates the roadmap without discarding the parts of the strategy that remain valid.",
+      "A nonprofit receives pressure to launch several new programs. The planning process links each option to mission outcomes, cost, evidence of need, delivery capability, and opportunity cost, making it possible to decline attractive projects that would dilute impact.",
+      "An AI-assisted market scan produces dozens of plausible opportunities. Rather than treating generated options as strategy, the team verifies the evidence, identifies the few choices that fit its capabilities and position, defines what it will not pursue, and assigns accountable owners to test the key assumptions."
+    ],
+    "skillInAction": "Strong strategic planning is visible in the quality of the choices and the logic connecting them. The practitioner can explain the diagnosis, the alternatives considered, the trade-offs made, the resources committed, the assumptions that matter most, and the signals that would justify a change. They can distinguish a strategic priority from a wish list, connect budgets and capacity to the stated direction, and run reviews that test the strategy rather than merely report activity against a static plan.",
+    "professionalContexts": [
+      "Annual and quarterly strategy cycles",
+      "Portfolio and investment prioritization",
+      "Product and market strategy",
+      "Budget and resource allocation",
+      "Transformation and operating-model decisions",
+      "Scenario planning and uncertainty management",
+      "Strategy execution reviews",
+      "AI-assisted research and option generation"
+    ],
+    "tools": [
+      "Strategic diagnosis and choice frameworks",
+      "Scenario planning",
+      "Assumption and risk logs",
+      "Portfolio and resource-allocation maps",
+      "Strategy maps and causal hypotheses",
+      "Pre-mortems and red-team reviews",
+      "OKRs or outcome measures as execution tools",
+      "Decision and strategy-review cadences"
+    ],
+    "careers": [
+      "management-consultant",
+      "product-manager"
+    ],
+    "evidenceSummary": "Durable strategy research distinguishes strategic choice from formal planning mechanics. Michael Porter's work emphasizes positioning, trade-offs, and fit among activities rather than pursuing every attractive opportunity. Henry Mintzberg argued that formal planning can support strategy but cannot substitute for strategic thinking and synthesis. Kaplan and Norton showed how measures can be used as part of a strategic management system that links priorities to execution and learning. Together these perspectives support a practical view of strategic planning as diagnosis, choice, alignment, measurement, and adaptation rather than document production alone.",
+    "scholarlyNotes": [
+      "Porter, M. E. (1996), What Is Strategy?, Harvard Business Review 74(6): 61-78. https://hbr.org/1996/11/what-is-strategy",
+      "Mintzberg, H. (1994), The Fall and Rise of Strategic Planning, Harvard Business Review 72(1): 107-114. https://hbr.org/1994/01/the-fall-and-rise-of-strategic-planning",
+      "Kaplan, R. S. & Norton, D. P. (1996), Using the Balanced Scorecard as a Strategic Management System, Harvard Business Review 74(1): 75-85. https://hbr.org/1996/01/using-the-balanced-scorecard-as-a-strategic-management-system"
+    ],
+    "beginnerActions": [
+      "Take one current team objective and write the problem it is meant to solve, the evidence supporting it, the two strongest alternative uses of the same resources, and the trade-off implied by choosing it.",
+      "Turn a long list of priorities into three tiers: must invest, maintain, and deliberately deprioritize; explain the decision rule used for each item.",
+      "Create an assumption log for one initiative listing the five beliefs that must be true, the evidence for each, and the earliest signal that would show an assumption is weakening."
+    ],
+    "intermediateActions": [
+      "Build three plausible scenarios around a consequential uncertainty, identify which strategic choices remain robust across scenarios, and define trigger points for choices that depend on one scenario being true.",
+      "Run a portfolio review that compares initiatives on strategic fit, expected outcome, resource demand, dependency risk, and opportunity cost, then recommend what to stop as well as what to start.",
+      "Translate a strategic priority into outcomes, leading indicators, accountable owners, resource commitments, and a review cadence that can reveal whether the underlying logic is working."
+    ],
+    "advancedActions": [
+      "Facilitate a strategy process in which leaders must resolve competing priorities, make explicit resource trade-offs, record dissenting assumptions, and leave with a coherent set of choices rather than a negotiated list of everyone's projects.",
+      "Redesign a strategy-review meeting so it tests assumptions, outcomes, and external changes instead of rewarding teams for reporting green status against outdated milestones.",
+      "Use AI-assisted research to generate and compare scenarios, then design a human verification and decision process that separates generated possibilities from evidence-backed strategic commitments."
+    ],
+    "howToPractice": "Practice on real choices where resources are constrained. Start with a small portfolio, team plan, or product decision rather than attempting an enterprise strategy exercise. Write the diagnosis, alternatives, trade-offs, assumptions, resource choices, and measures before the decision. Revisit the decision after new evidence arrives and record whether the original reasoning held. Over time, build a strategy journal containing choices made, assumptions tested, evidence that changed your view, and examples of work you deliberately stopped or declined.",
+    "howToMeasureProgress": "Measure strategic-planning quality through evidence that choices become clearer and execution becomes more coherent. Useful signals include the share of priorities with explicit trade-offs, whether budgets and capacity match stated priorities, how many critical assumptions are actively monitored, whether initiatives are stopped when evidence weakens, the speed at which important decisions are revisited after a trigger, and whether teams can explain the same strategic logic without relying on a long presentation. Outcome measures should be paired with leading indicators so reviews can detect a failing assumption before the final result arrives.",
+    "commonMistakes": [
+      "Treating a long plan or presentation as evidence that a strategy exists.",
+      "Listing priorities without naming what will receive less attention, money, or capacity as a result.",
+      "Confusing forecasts with commitments and then defending the plan after its assumptions have changed.",
+      "Using frameworks mechanically instead of diagnosing the specific strategic problem.",
+      "Setting measures that track activity while ignoring whether the strategic hypothesis is working.",
+      "Running reviews as status-reporting rituals rather than opportunities to test assumptions and reallocate resources.",
+      "Allowing AI-generated options, summaries, or market claims to bypass evidence checks and accountable human judgment."
+    ],
+    "estimatedTimeToDevelop": "Several weeks to learn disciplined prioritization and assumption tracking; months to build judgment across real portfolio, resource-allocation, and adaptation decisions.",
+    "coreSubskills": [
+      "Strategic diagnosis",
+      "Prioritization and trade-off design",
+      "Scenario thinking",
+      "Assumption management",
+      "Resource and portfolio allocation",
+      "Execution alignment",
+      "Strategic measurement",
+      "Review and adaptation"
+    ],
+    "developmentMethods": "Develop strategic planning by studying real decisions and practicing the full loop from diagnosis to review. Compare plans that merely enumerate goals with strategies that make choices and trade-offs explicit. Use scenario exercises to practice uncertainty, portfolio reviews to practice resource allocation, pre-mortems to expose hidden assumptions, and after-action reviews to compare expected logic with actual outcomes. Seek feedback on the quality of your reasoning, not just the polish of the final presentation.",
+    "practiceOpportunities": "Volunteer to help prioritize a team backlog, business-unit initiative list, product roadmap, budget request, nonprofit program portfolio, or transformation plan. Facilitate a scenario exercise, write a concise strategy memo, build an assumption log, or run a retrospective on a past strategic decision. Smaller decisions are valuable practice because they reveal whether you can make trade-offs and learn from evidence without needing executive authority.",
+    "howEmployersEvaluate": "Employers evaluate strategic-planning ability through decisions and outcomes rather than claims of being strategic. Strong examples show how you diagnosed a situation, which alternatives you considered, what you chose not to do, how resources changed, how uncertainty was handled, and what evidence later confirmed or challenged the plan. Senior roles may also be assessed on portfolio judgment, stakeholder alignment, the ability to stop low-value work, and whether strategy remains coherent when conditions change.",
+    "signalsOfMastery": [
+      "Frames the strategic problem before proposing initiatives.",
+      "Makes trade-offs and opportunity costs explicit rather than labeling everything a priority.",
+      "Connects stated priorities to real resource allocation and operating choices.",
+      "Separates assumptions, evidence, forecasts, and decisions clearly.",
+      "Uses scenarios and trigger points without pretending uncertainty can be eliminated.",
+      "Designs measures and reviews that test strategic logic rather than only track activity.",
+      "Adapts when evidence changes while preserving coherence and accountability."
+    ],
+    "careerImpact": "Strategic-planning skill becomes more valuable as a professional moves from completing assigned work to choosing which work deserves investment. It supports progression into product leadership, consulting, functional leadership, business operations, and senior management because it demonstrates the ability to connect evidence, priorities, resources, and execution. The strongest signal is not participation in a planning cycle; it is evidence that your choices improved focus or redirected resources toward better-supported opportunities.",
+    "resumeRelevance": "Show strategic planning through choices and resource shifts: portfolios prioritized, initiatives stopped, scenarios evaluated, budgets or capacity reallocated, strategic measures introduced, or outcomes improved because a clearer direction changed what the organization did.",
+    "interviewRelevance": "Prepare examples where several reasonable options competed for limited resources. Explain the diagnosis, alternatives, trade-offs, assumptions, decision criteria, stakeholder disagreement, implementation, and what evidence later caused you to stay the course or adapt.",
+    "aiEraRelevance": "AI lowers the cost of producing analyses, scenarios, summaries, and plausible recommendations, which makes judgment about evidence and trade-offs more—not less—important. Strategic planners can use AI to broaden option generation and accelerate synthesis, but they must verify source material, distinguish generated possibilities from facts, protect sensitive information, and keep accountable humans responsible for priorities, resource commitments, and consequences.",
+    "humanAdvantage": "Strategic planning depends on judgment about purpose, opportunity cost, risk, stakeholder consequences, organizational capability, and which commitments are worth making under uncertainty. AI can support analysis and option generation, but humans remain responsible for deciding what the organization values, which trade-offs are acceptable, and when changing course is justified.",
+    "lastUpdated": "2026-09-25"
+  }
+}
