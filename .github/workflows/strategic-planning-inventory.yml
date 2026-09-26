@@ -17,45 +17,33 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Inspect Strategic Planning family and references
+      - name: Inspect career candidates and existing relationships
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          import path from 'node:path';
-          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
-
-          const raw = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
-          const family = raw.filter((skill) => String(skill?.name ?? '').trim().toLowerCase() === 'strategic planning');
-          console.log('=== RAW FAMILY ===');
-          console.log(JSON.stringify(family, null, 2));
-
-          const graph = loadEffectiveSkillGraph();
-          console.log('=== EFFECTIVE RESOLUTION ===');
-          for (const ref of ['strategic-planning', 'strategic-planning-1']) {
-            const resolved = graph.resolveSkillReference(ref);
-            console.log(`${ref} -> ${resolved?.slug ?? 'null'}`);
-            if (resolved) console.log(JSON.stringify(resolved, null, 2));
+          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
+          const candidates = careers.filter((career) => {
+            const haystack = [career?.id, career?.slug, career?.title, career?.name].filter(Boolean).join(' ').toLowerCase();
+            return /strateg|product-manager|operations-manager|management-consult|business-analyst|executive|chief/.test(haystack);
+          });
+          console.log('=== CAREER CANDIDATES ===');
+          for (const career of candidates) {
+            console.log(JSON.stringify({
+              id: career.id,
+              slug: career.slug,
+              title: career.title ?? career.name,
+              coreSkills: career.coreSkills,
+              secondarySkills: career.secondarySkills,
+              commonIndustries: career.commonIndustries,
+              description: career.description,
+            }, null, 2));
           }
 
-          console.log('=== AUTHORED REFERENCES ===');
-          const needles = ['strategic-planning', 'strategic-planning-1'];
-          const roots = ['./src/data', './src/lib'];
-          const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-            const full = path.join(dir, entry.name);
-            if (entry.isDirectory()) return walk(full);
-            return [full];
-          });
-          for (const root of roots) {
-            for (const file of walk(root)) {
-              if (!/\.(json|ts|tsx|js|mjs)$/.test(file)) continue;
-              const text = fs.readFileSync(file, 'utf8');
-              for (const needle of needles) {
-                if (!text.includes(needle)) continue;
-                const lines = text.split('\n');
-                lines.forEach((line, index) => {
-                  if (line.includes(needle)) console.log(`${file}:${index + 1}: ${line.trim().slice(0, 500)}`);
-                });
-              }
+          console.log('=== CAREERS ALREADY REFERENCING STRATEGIC PLANNING ===');
+          for (const career of careers) {
+            const text = JSON.stringify(career).toLowerCase();
+            if (text.includes('strategic-planning')) {
+              console.log(JSON.stringify({ id: career.id, slug: career.slug, title: career.title ?? career.name, coreSkills: career.coreSkills, secondarySkills: career.secondarySkills }, null, 2));
             }
           }
           NODE
