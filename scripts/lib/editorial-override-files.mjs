@@ -14,6 +14,7 @@ export const editorialPatchFiles = [
   'skill-editorial-overrides-information-workflow-careers.json',
   'skill-editorial-overrides-reviewed-metadata-polish.json',
   'skill-editorial-overrides-critical-thinking-polish.json',
+  'skill-editorial-overrides-final-relationship-polish.json',
 ];
 
 const editorialBatchSlugTargets = {
