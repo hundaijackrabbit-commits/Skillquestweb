@@ -1,0 +1,99 @@
+name: Reviewed skill metadata inventory
+
+on:
+  push:
+    branches:
+      - audit/reviewed-skill-metadata-sidebar
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inventory reviewed skill metadata
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+
+          const reviewed = [
+            'ai-literacy',
+            'communication',
+            'ai-ethics',
+            'digital-literacy',
+            'critical-thinking',
+            'data-analysis',
+            'problem-solving',
+            'project-management',
+            'decision-making',
+            'organizational-development',
+            'data-organization',
+            'document-collaboration',
+            'team-building',
+            'performance-management',
+            'strategic-planning',
+            'change-management',
+            'innovation-management',
+          ];
+
+          const graph = loadEffectiveSkillGraph();
+          const genericToolPatterns = [/professional software/i, /analytics platforms/i, /collaboration tools/i, /industry-specific tools/i];
+          const genericContextPatterns = [/professional roles requiring/i, /various industries/i, /cross-functional/i];
+
+          const rows = reviewed.map((reference) => {
+            const skill = graph.resolveSkillReference(reference);
+            if (!skill) return { reference, missing: true };
+            const tools = skill.tools ?? [];
+            const contexts = skill.professionalContexts ?? [];
+            return {
+              reference,
+              slug: skill.slug,
+              name: skill.name,
+              lastUpdated: skill.lastUpdated,
+              category: skill.category,
+              difficulty: skill.difficulty,
+              employerSignalValue: skill.employerSignalValue,
+              automationRisk: skill.automationRisk,
+              tools,
+              professionalContexts: contexts,
+              careers: skill.careers ?? [],
+              industries: skill.industries ?? [],
+              relatedSkills: skill.relatedSkills ?? [],
+              scholarlyNotesCount: skill.scholarlyNotes?.length ?? 0,
+              flags: {
+                staleDate: !String(skill.lastUpdated ?? '').startsWith('2026-'),
+                genericTools: tools.filter((value) => genericToolPatterns.some((pattern) => pattern.test(String(value)))),
+                genericContexts: contexts.filter((value) => genericContextPatterns.some((pattern) => pattern.test(String(value)))),
+                noCareers: !(skill.careers?.length),
+                noIndustries: !(skill.industries?.length),
+                noRelatedSkills: !(skill.relatedSkills?.length),
+              },
+            };
+          });
+
+          const summary = {
+            reviewedCount: reviewed.length,
+            missing: rows.filter((row) => row.missing).map((row) => row.reference),
+            staleDates: rows.filter((row) => row.flags?.staleDate).map((row) => ({ slug: row.slug, lastUpdated: row.lastUpdated })),
+            genericTools: rows.filter((row) => row.flags?.genericTools?.length).map((row) => ({ slug: row.slug, values: row.flags.genericTools })),
+            genericContexts: rows.filter((row) => row.flags?.genericContexts?.length).map((row) => ({ slug: row.slug, values: row.flags.genericContexts })),
+            noCareers: rows.filter((row) => row.flags?.noCareers).map((row) => row.slug),
+            noIndustries: rows.filter((row) => row.flags?.noIndustries).map((row) => row.slug),
+            noRelatedSkills: rows.filter((row) => row.flags?.noRelatedSkills).map((row) => row.slug),
+          };
+
+          const payload = { summary, rows };
+          fs.writeFileSync('reviewed-skill-metadata-inventory.json', JSON.stringify(payload, null, 2));
+          console.log(JSON.stringify(payload, null, 2));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-skill-metadata-inventory
+          path: reviewed-skill-metadata-inventory.json
