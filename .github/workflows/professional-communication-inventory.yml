@@ -40,7 +40,7 @@ jobs:
           if (JSON.stringify(communication.careers ?? []) !== JSON.stringify(expectedCareers)) {
             throw new Error(`Career relationships differ: ${JSON.stringify(communication.careers ?? [])}`);
           }
-          const expectedRelated = ['active-listening','writing-skills','public-speaking','emotional-intelligence','stakeholder-engagement'];
+          const expectedRelated = ['active-listening','written-communication','public-speaking','emotional-intelligence','stakeholder-engagement'];
           for (const related of expectedRelated) {
             if (!resolveSkillReference(related)) throw new Error(`Related skill ${related} does not resolve`);
           }
