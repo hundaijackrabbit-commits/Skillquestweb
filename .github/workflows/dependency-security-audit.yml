@@ -1,0 +1,31 @@
+name: Dependency security audit
+
+on:
+  push:
+    branches:
+      - security/dependency-cleanup
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Show installed framework versions
+        run: |
+          npm ls next react react-dom react-server-dom-webpack react-server-dom-turbopack --depth=1 || true
+      - name: Security audit
+        run: npm audit --json || true
+      - name: Safe remediation preview
+        run: npm audit fix --dry-run --json || true
+      - name: Outdated direct dependencies
+        run: npm outdated --json || true
