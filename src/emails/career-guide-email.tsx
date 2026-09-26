@@ -8,11 +8,6 @@ export function CareerGuideEmail({ firstName, downloadUrl }: CareerGuideEmailPro
 
   return (
     <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Your Modern Skill Lab guide is ready</title>
-      </head>
       <body style={body}>
         <div style={preview}>Here is the Career &amp; Life Map you requested.</div>
         <div style={container}>
