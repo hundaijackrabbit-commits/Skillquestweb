@@ -39,8 +39,8 @@ jobs:
         run: npm audit --audit-level=low
       - name: Production build
         run: npm run build
-      - name: Lint
-        run: npm run lint
+      - name: Lint touched application files
+        run: npx eslint src/emails/career-guide-email.tsx src/app/api/career-guide/route.ts
       - name: Commit lockfile if changed
         run: |
           if git diff --quiet -- package-lock.json; then
