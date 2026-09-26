@@ -13,6 +13,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
+      # Final pass runs from the committed lean lockfile to prove idempotence.
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
