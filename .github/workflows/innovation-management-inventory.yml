@@ -1,0 +1,85 @@
+name: Innovation Management inventory
+
+on:
+  push:
+    branches:
+      - audit/editorial-innovation-management-clean-slug
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build inventory
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+
+          const rawSkills = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
+          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
+          const paths = JSON.parse(fs.readFileSync('./src/data/skill-paths.json', 'utf8'));
+          const graph = loadEffectiveSkillGraph();
+          const familyName = 'innovation management';
+          const slug = 'innovation-management';
+          const rawFamily = rawSkills.filter((skill) => String(skill?.name ?? '').trim().toLowerCase() === familyName);
+          const references = [slug, `${slug}-1`, `${slug}-2`, `${slug}-3`]
+            .map((ref) => ({ ref, resolved: graph.resolveSkillReference(ref) }))
+            .filter(({ resolved }) => resolved)
+            .map(({ ref, resolved }) => ({
+              ref,
+              slug: resolved.slug,
+              id: resolved.id,
+              name: resolved.name,
+              shortDefinition: resolved.shortDefinition,
+              fullDefinition: resolved.fullDefinition,
+              whyItMatters: resolved.whyItMatters,
+              modernRelevance: resolved.modernRelevance,
+              relatedSkills: resolved.relatedSkills,
+              careers: resolved.careers,
+              industries: resolved.industries,
+              tools: resolved.tools,
+              beginnerActions: resolved.beginnerActions,
+              intermediateActions: resolved.intermediateActions,
+              advancedActions: resolved.advancedActions,
+              evidenceSummary: resolved.evidenceSummary,
+              scholarlyNotes: resolved.scholarlyNotes,
+              lastUpdated: resolved.lastUpdated,
+            }));
+
+          const careerRefs = careers
+            .filter((career) => JSON.stringify(career).toLowerCase().includes(slug))
+            .map((career) => ({
+              id: career.id,
+              slug: career.slug,
+              title: career.title ?? career.name,
+              coreSkills: career.coreSkills,
+              secondarySkills: career.secondarySkills,
+              commonIndustries: career.commonIndustries,
+            }));
+
+          const pathRefs = paths
+            .filter((learningPath) => JSON.stringify(learningPath).toLowerCase().includes(slug))
+            .map((learningPath) => ({
+              id: learningPath.id,
+              slug: learningPath.slug,
+              name: learningPath.name ?? learningPath.title,
+              skillSequence: learningPath.skillSequence,
+              relatedCareers: learningPath.relatedCareers,
+            }));
+
+          const payload = { rawFamily, references, careerRefs, pathRefs };
+          fs.writeFileSync('innovation-inventory.json', JSON.stringify(payload, null, 2));
+          console.log(JSON.stringify(payload, null, 2));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: innovation-management-inventory
+          path: innovation-inventory.json
