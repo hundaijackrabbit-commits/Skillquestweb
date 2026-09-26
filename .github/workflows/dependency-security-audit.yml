@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+      # Re-run from the committed lockfile to prove remediation is idempotent.
       - name: Refresh lockfile and apply safe audit fixes
         run: |
           npm install --package-lock-only
