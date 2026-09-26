@@ -1,4 +1,4 @@
-name: Reviewed skill metadata source trace
+name: Reviewed skill metadata validation
 
 on:
   push:
@@ -10,70 +10,84 @@ permissions:
   contents: read
 
 jobs:
-  trace:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Trace AI Literacy and Communication metadata sources
+      - name: Verify reviewed skill metadata polish
         run: |
           node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import path from 'node:path';
           import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
 
-          const graph = loadEffectiveSkillGraph();
-          const pick = (skill) => ({
-            id: skill?.id,
-            slug: skill?.slug,
-            name: skill?.name,
-            lastUpdated: skill?.lastUpdated,
-            tools: skill?.tools,
-            professionalContexts: skill?.professionalContexts,
-            careers: skill?.careers,
-            industries: skill?.industries,
-            relatedSkills: skill?.relatedSkills,
-          });
+          const reviewed = [
+            'ai-literacy',
+            'communication',
+            'ai-ethics',
+            'digital-literacy',
+            'critical-thinking',
+            'data-analysis',
+            'problem-solving',
+            'project-management',
+            'decision-making',
+            'organizational-development',
+            'data-organization',
+            'document-collaboration',
+            'team-building',
+            'performance-management',
+            'strategic-planning',
+            'change-management',
+            'innovation-management',
+          ];
 
-          const scanRoots = ['src', 'scripts'];
-          const needles = ['2026-08-14', 'Analytics platforms', 'AI platforms', 'Machine learning tools', 'Automation software'];
-          const matches = [];
+          const { resolveSkillReference } = loadEffectiveSkillGraph();
+          for (const reference of reviewed) {
+            const skill = resolveSkillReference(reference);
+            if (!skill) throw new Error(`Reviewed skill ${reference} does not resolve`);
+          }
 
-          function walk(dir) {
-            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-              const p = path.join(dir, entry.name);
-              if (entry.isDirectory()) walk(p);
-              else if (/\.(json|mjs|js|ts|tsx|md|mdx)$/.test(entry.name)) {
-                const text = fs.readFileSync(p, 'utf8');
-                for (const needle of needles) {
-                  let index = text.indexOf(needle);
-                  while (index !== -1) {
-                    matches.push({
-                      file: p,
-                      needle,
-                      context: text.slice(Math.max(0, index - 220), Math.min(text.length, index + needle.length + 420)),
-                    });
-                    index = text.indexOf(needle, index + needle.length);
-                  }
-                }
-              }
+          const communication = resolveSkillReference('communication');
+          if (communication?.lastUpdated !== '2026-08-14') {
+            throw new Error(`Communication lastUpdated must be 2026-08-14; received ${communication?.lastUpdated ?? 'null'}`);
+          }
+
+          const ai = resolveSkillReference('ai-literacy');
+          const bannedTools = ['AI platforms', 'Machine learning tools', 'Automation software', 'Analytics platforms'];
+          for (const tool of bannedTools) {
+            if ((ai?.tools ?? []).includes(tool)) throw new Error(`AI Literacy still contains generic tool label: ${tool}`);
+          }
+          const expectedTools = [
+            'General-purpose AI assistants and chat interfaces',
+            'Source-grounded AI search and research tools',
+            'Prompt playgrounds and model-comparison interfaces',
+            'AI-enabled document, spreadsheet, and presentation assistants',
+            'Workflow automation builders with human-review steps',
+            'Data-analysis notebooks and spreadsheet validation workflows',
+            'Model cards, system cards, and vendor documentation',
+          ];
+          if (JSON.stringify(ai?.tools ?? []) !== JSON.stringify(expectedTools)) {
+            throw new Error(`AI Literacy tools differ from reviewed tool set: ${JSON.stringify(ai?.tools ?? [])}`);
+          }
+
+          const canonicalChecks = [
+            ['team-building-1', 'team-building'],
+            ['performance-management-1', 'performance-management'],
+            ['strategic-planning-1', 'strategic-planning'],
+            ['change-management-2', 'change-management'],
+            ['innovation-management-1', 'innovation-management'],
+          ];
+          for (const [reference, expected] of canonicalChecks) {
+            const resolved = resolveSkillReference(reference);
+            if (resolved?.slug !== expected) {
+              throw new Error(`${reference}: expected ${expected}, received ${resolved?.slug ?? 'null'}`);
             }
           }
-          for (const root of scanRoots) if (fs.existsSync(root)) walk(root);
 
-          const payload = {
-            effective: {
-              aiLiteracy: pick(graph.resolveSkillReference('ai-literacy')),
-              communication: pick(graph.resolveSkillReference('communication')),
-            },
-            sourceMatches: matches,
-          };
-          fs.writeFileSync('reviewed-skill-source-trace.json', JSON.stringify(payload, null, 2));
-          console.log(JSON.stringify(payload, null, 2));
+          console.log('Reviewed skill metadata polish is effective and canonical regressions passed.');
           NODE
-      - uses: actions/upload-artifact@v4
-        with:
-          name: reviewed-skill-source-trace
-          path: reviewed-skill-source-trace.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Production build
+        run: npm run build
