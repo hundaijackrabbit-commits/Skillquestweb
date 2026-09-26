@@ -1,0 +1,61 @@
+name: Strategic Planning inventory
+
+on:
+  push:
+    branches:
+      - audit/strategic-planning-inventory
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect Strategic Planning family and references
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+
+          const raw = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
+          const family = raw.filter((skill) => String(skill?.name ?? '').trim().toLowerCase() === 'strategic planning');
+          console.log('=== RAW FAMILY ===');
+          console.log(JSON.stringify(family, null, 2));
+
+          const graph = loadEffectiveSkillGraph();
+          console.log('=== EFFECTIVE RESOLUTION ===');
+          for (const ref of ['strategic-planning', 'strategic-planning-1']) {
+            const resolved = graph.resolveSkillReference(ref);
+            console.log(`${ref} -> ${resolved?.slug ?? 'null'}`);
+            if (resolved) console.log(JSON.stringify(resolved, null, 2));
+          }
+
+          console.log('=== AUTHORED REFERENCES ===');
+          const needles = ['strategic-planning', 'strategic-planning-1'];
+          const roots = ['./src/data', './src/lib'];
+          const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+            const full = path.join(dir, entry.name);
+            if (entry.isDirectory()) return walk(full);
+            return [full];
+          });
+          for (const root of roots) {
+            for (const file of walk(root)) {
+              if (!/\.(json|ts|tsx|js|mjs)$/.test(file)) continue;
+              const text = fs.readFileSync(file, 'utf8');
+              for (const needle of needles) {
+                if (!text.includes(needle)) continue;
+                const lines = text.split('\n');
+                lines.forEach((line, index) => {
+                  if (line.includes(needle)) console.log(`${file}:${index + 1}: ${line.trim().slice(0, 500)}`);
+                });
+              }
+            }
+          }
+          NODE
