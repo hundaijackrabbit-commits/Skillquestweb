@@ -1,0 +1,16 @@
+{
+  "ai-literacy": {
+    "tools": [
+      "General-purpose AI assistants and chat interfaces",
+      "Source-grounded AI search and research tools",
+      "Prompt playgrounds and model-comparison interfaces",
+      "AI-enabled document, spreadsheet, and presentation assistants",
+      "Workflow automation builders with human-review steps",
+      "Data-analysis notebooks and spreadsheet validation workflows",
+      "Model cards, system cards, and vendor documentation"
+    ]
+  },
+  "communication": {
+    "lastUpdated": "2026-08-14"
+  }
+}
