@@ -1,0 +1,99 @@
+name: Final editorial regression
+
+on:
+  push:
+    branches:
+      - audit/final-editorial-regression
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify all editorially touched skills
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {
+            editorialBatchFiles,
+            editorialPatchFiles,
+            resolveEditorialBatchSlug,
+          } from './scripts/lib/editorial-override-files.mjs';
+          import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
+
+          const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
+          const { resolveSkillReference } = loadEffectiveSkillGraph();
+          const careers = readJson('./src/data/careers.json');
+          const careerRefs = new Set(careers.flatMap((career) => [career.id, career.slug].filter(Boolean)));
+
+          const targets = new Set(Object.keys(readJson('./src/data/skill-editorial-overrides.json')));
+          for (const file of editorialBatchFiles) {
+            const batch = readJson(`./src/data/${file}`);
+            for (const sourceSlug of Object.keys(batch)) targets.add(resolveEditorialBatchSlug(file, sourceSlug));
+          }
+          for (const file of editorialPatchFiles) {
+            const patch = readJson(`./src/data/${file}`);
+            for (const slug of Object.keys(patch)) targets.add(slug);
+          }
+
+          const errors = [];
+          let resolvedLinks = 0;
+          let careerLinks = 0;
+          for (const target of [...targets].sort()) {
+            const skill = resolveSkillReference(target);
+            if (!skill) {
+              errors.push(`${target}: editorial target does not resolve`);
+              continue;
+            }
+
+            for (const field of ['relatedSkills', 'prerequisiteSkills']) {
+              for (const ref of skill[field] ?? []) {
+                const related = resolveSkillReference(ref);
+                if (!related) {
+                  errors.push(`${target}.${field}: ${ref} does not resolve`);
+                  continue;
+                }
+                if (related.slug === skill.slug) errors.push(`${target}.${field}: ${ref} resolves back to itself`);
+                resolvedLinks += 1;
+              }
+            }
+
+            for (const career of skill.careers ?? []) {
+              if (!careerRefs.has(career)) errors.push(`${target}.careers: ${career} is missing`);
+              careerLinks += 1;
+            }
+          }
+
+          const canonicalRegressions = [
+            ['professional-communication', 'communication'],
+            ['team-building-1', 'team-building'],
+            ['performance-management-1', 'performance-management'],
+            ['strategic-planning-1', 'strategic-planning'],
+            ['change-management-1', 'change-management'],
+            ['change-management-2', 'change-management'],
+            ['innovation-management-1', 'innovation-management'],
+          ];
+          for (const [ref, expected] of canonicalRegressions) {
+            const resolved = resolveSkillReference(ref);
+            if (resolved?.slug !== expected) errors.push(`${ref}: expected ${expected}, received ${resolved?.slug ?? 'null'}`);
+          }
+
+          if (errors.length) {
+            console.error(`Final editorial regression found ${errors.length} issue(s):`);
+            for (const error of errors) console.error(`- ${error}`);
+            process.exit(1);
+          }
+
+          console.log(`Final editorial regression passed for ${targets.size} editorial targets, ${resolvedLinks} skill relationships, and ${careerLinks} career relationships.`);
+          NODE
+      - name: Install dependencies
+        run: npm ci
+      - name: Production build
+        run: npm run build
