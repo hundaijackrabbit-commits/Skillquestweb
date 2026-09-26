@@ -13,6 +13,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
+      # This temporary workflow is re-run once after the lockfile commit to prove idempotence.
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
