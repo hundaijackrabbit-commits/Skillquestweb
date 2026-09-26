@@ -1,0 +1,63 @@
+{
+  "ai-ethics": {
+    "relatedSkills": [
+      "critical-thinking",
+      "adaptability",
+      "digital-literacy",
+      "continuous-learning"
+    ]
+  },
+  "ai-literacy": {
+    "relatedSkills": [
+      "critical-thinking",
+      "adaptability",
+      "digital-literacy",
+      "continuous-learning"
+    ]
+  },
+  "decision-making": {
+    "relatedSkills": [
+      "communication",
+      "strategic-thinking",
+      "critical-thinking",
+      "team-building"
+    ]
+  },
+  "digital-literacy": {
+    "relatedSkills": [
+      "data-analysis",
+      "problem-solving",
+      "decision-making"
+    ]
+  },
+  "document-collaboration": {
+    "relatedSkills": [
+      "communication",
+      "team-collaboration",
+      "relationship-building"
+    ]
+  },
+  "problem-solving": {
+    "relatedSkills": [
+      "critical-thinking",
+      "productivity",
+      "goal-setting"
+    ]
+  },
+  "project-management": {
+    "relatedSkills": [
+      "problem-solving",
+      "analytical-thinking",
+      "continuous-learning",
+      "risk-management"
+    ]
+  },
+  "team-building": {
+    "relatedSkills": [
+      "communication",
+      "strategic-thinking",
+      "decision-making",
+      "conflict-resolution"
+    ]
+  }
+}
