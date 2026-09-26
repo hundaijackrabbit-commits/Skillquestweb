@@ -39,8 +39,8 @@ jobs:
           if (!strategic?.shortDefinition?.startsWith('Strategic planning is the practice of turning')) {
             throw new Error('Reviewed Strategic Planning definition is not effective');
           }
-          if (!strategic?.careers?.includes('management-consultant') || !strategic?.careers?.includes('product-manager')) {
-            throw new Error('Strategic Planning career relationships are missing');
+          if (JSON.stringify(strategic?.careers ?? []) !== JSON.stringify(['product-manager'])) {
+            throw new Error(`Strategic Planning career relationships must contain only product-manager; received ${JSON.stringify(strategic?.careers ?? [])}`);
           }
           if ((strategic?.scholarlyNotes?.length ?? 0) < 3) {
             throw new Error('Strategic Planning evidence notes are incomplete');
