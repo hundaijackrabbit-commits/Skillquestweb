@@ -1,4 +1,4 @@
-name: Professional Communication inventory
+name: Professional Communication validation
 
 on:
   push:
@@ -10,139 +10,81 @@ permissions:
   contents: read
 
 jobs:
-  inventory:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Inventory Professional Communication
+      - name: Verify reviewed Professional Communication guide
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           import { loadEffectiveSkillGraph } from './scripts/lib/effective-skills.mjs';
 
-          const rawSkills = JSON.parse(fs.readFileSync('./src/data/skills-1000plus.json', 'utf8'));
-          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
-          const paths = JSON.parse(fs.readFileSync('./src/data/skill-paths.json', 'utf8'));
           const { resolveSkillReference } = loadEffectiveSkillGraph();
-
-          const effective = resolveSkillReference('communication');
-          const rawFamily = rawSkills.filter((skill) => {
-            const name = String(skill?.name ?? '').trim().toLowerCase();
-            const slug = String(skill?.slug ?? '').trim().toLowerCase();
-            return name.includes('communication') || slug === 'communication' || slug.startsWith('communication-');
-          });
-
-          const refs = ['communication', 'communication-1', 'professional-communication', 'communication-skills']
-            .map((ref) => ({ ref, resolved: resolveSkillReference(ref) }))
-            .map(({ ref, resolved }) => ({ ref, resolved: resolved ? { id: resolved.id, slug: resolved.slug, name: resolved.name } : null }));
-
-          const careerRefs = careers
-            .filter((career) => JSON.stringify(career).toLowerCase().includes('communication'))
-            .map((career) => ({
-              id: career.id,
-              slug: career.slug,
-              title: career.title ?? career.name,
-              coreSkills: career.coreSkills,
-              secondarySkills: career.secondarySkills,
-              commonIndustries: career.commonIndustries,
-            }));
-
-          const pathRefs = paths
-            .filter((learningPath) => JSON.stringify(learningPath).toLowerCase().includes('communication'))
-            .map((learningPath) => ({
-              id: learningPath.id,
-              slug: learningPath.slug,
-              name: learningPath.name ?? learningPath.title,
-              skillSequence: learningPath.skillSequence,
-              relatedCareers: learningPath.relatedCareers,
-            }));
-
-          const genericPatterns = [
-            /professional software/i,
-            /collaboration tools/i,
-            /various industries/i,
-            /professional roles requiring/i,
-            /in today's rapidly evolving/i,
-            /essential skill/i,
-            /competitive job market/i,
-            /digital transformation/i,
-            /increasingly important/i,
-          ];
-
-          const stringFields = Object.entries(effective ?? {}).filter(([, value]) => typeof value === 'string');
-          const genericHits = [];
-          for (const [field, value] of stringFields) {
-            for (const pattern of genericPatterns) {
-              if (pattern.test(value)) genericHits.push({ field, pattern: String(pattern), value });
-            }
+          const communication = resolveSkillReference('communication');
+          if (!communication) throw new Error('communication does not resolve');
+          if (communication.slug !== 'communication') throw new Error(`communication resolved to ${communication.slug}`);
+          if (!communication.shortDefinition?.startsWith('Professional communication is the ability to create shared understanding')) {
+            throw new Error('Reviewed Professional Communication definition is not effective');
           }
-
-          const payload = {
-            effective: effective ? {
-              id: effective.id,
-              slug: effective.slug,
-              name: effective.name,
-              category: effective.category,
-              difficulty: effective.difficulty,
-              shortDefinition: effective.shortDefinition,
-              fullDefinition: effective.fullDefinition,
-              whyItMatters: effective.whyItMatters,
-              modernRelevance: effective.modernRelevance,
-              whereItShowsUp: effective.whereItShowsUp,
-              careerApplications: effective.careerApplications,
-              industryVariations: effective.industryVariations,
-              realWorldScenarios: effective.realWorldScenarios,
-              skillInAction: effective.skillInAction,
-              professionalContexts: effective.professionalContexts,
-              relatedSkills: effective.relatedSkills,
-              careers: effective.careers,
-              industries: effective.industries,
-              tools: effective.tools,
-              evidenceSummary: effective.evidenceSummary,
-              scholarlyNotes: effective.scholarlyNotes,
-              beginnerActions: effective.beginnerActions,
-              intermediateActions: effective.intermediateActions,
-              advancedActions: effective.advancedActions,
-              howToPractice: effective.howToPractice,
-              howToMeasureProgress: effective.howToMeasureProgress,
-              commonMistakes: effective.commonMistakes,
-              coreSubskills: effective.coreSubskills,
-              developmentMethods: effective.developmentMethods,
-              practiceOpportunities: effective.practiceOpportunities,
-              howEmployersEvaluate: effective.howEmployersEvaluate,
-              signalsOfMastery: effective.signalsOfMastery,
-              careerImpact: effective.careerImpact,
-              resumeRelevance: effective.resumeRelevance,
-              interviewRelevance: effective.interviewRelevance,
-              aiEraRelevance: effective.aiEraRelevance,
-              humanAdvantage: effective.humanAdvantage,
-              lastUpdated: effective.lastUpdated,
-            } : null,
-            rawFamily,
-            refs,
-            careerRefs,
-            pathRefs,
-            quality: {
-              scholarlyNotesCount: effective?.scholarlyNotes?.length ?? 0,
-              realWorldScenarioCount: effective?.realWorldScenarios?.length ?? 0,
-              beginnerActionCount: effective?.beginnerActions?.length ?? 0,
-              intermediateActionCount: effective?.intermediateActions?.length ?? 0,
-              advancedActionCount: effective?.advancedActions?.length ?? 0,
-              relatedSkillsCount: effective?.relatedSkills?.length ?? 0,
-              careersCount: effective?.careers?.length ?? 0,
-              industriesCount: effective?.industries?.length ?? 0,
-              toolsCount: effective?.tools?.length ?? 0,
-              genericHits,
-            },
-          };
-
-          fs.writeFileSync('professional-communication-inventory.json', JSON.stringify(payload, null, 2));
-          console.log(JSON.stringify(payload, null, 2));
+          if (communication.lastUpdated !== '2026-09-26') {
+            throw new Error(`Expected lastUpdated 2026-09-26; received ${communication.lastUpdated}`);
+          }
+          if ((communication.scholarlyNotes?.length ?? 0) !== 4) {
+            throw new Error(`Expected 4 scholarly notes; received ${communication.scholarlyNotes?.length ?? 0}`);
+          }
+          const expectedCareers = ['product-manager','project-manager','account-manager','customer-success-manager','business-analyst'];
+          if (JSON.stringify(communication.careers ?? []) !== JSON.stringify(expectedCareers)) {
+            throw new Error(`Career relationships differ: ${JSON.stringify(communication.careers ?? [])}`);
+          }
+          const expectedRelated = ['active-listening','writing-skills','public-speaking','emotional-intelligence','stakeholder-engagement'];
+          for (const related of expectedRelated) {
+            if (!resolveSkillReference(related)) throw new Error(`Related skill ${related} does not resolve`);
+          }
+          const professionalAlias = resolveSkillReference('professional-communication');
+          if (professionalAlias?.slug !== 'communication') {
+            throw new Error(`professional-communication should resolve to communication; received ${professionalAlias?.slug ?? 'null'}`);
+          }
+          const neighboringSkill = resolveSkillReference('communication-skills');
+          if (neighboringSkill?.slug !== 'communication-skills') {
+            throw new Error(`communication-skills must remain distinct; received ${neighboringSkill?.slug ?? 'null'}`);
+          }
+          const careers = JSON.parse(fs.readFileSync('./src/data/careers.json', 'utf8'));
+          const careerSlugs = new Set(careers.flatMap((career) => [career.slug, career.id].filter(Boolean)));
+          for (const career of expectedCareers) {
+            if (!careerSlugs.has(career)) throw new Error(`Declared career ${career} is missing from careers dataset`);
+          }
+          const bannedEvidenceFragments = [
+            '5% higher starting salaries',
+            'project failure in 56% of cases',
+            '40% lower turnover',
+            '25% higher performance',
+            'most in-demand soft skill'
+          ];
+          const evidenceText = `${communication.evidenceSummary ?? ''} ${(communication.scholarlyNotes ?? []).join(' ')}`;
+          for (const fragment of bannedEvidenceFragments) {
+            if (evidenceText.includes(fragment)) throw new Error(`Legacy evidence claim remains: ${fragment}`);
+          }
+          if (!(communication.tools ?? []).includes('Decision, action, and escalation logs')) {
+            throw new Error('Reviewed practical tool set is not effective');
+          }
+          const regressionChecks = [
+            ['team-building-1', 'team-building'],
+            ['performance-management-1', 'performance-management'],
+            ['strategic-planning-1', 'strategic-planning'],
+            ['change-management-2', 'change-management'],
+            ['innovation-management-1', 'innovation-management'],
+          ];
+          for (const [reference, expected] of regressionChecks) {
+            const resolved = resolveSkillReference(reference);
+            if (resolved?.slug !== expected) throw new Error(`${reference}: expected ${expected}, received ${resolved?.slug ?? 'null'}`);
+          }
+          console.log('Professional Communication guide and canonical regressions passed.');
           NODE
-      - uses: actions/upload-artifact@v4
-        with:
-          name: professional-communication-inventory
-          path: professional-communication-inventory.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Production build
+        run: npm run build
