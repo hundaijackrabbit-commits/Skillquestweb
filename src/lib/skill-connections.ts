@@ -25,7 +25,7 @@ function resolveReferences(values: string[], allSkills: Skill[], currentSkill: S
   return uniqueSkills(
     values
       .map((value) => lookup.get(normalized(value)))
-      .filter((skill): skill is Skill => Boolean(skill) && skill.slug !== currentSkill.slug),
+      .filter((skill): skill is Skill => skill !== undefined && skill.slug !== currentSkill.slug),
   );
 }
 
