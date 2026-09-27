@@ -40,7 +40,7 @@ function buildSkillNodes(skills: Skill[]) {
     uniqueSkills(
       references
         .map((reference) => lookup.get(referenceKey(reference)))
-        .filter((skill): skill is Skill => Boolean(skill) && skill.slug !== currentSlug),
+        .filter((skill): skill is Skill => skill !== undefined && skill.slug !== currentSlug),
     );
 
   const prerequisitesBySlug = new Map<string, Skill[]>();
