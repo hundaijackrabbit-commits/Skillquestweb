@@ -9,6 +9,60 @@ function references(skill: Skill, values: string[], target: Skill) {
   return values.some((value) => targetValues.has(normalized(value)));
 }
 
+function uniqueSkills(skills: Skill[]) {
+  return Array.from(new Map(skills.map((skill) => [skill.slug, skill])).values());
+}
+
+function resolveReferences(values: string[], allSkills: Skill[], currentSkill: Skill) {
+  const lookup = new Map<string, Skill>();
+
+  for (const skill of allSkills) {
+    for (const value of [skill.id, skill.slug, skill.name]) {
+      lookup.set(normalized(value), skill);
+    }
+  }
+
+  return uniqueSkills(
+    values
+      .map((value) => lookup.get(normalized(value)))
+      .filter((skill): skill is Skill => Boolean(skill) && skill.slug !== currentSkill.slug),
+  );
+}
+
+export type SkillConnectionMap = {
+  prerequisites: Skill[];
+  unlocks: Skill[];
+  subskills: Skill[];
+  complements: Skill[];
+};
+
+/**
+ * Resolve only relationships that are already present in the skill graph.
+ * Reverse prerequisite edges are derived from explicit prerequisite data;
+ * no progression relationship is inferred from difficulty or popularity.
+ */
+export function getSkillConnectionMap(skill: Skill, allSkills: Skill[]): SkillConnectionMap {
+  const prerequisites = resolveReferences(skill.prerequisiteSkills ?? [], allSkills, skill);
+  const unlocks = uniqueSkills(
+    allSkills.filter(
+      (candidate) =>
+        candidate.slug !== skill.slug &&
+        references(candidate, candidate.prerequisiteSkills ?? [], skill),
+    ),
+  );
+  const subskills = resolveReferences(skill.subskills ?? [], allSkills, skill);
+
+  const reserved = new Set(
+    [...prerequisites, ...unlocks, ...subskills].map((connectedSkill) => connectedSkill.slug),
+  );
+  const complements = uniqueSkills([
+    ...resolveReferences(skill.relatedSkills ?? [], allSkills, skill),
+    ...resolveReferences(skill.skillStacksWell ?? [], allSkills, skill),
+  ]).filter((connectedSkill) => !reserved.has(connectedSkill.slug));
+
+  return { prerequisites, unlocks, subskills, complements };
+}
+
 export function getSkillConnectionReason(origin: Skill, target: Skill) {
   if (references(origin, origin.prerequisiteSkills, target)) {
     return `Foundation: ${target.name} supports the decisions and actions used in ${origin.name}.`;
@@ -36,4 +90,3 @@ export function getSkillConnectionReason(origin: Skill, target: Skill) {
 
   return `Complementary move: this adds a different capability to your ${origin.name} practice.`;
 }
-
