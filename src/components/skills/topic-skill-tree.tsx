@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ArrowRight, GitBranch, Network, Sprout } from 'lucide-react';
+import { ArrowRight, GitBranch, Network, Sprout, Waypoints } from 'lucide-react';
+import { getIndexableSkills } from '@/lib/content';
 import type { Skill } from '@/lib/types';
 
 type TopicSkillTreeProps = {
@@ -13,6 +14,7 @@ type SkillNode = {
   unlocks: Skill[];
   subskills: Skill[];
   related: Skill[];
+  bridges: Skill[];
 };
 
 function referenceKey(value: string) {
@@ -28,9 +30,11 @@ function uniqueSkills(skills: Skill[]) {
   return Array.from(new Map(skills.map((skill) => [skill.slug, skill])).values());
 }
 
-function buildSkillNodes(skills: Skill[]) {
+function buildSkillNodes(skills: Skill[], allSkills: Skill[]) {
   const lookup = new Map<string, Skill>();
-  for (const skill of skills) {
+  const topicSlugs = new Set(skills.map((skill) => skill.slug));
+
+  for (const skill of allSkills) {
     for (const value of [skill.id, skill.slug, skill.name]) {
       lookup.set(referenceKey(value), skill);
     }
@@ -51,19 +55,31 @@ function buildSkillNodes(skills: Skill[]) {
   const unlocksBySlug = new Map<string, Skill[]>();
   for (const skill of skills) {
     for (const prerequisite of prerequisitesBySlug.get(skill.slug) ?? []) {
+      if (!topicSlugs.has(prerequisite.slug)) continue;
       const current = unlocksBySlug.get(prerequisite.slug) ?? [];
       current.push(skill);
       unlocksBySlug.set(prerequisite.slug, uniqueSkills(current));
     }
   }
 
-  return skills.map<SkillNode>((skill) => ({
-    skill,
-    prerequisites: prerequisitesBySlug.get(skill.slug) ?? [],
-    unlocks: unlocksBySlug.get(skill.slug) ?? [],
-    subskills: resolve(skill.subskills, skill.slug),
-    related: resolve(skill.relatedSkills, skill.slug),
-  }));
+  return skills.map<SkillNode>((skill) => {
+    const prerequisites = prerequisitesBySlug.get(skill.slug) ?? [];
+    const subskills = resolve(skill.subskills, skill.slug);
+    const related = resolve(skill.relatedSkills, skill.slug);
+    const stacks = resolve(skill.skillStacksWell ?? [], skill.slug);
+    const bridges = uniqueSkills([...prerequisites, ...subskills, ...related, ...stacks]).filter(
+      (candidate) => !topicSlugs.has(candidate.slug),
+    );
+
+    return {
+      skill,
+      prerequisites,
+      unlocks: unlocksBySlug.get(skill.slug) ?? [],
+      subskills,
+      related,
+      bridges,
+    };
+  });
 }
 
 function nodeScore(node: SkillNode) {
@@ -75,6 +91,7 @@ function nodeScore(node: SkillNode) {
     node.prerequisites.length * 3 +
     node.subskills.length * 2 +
     node.related.length +
+    node.bridges.length * 2 +
     (difficulty.includes('beginner') ? 8 : 0)
   );
 }
@@ -112,8 +129,30 @@ function SkillNodeCard({ node }: { node: SkillNode }) {
   );
 }
 
-export function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps) {
-  const nodes = buildSkillNodes(skills);
+function BridgeCard({ node }: { node: SkillNode }) {
+  return (
+    <article className="rounded-2xl border border-violet-200 bg-violet-50/60 p-4">
+      <Link href={`/skills/${node.skill.slug}`} className="font-bold text-slate-950 hover:text-violet-800">
+        {node.skill.name}
+      </Link>
+      <div className="mt-3 flex items-start gap-2 text-xs font-bold uppercase tracking-[0.12em] text-violet-700">
+        <Waypoints aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 flex-none" />
+        Connects beyond this topic
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {node.bridges.slice(0, 4).map((bridge) => (
+          <Link key={bridge.slug} href={`/skills/${bridge.slug}`} className="rounded-full border border-violet-200 bg-white px-2.5 py-1 text-xs font-semibold text-violet-800 transition hover:border-violet-400 hover:bg-violet-100">
+            {bridge.name}
+          </Link>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+export async function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps) {
+  const allSkills = await getIndexableSkills();
+  const nodes = buildSkillNodes(skills, allSkills);
   if (nodes.length < 2) return null;
 
   const foundations = nodes
@@ -133,12 +172,18 @@ export function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps) {
     .filter((node) => !alreadyShown.has(node.skill.slug))
     .slice(0, 5);
 
+  const bridgeNodes = nodes
+    .filter((node) => node.bridges.length > 0)
+    .sort((left, right) => right.bridges.length - left.bridges.length || nodeScore(right) - nodeScore(left))
+    .slice(0, 6);
+
   const relationshipCount = nodes.reduce(
     (total, node) => total + node.prerequisites.length + node.subskills.length + node.related.length,
     0,
   );
+  const bridgeCount = nodes.reduce((total, node) => total + node.bridges.length, 0);
 
-  if (foundations.length === 0 && progressions.length === 0 && branches.length === 0) return null;
+  if (foundations.length === 0 && progressions.length === 0 && branches.length === 0 && bridgeNodes.length === 0) return null;
 
   return (
     <section className="mt-14 rounded-[2rem] border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-blue-50 p-6 sm:p-8" aria-labelledby="topic-skill-tree">
@@ -149,19 +194,21 @@ export function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps) {
         </div>
         <h2 id="topic-skill-tree" className="mt-4 text-3xl font-bold tracking-tight text-slate-950">How {topicName} skills connect</h2>
         <p className="mt-3 leading-7 text-slate-600">
-          This map uses the prerequisite, subskill, and related-skill relationships already stored in Modern Skill Lab. Start with foundations, follow explicit prerequisite chains, then branch into adjacent capabilities.
+          This map uses the prerequisite, subskill, related-skill, and complementary-stack relationships already stored in Modern Skill Lab. Start with foundations, follow explicit prerequisite chains, then branch into adjacent capabilities and neighboring topics.
         </p>
-        <p className="mt-2 text-sm text-slate-500">{relationshipCount} topic-local relationship references are represented in the current data.</p>
+        <p className="mt-2 text-sm text-slate-500">
+          {relationshipCount} resolved relationship references are represented in this topic, including {bridgeCount} cross-topic connection{bridgeCount === 1 ? '' : 's'}.
+        </p>
       </div>
 
-      <div className="mt-8 grid gap-7 xl:grid-cols-3">
+      <div className={`mt-8 grid gap-7 ${bridgeNodes.length > 0 ? 'xl:grid-cols-2 2xl:grid-cols-4' : 'xl:grid-cols-3'}`}>
         {foundations.length > 0 && (
           <div>
             <div className="mb-4 flex items-center gap-2">
               <Sprout aria-hidden="true" className="h-5 w-5 text-emerald-700" />
               <h3 className="text-lg font-bold text-slate-950">Foundation nodes</h3>
             </div>
-            <p className="mb-4 text-sm leading-6 text-slate-600">Skills with no prerequisite inside this topic. These are natural entry points, not mandatory first steps.</p>
+            <p className="mb-4 text-sm leading-6 text-slate-600">Skills with no explicit prerequisite in the current graph. These are natural entry points, not mandatory first steps.</p>
             <div className="space-y-3">{foundations.map((node) => <SkillNodeCard key={node.skill.slug} node={node} />)}</div>
           </div>
         )}
@@ -172,7 +219,7 @@ export function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps) {
               <ArrowRight aria-hidden="true" className="h-5 w-5 text-blue-700" />
               <h3 className="text-lg font-bold text-slate-950">Progression nodes</h3>
             </div>
-            <p className="mb-4 text-sm leading-6 text-slate-600">Skills that explicitly build on another capability in this topic.</p>
+            <p className="mb-4 text-sm leading-6 text-slate-600">Skills that explicitly build on another capability in the current graph.</p>
             <div className="space-y-3">{progressions.map((node) => <SkillNodeCard key={node.skill.slug} node={node} />)}</div>
           </div>
         )}
@@ -185,6 +232,17 @@ export function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps) {
             </div>
             <p className="mb-4 text-sm leading-6 text-slate-600">Connected skills with useful subskills or adjacent capabilities worth exploring next.</p>
             <div className="space-y-3">{branches.map((node) => <SkillNodeCard key={node.skill.slug} node={node} />)}</div>
+          </div>
+        )}
+
+        {bridgeNodes.length > 0 && (
+          <div>
+            <div className="mb-4 flex items-center gap-2">
+              <Waypoints aria-hidden="true" className="h-5 w-5 text-violet-700" />
+              <h3 className="text-lg font-bold text-slate-950">Cross-topic bridges</h3>
+            </div>
+            <p className="mb-4 text-sm leading-6 text-slate-600">Connections that carry this topic into another part of the skill map.</p>
+            <div className="space-y-3">{bridgeNodes.map((node) => <BridgeCard key={node.skill.slug} node={node} />)}</div>
           </div>
         )}
       </div>
