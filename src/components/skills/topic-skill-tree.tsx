@@ -197,7 +197,7 @@ export async function TopicSkillTree({ topicName, skills }: TopicSkillTreeProps)
           This map uses the prerequisite, subskill, related-skill, and complementary-stack relationships already stored in Modern Skill Lab. Start with foundations, follow explicit prerequisite chains, then branch into adjacent capabilities and neighboring topics.
         </p>
         <p className="mt-2 text-sm text-slate-500">
-          {relationshipCount} resolved relationship references are represented in this topic, including {bridgeCount} cross-topic connection{bridgeCount === 1 ? '' : 's'}.
+          {relationshipCount} resolved prerequisite, subskill, and related-skill references are represented here, plus {bridgeCount} cross-topic bridge{bridgeCount === 1 ? '' : 's'} drawn from those relationships and complementary stacks.
         </p>
       </div>
 
