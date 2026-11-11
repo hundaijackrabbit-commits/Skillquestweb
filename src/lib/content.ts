@@ -326,7 +326,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       const content = fs.readFileSync(filePath, 'utf8');
       
       // Extract frontmatter and content
-      const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+      const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
       const match = content.match(frontmatterRegex);
       
       if (match) {
@@ -355,8 +355,15 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           category: frontmatter.category || undefined,
         };
         
-        // Validate with Zod
-        blogPosts.push(BlogPostSchema.parse(blogPost));
+        // A single malformed article must not make the entire blog disappear.
+        const parsed = BlogPostSchema.safeParse(blogPost);
+        if (parsed.success) {
+          blogPosts.push(parsed.data);
+        } else {
+          console.error(`Invalid blog article skipped: ${file}`, parsed.error.issues.map((issue) => ({ path: issue.path.join('.'), message: issue.message })));
+        }
+      } else {
+        console.warn(`Blog article skipped: missing or malformed MDX frontmatter in ${file}`);
       }
     }
     
