@@ -1,3 +1,4 @@
+import { LearningActionPath } from '@/components/learning/learning-action-path';
 import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
@@ -299,6 +300,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
           </div>
         </div>
 
+        <LearningActionPath title={`Practice ${skill.name}`} description="A practical starting route drawn from this skill guide. Explore the detailed learning sections below for more context." steps={skill.beginnerActions ?? []} outcome={skill.signalsOfMastery?.[0]} />
         <LearningPageNavigator containerId="learning-page-content" />
         <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "value", title: "Why it matters", text: skill.whyItMatters || skill.shortDefinition }, { id: "application", title: "Put it into practice", text: skill.beginnerActions[0] || skill.howToPractice }, { id: "mastery", title: "What progress looks like", text: skill.signalsOfMastery?.[0] || skill.howToMeasureProgress }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
