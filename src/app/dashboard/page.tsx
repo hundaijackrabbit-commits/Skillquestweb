@@ -1,4 +1,6 @@
 import { type VaultItem } from '@/components/learning/knowledge-vault';
+import { getSkillCourse } from '@/lib/courses';
+import { getInteractivePracticeForSkill } from '@/lib/interactive-practice';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getAllCareers, getAllIndustries, getIndexableSkills, getCanonicalSkills } from '@/lib/content';
@@ -102,6 +104,7 @@ export default async function DashboardPage() {
       name: skill.name,
       summary: skill.shortDefinition,
       meta: skill.category.replace(/-/g, ' '),
+      practiceHref: getSkillCourse(skill.slug) ? `/skills/${skill.slug}/learn` : getInteractivePracticeForSkill(skill.slug) ? `/skills/${skill.slug}#interactive-practice` : null,
     }));
 
   const savedCareers = savedCareerSlugs

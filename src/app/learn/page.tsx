@@ -10,6 +10,8 @@ import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { LearningAchievements } from '@/components/learning/learning-achievements';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import { getAllInteractivePractices } from '@/lib/interactive-practice';
+import { getAllWorkshops } from '@/lib/workshops';
+import { LearningJourney } from '@/components/learning/learning-journey';
 
 export const metadata: Metadata = {
   title: 'Practice Lab: Short Skill Courses',
@@ -21,6 +23,7 @@ export const metadata: Metadata = {
 export default function LearnPage() {
   const courses = getAllSkillCourses();
   const practices = getAllInteractivePractices();
+  const workshops = getAllWorkshops();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/40 to-white py-12">
@@ -46,7 +49,7 @@ export default function LearnPage() {
         >
           <div>
         <LearningProgressSummary />
-
+        <LearningJourney />
         <LearningAchievements />
 
         <section className="mb-14" aria-labelledby="daily-practice-heading">
@@ -105,6 +108,26 @@ export default function LearnPage() {
                 <Link href={item.href} className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:text-blue-900">
                   {item.label} <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="workshops" className="mb-14 scroll-mt-28" aria-labelledby="workshops-heading">
+          <div className="mb-7 max-w-3xl">
+            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Make something useful</div>
+            <h2 id="workshops-heading" className="mt-2 text-3xl font-bold text-slate-950">Guided work-sample workshops</h2>
+            <p className="mt-2 leading-7 text-slate-600">Move beyond choosing an answer: analyze a realistic situation, write a work sample, compare an illustrative response, and review your reasoning. Save a draft privately on this browser and return to improve it.</p>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {workshops.map((workshop) => (
+              <article key={workshop.slug} className="msl-motion-card flex flex-col rounded-3xl border border-violet-200 bg-white p-6 shadow-sm hover:border-violet-400 hover:shadow-md">
+                <div className="flex items-center justify-between gap-3 text-xs font-bold text-violet-700"><span>Guided workshop</span><span>{workshop.estimatedMinutes} min</span></div>
+                <div className="mt-3 text-sm font-semibold text-slate-500">{workshop.skillName}</div>
+                <h3 className="mt-2 text-xl font-bold text-slate-950">{workshop.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{workshop.description}</p>
+                <p className="mt-4 rounded-xl bg-indigo-50 p-3 text-xs leading-5 text-indigo-900"><strong>Deliverable:</strong> {workshop.deliverable}</p>
+                <Link href={`/learn/workshops/${workshop.slug}`} className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-indigo-700 hover:text-indigo-900">Open workshop <ArrowRight className="h-4 w-4" /></Link>
               </article>
             ))}
           </div>

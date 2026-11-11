@@ -3,7 +3,8 @@ export type LearningActivityKind =
   | 'course-lesson'
   | 'knowledge-check'
   | 'sequence-practice'
-  | 'sort-practice';
+  | 'sort-practice'
+  | 'workshop';
 
 export type LearningActivity = {
   id: string;
@@ -174,6 +175,7 @@ export function getLearningAchievements(profile: LearningProfile): LearningAchie
   const knowledgeChecks = profile.activities.filter((activity) => activity.kind === 'knowledge-check').length;
   const courseLessons = profile.activities.filter((activity) => activity.kind === 'course-lesson').length;
   const missions = profile.activities.filter((activity) => activity.kind === 'mission').length;
+  const workshops = profile.activities.filter((activity) => activity.kind === 'workshop').length;
   const interactivePractices = profile.activities.filter(
     (activity) => activity.kind === 'sequence-practice' || activity.kind === 'sort-practice',
   ).length;
@@ -220,6 +222,13 @@ export function getLearningAchievements(profile: LearningProfile): LearningAchie
       description: 'Reach a three-day practice streak.',
       current: profile.longestStreak,
       target: 3,
+    },
+    {
+      id: 'workshop-maker',
+      name: 'Workshop Maker',
+      description: 'Produce and self-review a practical work sample.',
+      current: workshops,
+      target: 1,
     },
     {
       id: 'pattern-builder',

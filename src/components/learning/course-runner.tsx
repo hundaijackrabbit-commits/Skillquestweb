@@ -29,6 +29,7 @@ type Props = {
   course: SkillCourse;
   skillName: string;
   relatedSkillHref: string;
+  workshopHref?: string | null;
 };
 
 type ExperienceProps = Props & { userId: string };
@@ -62,19 +63,19 @@ function recordCourseEvent(skillSlug: string, action: 'start' | 'complete') {
   }).catch(() => {});
 }
 
-export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
+export function CourseRunner({ course, skillName, relatedSkillHref, workshopHref }: Props) {
   const { user } = useSupabase();
   return (
     <GamificationAccessGate
       featureName={`${skillName} Skill Sprint`}
       description="Create an account to open the lesson rounds, complete workplace exercises, earn XP, and keep your sprint progress private."
     >
-      {user ? <CourseRunnerExperience course={course} skillName={skillName} relatedSkillHref={relatedSkillHref} userId={user.id} /> : null}
+      {user ? <CourseRunnerExperience course={course} skillName={skillName} relatedSkillHref={relatedSkillHref} workshopHref={workshopHref} userId={user.id} /> : null}
     </GamificationAccessGate>
   );
 }
 
-function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }: ExperienceProps) {
+function CourseRunnerExperience({ course, skillName, relatedSkillHref, workshopHref, userId }: ExperienceProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -260,11 +261,11 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
                   </p>
                 </div>
               </div>
-              <Link href={relatedSkillHref}>
-                <Button className="w-full sm:w-auto">
-                  Return to skill guide <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <div className="flex flex-wrap gap-3">
+                {workshopHref && <Link href={workshopHref} className="inline-flex min-h-11 items-center rounded-xl bg-indigo-700 px-4 py-2 text-sm font-bold text-white hover:bg-indigo-800">Apply it in a workshop <ArrowRight className="ml-2 h-4 w-4" /></Link>}
+                <Link href="/dashboard#progress" className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 py-2 text-sm font-bold text-emerald-900 hover:bg-emerald-100">View progress</Link>
+                <Link href={relatedSkillHref} className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 py-2 text-sm font-bold text-emerald-900 hover:bg-emerald-100">Review skill guide</Link>
+              </div>
             </div>
           </div>
         )}

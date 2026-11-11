@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { KnowledgeVault, type VaultItem } from '@/components/learning/knowledge-vault';
+import { LearningJourney } from '@/components/learning/learning-journey';
 import {
   ArrowRight,
   BookOpen,
@@ -50,6 +51,7 @@ type SavedItem = {
   name: string;
   summary: string;
   meta: string;
+  practiceHref?: string | null;
 };
 
 type Props = {
@@ -166,7 +168,8 @@ function SavedCollection({
       {items.length > 0 ? (
         <div className="mt-5 space-y-3">
           {items.slice(0, 6).map((item) => (
-            <Link key={item.slug} href={`/${itemPrefix}/${item.slug}`} className="msl-motion-card group block rounded-2xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30">
+            <div key={item.slug}>
+              <Link href={`/${itemPrefix}/${item.slug}`} className="msl-motion-card group block rounded-2xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="font-bold text-slate-950 group-hover:text-blue-700">{item.name}</div>
@@ -175,7 +178,9 @@ function SavedCollection({
                 </div>
                 <ArrowRight className="mt-1 h-4 w-4 flex-none text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
               </div>
-            </Link>
+              </Link>
+              {item.practiceHref && <Link href={item.practiceHref} className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-bold text-indigo-700 hover:bg-indigo-50">Try related practice <ArrowRight className="h-3.5 w-3.5" /></Link>}
+            </div>
           ))}
           {items.length > 6 && <p className="pt-1 text-center text-xs font-medium text-slate-500">Showing 6 of {items.length} saved items</p>}
         </div>
@@ -197,6 +202,26 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
   const { signOut } = useSupabase();
   const [editing, setEditing] = useState(false);
   const [activeArea, setActiveArea] = useState<'direction' | 'saved' | 'progress' | null>(null);
+
+  // Deep links from Practice Lab must open a visible section before scrolling.
+  useEffect(() => {
+    const openSection = () => {
+      const hash = window.location.hash.slice(1);
+      const area = hash === 'saved' ? 'saved' : hash === 'progress' ? 'progress' : hash === 'direction' ? 'direction' : null;
+      if (!area) return;
+      setActiveArea(area);
+      window.requestAnimationFrame(() => {
+        const id = area === 'saved' ? 'favourites' : area === 'progress' ? 'practice' : 'profile-assessment';
+        document.getElementById(id)?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      });
+    };
+    openSection();
+    window.addEventListener('hashchange', openSection);
+    return () => window.removeEventListener('hashchange', openSection);
+  }, []);
   const [step, setStep] = useState(0);
   const [message, setMessage] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -450,6 +475,11 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
         </div>
         <div className={activeArea === 'saved' ? 'msl-reveal' : 'hidden'}>
         <KnowledgeVault items={vaultItems} />
+        <div className="mb-7 rounded-2xl border border-indigo-100 bg-indigo-50 p-5">
+          <h3 className="font-bold text-slate-950">Turn something you saved into practice</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Review an insight, try a related activity, then return to your progress. Saved content is account-synced; your XP stays in this browser.</p>
+          <Link href="/learn#workshops" className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-indigo-700">Explore guided workshops <ArrowRight className="h-4 w-4" /></Link>
+        </div>
         <section id="favourites" className="scroll-mt-36 pt-16" aria-labelledby="favourites-title">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -474,6 +504,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
             </div>
             <Link href="/learn" className="inline-flex items-center text-sm font-bold text-violet-700 hover:text-violet-900">Open Practice Lab<ArrowRight className="ml-1.5 h-4 w-4" /></Link>
           </div>
+          <LearningJourney compact />
           <LearningProgressSummary />
           <LearningAchievements />
         </section>
