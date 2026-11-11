@@ -22,6 +22,12 @@ const genericDefinitionPatterns = [
   /^The ability to effectively /i,
   /^The capability to .* teams and organizations/i,
   /^Professional competency in .* for solving complex challenges and driving results/i,
+  /^Professional competency in .* for solving complex technical challenges and driving innovation\.?$/i,
+  /^The capability to .* successfully across teams, departments, and organizational boundaries\.?$/i,
+  /^Understanding and application of .* in the context of AI-powered business environments\.?$/i,
+  /^Strategic expertise in .* to drive business growth and competitive advantage\.?$/i,
+  /^Proficiency in .* to drive revenue growth and market success\.?$/i,
+  /^Proficiency in .* to leverage technology effectively in professional environments\.?$/i,
 ];
 
 const genericLongDefinitionPatterns = [
