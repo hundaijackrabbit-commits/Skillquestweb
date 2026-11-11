@@ -183,14 +183,16 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
               <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
             </div>
-            <div className="flex items-center">
-              <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
-              Editorially reviewed
-            </div>
+            {post.reviewedBy && (
+              <div className="flex items-center">
+                <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
+                Editorially reviewed
+              </div>
+            )}
           </div>
 
           {post.publishedAt !== post.lastUpdated && (
-            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Substantially reviewed and updated on the date above.</p>
+            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Last updated on the date above.</p>
           )}
 
           <ArticleActions slug={post.slug} />
