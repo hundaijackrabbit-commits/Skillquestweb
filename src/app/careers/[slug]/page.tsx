@@ -1,3 +1,4 @@
+import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -199,6 +200,8 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </div>
           </div>
         </div>
+
+        <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "overview", title: "Career at a glance", text: career.summary }, { id: "day-to-day", title: "What this work involves", text: career.whatTheyDo }, ...career.beginnerEntryStrategies.slice(0, 2).map((text, index) => ({ id: `entry-${index}`, title: `Getting started: ${index + 1}`, text }))]} />
 
         <ManagedAdSlot placement="career-inline" />
 
