@@ -1,3 +1,4 @@
+import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
@@ -194,6 +195,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "definition", title: "The essential idea", text: skill.shortDefinition }, ...skill.beginnerActions.slice(0, 2).map((text, index) => ({ id: `starter-${index}`, title: `Try it: step ${index + 1}`, text }))]} />
         <Breadcrumbs
           className="mb-8"
           items={[
