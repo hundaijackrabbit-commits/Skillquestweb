@@ -13,7 +13,8 @@ const report = files.map((file) => {
   const source = fs.readFileSync(path.join(dir, file), 'utf8');
   const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   const field = (name) => {
-    const match = frontmatter?.[1].match(new RegExp('^' + name + ':\\s*["\\']?([^"\\'\\r\\n]+)', 'm'));
+    const line = frontmatter?.[1].split(/\r?\n/).find((entry) => entry.startsWith(name + ':'));
+    const match = line ? [line, line.slice(name.length + 1).trim().replace(/^["']|["']$/g, '')] : null;
     return match?.[1]?.trim() ?? '';
   };
   const lastUpdated = field('lastUpdated');
