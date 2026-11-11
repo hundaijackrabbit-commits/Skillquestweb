@@ -1,3 +1,6 @@
+import { LearningActionPath } from '@/components/learning/learning-action-path';
+import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
+import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -122,7 +125,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Careers', href: '/careers' }, { label: career.title }]} />
 
         {/* Hero Header */}
@@ -200,6 +203,10 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           </div>
         </div>
 
+        <LearningActionPath title={`Explore a path into ${career.title}`} description="Practical entry strategies from this career guide. Read the complete career profile below for qualifications, work environments and further details." steps={career.beginnerEntryStrategies ?? []} />
+        <LearningPageNavigator containerId="learning-page-content" />
+        <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
+
         <ManagedAdSlot placement="career-inline" />
 
         {careerCheck && <KnowledgeCheckCard check={careerCheck} className="mb-12" />}
@@ -207,7 +214,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-8 [&_p]:leading-8 [&_p]:text-slate-700 [&_li]:leading-7">
             {/* What They Do */}
             <Card id="skills-required" className="scroll-mt-28">
               <CardHeader>

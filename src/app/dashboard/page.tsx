@@ -1,3 +1,4 @@
+import { KnowledgeVault, type VaultItem } from '@/components/learning/knowledge-vault';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getAllCareers, getAllIndustries, getIndexableSkills, getCanonicalSkills } from '@/lib/content';
@@ -113,7 +114,12 @@ export default async function DashboardPage() {
       meta: `${career.coreSkills.length} core skills`,
     }));
 
+  const vaultResult = await supabase.from('knowledge_highlights').select('kind, item_slug, insight_id, title, body').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100);
+  const vaultItems = (vaultResult.data ?? []) as VaultItem[];
+
   return (
+    <>
+    <KnowledgeVault items={vaultItems} />
     <PersonalDashboardClient
       member={{
         email: user.email ?? 'member',
@@ -134,5 +140,6 @@ export default async function DashboardPage() {
       savedSkills={savedSkills}
       savedCareers={savedCareers}
     />
+    </>
   );
 }
