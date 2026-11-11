@@ -17,6 +17,7 @@ export default function SaveSkillButton({
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
   const [isSaved, setIsSaved] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
 
@@ -66,13 +67,14 @@ export default function SaveSkillButton({
   }, [skillSlug, supabase]);
 
   async function handleToggleSave() {
+    setErrorMessage('');
     const {
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      router.push("/auth");
+      router.push(`/auth?mode=signin&redirect=${encodeURIComponent(`/skills/${skillSlug}`)}`);
       return;
     }
 
@@ -86,6 +88,7 @@ export default function SaveSkillButton({
 
         if (error) {
           console.error("Error removing saved skill:", error);
+          setErrorMessage("Could not remove this skill. Please try again.");
           return;
         }
 
@@ -98,6 +101,7 @@ export default function SaveSkillButton({
 
         if (error) {
           console.error("Error saving skill:", error);
+          setErrorMessage("Could not save this skill. Please try again.");
           return;
         }
 
@@ -119,12 +123,14 @@ export default function SaveSkillButton({
     : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50";
 
   return (
+    <>
     <button
       type="button"
       onClick={handleToggleSave}
       disabled={isLoading || isPending}
       aria-pressed={isSaved}
-      className={`inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${buttonClasses} ${className}`}
+      aria-busy={isLoading || isPending}
+      className={`msl-motion-press inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 ${buttonClasses} ${className}`}
     >
       {isLoading || isPending ? (
         <>
@@ -134,9 +140,11 @@ export default function SaveSkillButton({
       ) : (
         <>
           <Star className={`h-4 w-4 ${isSaved ? "fill-current" : ""}`} />
-          {buttonLabel}
+          <span aria-live="polite">{buttonLabel}</span>
         </>
       )}
     </button>
+    {errorMessage && <p className="msl-status mt-2 text-sm text-red-700" role="alert">{errorMessage}</p>}
+    </>
   );
 }

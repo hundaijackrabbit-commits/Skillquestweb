@@ -86,7 +86,7 @@ export function Header() {
               type="button"
               aria-label="Close main menu"
               tabIndex={-1}
-              className="fixed inset-0 z-[60] cursor-default bg-slate-950/35 backdrop-blur-[2px]"
+              className="msl-menu-backdrop fixed inset-0 z-[60] cursor-default bg-slate-950/35 backdrop-blur-[2px]"
               onClick={() => closeMobileMenu(true)}
             />
             <div
@@ -95,7 +95,7 @@ export function Header() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="mobile-navigation-title"
-              className="fixed inset-y-0 right-0 z-[70] flex h-dvh w-full max-w-sm flex-col overflow-y-auto overscroll-contain bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] shadow-2xl sm:px-6"
+              className="msl-menu-panel fixed inset-y-0 right-0 z-[70] flex h-dvh w-full max-w-sm flex-col overflow-y-auto overscroll-contain bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] shadow-2xl sm:px-6"
             >
               <div className="flex min-w-0 items-center justify-between gap-3">
                 <Link href="/" className="min-w-0 rounded-xl p-1.5" onClick={() => closeMobileMenu()}>
@@ -224,16 +224,16 @@ export function Header() {
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-6 xl:gap-x-8">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="flex items-center gap-2 text-sm font-semibold leading-6 text-slate-700 transition-colors hover:text-blue-600"
-            >
-              <item.icon className="h-4 w-4" />
-              <span>{item.name}</span>
-            </Link>
-          ))}
+          {navigation.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link key={item.name} href={item.href} aria-current={isActive ? 'page' : undefined}
+                className={`msl-nav-link flex items-center gap-2 text-sm font-semibold leading-6 transition-colors hover:text-blue-600 ${isActive ? 'text-blue-700' : 'text-slate-700'}`}>
+                <item.icon className="h-4 w-4" aria-hidden="true" />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-3">

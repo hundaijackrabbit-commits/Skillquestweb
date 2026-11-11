@@ -40,7 +40,7 @@ export function NewsletterForm({ source = 'website', compact = false, className 
 
   if (status === 'success') {
     return (
-      <div className={`flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 ${className}`} role="status">
+      <div className={`msl-reveal flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 ${className}`} role="status">
         <CheckCircle2 className="h-4 w-4 shrink-0" />
         {message}
       </div>
@@ -48,7 +48,7 @@ export function NewsletterForm({ source = 'website', compact = false, className 
   }
 
   return (
-    <form onSubmit={onSubmit} className={className}>
+    <form onSubmit={onSubmit} aria-busy={status === 'loading'} className={className}>
       <div className={compact ? 'sm:flex' : 'flex flex-col gap-3 sm:flex-row'}>
         <label htmlFor={`newsletter-email-${source}`} className="sr-only">Email address</label>
         <input
@@ -73,13 +73,14 @@ export function NewsletterForm({ source = 'website', compact = false, className 
         <button
           type="submit"
           disabled={status === 'loading'}
-          className={`${compact ? 'mt-3 sm:ml-3 sm:mt-0' : ''} inline-flex shrink-0 items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-wait disabled:opacity-60`}
+          className={`${compact ? 'mt-3 sm:ml-3 sm:mt-0' : ''} msl-motion-press inline-flex shrink-0 items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-wait disabled:opacity-60`}
         >
           {status === 'loading' ? 'Joining…' : 'Get the weekly skill'}
           {status !== 'loading' && <ArrowRight className="ml-2 h-4 w-4" />}
         </button>
       </div>
-      {status === 'error' && <p className="mt-2 text-sm text-red-600" role="alert">{message}</p>}
+      {status === 'loading' && <span className="sr-only" role="status">Subscribing to the weekly skill email…</span>}
+      {status === 'error' && <p className="msl-status mt-2 text-sm text-red-600" role="alert">{message}</p>}
       <p className="mt-2 text-xs leading-5 text-slate-500">One useful email at a time. Unsubscribe anytime.</p>
     </form>
   );
