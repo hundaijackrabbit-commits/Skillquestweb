@@ -2,7 +2,6 @@ import type { MetadataRoute } from 'next';
 import { getAllBlogPosts, getAllCareers, getAllIndustries, getCanonicalSkills, getSkillPaths } from '@/lib/content';
 import { getAllSkillCourses } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
-import { isBlogPostIndexable, isCareerIndexable, isSkillPathIndexable } from '@/lib/content-quality';
 import { TOPICS } from '@/lib/topics';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 
