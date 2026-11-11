@@ -542,5 +542,144 @@
     "aiEraRelevance": "AI can help write SQL, generate code, suggest visualizations and summarize results, but it can also invent fields, misuse statistical methods or produce confident explanations that do not match the data. Data literacy therefore shifts toward verification: checking schemas and calculations, understanding the data-generating process, testing assumptions and deciding whether the evidence supports the requested claim.",
     "humanAdvantage": "People understand why the analysis is being done, which outcomes matter, which definitions are politically or operationally meaningful, what trade-offs a decision creates and when a technically correct result would still mislead. Human judgment is also needed to decide whether the data is fit for purpose and how much uncertainty is acceptable before acting.",
     "lastUpdated": "2026-11-10"
+  },
+  "python-programming": {
+    "shortDefinition": "Python programming is the practice of writing, testing, and maintaining Python code to automate tasks, transform data, connect systems, and build reliable applications.",
+    "fullDefinition": "Python programming involves expressing a problem as readable executable code using variables, functions, collections, control flow, modules, exceptions, and well-chosen libraries. Competence includes understanding input and output, decomposing a problem, selecting appropriate data structures, managing dependencies and environments, writing tests, debugging failures, and reviewing code for correctness, security, performance, and maintainability. It also means knowing when a short script is sufficient and when an application needs packaging, observability, and operational safeguards.",
+    "whyItMatters": "Python is used across automation, data analysis, web services, scientific computing, and machine learning. The value is not syntax memorization: it is the ability to replace fragile manual work with understandable programs, detect errors before they affect users, and make analyses or workflows reproducible.",
+    "modernRelevance": "AI coding assistants can draft Python quickly, but generated code still needs review, tests, dependency checks, secure handling of credentials, and evaluation against real requirements. Strong Python practitioners can explain why a solution works and maintain it after the initial demonstration.",
+    "whereItShowsUp": "Data-cleaning pipelines, report automation, API integrations, backend services, scientific notebooks, testing tools, command-line utilities, and machine-learning workflows.",
+    "realWorldScenarios": [
+      "A weekly spreadsheet report requires repetitive copy-paste work. Write a Python script that validates column names, cleans records, produces the report, and logs rejected rows.",
+      "An API integration intermittently fails. Add request timeouts, bounded retries, structured error handling, and tests for malformed responses.",
+      "A data analyst shares a notebook that only works on one laptop. Pin dependencies, document setup, extract reusable functions, and verify that a colleague can reproduce the result."
+    ],
+    "beginnerActions": [
+      "Write a Python script using functions, lists, dictionaries, loops, and file input/output to solve a small practical task.",
+      "Use a virtual environment, install a dependency, and write three automated tests covering expected and unexpected inputs."
+    ],
+    "intermediateActions": [
+      "Build a small API or data-processing tool with clear modules, logging, configuration, and tests.",
+      "Review and refactor an existing script to improve readability, error handling, and reproducibility."
+    ],
+    "advancedActions": [
+      "Design a maintainable Python service with continuous integration, dependency scanning, monitoring, and documented operational procedures.",
+      "Profile a slow workflow, identify the bottleneck, and measure the impact of an optimization without changing correctness."
+    ],
+    "commonMistakes": [
+      "Putting secrets or API keys in source control",
+      "Skipping tests and input validation",
+      "Using broad exception handlers that conceal errors",
+      "Ignoring dependency versions and reproducible environments"
+    ],
+    "howToPractice": "Build one small, useful program each week. Write a failing test first for one behavior, implement it, run the test suite, and document one trade-off. Ask someone else to run the program using only your setup instructions.",
+    "howToMeasureProgress": "Track whether a second person can run the program, whether automated tests cover critical paths, whether failures are diagnosable, and whether a measured task takes less time or produces fewer errors.",
+    "coreSubskills": [
+      "Python syntax and control flow",
+      "Functions and modules",
+      "Data structures",
+      "File and API input/output",
+      "Testing and debugging",
+      "Dependency and environment management",
+      "Security and maintainability"
+    ],
+    "evidenceSummary": "Use working code, automated tests, reproducible setup instructions, peer review, and before-and-after workflow measurements as evidence of competence. Python documentation is the authoritative reference for language behavior.",
+    "scholarlyNotes": [
+      "Python Software Foundation, Python Tutorial and Library Reference: https://docs.python.org/3/",
+      "Python Packaging Authority, Python Packaging User Guide: https://packaging.python.org/"
+    ],
+    "lastUpdated": "2026-11-10"
+  },
+  "machine-learning": {
+    "shortDefinition": "Machine learning is the practice of building and evaluating models that learn patterns from data to make predictions, classifications, or other data-informed outputs on new examples.",
+    "fullDefinition": "Applied machine learning starts with a clear task, target variable, and success measure. Practitioners examine whether the available data represents the intended population, establish a simple baseline, separate training from validation and test data, engineer features without leaking future information, train candidate models, evaluate appropriate error metrics, and monitor performance after deployment. Sound work also assesses fairness, privacy, interpretability, drift, and whether a simpler rule-based approach would meet the need.",
+    "whyItMatters": "A model can appear accurate in a notebook yet fail in practice because of data leakage, distribution shift, class imbalance, or a metric that does not reflect the real cost of errors. Strong machine-learning practice connects technical performance to a decision and makes limitations explicit.",
+    "modernRelevance": "Foundation models and automated training tools lower the barrier to experimentation but do not remove responsibility for data quality, evaluation design, privacy, and monitoring. Teams need to distinguish a compelling demonstration from a model that performs reliably on real-world cases.",
+    "realWorldScenarios": [
+      "Predict customer churn using a time-based train/test split, compare against a simple baseline, and report precision, recall, and the operational cost of false positives.",
+      "Evaluate a document classifier on categories that were underrepresented during training and identify where human review is required.",
+      "Monitor a deployed demand forecast for changing input distributions and trigger investigation when prediction errors exceed an agreed threshold."
+    ],
+    "beginnerActions": [
+      "Train a simple classification model on a documented dataset and compare it with a majority-class baseline.",
+      "Explain the difference between training, validation, and held-out test sets using an example of data leakage."
+    ],
+    "intermediateActions": [
+      "Create a reproducible feature-processing and evaluation pipeline with cross-validation where appropriate.",
+      "Perform error analysis by segment and document the consequences of false positives and false negatives."
+    ],
+    "advancedActions": [
+      "Design production monitoring for drift, performance, and rollback.",
+      "Lead a model review covering privacy, bias, operational constraints, and retraining triggers."
+    ],
+    "commonMistakes": [
+      "Testing on data used during model selection",
+      "Choosing accuracy alone for imbalanced classes",
+      "Leaking future information into training features",
+      "Deploying without monitoring or a baseline"
+    ],
+    "howToPractice": "Start with a simple baseline, write down the intended decision and metric, train a model using a reproducible pipeline, and examine failures on held-out examples before trying a more complex algorithm.",
+    "howToMeasureProgress": "Measure performance against a baseline on genuinely unseen data, inspect segment-level errors, track reproducibility, and compare the model's effect on the actual workflow.",
+    "coreSubskills": [
+      "Problem formulation and baselines",
+      "Data quality and feature engineering",
+      "Train/validation/test design",
+      "Model selection",
+      "Evaluation and error analysis",
+      "Drift and deployment monitoring",
+      "Responsible model use"
+    ],
+    "evidenceSummary": "Credible evidence includes documented datasets, leakage-resistant evaluation, baseline comparisons, uncertainty and error analysis, and monitoring plans; benchmark scores alone are not enough.",
+    "scholarlyNotes": [
+      "scikit-learn User Guide, model selection and evaluation: https://scikit-learn.org/stable/user_guide.html",
+      "Google, Rules of Machine Learning: https://developers.google.com/machine-learning/guides/rules-of-ml"
+    ],
+    "lastUpdated": "2026-11-10"
+  },
+  "data-visualization": {
+    "shortDefinition": "Data visualization is the design of charts and visual explanations that make patterns, comparisons, distributions, and uncertainty in data easier to interpret accurately.",
+    "fullDefinition": "Effective data visualization starts with the question the audience needs to answer. Practitioners select appropriate encodings—such as position, length, or color—based on the structure of the data, label measures and units clearly, choose honest scales, and show uncertainty or missingness when relevant. They avoid decorative complexity that obscures comparisons and test whether readers reach the intended interpretation without misleading cues.",
+    "whyItMatters": "Charts can reveal patterns that are hard to see in tables, but poor scales, inappropriate chart types, missing denominators, and selective time windows can lead to wrong decisions. A useful visualization makes the comparison legible and preserves the limits of the evidence.",
+    "modernRelevance": "Dashboard tools and AI can produce charts quickly, increasing the importance of verifying calculations, labels, filters, and data provenance. Accessibility—including text alternatives and patterns that do not depend only on color—is part of correct communication.",
+    "realWorldScenarios": [
+      "A sales dashboard shows revenue rising while customer counts fall. Separate total revenue from revenue per customer and label the denominator clearly.",
+      "A health report compares rates across regions with different population sizes. Use rates rather than raw counts and disclose missing data.",
+      "A stakeholder asks for a pie chart of 20 categories. Replace it with a sorted bar chart and test whether readers can identify the largest contributors."
+    ],
+    "beginnerActions": [
+      "Create a bar chart, line chart, and scatterplot from one dataset and explain what question each answers.",
+      "Add descriptive titles, axis units, data-source notes, and an accessible text summary."
+    ],
+    "intermediateActions": [
+      "Redesign a misleading chart by correcting scale, aggregation, and labels.",
+      "Build an interactive dashboard with clearly documented filters and consistent metric definitions."
+    ],
+    "advancedActions": [
+      "Establish chart review standards for accuracy, accessibility, and uncertainty.",
+      "Test visual interpretations with intended users and revise based on observed misunderstandings."
+    ],
+    "commonMistakes": [
+      "Truncating a bar-chart axis without explanation",
+      "Using 3D effects that distort comparison",
+      "Relying on color alone to distinguish categories",
+      "Omitting denominators, units, or data sources"
+    ],
+    "howToPractice": "Choose a real decision question, sketch two alternative charts, validate the numbers, ask a reader what conclusion they draw, and revise the design to reduce ambiguity.",
+    "howToMeasureProgress": "Check whether readers can answer the intended question correctly, whether labels and scales are accurate, and whether the chart remains understandable without color or interactive hover.",
+    "coreSubskills": [
+      "Chart selection",
+      "Visual encoding and scales",
+      "Data aggregation",
+      "Annotation and narrative",
+      "Uncertainty communication",
+      "Accessibility",
+      "Dashboard usability"
+    ],
+    "evidenceSummary": "Assess chart accuracy, reader comprehension, accessibility, and reproducibility against the underlying data, not visual polish alone.",
+    "scholarlyNotes": [
+      "Financial Times Visual Vocabulary: https://github.com/Financial-Times/chart-doctor/tree/main/visual-vocabulary",
+      "W3C, WCAG 2.2: https://www.w3.org/TR/WCAG22/"
+    ],
+    "lastUpdated": "2026-11-10"
   }
 }
