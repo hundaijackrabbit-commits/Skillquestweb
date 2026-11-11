@@ -201,7 +201,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           </div>
         </div>
 
-        <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "overview", title: "Career at a glance", text: career.summary }, { id: "day-to-day", title: "What this work involves", text: career.whatTheyDo }, ...career.beginnerEntryStrategies.slice(0, 2).map((text, index) => ({ id: `entry-${index}`, title: `Getting started: ${index + 1}`, text }))]} />
+        <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
         <ManagedAdSlot placement="career-inline" />
 
@@ -210,7 +210,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-8 [&_p]:leading-8 [&_p]:text-slate-700 [&_li]:leading-7">
             {/* What They Do */}
             <Card id="skills-required" className="scroll-mt-28">
               <CardHeader>
