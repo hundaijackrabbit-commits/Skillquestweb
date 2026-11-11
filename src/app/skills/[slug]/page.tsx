@@ -1,3 +1,4 @@
+import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -194,7 +195,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Breadcrumbs
           className="mb-8"
           items={[
@@ -298,6 +299,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
           </div>
         </div>
 
+        <LearningPageNavigator containerId="learning-page-content" />
         <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "value", title: "Why it matters", text: skill.whyItMatters || skill.shortDefinition }, { id: "application", title: "Put it into practice", text: skill.beginnerActions[0] || skill.howToPractice }, { id: "mastery", title: "What progress looks like", text: skill.signalsOfMastery[0] || skill.howToMeasureProgress }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
         <ManagedAdSlot placement="skill-inline" />
