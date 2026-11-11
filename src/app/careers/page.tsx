@@ -117,12 +117,10 @@ export default async function CareersPage() {
             The World Economic Forum&apos;s 2025 employer survey estimates that 39% of workers&apos; core skills may change by 2030. That is a forecast across surveyed employers, not a prediction that every individual career will change at the same rate.
           </p>
           <p className="mt-3 max-w-4xl leading-7 text-slate-700">
-            OECD research published in 2026 emphasizes that AI-related work is not limited to advanced programming: many workers need digital literacy, the ability to interpret data, and sound judgment. Requirements vary by sector, occupation, and region. Compare the specific skills in each career profile rather than assuming one trend fits every role.
+            Labour-market trends do not translate into identical requirements for every job. Compare the specific skills in each career profile, review current job postings in your region, and look for opportunities to demonstrate the skills employers actually request.
           </p>
           <div className="mt-5 flex flex-wrap gap-4 text-sm font-semibold">
             <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">WEF: Skills outlook (2025)</a>
-            <a href="https://www.oecd.org/en/publications/ai-and-skills_f843b352-en/full-report.html" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">OECD: AI and skills (2026)</a>
-            <a href="https://www.oecd.org/en/publications/skills-in-the-ai-age_972bd15e-en.html" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">OECD: Skills in the AI age (2026)</a>
           </div>
         </section>
 
