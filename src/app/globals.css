@@ -30,3 +30,10 @@ body {
 body:has([data-skill-path-page]) footer {
   display: none;
 }
+
+/* Discovery refresh: lightweight polish without altering content or layout semantics. */
+::selection { background: #c7d2fe; color: #1e1b4b; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+main a, main button { -webkit-tap-highlight-color: rgba(99,102,241,.12); }
+main :where(a,button,input,select,textarea):focus-visible { outline: 2px solid #4f46e5; outline-offset: 3px; }
