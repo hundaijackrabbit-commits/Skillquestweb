@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Bookmark, Check, Lightbulb } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 type Insight = { id: string; title: string; text: string };
 type Props = { kind: 'skill' | 'career'; slug: string; name: string; insights: Insight[] };
@@ -10,6 +11,7 @@ export function KnowledgeHighlights({ kind, slug, name, insights }: Props) {
   const key = `msl-insights:${kind}:${slug}`;
   const [saved, setSaved] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
+  const [syncState, setSyncState] = useState<'local' | 'synced' | 'error'>('local');
 
   useEffect(() => {
     try {
@@ -17,12 +19,48 @@ export function KnowledgeHighlights({ kind, slug, name, insights }: Props) {
       if (Array.isArray(value)) setSaved(value.filter((id): id is string => typeof id === 'string'));
     } catch { /* Storage may be unavailable or contain outdated data. */ }
     setReady(true);
-  }, [key]);
+    let cancelled = false;
+    async function loadAccount() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || cancelled) return;
+      const { data, error } = await supabase.from('knowledge_highlights').select('insight_id').eq('user_id', user.id).eq('kind', kind).eq('item_slug', slug);
+      if (cancelled) return;
+      if (error) { setSyncState('error'); return; }
+      const cloudIds = (data ?? []).map((row: { insight_id: string }) => row.insight_id);
+      const localIds: string[] = (() => { try { const v = JSON.parse(window.localStorage.getItem(key) || '[]'); return Array.isArray(v) ? v.filter((id): id is string => typeof id === 'string') : []; } catch { return []; } })();
+      const valid = new Set(insights.map((item) => item.id));
+      const missing = localIds.filter((id) => valid.has(id) && !cloudIds.includes(id));
+      if (missing.length) {
+        const rows = missing.map((id) => { const item = insights.find((x) => x.id === id)!; return { user_id: user.id, kind, item_slug: slug, insight_id: id, title: item.title, body: item.text }; });
+        const { error: insertError } = await supabase.from('knowledge_highlights').upsert(rows, { onConflict: 'user_id,kind,item_slug,insight_id' });
+        if (insertError) { setSyncState('error'); return; }
+      }
+      if (!cancelled) {
+        const merged = [...new Set([...cloudIds, ...missing])];
+        setSaved(merged);
+        try { window.localStorage.setItem(key, JSON.stringify(merged)); } catch {}
+        setSyncState('synced');
+      }
+    }
+    void loadAccount();
+    return () => { cancelled = true; };
+  }, [key, kind, slug]);
 
-  function toggle(id: string) {
+  async function toggle(id: string) {
     const next = saved.includes(id) ? saved.filter((item) => item !== id) : [...saved, id];
     setSaved(next);
     try { window.localStorage.setItem(key, JSON.stringify(next)); } catch { /* Keep interaction functional without storage. */ }
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const item = insights.find((insight) => insight.id === id);
+    if (!item) return;
+    const query = supabase.from('knowledge_highlights');
+    const { error } = saved.includes(id)
+      ? await query.delete().eq('user_id', user.id).eq('kind', kind).eq('item_slug', slug).eq('insight_id', id)
+      : await query.upsert({ user_id: user.id, kind, item_slug: slug, insight_id: id, title: item.title, body: item.text }, { onConflict: 'user_id,kind,item_slug,insight_id' });
+    if (error) { setSyncState('error'); setSaved(saved); } else setSyncState('synced');
   }
 
   if (!insights.length) return null;
@@ -33,9 +71,9 @@ export function KnowledgeHighlights({ kind, slug, name, insights }: Props) {
         <div>
           <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-indigo-700"><Lightbulb className="h-4 w-4" aria-hidden="true" /> Knowledge worth keeping</p>
           <h2 id="knowledge-highlights-heading" className="mt-2 text-2xl font-bold tracking-tight text-slate-950">Collect insights about {name}</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Tap an insight to highlight it for review. Your selections stay on this device for now; account syncing is coming later.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Tap an insight to highlight it for review. Signed-in members can keep these insights in their Knowledge Vault across devices. Guest selections stay on this device.</p>
         </div>
-        <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-indigo-800 shadow-sm" aria-live="polite">{ready ? saved.length : '…'} collected</span>
+        <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-indigo-800 shadow-sm" aria-live="polite">{ready ? saved.length : '…'} collected · {syncState === 'synced' ? 'Account saved' : syncState === 'error' ? 'Sync unavailable' : 'On this device'}</span>
       </div>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {insights.map((insight, index) => {
