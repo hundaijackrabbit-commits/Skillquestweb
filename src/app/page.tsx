@@ -10,6 +10,7 @@ import { getHomepageGrowthData } from '@/lib/growth';
 import { getAllSkillCourses } from '@/lib/courses';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
+import { DiscoveryQuiz } from '@/components/marketing/discovery-quiz';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,6 +77,32 @@ export default async function HomePage() {
                 <span className="mt-5 inline-flex items-center text-sm font-semibold text-blue-700">{item.action}<ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="pb-12 sm:pb-16" aria-label="Discover free learning tools">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <DiscoveryQuiz />
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <Link href="/free-career-guide" className="rounded-2xl border border-violet-200 bg-violet-50 p-5 transition hover:border-violet-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-violet-700">Free downloadable guide</p>
+              <h3 className="mt-2 font-bold text-slate-950">Get the Career &amp; Life Map</h3>
+              <p className="mt-1 text-sm text-slate-600">A fillable workbook for career decisions and skill planning.</p>
+              <span className="mt-3 inline-flex items-center text-sm font-semibold text-violet-800">Explore the guide <ArrowRight className="ml-1 h-4 w-4" /></span>
+            </Link>
+            <Link href="/auth?mode=signup&redirect=%2Fdashboard" className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition hover:border-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Free member tools</p>
+              <h3 className="mt-2 font-bold text-slate-950">Save skills as you learn</h3>
+              <p className="mt-1 text-sm text-slate-600">Build your personal dashboard and pick up where you left off.</p>
+              <span className="mt-3 inline-flex items-center text-sm font-semibold text-blue-800">Create an account <ArrowRight className="ml-1 h-4 w-4" /></span>
+            </Link>
+            <Link href="/skills" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition hover:border-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Hands-on activities</p>
+              <h3 className="mt-2 font-bold text-slate-950">Try a skill today</h3>
+              <p className="mt-1 text-sm text-slate-600">Discover practical exercises and skill-specific challenges.</p>
+              <span className="mt-3 inline-flex items-center text-sm font-semibold text-emerald-800">Browse activities <ArrowRight className="ml-1 h-4 w-4" /></span>
+            </Link>
           </div>
         </div>
       </section>
