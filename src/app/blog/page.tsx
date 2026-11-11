@@ -290,6 +290,29 @@ export default async function BlogPage() {
           </div>
         </div>
 
+        <section className="mb-16 rounded-2xl border border-slate-200 bg-white p-6 md:p-8" aria-labelledby="research-context-heading">
+          <h2 id="research-context-heading" className="text-2xl font-bold text-slate-950">Research behind modern skill decisions</h2>
+          <p className="mt-3 max-w-3xl leading-7 text-slate-600">
+            Career forecasts are signals, not guarantees. Compare employer surveys with hiring-platform data, then test what matters in your role and region.
+          </p>
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
+            <div className="rounded-xl border border-slate-200 p-5">
+              <h3 className="font-semibold text-slate-950">How much might skill requirements change?</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                In its 2025 Future of Jobs survey, the World Economic Forum reports that employers expect 39% of workers&apos; core skills to change by 2030. This is an employer expectation, not a measured outcome for every occupation.
+              </p>
+              <a className="mt-3 inline-flex text-sm font-semibold text-blue-700 hover:underline" href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook" target="_blank" rel="noopener noreferrer">Read the WEF skills outlook <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" /></a>
+            </div>
+            <div className="rounded-xl border border-slate-200 p-5">
+              <h3 className="font-semibold text-slate-950">Which capabilities are gaining attention?</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                LinkedIn&apos;s 2026 Skills on the Rise research identifies growth in AI-related skills, leadership, collaboration, communication, business development, and risk management. Its ranking reflects platform skill and hiring signals, not a universal labour-market forecast.
+              </p>
+              <a className="mt-3 inline-flex text-sm font-semibold text-blue-700 hover:underline" href="https://news.linkedin.com/2026/Skills-on-the-rise-2026" target="_blank" rel="noopener noreferrer">Review LinkedIn&apos;s methodology <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" /></a>
+            </div>
+          </div>
+        </section>
+
         <CareerGuidePromo className="mb-16" eyebrow="Put the ideas into practice" />
 
         {/* CTA Section */}
@@ -297,8 +320,8 @@ export default async function BlogPage() {
           <h2 className="mb-3 text-2xl font-bold text-gray-900">One useful skill every week</h2>
           <p className="mx-auto mb-6 max-w-xl text-gray-600">Get practical ideas on skills, careers, and modern work without another noisy newsletter.</p>
           <NewsletterForm source="blog-footer" className="mx-auto max-w-xl text-left" />
-          <Link href="/blog" className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700">
-            <BookOpen className="mr-2 h-4 w-4" /> Browse all articles
+          <Link href="/skills" className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700">
+            <BookOpen className="mr-2 h-4 w-4" /> Explore practical skill guides
           </Link>
         </div>
       </div>
