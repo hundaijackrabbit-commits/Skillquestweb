@@ -1,3 +1,4 @@
+import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -917,6 +918,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
           </div>
         </div>
       </div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8"><NextStepPrompt context="skill" /></div>
     </div>
   );
 }

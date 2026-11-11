@@ -1,3 +1,4 @@
+import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
@@ -284,6 +285,8 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             </div>
           </div>
         )}
+
+        <NextStepPrompt context="article" />
 
         <div className="mt-12 text-center">
           <Link href="/blog">

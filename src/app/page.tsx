@@ -10,6 +10,8 @@ import { getHomepageGrowthData } from '@/lib/growth';
 import { getAllSkillCourses } from '@/lib/courses';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
+import { DiscoveryQuiz } from '@/components/marketing/discovery-quiz';
+import { ChallengeWheel } from '@/components/marketing/challenge-wheel';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,8 +43,8 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b bg-gradient-to-b from-slate-50 via-white to-white">
-        <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.14),transparent_55%)]" />
+      <section className="relative overflow-hidden border-b border-indigo-100 bg-gradient-to-br from-sky-50 via-white to-fuchsia-50">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(56,189,248,0.22),transparent_36%),radial-gradient(circle_at_88%_18%,rgba(217,70,239,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(250,204,21,0.12),transparent_42%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
           <div>
             <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold">Practical skills for modern work</Badge>
@@ -54,7 +56,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_20px_70px_-35px_rgba(15,23,42,0.4)]">
+          <div className="rounded-3xl border border-indigo-100 bg-white/95 p-6 shadow-[0_24px_80px_-30px_rgba(79,70,229,0.3)] ring-1 ring-white">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div><p className="text-sm font-medium text-slate-500">Your next useful idea</p><h2 className="mt-1 text-xl font-semibold text-slate-900">{growth.marketing.newsletterHeadline}</h2></div>
               <div className="rounded-2xl bg-blue-600/10 p-3 text-blue-600"><Sparkles className="h-5 w-5" /></div>
@@ -80,6 +82,63 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="pb-12 sm:pb-16" aria-label="Discover free learning tools">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <DiscoveryQuiz />
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <Link href="/free-career-guide" className="rounded-2xl border border-violet-200 bg-violet-50 p-5 transition hover:border-violet-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-violet-700">Free downloadable guide</p>
+              <h3 className="mt-2 font-bold text-slate-950">Get the Career &amp; Life Map</h3>
+              <p className="mt-1 text-sm text-slate-600">A fillable workbook for career decisions and skill planning.</p>
+              <span className="mt-3 inline-flex items-center text-sm font-semibold text-violet-800">Explore the guide <ArrowRight className="ml-1 h-4 w-4" /></span>
+            </Link>
+            <Link href="/auth?mode=signup&redirect=%2Fdashboard" className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition hover:border-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-blue-700">Free member tools</p>
+              <h3 className="mt-2 font-bold text-slate-950">Save skills as you learn</h3>
+              <p className="mt-1 text-sm text-slate-600">Build your personal dashboard and pick up where you left off.</p>
+              <span className="mt-3 inline-flex items-center text-sm font-semibold text-blue-800">Create an account <ArrowRight className="ml-1 h-4 w-4" /></span>
+            </Link>
+            <Link href="/skills" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition hover:border-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600">
+              <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">Hands-on activities</p>
+              <h3 className="mt-2 font-bold text-slate-950">Try a skill today</h3>
+              <p className="mt-1 text-sm text-slate-600">Discover practical exercises and skill-specific challenges.</p>
+              <span className="mt-3 inline-flex items-center text-sm font-semibold text-emerald-800">Browse activities <ArrowRight className="ml-1 h-4 w-4" /></span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="pb-12 sm:pb-16" aria-labelledby="member-benefits-title">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-[0_24px_80px_-30px_rgba(49,46,129,0.5)] sm:p-10">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.38),transparent_40%),radial-gradient(circle_at_5%_95%,rgba(14,165,233,0.28),transparent_45%)]" />
+            <div className="relative">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">Free membership · No paid tier</p>
+              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">Don't just read about skills. Build them.</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200">Your free account turns the library into a personal learning space with challenges, progress and real-world practice.</p>
+              <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  { icon: Trophy, title: 'Earn XP & achievements', description: 'Make your practice visible.' },
+                  { icon: Flame, title: 'Build a learning streak', description: 'Keep small wins going.' },
+                  { icon: Brain, title: 'Try skill missions', description: 'Practice with useful challenges.' },
+                  { icon: BookOpen, title: 'Save your skills', description: 'Return to what matters.' },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
+                    <div className="inline-flex rounded-xl bg-white/15 p-2 text-cyan-200"><item.icon className="h-5 w-5" aria-hidden="true" /></div>
+                    <h3 className="mt-3 font-semibold text-white">{item.title}</h3>
+                    <p className="mt-1 text-sm text-slate-300">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/auth?mode=signup&redirect=%2Flearn" className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-100">Start learning free <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+                <Link href="/learn" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Explore Practice Lab</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="pb-4 sm:pb-8">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
@@ -95,6 +154,10 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
+      </section>
+
+      <section className="pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8"><ChallengeWheel /></div>
       </section>
 
       <section className="pb-16 sm:pb-20">

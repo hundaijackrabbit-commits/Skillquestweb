@@ -1,3 +1,4 @@
+import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -498,6 +499,8 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </div>
           </section>
         )}
+
+        <NextStepPrompt context="career" />
 
         {/* Action Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
