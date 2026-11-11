@@ -85,7 +85,7 @@ export default async function BlogPage() {
                 Editorial refresh in progress
               </h2>
               <p className="text-gray-600 mb-8">
-                Existing drafts are being reviewed for originality, usefulness, and accurate sourcing.
+                No articles are currently available in the public index. Check back as new articles are published.
                 Articles will return here as they clear the editorial gate.
               </p>
               
@@ -167,7 +167,7 @@ export default async function BlogPage() {
             <div className="mb-16">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-gray-900">Latest Articles</h2>
-                <p className="text-sm text-slate-600">Recently reviewed and updated</p>
+                <p className="text-sm text-slate-600">Sorted by latest content update</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
