@@ -773,5 +773,52 @@
       "OWASP SQL Injection Prevention Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
     ],
     "lastUpdated": "2026-11-10"
+  },
+  "statistical-modeling": {
+    "shortDefinition": "Statistical modeling uses probability and mathematical relationships to describe data, estimate effects, quantify uncertainty, and make predictions while testing whether the model's assumptions fit the problem.",
+    "fullDefinition": "Statistical modeling begins with a precise question and a clear definition of the outcome, predictors, population, and data-generating process. Practitioners choose an appropriate model—such as linear or logistic regression, a generalized linear model, or a time-series model—then examine missingness, sample selection, dependence, functional form, and other assumptions. They estimate parameters, quantify uncertainty with intervals or predictive distributions, check residuals and calibration, compare sensible baselines, and validate on appropriate held-out or temporally separated data. They distinguish association from causal inference and communicate where the model is unreliable.",
+    "whyItMatters": "A numerical estimate can look authoritative even when the sample is biased, the wrong model was chosen, or uncertainty is ignored. Good statistical modeling makes assumptions visible, distinguishes explanation from prediction, and helps teams make decisions proportional to the strength of evidence.",
+    "modernRelevance": "Automated modeling and AI-assisted analysis can fit sophisticated models quickly, but cannot decide whether a dataset represents the target population or whether a causal claim is justified. Domain knowledge, transparent assumptions, calibration, and independent validation remain essential.",
+    "whereItShowsUp": "Demand forecasting, clinical and public-health research, product experiments, credit and risk analysis, customer behavior, operations planning, and scientific research.",
+    "realWorldScenarios": [
+      "A marketing team estimates whether campaign exposure predicts purchases. Fit a logistic regression, account for confounders, and avoid describing the association as causal without a suitable design.",
+      "A retailer forecasts weekly demand. Compare a time-series model with a seasonal baseline using a rolling evaluation that avoids future-data leakage.",
+      "A public-service team compares outcomes across locations. Inspect sample sizes, uncertainty intervals, missing data, and differences in the populations served before ranking sites."
+    ],
+    "beginnerActions": [
+      "Fit a linear regression on a small dataset and explain the meaning and limits of each coefficient.",
+      "Plot residuals and explain how outliers, nonlinearity, and nonconstant variance can affect interpretation."
+    ],
+    "intermediateActions": [
+      "Fit and compare two appropriate models using held-out validation and an interpretable baseline.",
+      "Report confidence or prediction intervals, calibration, and sensitivity to reasonable modeling assumptions."
+    ],
+    "advancedActions": [
+      "Design a defensible analysis plan that distinguishes predictive modeling from causal estimation.",
+      "Review a deployed statistical model for population shift, bias, calibration, and decision consequences."
+    ],
+    "commonMistakes": [
+      "Treating correlation as proof of causation",
+      "Selecting variables or models repeatedly using the final test set",
+      "Reporting point estimates without uncertainty",
+      "Ignoring dependence, missingness, and selection bias"
+    ],
+    "coreSubskills": [
+      "Probability and distributions",
+      "Regression and generalized linear models",
+      "Sampling and missing-data analysis",
+      "Assumption checks and diagnostics",
+      "Estimation and uncertainty",
+      "Validation and calibration",
+      "Causal reasoning and communication"
+    ],
+    "howToPractice": "Take a public dataset and predefine one research question, outcome, baseline, evaluation method, and key assumptions. Fit a simple model, inspect diagnostics, document uncertainty, and write a plain-language explanation of what the result does not establish.",
+    "howToMeasureProgress": "Evaluate calibration and predictive error on appropriate held-out data, inspect diagnostic failures, document sensitivity to assumptions, and assess whether readers interpret the results correctly.",
+    "evidenceSummary": "Credible work includes a reproducible analysis, justified model choice, diagnostic plots, uncertainty estimates, comparison with a baseline, and explicit limits on causal or predictive claims.",
+    "scholarlyNotes": [
+      "Penn State STAT 501, Regression Methods: https://online.stat.psu.edu/stat501/",
+      "NIST/SEMATECH e-Handbook of Statistical Methods: https://www.itl.nist.gov/div898/handbook/"
+    ],
+    "lastUpdated": "2026-11-10"
   }
 }
