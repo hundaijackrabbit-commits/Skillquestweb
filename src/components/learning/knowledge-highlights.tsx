@@ -73,14 +73,14 @@ export function KnowledgeHighlights({ kind, slug, name, insights }: Props) {
           <h2 id="knowledge-highlights-heading" className="mt-2 text-2xl font-bold tracking-tight text-slate-950">Collect insights about {name}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Tap an insight to highlight it for review. Signed-in members can keep these insights in their Knowledge Vault across devices. Guest selections stay on this device.</p>
         </div>
-        <span className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-indigo-800 shadow-sm" aria-live="polite">{ready ? saved.length : '…'} collected · {syncState === 'synced' ? 'Account saved' : syncState === 'error' ? 'Sync unavailable' : 'On this device'}</span>
+        <span key={`${saved.length}:${syncState}`} className="msl-status rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-indigo-800 shadow-sm" aria-live="polite">{ready ? saved.length : '…'} collected · {syncState === 'synced' ? 'Account saved' : syncState === 'error' ? 'Sync unavailable' : 'On this device'}</span>
       </div>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {insights.map((insight, index) => {
           const active = saved.includes(insight.id);
           return (
             <button key={insight.id} type="button" aria-pressed={active} onClick={() => toggle(insight.id)}
-              className={`group relative min-h-40 rounded-2xl border p-5 text-left shadow-sm transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${active ? 'border-slate-800 bg-slate-900 text-white shadow-xl ring-4 ring-indigo-200/70' : 'border-slate-200 bg-white/95 text-slate-950 hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-lg'}`}>
+              className={`msl-motion-card group relative min-h-40 rounded-2xl border p-5 text-left shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${active ? 'border-slate-800 bg-slate-900 text-white shadow-lg ring-4 ring-indigo-200/70' : 'border-slate-200 bg-white/95 text-slate-950 hover:border-indigo-300 hover:shadow-lg'}`}>
               <span className={`flex items-center justify-between gap-3 text-xs font-bold uppercase tracking-wider ${active ? 'text-cyan-200' : 'text-indigo-700'}`}>
                 <span>Insight {String(index + 1).padStart(2, '0')}</span>{active ? <Check className="h-5 w-5" aria-hidden="true" /> : <Bookmark className="h-5 w-5" aria-hidden="true" />}
               </span>

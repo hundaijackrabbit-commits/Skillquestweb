@@ -124,7 +124,7 @@ function RecommendationCard({ item }: { item: ProfileFitMap['skills'][number] })
   return (
     <Link
       href={item.href}
-      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+      className="msl-motion-card group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 hover:border-blue-300 hover:shadow-md"
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Badge className={item.signal === 'Strong fit signal' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}>
@@ -166,7 +166,7 @@ function SavedCollection({
       {items.length > 0 ? (
         <div className="mt-5 space-y-3">
           {items.slice(0, 6).map((item) => (
-            <Link key={item.slug} href={`/${itemPrefix}/${item.slug}`} className="group block rounded-2xl border border-slate-200 p-4 transition hover:border-blue-300 hover:bg-blue-50/30">
+            <Link key={item.slug} href={`/${itemPrefix}/${item.slug}`} className="msl-motion-card group block rounded-2xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="font-bold text-slate-950 group-hover:text-blue-700">{item.name}</div>
@@ -254,7 +254,12 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button type="button" variant="outline" className="border-slate-600 bg-transparent text-white hover:bg-slate-800" onClick={() => { setEditing(true); setStep(0); document.getElementById('profile-assessment')?.scrollIntoView({ behavior: 'smooth' }); }}>
+              <Button type="button" variant="outline" className="border-slate-600 bg-transparent text-white hover:bg-slate-800" onClick={() => {
+                setActiveArea('direction'); setEditing(true); setStep(0);
+                requestAnimationFrame(() => document.getElementById('profile-assessment')?.scrollIntoView({
+                  behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                }));
+              }}>
                 <Pencil className="mr-2 h-4 w-4" />Edit fit profile
               </Button>
               <Button type="button" variant="ghost" className="text-slate-200 hover:bg-slate-800 hover:text-white" onClick={handleSignOut}>
@@ -273,19 +278,20 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Choose your learning goal">
           {[
-            { title: 'Find my direction', detail: 'Explore career matches and update your fit profile', icon: Compass, action: () => setActiveArea('direction') },
-            { title: 'Build my skills', detail: 'Explore practical learning paths and skill guides', icon: BookOpen, href: '/paths' },
-            { title: 'My saved learning', detail: 'Return to saved skills, careers and insights', icon: Heart, action: () => setActiveArea('saved') },
-            { title: 'Track my progress', detail: 'Review practice, achievements and learning activity', icon: Target, action: () => setActiveArea('progress') },
+            { title: 'Find my direction', detail: 'Explore career matches and update your fit profile', icon: Compass, area: 'direction' as const, action: () => setActiveArea('direction') },
+            { title: 'Build my skills', detail: 'Explore practical learning paths and skill guides', icon: BookOpen, area: null, href: '/paths' },
+            { title: 'My saved learning', detail: 'Return to saved skills, careers and insights', icon: Heart, area: 'saved' as const, action: () => setActiveArea('saved') },
+            { title: 'Track my progress', detail: 'Review practice, achievements and learning activity', icon: Target, area: 'progress' as const, action: () => setActiveArea('progress') },
           ].map((item) => {
             const Icon = item.icon;
-            const cls = 'flex min-h-44 flex-col items-start rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:border-blue-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600';
+            const selected = item.area !== null && activeArea === item.area;
+            const cls = `msl-motion-card flex min-h-44 flex-col items-start rounded-2xl border bg-white p-5 text-left shadow-sm hover:border-blue-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${selected ? 'border-blue-500 bg-blue-50/60 ring-2 ring-blue-100' : 'border-slate-200'}`;
             const content = <><Icon className="mb-4 h-6 w-6 text-blue-700" /><span className="text-lg font-bold text-slate-950">{item.title}</span><span className="mt-2 text-sm leading-6 text-slate-600">{item.detail}</span><ArrowRight className="mt-auto self-end text-blue-700" size={18} /></>;
-            return item.href ? <Link key={item.title} href={item.href} className={cls}>{content}</Link> : <button key={item.title} type="button" className={cls} onClick={item.action}>{content}</button>;
+            return item.href ? <Link key={item.title} href={item.href} className={cls}>{content}</Link> : <button key={item.title} type="button" aria-pressed={selected} className={cls} onClick={item.action}>{content}</button>;
           })}
         </div>
-        {activeArea && <button type="button" onClick={() => setActiveArea(null)} className="mt-6 rounded-lg px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">← Back to my learning space</button>}
-        <div className={activeArea === 'direction' ? '' : 'hidden'}>
+        {activeArea && <button type="button" onClick={() => setActiveArea(null)} className="msl-motion-press mt-6 rounded-lg px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">← Back to my learning space</button>}
+        <div className={activeArea === 'direction' ? 'msl-reveal' : 'hidden'}>
         <section id="profile-assessment" className="scroll-mt-36 pt-12" aria-labelledby="assessment-title">
           <div className="overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-sm">
             <div className="bg-gradient-to-r from-violet-950 via-indigo-950 to-blue-950 p-7 text-white sm:p-9">
@@ -442,7 +448,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
         </section>
 
         </div>
-        <div className={activeArea === 'saved' ? '' : 'hidden'}>
+        <div className={activeArea === 'saved' ? 'msl-reveal' : 'hidden'}>
         <KnowledgeVault items={vaultItems} />
         <section id="favourites" className="scroll-mt-36 pt-16" aria-labelledby="favourites-title">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -459,7 +465,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
         </section>
 
         </div>
-        <div className={activeArea === 'progress' ? '' : 'hidden'}>
+        <div className={activeArea === 'progress' ? 'msl-reveal' : 'hidden'}>
         <section id="practice" className="scroll-mt-36 pt-16" aria-labelledby="practice-title">
           <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>

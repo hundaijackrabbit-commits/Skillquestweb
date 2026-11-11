@@ -20,14 +20,14 @@ export function DiscoveryQuiz() {
       <p className="mt-2 text-sm leading-6 text-slate-600">Pick one. We'll point you to a useful place to start—no email required to see your result.</p>
       <div className="mt-6 grid gap-3 md:grid-cols-3" role="group" aria-label="Choose your learning goal">
         {choices.map((item) => (
-          <button key={item.id} type="button" onClick={() => setChoice(item.id)} aria-pressed={choice === item.id} className={`rounded-2xl border p-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${choice === item.id ? 'border-indigo-600 bg-indigo-100 shadow-sm' : 'border-slate-200 bg-white hover:border-indigo-300'}`}>
+          <button key={item.id} type="button" onClick={() => setChoice(item.id)} aria-pressed={choice === item.id} className={`msl-motion-card rounded-2xl border p-4 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${choice === item.id ? 'border-indigo-600 bg-indigo-100 shadow-sm' : 'border-slate-200 bg-white hover:border-indigo-300'}`}>
             <span className="block font-semibold text-slate-950">{item.label}</span>
             <span className="mt-1 block text-sm leading-5 text-slate-600">{item.detail}</span>
           </button>
         ))}
       </div>
       {selected && (
-        <div aria-live="polite" className="mt-5 rounded-2xl border border-indigo-200 bg-white p-5">
+        <div key={selected.id} aria-live="polite" className="msl-reveal mt-5 rounded-2xl border border-indigo-200 bg-white p-5">
           <p className="text-xs font-bold uppercase tracking-widest text-indigo-700">Your next step</p>
           <h3 className="mt-2 text-xl font-bold text-slate-950">{selected.title}</h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">{selected.description}</p>

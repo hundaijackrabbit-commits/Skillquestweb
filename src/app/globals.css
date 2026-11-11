@@ -37,3 +37,31 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 main a, main button { -webkit-tap-highlight-color: rgba(99,102,241,.12); }
 main :where(a,button,input,select,textarea):focus-visible { outline: 2px solid #4f46e5; outline-offset: 3px; }
+
+
+/* Lightweight and opt-in motion; no runtime, observers, or additional assets. */
+.msl-nav-link { position: relative; }
+.msl-nav-link::after { content: ''; position: absolute; right: 0; bottom: -.375rem; left: 0; height: 2px; border-radius: 999px; background: #2563eb; opacity: 0; }
+.msl-nav-link:is(:hover, :focus-visible, [aria-current='page'])::after { opacity: 1; }
+.msl-motion-card { transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+.msl-motion-press { transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease, color 140ms ease; }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes msl-soft-enter { from { opacity: .78; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes msl-drawer-enter { from { opacity: .94; transform: translateX(14px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes msl-backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+  .msl-reveal, .msl-status { animation: msl-soft-enter 220ms cubic-bezier(.2,.75,.3,1) both; }
+  .msl-menu-panel { animation: msl-drawer-enter 200ms ease-out both; }
+  .msl-menu-backdrop { animation: msl-backdrop-enter 160ms ease-out both; }
+  .msl-nav-link::after { transform: scaleX(.55); transition: opacity 150ms ease, transform 150ms ease; }
+  .msl-nav-link:is(:hover, :focus-visible, [aria-current='page'])::after { transform: scaleX(1); }
+  @media (hover: hover) {
+    .msl-motion-card:hover { transform: translateY(-2px); }
+    .msl-motion-press:not(:disabled):hover { transform: translateY(-1px); }
+  }
+  .msl-motion-card:active { transform: translateY(0) scale(.995); }
+  .msl-motion-press:not(:disabled):active { transform: scale(.985); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .msl-motion-card, .msl-motion-press { transition: none; }
+  .msl-motion-card:hover, .msl-motion-card:active, .msl-motion-press:hover, .msl-motion-press:active { transform: none; translate: none; }
+}
