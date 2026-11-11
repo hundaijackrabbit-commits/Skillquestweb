@@ -360,8 +360,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       }
     }
     
-    // Sort by publication date
-    return blogPosts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    // Show recently substantively updated articles first, preserving publication date as a tie-breaker.
+    return blogPosts.sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime() || new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
   } catch (error) {
     console.error('Error loading blog posts:', error);
     return [];
