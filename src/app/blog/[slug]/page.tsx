@@ -134,7 +134,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
         url: canonicalUrl,
         datePublished: /^\d{4}-\d{2}-\d{2}$/.test(post.publishedAt) ? `${post.publishedAt}T00:00:00Z` : post.publishedAt,
         dateModified: /^\d{4}-\d{2}-\d{2}$/.test(post.lastUpdated) ? `${post.lastUpdated}T00:00:00Z` : post.lastUpdated,
-        author: { '@type': 'Organization', name: post.author, url: absoluteUrl('/about') },
+        author: { '@type': 'Organization', name: post.author },
         publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
       },
       breadcrumbList([
