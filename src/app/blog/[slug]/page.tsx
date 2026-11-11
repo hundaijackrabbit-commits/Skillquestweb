@@ -176,10 +176,12 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
               <User className="mr-2 h-4 w-4" />
               {post.author}
             </div>
-            <div className="flex items-center">
-              <Calendar className="mr-2 h-4 w-4" />
-              <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
-            </div>
+            {post.lastUpdated !== '1970-01-01' && (
+              <div className="flex items-center">
+                <Calendar className="mr-2 h-4 w-4" />
+                <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
+              </div>
+            )}
             <div className="flex items-center">
               <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
@@ -192,7 +194,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             )}
           </div>
 
-          {post.publishedAt !== post.lastUpdated && (
+          {post.publishedAt !== '1970-01-01' && post.lastUpdated !== '1970-01-01' && post.publishedAt !== post.lastUpdated && (
             <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Last updated on the date above.</p>
           )}
 
