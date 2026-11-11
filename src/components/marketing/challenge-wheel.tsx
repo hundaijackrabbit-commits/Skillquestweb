@@ -24,6 +24,11 @@ export function ChallengeWheel() {
     const previous = ((rotation % 360) + 360) % 360;
     const desired = (360 - (next * 60 + 30)) % 360;
     const delta = ((desired - previous + 360) % 360) + 1440;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setRotation((value) => value + delta);
+      setSelected(next);
+      return;
+    }
     setSelected(null);
     setSpinning(true);
     setRotation((value) => value + delta);
