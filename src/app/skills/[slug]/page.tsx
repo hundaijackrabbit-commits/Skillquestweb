@@ -195,7 +195,6 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "definition", title: "The essential idea", text: skill.shortDefinition }, ...skill.beginnerActions.slice(0, 2).map((text, index) => ({ id: `starter-${index}`, title: `Try it: step ${index + 1}`, text }))]} />
         <Breadcrumbs
           className="mb-8"
           items={[
@@ -298,6 +297,8 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </div>
           </div>
         </div>
+
+        <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "definition", title: "The essential idea", text: skill.shortDefinition }, ...skill.beginnerActions.slice(0, 2).map((text, index) => ({ id: `starter-${index}`, title: `Try it: step ${index + 1}`, text }))]} />
 
         <ManagedAdSlot placement="skill-inline" />
 
