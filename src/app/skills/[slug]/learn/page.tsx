@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, Clock3, Sparkles } from 'lucide-react';
 import { CourseRunner } from '@/components/learning/course-runner';
 import { getAllSkillCourses, getSkillCourse } from '@/lib/courses';
+import { getWorkshopForSkill } from '@/lib/workshops';
 import { getSkillBySlug } from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
@@ -101,6 +102,7 @@ export default async function SkillCoursePage({ params }: Props) {
           course={course}
           skillName={skill.name}
           relatedSkillHref={`/skills/${skill.slug}`}
+          workshopHref={getWorkshopForSkill(skill.slug) ? `/learn/workshops/${getWorkshopForSkill(skill.slug)!.slug}` : null}
         />
       </div>
     </div>
