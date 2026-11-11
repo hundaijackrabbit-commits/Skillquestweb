@@ -1,3 +1,4 @@
+import { LearningActionPath } from '@/components/learning/learning-action-path';
 import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
@@ -202,6 +203,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           </div>
         </div>
 
+        <LearningActionPath title={`Explore a path into ${career.title}`} description="Practical entry strategies from this career guide. Read the complete career profile below for qualifications, work environments and further details." steps={career.beginnerEntryStrategies ?? []} />
         <LearningPageNavigator containerId="learning-page-content" />
         <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
