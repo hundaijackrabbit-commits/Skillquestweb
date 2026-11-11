@@ -51,7 +51,7 @@ function humanize(value: string) {
 export async function generateStaticParams() {
   const careers = await getAllCareers();
   
-  return careers.filter(isCareerIndexable).map((career) => ({
+  return careers.map((career) => ({
     slug: career.slug,
   }));
 }
@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
     title,
     description,
     alternates: { canonical: `/careers/${career.slug}` },
-    robots: { index: isCareerIndexable(career), follow: true },
+    robots: { index: true, follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
 }
