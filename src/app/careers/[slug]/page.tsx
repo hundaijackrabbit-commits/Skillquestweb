@@ -4,6 +4,7 @@ import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights'
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -537,6 +538,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </div>
           </div>
         </div>
+      <div className="mx-auto mt-12 max-w-5xl px-4"><CareerGuidePromo /></div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -286,6 +287,9 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
           </div>
         )}
 
+        {/**** Career-focused readers can access the workbook without cluttering the global menu. ****/}
+        {/**** Match career planning, job search, and professional development topics. ****/}
+        {/(career|job|interview|professional|goal|skill|learning|work)/i.test(`${post.title} ${post.excerpt}`) && <div className="my-10"><CareerGuidePromo /></div>}
         <NextStepPrompt context="article" />
 
         <div className="mt-12 text-center">

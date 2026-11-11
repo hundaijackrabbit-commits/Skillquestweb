@@ -12,13 +12,13 @@ const navigation = {
     { name: 'Learning Paths', href: '/paths', icon: BookOpen },
     { name: 'Blog', href: '/blog', icon: PenTool },
     { name: 'Community', href: '/community', icon: Users },
-    { name: 'Free Career Guide', href: '/free-career-guide', icon: Gift },
+
   ],
   company: [
     { name: 'About', href: '/about' },
     { name: 'Privacy', href: '/privacy' },
     { name: 'Member sign in', href: '/auth' },
-    { name: 'Admin sign in', href: '/admin/login' },
+
   ],
 };
 
@@ -60,6 +60,11 @@ export function Footer() {
           </div>
 
           <div id="newsletter">
+            <div className="mb-7 rounded-2xl border border-violet-200 bg-white p-5">
+              <h3 className="font-bold text-slate-900">Need help choosing your next step?</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Use our free Career & Life Map to turn ideas into a practical plan.</p>
+              <Link href="/free-career-guide" className="mt-3 inline-flex text-sm font-bold text-violet-700 hover:text-violet-900">Explore the free guide →</Link>
+            </div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900">One useful skill every week</h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">Get practical skills, career ideas, and modern-work insights worth keeping.</p>
             <NewsletterForm source="footer" compact className="mt-5" />
