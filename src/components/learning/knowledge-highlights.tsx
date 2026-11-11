@@ -33,7 +33,7 @@ export function KnowledgeHighlights({ kind, slug, name, insights }: Props) {
       const missing = localIds.filter((id) => valid.has(id) && !cloudIds.includes(id));
       if (missing.length) {
         const rows = missing.map((id) => { const item = insights.find((x) => x.id === id)!; return { user_id: user.id, kind, item_slug: slug, insight_id: id, title: item.title, body: item.text }; });
-        const { error: insertError } = await supabase.from('knowledge_highlights').upsert(rows, { onConflict: 'user_id,kind,item_slug,insight_id' });
+        const { error: insertError } = await supabase.from('knowledge_highlights').insert(rows);
         if (insertError) { setSyncState('error'); return; }
       }
       if (!cancelled) {
@@ -59,8 +59,8 @@ export function KnowledgeHighlights({ kind, slug, name, insights }: Props) {
     const query = supabase.from('knowledge_highlights');
     const { error } = saved.includes(id)
       ? await query.delete().eq('user_id', user.id).eq('kind', kind).eq('item_slug', slug).eq('insight_id', id)
-      : await query.upsert({ user_id: user.id, kind, item_slug: slug, insight_id: id, title: item.title, body: item.text }, { onConflict: 'user_id,kind,item_slug,insight_id' });
-    if (error) { setSyncState('error'); setSaved(saved); } else setSyncState('synced');
+      : await query.insert({ user_id: user.id, kind, item_slug: slug, insight_id: id, title: item.title, body: item.text });
+    if (error) { setSyncState('error'); setSaved(saved); try { window.localStorage.setItem(key, JSON.stringify(saved)); } catch {} } else setSyncState('synced');
   }
 
   if (!insights.length) return null;
