@@ -62,7 +62,12 @@ const careerDirections = [
 ] as const;
 
 function humanize(value: string) {
-  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .replace(/\bAi\b/g, 'AI')
+    .replace(/\bHr\b/g, 'HR')
+    .replace(/\bUx\b/g, 'UX')
+    .replace(/\bSeo\b/g, 'SEO')
+    .replace(/\bSem\b/g, 'SEM');
 }
 
 export default async function CareersPage() {
