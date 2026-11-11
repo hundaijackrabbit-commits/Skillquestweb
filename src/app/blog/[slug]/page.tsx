@@ -71,7 +71,7 @@ const mdxComponents = {
 
 export async function generateStaticParams() {
   const blogPosts = await getAllBlogPosts();
-  return blogPosts.filter(isBlogPostIndexable).map((post) => ({
+  return blogPosts.map((post) => ({
     slug: post.slug,
   }));
 }
@@ -91,7 +91,7 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
     title: post.title,
     description,
     alternates: { canonical: `/blog/${post.slug}` },
-    robots: { index: isBlogPostIndexable(post), follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${post.title} | Modern Skill Lab`,
       description,
