@@ -8,6 +8,7 @@ import path from 'node:path';
 
 const dir = path.join(process.cwd(), 'src/content/blog');
 const cutoff = '2026-11-01';
+const today = '2026-11-10';
 const files = fs.readdirSync(dir).filter((name) => name.endsWith('.mdx')).sort();
 const report = files.map((file) => {
   const source = fs.readFileSync(path.join(dir, file), 'utf8');
@@ -19,19 +20,35 @@ const report = files.map((file) => {
   };
   const lastUpdated = field('lastUpdated');
   const publishedAt = field('publishedAt');
-  const hasSource = /https?:\/\//.test(source.replace(frontmatter?.[0] ?? '', ''));
+  const body = source.replace(frontmatter?.[0] ?? '', '');
+  const sourceUrls = [...body.matchAll(/https?:\/\/[^\s)]+/g)].map((match) => match[0]);
+  const hasSource = sourceUrls.length > 0;
+  const internalBlogLinks = [...body.matchAll(/\]\(\/blog\/([^)#?]+)(?:[)#?])/g)].map((match) => match[1]);
+  const datedRevisionNotes = [...body.matchAll(/(?:updated|revised|rewritten|reviewed)[^\n.]{0,100}(?:August|September|October) 2026/gi)].map((match) => match[0]);
   const flags = [];
   if (!frontmatter) flags.push('missing-frontmatter');
   if (!publishedAt) flags.push('missing-publishedAt');
   if (!lastUpdated) flags.push('missing-lastUpdated');
   if (lastUpdated && lastUpdated < cutoff) flags.push('needs-november-review');
-  if (lastUpdated && lastUpdated > '2026-11-30') flags.push('future-dated');
+  if (lastUpdated && lastUpdated > today) flags.push('future-dated');
+  if (publishedAt && lastUpdated && lastUpdated < publishedAt) flags.push('update-before-publication');
+  if (lastUpdated >= cutoff && sourceUrls.length < 2) flags.push('few-evidence-links');
+  if (lastUpdated >= cutoff && !/November 2026/i.test(body)) flags.push('missing-november-context');
+  if (datedRevisionNotes.length && lastUpdated >= cutoff && !/November 2026/i.test(body.slice(-2200))) flags.push('old-revision-note-needs-context');
   if (!hasSource) flags.push('no-external-source-in-body');
-  return { file, title: field('title'), publishedAt, lastUpdated, hasSource, flags };
+  return { file, title: field('title'), publishedAt, lastUpdated, sourceCount: sourceUrls.length, internalBlogLinks, datedRevisionNotes, hasSource, flags };
 });
+const knownSlugs = new Set(report.map((row) => path.basename(row.file, '.mdx')));
+for (const row of report) {
+  for (const slug of row.internalBlogLinks) {
+    if (!knownSlugs.has(slug)) row.flags.push('unresolved-blog-link:' + slug);
+  }
+}
 console.log(JSON.stringify({
   auditMonth: '2026-11',
   totalArticles: report.length,
   needingReview: report.filter((row) => row.flags.length > 0).length,
   articles: report,
 }, null, 2));
+
+if (process.argv.includes('--strict') && report.some((row) => row.flags.length > 0)) process.exitCode = 1;
