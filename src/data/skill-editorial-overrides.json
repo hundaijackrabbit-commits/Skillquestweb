@@ -681,5 +681,97 @@
       "W3C, WCAG 2.2: https://www.w3.org/TR/WCAG22/"
     ],
     "lastUpdated": "2026-11-10"
+  },
+  "deep-learning": {
+    "shortDefinition": "Deep learning is a branch of machine learning that trains multilayer neural networks to learn representations from data for tasks such as image recognition, language processing, and prediction.",
+    "fullDefinition": "Deep learning practitioners formulate a task, prepare and split datasets, choose a neural-network architecture, train with a defined loss and optimization method, and evaluate on data not used for tuning. They diagnose overfitting, underfitting, data leakage, class imbalance, and distribution shift; compare results with simpler baselines; and consider compute cost, latency, interpretability, safety, and maintenance before deployment. Architectures such as convolutional networks and transformers suit different data and tasks, but no architecture replaces careful evaluation.",
+    "whyItMatters": "Neural networks can learn complex patterns that are difficult to specify as rules, particularly from images, audio, and text. They also introduce risks: unreliable behavior on unfamiliar inputs, high computational cost, and apparent benchmark improvements that do not translate into operational value.",
+    "modernRelevance": "Pretrained and foundation models allow teams to adapt deep-learning systems without training from scratch. Responsible adoption still requires representative evaluation, licensing and privacy checks, failure analysis, human oversight where warranted, and monitoring for changing conditions.",
+    "realWorldScenarios": [
+      "Compare a pretrained image classifier with a simpler baseline on a documented holdout set; inspect errors across lighting conditions and device types.",
+      "Fine-tune a text classifier for support-ticket routing, evaluate low-confidence cases, and send ambiguous predictions for human review.",
+      "Measure the latency, memory use, and quality of a neural model before deciding whether it can run within a mobile application."
+    ],
+    "beginnerActions": [
+      "Train a small neural network on a public dataset and plot training and validation loss to identify overfitting.",
+      "Explain gradient descent, backpropagation, train/validation/test splits, and the role of a baseline."
+    ],
+    "intermediateActions": [
+      "Adapt a pretrained model to a narrow task and document dataset provenance, evaluation metrics, and failure cases.",
+      "Run controlled experiments varying learning rate, batch size, or regularization while keeping a held-out test set untouched."
+    ],
+    "advancedActions": [
+      "Design monitoring for model drift, latency, safety, and rollback in a deployed deep-learning application.",
+      "Assess whether model compression, distillation, or a simpler approach better meets performance and cost requirements."
+    ],
+    "commonMistakes": [
+      "Evaluating repeatedly on the final test set",
+      "Ignoring data leakage or label quality",
+      "Choosing a large model without a baseline or cost analysis",
+      "Treating aggregate accuracy as proof of reliability for every user group"
+    ],
+    "coreSubskills": [
+      "Neural-network fundamentals",
+      "Training and optimization",
+      "Dataset design",
+      "Model evaluation",
+      "Transfer learning",
+      "Error analysis and robustness",
+      "Deployment and monitoring"
+    ],
+    "howToPractice": "Reproduce a small benchmark using a documented dataset, compare against a simple baseline, track training runs, inspect incorrect predictions, and publish a concise model card describing limits.",
+    "howToMeasureProgress": "Track held-out performance, robustness across relevant subgroups, reproducibility, inference latency, compute cost, and documented handling of failure cases.",
+    "evidenceSummary": "Evidence of competence includes reproducible experiments, appropriately separated evaluation data, baseline comparisons, error analysis, and a deployment or monitoring plan.",
+    "scholarlyNotes": [
+      "Goodfellow, Bengio and Courville, Deep Learning (MIT Press): https://www.deeplearningbook.org/",
+      "PyTorch Tutorials: https://docs.pytorch.org/tutorials/"
+    ],
+    "lastUpdated": "2026-11-10"
+  },
+  "sql": {
+    "shortDefinition": "SQL is the language used to retrieve, combine, summarize, and modify data in relational databases while preserving the meaning and integrity of the underlying records.",
+    "fullDefinition": "Working with SQL requires understanding tables, keys, relationships, data types, null values, filtering, joins, aggregation, window functions, and query execution. Reliable practitioners define the grain of each dataset, check whether joins multiply rows, handle missing values deliberately, and validate totals against known controls. For production work they also consider permissions, parameterized queries, transactions, indexes, and database-specific behavior.",
+    "whyItMatters": "SQL underpins reporting, analytics, and many applications. An incorrect join or filter can produce plausible-looking but misleading results, while unsafe queries can expose sensitive data or damage records.",
+    "modernRelevance": "AI assistants can generate SQL, but users must verify schema assumptions, row counts, business definitions, access controls, and query plans. Sound SQL work depends on reasoning about the data, not merely producing syntactically valid statements.",
+    "realWorldScenarios": [
+      "Join orders to customers and verify that a customer-level report does not accidentally count each order twice.",
+      "Use a window function to calculate monthly revenue trends while preserving individual transactions for audit.",
+      "Investigate a slow dashboard query using an execution plan and add an appropriate index after measuring the effect."
+    ],
+    "beginnerActions": [
+      "Write SELECT queries with WHERE, ORDER BY, GROUP BY, and aggregate functions on a sample database.",
+      "Practice INNER and LEFT JOINs, checking unmatched rows and duplicate keys."
+    ],
+    "intermediateActions": [
+      "Use common table expressions and window functions to calculate cohorts or rolling metrics.",
+      "Validate a business report with row-count checks, null handling, and independently computed totals."
+    ],
+    "advancedActions": [
+      "Optimize a slow query using execution plans and measured indexing changes.",
+      "Design a transaction-safe data update with parameterized queries, least-privilege access, and a rollback plan."
+    ],
+    "commonMistakes": [
+      "Joining on nonunique keys without checking row multiplication",
+      "Confusing NULL with zero or an empty string",
+      "Using SELECT * in sensitive or large production queries",
+      "Building SQL strings from untrusted input instead of using parameters"
+    ],
+    "coreSubskills": [
+      "Relational data modeling",
+      "Filtering and joins",
+      "Aggregation",
+      "Window functions",
+      "Query validation",
+      "Performance tuning",
+      "Transactions and permissions"
+    ],
+    "howToPractice": "Use a small relational database to answer a concrete business question, document the grain of each table, verify counts before and after joins, and explain every transformation.",
+    "howToMeasureProgress": "Check query correctness against known totals, execution time on representative data, readability, and safe handling of inputs and permissions.",
+    "evidenceSummary": "Useful evidence includes correct and reviewed queries, documented assumptions, reconciled outputs, measured performance, and safe data-access practices.",
+    "scholarlyNotes": [
+      "PostgreSQL documentation, SQL language: https://www.postgresql.org/docs/current/sql.html",
+      "OWASP SQL Injection Prevention Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+    ],
+    "lastUpdated": "2026-11-10"
   }
 }
