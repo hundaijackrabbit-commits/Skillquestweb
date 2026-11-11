@@ -108,6 +108,37 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="pb-12 sm:pb-16" aria-labelledby="member-benefits-title">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-[0_24px_80px_-30px_rgba(49,46,129,0.5)] sm:p-10">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.38),transparent_40%),radial-gradient(circle_at_5%_95%,rgba(14,165,233,0.28),transparent_45%)]" />
+            <div className="relative">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">Free membership · No paid tier</p>
+              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">Don't just read about skills. Build them.</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200">Your free account turns the library into a personal learning space with challenges, progress and real-world practice.</p>
+              <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  { icon: Trophy, title: 'Earn XP & achievements', description: 'Make your practice visible.' },
+                  { icon: Flame, title: 'Build a learning streak', description: 'Keep small wins going.' },
+                  { icon: Brain, title: 'Try skill missions', description: 'Practice with useful challenges.' },
+                  { icon: BookOpen, title: 'Save your skills', description: 'Return to what matters.' },
+                ].map((item) => (
+                  <div key={item.title} className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
+                    <div className="inline-flex rounded-xl bg-white/15 p-2 text-cyan-200"><item.icon className="h-5 w-5" aria-hidden="true" /></div>
+                    <h3 className="mt-3 font-semibold text-white">{item.title}</h3>
+                    <p className="mt-1 text-sm text-slate-300">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/auth?mode=signup&redirect=%2Flearn" className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-100">Start learning free <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+                <Link href="/learn" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Explore Practice Lab</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="pb-4 sm:pb-8">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
