@@ -340,8 +340,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           excerpt: frontmatter.excerpt || '',
           content: postContent,
           author: frontmatter.author || 'Modern Skill Lab Team',
-          publishedAt: frontmatter.publishedAt || new Date().toISOString(),
-          lastUpdated: frontmatter.lastUpdated || new Date().toISOString(),
+          // Missing editorial dates must not masquerade as a fresh publication or review.
+          // The quality gate can flag missing metadata instead of silently using today's date.
+          publishedAt: frontmatter.publishedAt || '1970-01-01',
+          lastUpdated: frontmatter.lastUpdated || frontmatter.publishedAt || '1970-01-01',
           reviewedBy: frontmatter.reviewedBy || undefined,
           evidenceNote: frontmatter.evidenceNote || undefined,
           tags: frontmatter.tags || [],
