@@ -31,7 +31,7 @@ function humanize(value: string) {
 }
 
 export default async function SkillPathsPage() {
-  const paths = (await getSkillPaths()).filter(isSkillPathIndexable);
+  const paths = (await getSkillPaths());
   const featuredPaths = paths.filter(path => path.featured);
   const topicPathGroups = TOPICS
     .map((topic) => ({ topic, paths: paths.filter((path) => path.category === topic.slug) }))
