@@ -36,7 +36,6 @@ import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import {
-  assessSkillContentQuality,
   isSkillFieldEditoriallyUseful,
 } from '@/lib/content-quality';
 import {
@@ -96,7 +95,6 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
 
   const title = `${skill.name}: Practical Skill Guide`;
   const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
-  const quality = assessSkillContentQuality(skill);
 
   return {
     title,
