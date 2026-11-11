@@ -18,7 +18,6 @@ import { ContentViewTracker } from '@/components/analytics/content-view-tracker'
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
-import { isCareerIndexable } from '@/lib/content-quality';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { SaveCareerButton } from '@/components/careers/save-career-button';
