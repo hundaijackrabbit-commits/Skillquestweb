@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'A-Z Skills Index',
-  description: 'Browse Modern Skill Lab's editorially selected professional skills alphabetically.',
+  description: "Browse Modern Skill Lab's editorially selected professional skills alphabetically.",
   alternates: { canonical: '/skills/a-z' },
 };
 
