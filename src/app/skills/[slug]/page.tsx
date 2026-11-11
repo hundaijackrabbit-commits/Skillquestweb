@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   getSkillBySlug,
-  getIndexableSkills,
+  getCanonicalSkills,
   getRelatedSkills,
   getCareersForSkill,
   getCanonicalSkillForSlug,
@@ -75,7 +75,7 @@ interface SkillDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  const skills = await getIndexableSkills();
+  const skills = await getCanonicalSkills();
   return skills.map((skill) => ({
     slug: skill.slug,
   }));
@@ -103,7 +103,7 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
     alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
-    robots: { index: quality.indexable, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
       description,
