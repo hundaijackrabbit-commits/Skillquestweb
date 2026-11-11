@@ -17,6 +17,7 @@ export function ChallengeWheel() {
   const [selected, setSelected] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
+  const [pending, setPending] = useState<number | null>(null);
 
   function spin() {
     if (spinning) return;
@@ -29,6 +30,7 @@ export function ChallengeWheel() {
       setSelected(next);
       return;
     }
+    setPending(next);
     setSelected(null);
     setSpinning(true);
     setRotation((value) => value + delta);
@@ -46,7 +48,7 @@ export function ChallengeWheel() {
         </div>
         <div className="relative mx-auto w-full max-w-[340px]">
           <div className="absolute left-1/2 top-[-8px] z-10 h-0 w-0 -translate-x-1/2 border-x-[13px] border-t-[23px] border-x-transparent border-t-slate-900" aria-hidden="true" />
-          <div aria-hidden="true" className="aspect-square rounded-full border-[9px] border-white shadow-[0_18px_55px_-20px_rgba(88,28,135,0.45)]" style={{ background: 'conic-gradient(#f0abfc 0deg 60deg,#93c5fd 60deg 120deg,#fde68a 120deg 180deg,#86efac 180deg 240deg,#c4b5fd 240deg 300deg,#fda4af 300deg 360deg)', transform: `rotate(${rotation}deg)`, transition: spinning ? 'transform 2.2s cubic-bezier(.13,.75,.16,1)' : 'none' }} onTransitionEnd={() => { if (spinning) { const angle = ((360 - rotation % 360 + 360) % 360); setSelected(Math.floor(angle / 60) % challenges.length); setSpinning(false); } }}>
+          <div aria-hidden="true" className="aspect-square rounded-full border-[9px] border-white shadow-[0_18px_55px_-20px_rgba(88,28,135,0.45)]" style={{ background: 'conic-gradient(#f0abfc 0deg 60deg,#93c5fd 60deg 120deg,#fde68a 120deg 180deg,#86efac 180deg 240deg,#c4b5fd 240deg 300deg,#fda4af 300deg 360deg)', transform: `rotate(${rotation}deg)`, transition: spinning ? 'transform 2.2s cubic-bezier(.13,.75,.16,1)' : 'none' }} onTransitionEnd={(event) => { if (event.propertyName === 'transform' && spinning && pending !== null) { setSelected(pending); setPending(null); setSpinning(false); } }}>
             <div className="flex h-full items-center justify-center"><div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-slate-950 text-center text-sm font-extrabold text-white shadow-lg">SKILL<br/>SPIN</div></div>
           </div>
         </div>
