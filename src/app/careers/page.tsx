@@ -110,6 +110,22 @@ export default async function CareersPage() {
           </div>
         </section>
 
+        <section className="mt-12 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8" aria-labelledby="career-research-heading">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-700">Evidence and context</p>
+          <h2 id="career-research-heading" className="mt-2 text-2xl font-bold text-slate-950">What current research says about changing skills</h2>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-700">
+            The World Economic Forum&apos;s 2025 employer survey estimates that 39% of workers&apos; core skills may change by 2030. That is a forecast across surveyed employers, not a prediction that every individual career will change at the same rate.
+          </p>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-700">
+            OECD research published in 2026 emphasizes that AI-related work is not limited to advanced programming: many workers need digital literacy, the ability to interpret data, and sound judgment. Requirements vary by sector, occupation, and region. Compare the specific skills in each career profile rather than assuming one trend fits every role.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-4 text-sm font-semibold">
+            <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">WEF: Skills outlook (2025)</a>
+            <a href="https://www.oecd.org/en/publications/ai-and-skills_f843b352-en/full-report.html" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">OECD: AI and skills (2026)</a>
+            <a href="https://www.oecd.org/en/publications/skills-in-the-ai-age_972bd15e-en.html" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">OECD: Skills in the AI age (2026)</a>
+          </div>
+        </section>
+
         {/* Featured Careers Section */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">Featured Career Paths</h2>
