@@ -6,17 +6,14 @@ import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSupabase } from '@/components/providers/supabase-provider';
-import { Search, Menu, X, BookOpen, Briefcase, PenTool, User, LogOut, Sparkles, Route, Trophy, Layers3, Gift, Users } from 'lucide-react';
+import { Search, Menu, X, BookOpen, Briefcase, User, LogOut, Sparkles, Route, Trophy, Users } from 'lucide-react';
 
 const navigation = [
   { name: 'Skills', href: '/skills', icon: BookOpen },
-  { name: 'Topics', href: '/topics', icon: Layers3 },
-  { name: 'Practice Lab', href: '/learn', icon: Trophy },
   { name: 'Careers', href: '/careers', icon: Briefcase },
-  { name: 'Paths', href: '/paths', icon: Route },
+  { name: 'Learning Paths', href: '/paths', icon: Route },
+  { name: 'Practice', href: '/learn', icon: Trophy },
   { name: 'Community', href: '/community', icon: Users },
-  { name: 'Blog', href: '/blog', icon: PenTool },
-  { name: 'Free Guide', href: '/free-career-guide', icon: Gift },
 ];
 
 export function Header() {
@@ -159,7 +156,7 @@ export function Header() {
                     <Link href="/dashboard" className="block w-full" onClick={() => closeMobileMenu()}>
                       <Button asChild variant="ghost" size="sm" className="min-h-11 w-full justify-center">
                         <User className="mr-2 h-4 w-4" />
-                        My Profile
+                        My Dashboard
                       </Button>
                     </Link>
                     <Button
@@ -257,7 +254,7 @@ export function Header() {
               <Link href="/dashboard">
                 <Button asChild variant="ghost" size="sm" className="text-slate-700">
                   <User className="mr-2 h-4 w-4" />
-                  My Profile
+                  My Dashboard
                 </Button>
               </Link>
               <Button variant="outline" size="sm" onClick={() => void signOut()}>

@@ -119,7 +119,7 @@ export default async function DashboardPage() {
 
   return (
     <>
-    <KnowledgeVault items={vaultItems} />
+
     <PersonalDashboardClient
       member={{
         email: user.email ?? 'member',
@@ -140,6 +140,7 @@ export default async function DashboardPage() {
       savedSkills={savedSkills}
       savedCareers={savedCareers}
     />
+    <KnowledgeVault items={vaultItems} />
     </>
   );
 }
