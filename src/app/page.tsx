@@ -11,6 +11,7 @@ import { getAllSkillCourses } from '@/lib/courses';
 import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { DiscoveryQuiz } from '@/components/marketing/discovery-quiz';
+import { ChallengeWheel } from '@/components/marketing/challenge-wheel';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,8 +43,8 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b bg-gradient-to-b from-slate-50 via-white to-white">
-        <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.14),transparent_55%)]" />
+      <section className="relative overflow-hidden border-b border-indigo-100 bg-gradient-to-br from-sky-50 via-white to-fuchsia-50">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(56,189,248,0.22),transparent_36%),radial-gradient(circle_at_88%_18%,rgba(217,70,239,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(250,204,21,0.12),transparent_42%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
           <div>
             <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold">Practical skills for modern work</Badge>
@@ -55,7 +56,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_20px_70px_-35px_rgba(15,23,42,0.4)]">
+          <div className="rounded-3xl border border-indigo-100 bg-white/95 p-6 shadow-[0_24px_80px_-30px_rgba(79,70,229,0.3)] ring-1 ring-white">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div><p className="text-sm font-medium text-slate-500">Your next useful idea</p><h2 className="mt-1 text-xl font-semibold text-slate-900">{growth.marketing.newsletterHeadline}</h2></div>
               <div className="rounded-2xl bg-blue-600/10 p-3 text-blue-600"><Sparkles className="h-5 w-5" /></div>
@@ -122,6 +123,10 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
+      </section>
+
+      <section className="pb-12 sm:pb-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8"><ChallengeWheel /></div>
       </section>
 
       <section className="pb-16 sm:pb-20">
