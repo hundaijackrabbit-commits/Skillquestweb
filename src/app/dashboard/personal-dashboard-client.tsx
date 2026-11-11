@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
+import { KnowledgeVault, type VaultItem } from '@/components/learning/knowledge-vault';
 import {
   ArrowRight,
   BookOpen,
@@ -52,6 +53,7 @@ type SavedItem = {
 };
 
 type Props = {
+  vaultItems: VaultItem[];
   member: {
     email: string;
     createdAt: string;
@@ -191,7 +193,7 @@ function SavedCollection({
   );
 }
 
-export function PersonalDashboardClient({ member, profile, industries, fitMap, savedSkills, savedCareers }: Props) {
+export function PersonalDashboardClient({ member, profile, industries, fitMap, savedSkills, savedCareers, vaultItems }: Props) {
   const { signOut } = useSupabase();
   const [editing, setEditing] = useState(false);
   const [activeArea, setActiveArea] = useState<'direction' | 'saved' | 'progress' | null>(null);
@@ -441,6 +443,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
 
         </div>
         <div className={activeArea === 'saved' ? '' : 'hidden'}>
+        <KnowledgeVault items={vaultItems} />
         <section id="favourites" className="scroll-mt-36 pt-16" aria-labelledby="favourites-title">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>

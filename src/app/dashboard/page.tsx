@@ -1,4 +1,4 @@
-import { KnowledgeVault, type VaultItem } from '@/components/learning/knowledge-vault';
+import { type VaultItem } from '@/components/learning/knowledge-vault';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getAllCareers, getAllIndustries, getIndexableSkills, getCanonicalSkills } from '@/lib/content';
@@ -121,6 +121,7 @@ export default async function DashboardPage() {
     <>
 
     <PersonalDashboardClient
+      vaultItems={vaultItems}
       member={{
         email: user.email ?? 'member',
         createdAt: user.created_at,
@@ -140,7 +141,7 @@ export default async function DashboardPage() {
       savedSkills={savedSkills}
       savedCareers={savedCareers}
     />
-    <KnowledgeVault items={vaultItems} />
+
     </>
   );
 }
