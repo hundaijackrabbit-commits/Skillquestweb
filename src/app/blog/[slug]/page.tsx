@@ -97,8 +97,8 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
       description,
       type: 'article',
       url: `/blog/${post.slug}`,
-      publishedTime: post.publishedAt,
-      modifiedTime: post.lastUpdated,
+      publishedTime: post.publishedAt === '1970-01-01' ? undefined : post.publishedAt,
+      modifiedTime: post.lastUpdated === '1970-01-01' ? undefined : post.lastUpdated,
       authors: [post.author],
     },
   };
@@ -130,9 +130,10 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
         '@type': 'BlogPosting',
         headline: post.title,
         description: post.excerpt,
-        mainEntityOfPage: canonicalUrl,
-        datePublished: post.publishedAt,
-        dateModified: post.lastUpdated,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+        url: canonicalUrl,
+        ...(post.publishedAt !== '1970-01-01' ? { datePublished: post.publishedAt } : {}),
+        ...(post.lastUpdated !== '1970-01-01' ? { dateModified: post.lastUpdated } : {}),
         author: { '@type': 'Organization', name: post.author },
         publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
       },
@@ -175,22 +176,26 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
               <User className="mr-2 h-4 w-4" />
               {post.author}
             </div>
-            <div className="flex items-center">
-              <Calendar className="mr-2 h-4 w-4" />
-              <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
-            </div>
+            {post.lastUpdated !== '1970-01-01' && (
+              <div className="flex items-center">
+                <Calendar className="mr-2 h-4 w-4" />
+                <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
+              </div>
+            )}
             <div className="flex items-center">
               <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
             </div>
-            <div className="flex items-center">
-              <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
-              Editorially reviewed
-            </div>
+            {post.reviewedBy && (
+              <div className="flex items-center">
+                <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
+                Editorially reviewed
+              </div>
+            )}
           </div>
 
-          {post.publishedAt !== post.lastUpdated && (
-            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Substantially reviewed and updated on the date above.</p>
+          {post.publishedAt !== '1970-01-01' && post.lastUpdated !== '1970-01-01' && post.publishedAt !== post.lastUpdated && (
+            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Last updated on the date above.</p>
           )}
 
           <ArticleActions slug={post.slug} />

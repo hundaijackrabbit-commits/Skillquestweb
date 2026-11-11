@@ -1,16 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getCanonicalSkills } from '@/lib/content';
+import { getIndexableSkills } from '@/lib/content';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'A-Z Skills Index',
-  description: 'Browse the complete Modern Skill Lab professional skills library alphabetically.',
+  description: "Browse Modern Skill Lab's editorially selected professional skills alphabetically.",
   alternates: { canonical: '/skills/a-z' },
 };
 
 export default async function SkillsAZPage() {
-  const skills = (await getCanonicalSkills()).sort((a, b) => a.name.localeCompare(b.name));
+  const skills = (await getIndexableSkills()).sort((a, b) => a.name.localeCompare(b.name));
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const groups = letters.map((letter) => ({ letter, skills: skills.filter((skill) => skill.name.toUpperCase().startsWith(letter)) })).filter((group) => group.skills.length);
 
@@ -18,12 +18,12 @@ export default async function SkillsAZPage() {
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Skills', href: '/skills' }, { label: 'A-Z index' }]} />
       <header className="mt-8 max-w-3xl">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-700">Complete directory</p>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-700">Editorially selected guides</p>
         <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-950 sm:text-6xl">Skills A-Z</h1>
-        <p className="mt-5 text-lg leading-8 text-slate-600">A fast, crawlable index of every canonical skill guide in Modern Skill Lab. Use it when you know what you want, or explore topic hubs when you want help deciding what comes next.</p>
+        <p className="mt-5 text-lg leading-8 text-slate-600">A fast, crawlable index of every currently indexable skill guide in Modern Skill Lab. Use it when you know what you want, or explore topic hubs when you want help deciding what comes next.</p>
       </header>
       <nav aria-label="Alphabet" className="mt-8 flex flex-wrap gap-2 border-y border-slate-200 py-5">
-        {letters.map((letter) => <a key={letter} href={`#${letter}`} className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-sm font-bold text-slate-700 hover:border-blue-400 hover:text-blue-700">{letter}</a>)}
+        {letters.map((letter) => groups.some((group) => group.letter === letter) ? <a key={letter} href={`#${letter}`} className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-sm font-bold text-slate-700 hover:border-blue-400 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">{letter}</a> : <span key={letter} aria-label={`No guides under ${letter}`} className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-100 text-sm font-bold text-slate-400">{letter}</span>)}
       </nav>
       <div className="mt-10 space-y-12">
         {groups.map(({ letter, skills: group }) => <section key={letter} id={letter} className="scroll-mt-28">

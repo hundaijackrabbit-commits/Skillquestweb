@@ -62,7 +62,12 @@ const careerDirections = [
 ] as const;
 
 function humanize(value: string) {
-  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .replace(/\bAi\b/g, 'AI')
+    .replace(/\bHr\b/g, 'HR')
+    .replace(/\bUx\b/g, 'UX')
+    .replace(/\bSeo\b/g, 'SEO')
+    .replace(/\bSem\b/g, 'SEM');
 }
 
 export default async function CareersPage() {
@@ -102,6 +107,20 @@ export default async function CareersPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="mt-12 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8" aria-labelledby="career-research-heading">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-700">Evidence and context</p>
+          <h2 id="career-research-heading" className="mt-2 text-2xl font-bold text-slate-950">What current research says about changing skills</h2>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-700">
+            The World Economic Forum&apos;s 2025 employer survey estimates that 39% of workers&apos; core skills may change by 2030. That is a forecast across surveyed employers, not a prediction that every individual career will change at the same rate.
+          </p>
+          <p className="mt-3 max-w-4xl leading-7 text-slate-700">
+            Labour-market trends do not translate into identical requirements for every job. Compare the specific skills in each career profile, review current job postings in your region, and look for opportunities to demonstrate the skills employers actually request.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-4 text-sm font-semibold">
+            <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">WEF: Skills outlook (2025)</a>
           </div>
         </section>
 

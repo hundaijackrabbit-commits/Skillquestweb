@@ -192,7 +192,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <Breadcrumbs

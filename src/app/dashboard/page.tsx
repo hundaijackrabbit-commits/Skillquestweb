@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { getAllCareers, getAllIndustries, getIndexableSkills } from '@/lib/content';
+import { getAllCareers, getAllIndustries, getIndexableSkills, getCanonicalSkills } from '@/lib/content';
 import { isCareerIndexable } from '@/lib/content-quality';
 import {
   CAREER_INTEREST_OPTIONS,
@@ -46,8 +46,9 @@ export default async function DashboardPage() {
     redirect('/auth?mode=signin&redirect=%2Fdashboard');
   }
 
-  const [skills, allCareers, industries, profileResult, savedSkillsResult] = await Promise.all([
+  const [skills, allSkills, allCareers, industries, profileResult, savedSkillsResult] = await Promise.all([
     getIndexableSkills(),
+    getCanonicalSkills(),
     getAllCareers(),
     getAllIndustries(),
     supabase
@@ -93,7 +94,7 @@ export default async function DashboardPage() {
   );
 
   const savedSkills = savedSkillSlugs
-    .map((slug) => skills.find((skill) => skill.slug === slug || skill.id === slug))
+    .map((slug) => allSkills.find((skill) => skill.slug === slug || skill.id === slug))
     .filter((skill): skill is (typeof skills)[number] => Boolean(skill))
     .map((skill) => ({
       slug: skill.slug,
