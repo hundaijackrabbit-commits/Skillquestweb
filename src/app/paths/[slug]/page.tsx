@@ -27,7 +27,6 @@ import { getSkillCourse } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
-import { isSkillPathIndexable } from '@/lib/content-quality';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { getTopicBySlug } from '@/lib/topics';
