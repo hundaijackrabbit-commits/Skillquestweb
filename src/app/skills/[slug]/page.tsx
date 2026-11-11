@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   getSkillBySlug,
-  getIndexableSkills,
+  getCanonicalSkills,
   getRelatedSkills,
   getCareersForSkill,
   getCanonicalSkillForSlug,
@@ -36,7 +36,6 @@ import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import {
-  assessSkillContentQuality,
   isSkillFieldEditoriallyUseful,
 } from '@/lib/content-quality';
 import {
@@ -75,7 +74,7 @@ interface SkillDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  const skills = await getIndexableSkills();
+  const skills = await getCanonicalSkills();
   return skills.map((skill) => ({
     slug: skill.slug,
   }));
@@ -96,14 +95,13 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
 
   const title = `${skill.name}: Practical Skill Guide`;
   const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
-  const quality = assessSkillContentQuality(skill);
 
   return {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
     alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
-    robots: { index: quality.indexable, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
       description,

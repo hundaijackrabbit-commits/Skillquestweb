@@ -1,17 +1,16 @@
 import type { MetadataRoute } from 'next';
-import { getAllBlogPosts, getAllCareers, getAllIndustries, getIndexableSkills, getSkillPaths } from '@/lib/content';
+import { getAllBlogPosts, getAllCareers, getAllIndustries, getCanonicalSkills, getSkillPaths } from '@/lib/content';
 import { getAllSkillCourses } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
-import { isBlogPostIndexable, isCareerIndexable, isSkillPathIndexable } from '@/lib/content-quality';
 import { TOPICS } from '@/lib/topics';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 
 const lessonIntents = ['how-to','examples','techniques','mistakes','exercises'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [skills, careers, industries, posts, paths] = await Promise.all([getIndexableSkills(),getAllCareers(),getAllIndustries(),getAllBlogPosts(),getSkillPaths()]);
+  const [skills, careers, industries, posts, paths] = await Promise.all([getCanonicalSkills(),getAllCareers(),getAllIndustries(),getAllBlogPosts(),getSkillPaths()]);
   const courses = getAllSkillCourses();
-  const indexableCareers = careers.filter(isCareerIndexable); const indexablePosts = posts.filter(isBlogPostIndexable); const indexablePaths = paths.filter(isSkillPathIndexable);
+  const indexableCareers = careers; const indexablePosts = posts; const indexablePaths = paths;
   const skillDirectoryPages = Array.from({ length: Math.max(0, Math.ceil(skills.length / 30) - 1) },(_, index) => index + 2);
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl('/'), changeFrequency: 'weekly', priority: 1 },

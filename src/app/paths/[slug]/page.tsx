@@ -27,7 +27,6 @@ import { getSkillCourse } from '@/lib/courses';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
-import { isSkillPathIndexable } from '@/lib/content-quality';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { getTopicBySlug } from '@/lib/topics';
@@ -54,7 +53,7 @@ function relatedPathScore(currentSkills: Set<string>, candidateSkills: string[])
 
 export async function generateStaticParams() {
   const paths = await getSkillPaths();
-  return paths.filter(isSkillPathIndexable).map((path) => ({ slug: path.id }));
+  return paths.map((path) => ({ slug: path.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -65,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${path.name}: Learning Path`,
     description: path.description,
     alternates: { canonical: `/paths/${path.id}` },
-    robots: { index: isSkillPathIndexable(path), follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${path.name} | Modern Skill Lab`,
       description: path.description,
@@ -80,7 +79,7 @@ export default async function SkillPathDetailPage({ params }: Props) {
   const path = await getSkillPathBySlug(slug);
   if (!path) notFound();
 
-  const allPaths = (await getSkillPaths()).filter(isSkillPathIndexable);
+  const allPaths = (await getSkillPaths());
   const currentSkillReferences = new Set(path.skills.map(referenceKey));
   const relatedPaths = allPaths
     .filter((candidate) => candidate.id !== path.id)

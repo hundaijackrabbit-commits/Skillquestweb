@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getIndexableSkills } from '@/lib/content';
+import { getCanonicalSkills } from '@/lib/content';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SkillsAZPage() {
-  const skills = (await getIndexableSkills()).sort((a, b) => a.name.localeCompare(b.name));
+  const skills = (await getCanonicalSkills()).sort((a, b) => a.name.localeCompare(b.name));
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const groups = letters.map((letter) => ({ letter, skills: skills.filter((skill) => skill.name.toUpperCase().startsWith(letter)) })).filter((group) => group.skills.length);
 
