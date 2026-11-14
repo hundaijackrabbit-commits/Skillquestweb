@@ -111,7 +111,12 @@ export async function POST(request: NextRequest) {
     const reason = error instanceof Error ? error.name : 'UnknownError';
     const cause = error instanceof Error ? (error as Error & { cause?: unknown }).cause : undefined;
     const networkCode = cause && typeof cause === 'object' && 'code' in cause && typeof cause.code === 'string' ? cause.code : 'unknown';
-    console.error('Learning assistant provider request failed', { reason, networkCode });
+    const message = error instanceof Error ? error.message : '';
+    const causeName = cause instanceof Error ? cause.name : 'unknown';
+    const causeMessage = cause instanceof Error ? cause.message : '';
+    const category = /invalid url|url parse/i.test(message) ? 'invalid-url' : /fetch failed/i.test(message) ? 'fetch-failed' : /abort|timeout/i.test(message) ? 'timeout' : 'other';
+    const causeCategory = /certificate|tls|ssl/i.test(causeMessage) ? 'tls' : /dns|enotfound|eai_again/i.test(causeMessage) ? 'dns' : /connect|network|socket/i.test(causeMessage) ? 'connection' : /timeout/i.test(causeMessage) ? 'timeout' : 'other';
+    console.error('Learning assistant provider request failed', { reason, networkCode, category, causeName, causeCategory });
     return NextResponse.json({ error: 'AI assistance timed out or is unavailable.' }, { status: 502 });
   }
 }
