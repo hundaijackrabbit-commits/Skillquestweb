@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Check, Copy, Sparkles } from 'lucide-react';
 import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
 
 export function ContextualLearningHelp({ context, prompt = 'Can you explain this concept more simply?' }: { context: string; prompt?: string }) {
@@ -11,6 +11,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
   const [answer, setAnswer] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [locale, setLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
     if (loading || question.trim().length < 3) return;
     setLoading(true);
     setAnswer('');
+    setCopied(false);
     setError('');
     try {
       const response = await fetch('/api/learning-assistant', {
@@ -42,6 +44,15 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Assistance is unavailable.');
     } finally { setLoading(false); }
+  }
+
+  const answerBlocks = answer.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean);
+
+  async function copyAnswer() {
+    try {
+      await navigator.clipboard.writeText(answer);
+      setCopied(true);
+    } catch { setError('Copying is unavailable in this browser.'); }
   }
 
   return (
@@ -61,7 +72,29 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
             className="min-h-10 rounded-lg bg-indigo-700 px-4 font-semibold text-white disabled:opacity-50">
             {loading ? 'Thinking…' : 'Get explanation'}
           </button>
-          {answer && <p role="status" className="whitespace-pre-wrap rounded-lg bg-white p-3 leading-6 text-slate-800">{answer}</p>}
+          {answer && (
+            <section aria-label="AI learning explanation" className="overflow-hidden rounded-2xl border border-indigo-200 bg-white shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-white px-4 py-3">
+                <h3 className="flex items-center gap-2 font-bold text-indigo-950"><Sparkles className="h-4 w-4 text-indigo-600" aria-hidden="true" /> Your learning coach</h3>
+                <button type="button" onClick={copyAnswer} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50" aria-label="Copy AI explanation">
+                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />} {copied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+              <div role="status" aria-live="polite" className="space-y-3 px-4 py-4 text-sm leading-7 text-slate-800">
+                {answerBlocks.map((block, index) => {
+                  const lines = block.split('\n').map((line) => line.trim()).filter(Boolean);
+                  const bullets = lines.length > 1 && lines.every((line) => /^([-•*]|\d+[.)])\s+/.test(line));
+                  return bullets ? (
+                    <ul key={index} className="list-disc space-y-1 pl-5">{lines.map((line, i) => <li key={i}>{line.replace(/^([-•*]|\d+[.)])\s+/, '')}</li>)}</ul>
+                  ) : <p key={index} className="whitespace-pre-line">{block}</p>;
+                })}
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-3">
+                <p className="text-xs text-slate-500">AI guidance can be imperfect. Verify important details.</p>
+                <button type="button" onClick={() => { setQuestion('Can you give me a practical example of that?'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Ask for an example</button>
+              </div>
+            </section>
+          )}
           {error && <p role="alert" className="text-rose-700">{error}</p>}
         </div>
       )}
