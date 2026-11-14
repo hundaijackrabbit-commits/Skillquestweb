@@ -1,51 +1,64 @@
-# Knowledge Dictionary — editorial roadmap
+# Knowledge Dictionary — editorial roadmap and completion record
 
-**Target:** 80 carefully edited, distinct concepts.  
-**Current prepared count:** 56 / 80 (**70%**); 24 remaining.  
-**Starting count:** 24; first expansion adds 32.
+**Target:** 80 distinct, edited concepts.  
+**Prepared count:** 80 / 80 (**100% of the defined editorial target**).  
+**Published baseline:** 24 terms. **Expansion 1:** 32 terms. **Expansion 2:** 24 terms.  
+**Quality status:** Definitions, purpose, practical examples and aliases checked in source. Deployment and live page checks are reported separately.
 
 ## Why 80?
 
-Modern Skill Lab currently has 1,560 skill records, 103 career records, and 20 MDX blog files. The dictionary is not a substitute for those guides. It should define cross-cutting language that readers encounter in several content areas and frequently need explained.
-
-## Prioritization method
-
-- Count **distinct pages containing terms**, not raw word counts, and review important synonyms and abbreviations.
-- Check the **skills and careers dataset in full** and a representative blog sample (12 of 20 MDX files, about 77% of blog source bytes). Broaden blog coverage in future reviews.
-- Consider demand signals from the World Economic Forum Future of Jobs research, Canadian Skills and Competencies Taxonomy, NIST terminology, and learning-science references.
-- Editorially filter out vague common words, duplicates of a full Skills Library guide, misleading aliases, and concepts too narrow to be useful here.
-- Search counts are *not* Google keyword-volume estimates. Do not publish fabricated traffic figures.
+Modern Skill Lab contains 1,560 skill guides, 103 career profiles, and 20 MDX blog source files as of the initial review. A glossary complements these resources, but should not simply repeat skills content. Eighty entries provide a manageable core vocabulary across learning science, skills/careers, AI/technology, and workplace decisions.
 
 ## Current coverage
 
-| Theme | Published / prepared |
+| Theme | Terms |
 | --- | ---: |
-| Learning science | 14 |
-| Skills & careers | 14 |
-| AI & technology | 13 |
-| Reasoning & work | 15 |
-| **Total** | **56** |
+| Learning science | 20 |
+| Skills & careers | 20 |
+| AI & technology | 19 |
+| Reasoning & work | 21 |
+| **Total** | **80** |
 
-## Candidates for the remaining 24 (not yet approved or written)
+## Final 24 entries
 
-Learning science: active learning, experiential learning, desirable difficulties, rubric, self-efficacy, growth mindset.
+**Learning science (6):** Active learning, Experiential learning, Interleaving, Desirable difficulties, Assessment rubric, Self-efficacy.
 
-Skills & careers: career pathway, competency framework, skills taxonomy, job shadowing, professional certification, micro-credential.
+**Skills & careers (6):** Career pathway, Competency framework, Skills taxonomy, Job shadowing, Professional certification, Micro-credential.
 
-AI & technology: data governance, model drift, model monitoring, inference, evaluation dataset, red teaming.
+**AI & technology (6):** Data governance, Model drift, Model monitoring, Model inference, Evaluation dataset, AI red teaming.
 
-Reasoning & work: hypothesis, success criteria, leading indicator, lagging indicator, opportunity cost, scope creep.
+**Reasoning & work (6):** Hypothesis, Success criteria, Leading indicator, Lagging indicator, Opportunity cost, Scope creep.
 
-These are an editorial backlog, not automatic publication. Before writing each, confirm site relevance, distinctness from existing skills, definitional accuracy and practical examples.
+## Prioritization and evidence
 
-## Content and linking standards
+1. Examine distinct skill, career, and article pages mentioning a phrase rather than treating raw repetition or synonyms as separate demand.
+2. Include cross-cutting vocabulary useful across learning and job-change paths, especially terms whose meanings or differences are easily misunderstood.
+3. Exclude exact duplicates of existing dedicated skill-guide titles; avoid creating secondary glossary pages that cannibalize comprehensive guides.
+4. Consult trusted references for technical or educational definitions; write original explanations and grounded examples tailored to Modern Skill Lab. Source links do not replace editorial verification.
+5. Do not interpret site occurrence counts as Google search volume or search demand. Independent search-volume tools and actual site-search analytics would be necessary to confirm external demand.
+6. Prefer clear canonical URLs, descriptive context links, a small number of links in lessons, and no auto-linking in tests or interactive answer choices.
 
-Each entry needs an original explanation, why it matters, a realistic example, meaningful aliases, and a trusted reference where useful. Avoid keyword stuffing and self-referential circular definitions. Existing English skill and career guides remain unchanged. Link a term only where it improves comprehension; never rewrite quiz answers or alter scoring. Keep automatic blog links limited, preserve user-authored links, and do not turn every occurrence into a link.
+## Related concepts
 
-## References
+Core entries have editorially selected related links. Other existing entries retain a small category-based fallback. Future reviews should ensure related concepts genuinely aid readers rather than simply sharing a category.
 
-- WEF, Future of Jobs Report 2025: https://www.weforum.org/publications/the-future-of-jobs-report-2025
-- Canada Skills and Competencies Taxonomy: https://noc.esdc.gc.ca/SkillsTaxonomy/SkillsTaxonomyWelcome
-- NIST Trustworthy AI terminology: https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms
-- Carnegie Mellon Eberly Center: https://www.cmu.edu/teaching/assessment/basics/glossary.html
-- Google Search Central internal linking: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
+## Next maintenance cycle (not a commitment to expand)
+
+- Measure glossary searches, no-result queries and reader journeys to find real terminology gaps.
+- Review which terms appear most often in new blog posts, workshop instructions and member questions.
+- Check relevance and accuracy of sources and examples at regular editorial reviews.
+- Consider language-specific translations after review; the English definitions remain the editorial originals.
+- Only increase the 80-term target when evidence of additional reader needs justifies it.
+
+## Reference resources
+
+- NIST trustworthy AI glossary: https://airc.nist.gov/glossary/
+- NIST real-world AI model monitoring (March 2026): https://www.nist.gov/publications/challenges-monitoring-deployed-ai-systems-center-ai-standards-and-innovation
+- Government of Canada Skills and Competencies Taxonomy: https://noc.esdc.gc.ca/SkillsTaxonomy/SkillsTaxonomyWelcome
+- European Commission micro-credentials: https://education.ec.europa.eu/education-levels/higher-education/micro-credentials
+- Carnegie Mellon Eberly Center assessment rubrics: https://www.cmu.edu/teaching/assessment/assesslearning/rubrics.html
+- UCLA Bjork Learning and Forgetting Lab: https://bjorklab.psych.ucla.edu/research/
+- Association for Project Management glossary: https://www.apm.org.uk/resources/glossary/
+- Google guidance on descriptive internal links: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
+
+*This file documents the editorial target. Future changes should preserve all existing skill, career, blog and glossary content unless separately reviewed and intentionally approved.*

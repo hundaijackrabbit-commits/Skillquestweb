@@ -697,6 +697,320 @@ export const GLOSSARY_ENTRIES: GlossaryEntry[] = [
       "project deliverable"
     ],
     "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
+  },
+  {
+    "slug": "active-learning",
+    "title": "Active learning",
+    "category": "Learning science",
+    "definition": "A learning approach in which people actively process ideas through questions, discussion, practice, or problem-solving instead of only receiving information.",
+    "whyItMatters": "Reading and watching can introduce a concept, but active tasks reveal whether it can be used. The quality of the activity matters: the learner should explain, apply, compare, or test an idea rather than simply click through material.",
+    "example": "After reading a guide about client communication, rewrite an unclear status update and explain why the revised version is easier to act on.",
+    "aliases": [
+      "active learning methods",
+      "active learning approach"
+    ]
+  },
+  {
+    "slug": "experiential-learning",
+    "title": "Experiential learning",
+    "category": "Learning science",
+    "definition": "Learning through a relevant experience followed by reflection, interpretation, and the opportunity to apply what was learned again.",
+    "whyItMatters": "Doing a task by itself does not guarantee learning. Reflecting on results, comparing them with expectations, and adjusting the next attempt connects experience to reusable knowledge and judgment.",
+    "example": "Run a small community event, document where coordination broke down, draw lessons from the results, and use them to plan the next event.",
+    "aliases": [
+      "learning through experience",
+      "experience-based learning"
+    ]
+  },
+  {
+    "slug": "interleaving",
+    "title": "Interleaving",
+    "category": "Learning science",
+    "definition": "A practice strategy that mixes related problem types or skills in the same study period rather than completing a long block of one type at a time.",
+    "whyItMatters": "Switching between similar tasks can make practice feel harder, but it can help learners recognize which approach a new problem actually requires. It is most useful when the differences between the tasks are meaningful.",
+    "example": "Instead of answering ten identical prioritization questions in sequence, alternate prioritization, evidence-checking, and stakeholder communication scenarios.",
+    "aliases": [
+      "interleaved practice",
+      "interleaved learning"
+    ],
+    "sourceUrl": "https://bjorklab.psych.ucla.edu/research/"
+  },
+  {
+    "slug": "desirable-difficulties",
+    "title": "Desirable difficulties",
+    "category": "Learning science",
+    "definition": "Learning conditions that feel effortful or slow initial performance but can strengthen later understanding, retention, or transfer when appropriately matched to the learner.",
+    "whyItMatters": "Easy, fluent practice can create an illusion of mastery. Spacing, retrieval, and interleaving may improve long-term learning, but a difficulty is not desirable if it blocks a learner from engaging with the material at all.",
+    "example": "After mastering a spreadsheet technique with a guided example, try an unfamiliar dataset without the step-by-step instructions, then check the result.",
+    "aliases": [
+      "desirable difficulty"
+    ],
+    "sourceUrl": "https://bjorklab.psych.ucla.edu/research/"
+  },
+  {
+    "slug": "assessment-rubric",
+    "title": "Assessment rubric",
+    "category": "Learning science",
+    "definition": "A scoring or feedback guide that names the criteria for a task and describes what different levels of performance look like for each criterion.",
+    "whyItMatters": "Clear criteria allow learners to understand what good work looks like before submitting it. They also make feedback more specific and consistent than a vague judgment such as 'needs improvement.'",
+    "example": "Review a project brief using criteria for factual accuracy, decision clarity, audience fit, and next actions, each with descriptions of strong and weak performance.",
+    "aliases": [
+      "rubric",
+      "grading rubric",
+      "assessment rubrics"
+    ],
+    "sourceUrl": "https://www.cmu.edu/teaching/assessment/assesslearning/rubrics.html"
+  },
+  {
+    "slug": "self-efficacy",
+    "title": "Self-efficacy",
+    "category": "Learning science",
+    "definition": "A person's belief in their ability to organize and carry out the actions needed to succeed at a particular task or challenge.",
+    "whyItMatters": "Self-efficacy is task-specific and different from general confidence or actual skill level. Achievable practice, credible feedback, and evidence of improvement can help learners approach increasingly difficult tasks.",
+    "example": "After successfully facilitating three short team updates, a learner becomes more willing to lead a longer planning meeting while still identifying skills to improve.",
+    "aliases": [
+      "task self-efficacy",
+      "learning self-efficacy"
+    ]
+  },
+  {
+    "slug": "career-pathway",
+    "title": "Career pathway",
+    "category": "Skills & careers",
+    "definition": "A plausible sequence of experiences, qualifications, skill development, and role changes that can lead toward a chosen type of work.",
+    "whyItMatters": "A pathway is a planning model, not a guarantee or a single mandatory ladder. It helps a person see alternative entry points, transferable experience, and evidence they can build for the next opportunity.",
+    "example": "A support representative develops reporting and process skills, takes on an operations project, and uses those work samples when applying for a junior operations role.",
+    "aliases": [
+      "career pathways",
+      "career route",
+      "career routes"
+    ],
+    "sourceUrl": "https://noc.esdc.gc.ca/SkillsTaxonomy/SkillsTaxonomyWelcome"
+  },
+  {
+    "slug": "competency-framework",
+    "title": "Competency framework",
+    "category": "Skills & careers",
+    "definition": "An organized description of capabilities and observable behaviors expected for a role, occupation, team, or level of responsibility.",
+    "whyItMatters": "Frameworks make skill expectations more consistent across learning, hiring, feedback, and progression. They should describe demonstrated behavior rather than assume that course completion alone proves capability.",
+    "example": "An organization defines beginner, capable, and advanced performance in client communication using examples of clarification, escalation, and follow-through.",
+    "aliases": [
+      "competency frameworks",
+      "competence framework"
+    ],
+    "sourceUrl": "https://noc.esdc.gc.ca/SkillsTaxonomy/SkillsTaxonomyWelcome"
+  },
+  {
+    "slug": "skills-taxonomy",
+    "title": "Skills taxonomy",
+    "category": "Skills & careers",
+    "definition": "A structured classification of skill and work-related concepts that groups related terms and makes their relationships easier to compare across occupations.",
+    "whyItMatters": "Job advertisements often use different words for overlapping capabilities. A taxonomy helps map those labels consistently while distinguishing a skill from an ability, knowledge area, or work activity.",
+    "example": "Map 'client communication,' 'customer interaction,' and 'stakeholder updates' to clearly defined descriptors when comparing job postings and learning goals.",
+    "aliases": [
+      "skill taxonomy",
+      "skills taxonomies",
+      "occupational skills taxonomy"
+    ],
+    "sourceUrl": "https://noc.esdc.gc.ca/SkillsTaxonomy/SkillsTaxonomyWelcome"
+  },
+  {
+    "slug": "job-shadowing",
+    "title": "Job shadowing",
+    "category": "Skills & careers",
+    "definition": "A short, structured opportunity to observe someone doing their job in order to understand its tasks, decisions, tools, and working conditions.",
+    "whyItMatters": "Observing real work can test whether a career fits your interests before committing to lengthy training. Observation alone is not evidence that you can perform the role, so it should be followed by reflection or practice.",
+    "example": "Spend part of a day observing a project coordinator, take notes on handoffs and meetings, and compare the observed tasks with your own strengths.",
+    "aliases": [
+      "work shadowing",
+      "career shadowing"
+    ]
+  },
+  {
+    "slug": "professional-certification",
+    "title": "Professional certification",
+    "category": "Skills & careers",
+    "definition": "A credential issued by an organization indicating that someone has met stated requirements, which may include an examination, experience, training, or continuing education.",
+    "whyItMatters": "Certifications differ in rigor, recognition, renewal rules, and legal significance. A certificate of course attendance is not automatically a professional certification, and a certification does not always authorize regulated practice.",
+    "example": "Before paying for a project credential, check its prerequisites, assessment method, employer recognition, renewal obligations, and relevance to your target roles.",
+    "aliases": [
+      "professional certifications",
+      "industry certification",
+      "industry certifications"
+    ]
+  },
+  {
+    "slug": "micro-credential",
+    "title": "Micro-credential",
+    "category": "Skills & careers",
+    "definition": "A documented recognition of specific learning outcomes from a relatively small learning experience, assessed against stated standards by an issuing provider.",
+    "whyItMatters": "A micro-credential can demonstrate focused achievement without requiring a full qualification. Its value depends on transparent assessment, provider credibility, recognition, and whether the acquired capability is useful for a real goal.",
+    "example": "Complete a short, assessed data-visualization module and receive a shareable record of the exact outcomes demonstrated, rather than only a participation badge.",
+    "aliases": [
+      "microcredential",
+      "micro-credentials",
+      "microcredentials"
+    ],
+    "sourceUrl": "https://education.ec.europa.eu/education-levels/higher-education/micro-credentials"
+  },
+  {
+    "slug": "data-governance",
+    "title": "Data governance",
+    "category": "AI & technology",
+    "definition": "The policies, decision rights, standards, and responsibilities that determine how an organization manages data through its lifecycle.",
+    "whyItMatters": "Accurate analysis and responsible AI use require clarity about who may collect, change, access, retain, and correct information. Data governance sets accountability; individual technical controls implement parts of it.",
+    "example": "Assign an owner to customer data, define authorized uses, set retention rules, and require changes to key fields to be documented before the data feeds a model.",
+    "aliases": [
+      "data stewardship governance",
+      "enterprise data governance"
+    ],
+    "sourceUrl": "https://airc.nist.gov/glossary/"
+  },
+  {
+    "slug": "model-drift",
+    "title": "Model drift",
+    "category": "AI & technology",
+    "definition": "A change over time in the data patterns, relationships, or conditions an AI model encounters that can make its earlier performance less reliable.",
+    "whyItMatters": "A model that worked well on last year's examples may fail when user behavior, language, products, or processes change. Drift signals a need to investigate and test performance; it does not automatically mean retraining is the solution.",
+    "example": "A ticket-classification model starts misrouting requests after a company launches new products and customers begin using unfamiliar category names.",
+    "aliases": [
+      "AI model drift",
+      "data drift in models",
+      "concept drift in models"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/challenges-monitoring-deployed-ai-systems-center-ai-standards-and-innovation"
+  },
+  {
+    "slug": "model-monitoring",
+    "title": "Model monitoring",
+    "category": "AI & technology",
+    "definition": "The ongoing observation of a deployed model's behavior, data, quality measures, failures, and operational impact after release.",
+    "whyItMatters": "Pre-launch tests cannot cover every real-world situation. Monitoring helps teams notice emerging errors, shifts in inputs, and unintended effects, then decide whether to investigate, intervene, or revise the system.",
+    "example": "Review weekly error samples, user corrections, escalation rates, and data shifts for a live AI learning assistant, with a defined owner for action.",
+    "aliases": [
+      "AI monitoring",
+      "post-deployment model monitoring",
+      "production model monitoring"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/challenges-monitoring-deployed-ai-systems-center-ai-standards-and-innovation"
+  },
+  {
+    "slug": "model-inference",
+    "title": "Model inference",
+    "category": "AI & technology",
+    "definition": "The stage when a trained model uses supplied inputs to produce a prediction, classification, recommendation, or generated output.",
+    "whyItMatters": "Inference is the model's use phase, distinct from the training process that adjusted its parameters. Understanding this distinction helps explain response-time costs, limits, and why each output may still need verification.",
+    "example": "A trained classifier receives a new support message and predicts which team should handle it; that prediction is produced during inference.",
+    "aliases": [
+      "AI inference",
+      "inference time",
+      "inference phase"
+    ],
+    "sourceUrl": "https://airc.nist.gov/glossary/"
+  },
+  {
+    "slug": "evaluation-dataset",
+    "title": "Evaluation dataset",
+    "category": "AI & technology",
+    "definition": "A collection of examples and expected criteria used to test how a model or workflow performs, ideally including cases not used to fit the model.",
+    "whyItMatters": "A realistic evaluation set can reveal failures that polished demonstrations hide. Its value depends on relevant coverage, careful labeling, representative edge cases, and avoiding contamination from training examples.",
+    "example": "Before enabling an AI coach, assemble learner questions covering ambiguity, outdated facts, unsafe requests, multilingual wording, and ordinary examples, then score the answers against a rubric.",
+    "aliases": [
+      "evaluation set",
+      "test dataset",
+      "AI eval dataset"
+    ],
+    "sourceUrl": "https://airc.nist.gov/glossary/"
+  },
+  {
+    "slug": "ai-red-teaming",
+    "title": "AI red teaming",
+    "category": "AI & technology",
+    "definition": "A structured adversarial evaluation in which testers deliberately probe an AI system for vulnerabilities, harmful behavior, or failures outside ordinary expected use.",
+    "whyItMatters": "Normal tests focus on whether a system succeeds. Red teaming explores how it might fail under misuse, manipulation, or unusual conditions. Findings should feed into safeguards, monitoring, and retesting.",
+    "example": "A test team places misleading instructions in a retrieved document to see whether an assistant follows them instead of the user's authorized request.",
+    "aliases": [
+      "red teaming AI",
+      "AI red-team testing",
+      "adversarial AI testing"
+    ],
+    "sourceUrl": "https://csrc.nist.gov/glossary/term/red_teaming"
+  },
+  {
+    "slug": "hypothesis",
+    "title": "Hypothesis",
+    "category": "Reasoning & work",
+    "definition": "A specific, testable explanation or prediction proposed to be checked against observations or evidence.",
+    "whyItMatters": "An explicit hypothesis turns a vague belief into a claim that can be challenged. It guides what to measure and what result would count against the explanation, while preventing a team from treating assumptions as proven facts.",
+    "example": "Predict that a simpler checkout form will reduce abandoned bookings, define abandonment consistently, then compare results before adopting the change.",
+    "aliases": [
+      "working hypothesis",
+      "testable hypothesis"
+    ]
+  },
+  {
+    "slug": "success-criteria",
+    "title": "Success criteria",
+    "category": "Reasoning & work",
+    "definition": "The explicit conditions or evidence that will be used to decide whether a task, project, experiment, or learning activity has achieved its purpose.",
+    "whyItMatters": "Without agreed success criteria, people can finish work and still disagree about whether it is useful. Clear criteria connect the deliverable to outcomes, quality thresholds, and acceptance by the right people.",
+    "example": "A handoff succeeds when the client receives the correct file, the next owner is named, unresolved questions are listed, and a deadline is confirmed.",
+    "aliases": [
+      "criteria for success",
+      "acceptance success criteria"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
+  },
+  {
+    "slug": "leading-indicator",
+    "title": "Leading indicator",
+    "category": "Reasoning & work",
+    "definition": "A measure that offers an early signal of conditions or actions likely to influence a future result, without guaranteeing that result.",
+    "whyItMatters": "Leading indicators can help teams adjust sooner than outcome measures allow. They should be tested for their relationship to the desired result rather than assumed to be predictive simply because they are easy to track.",
+    "example": "Monitor the share of new learners completing a first exercise as an early signal of whether the onboarding process supports future continued practice.",
+    "aliases": [
+      "leading indicators",
+      "early indicator"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
+  },
+  {
+    "slug": "lagging-indicator",
+    "title": "Lagging indicator",
+    "category": "Reasoning & work",
+    "definition": "A measure of a result that has already occurred, often used to judge the outcome of earlier actions or conditions.",
+    "whyItMatters": "Lagging indicators tell a team whether goals were met, but may arrive too late to guide every decision along the way. Pairing them with appropriate leading measures can support both accountability and timely correction.",
+    "example": "Review the percentage of learners returning after 30 days as an outcome metric, alongside earlier measures such as first-lesson completion.",
+    "aliases": [
+      "lagging indicators",
+      "outcome indicator"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
+  },
+  {
+    "slug": "opportunity-cost",
+    "title": "Opportunity cost",
+    "category": "Reasoning & work",
+    "definition": "The value of the best alternative that must be given up when a person or organization chooses one course of action over another.",
+    "whyItMatters": "A decision can be inexpensive in direct spending yet costly in time or attention diverted from a better option. Opportunity cost helps compare choices using the most valuable realistic alternative, not every imaginable possibility.",
+    "example": "Spending the team's only design day on a minor cosmetic change means delaying an onboarding fix that could help more learners complete their first activity.",
+    "aliases": [
+      "opportunity costs",
+      "cost of the next-best alternative"
+    ]
+  },
+  {
+    "slug": "scope-creep",
+    "title": "Scope creep",
+    "category": "Reasoning & work",
+    "definition": "The gradual addition or expansion of project work without corresponding agreement on changes to objectives, resources, time, or cost.",
+    "whyItMatters": "Small unreviewed requests can accumulate into missed deadlines and unclear expectations. Good change control lets teams adapt when warranted while making the trade-offs and revised commitments explicit.",
+    "example": "A three-page career guide expands into an interactive course and personalized dashboard without revisiting the delivery plan or budget.",
+    "aliases": [
+      "uncontrolled scope expansion",
+      "scope creeping"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
   }
 ];
 
@@ -732,4 +1046,144 @@ export function findGlossaryEntries(text: string, limit = 6): GlossaryEntry[] {
     }
   }
   return found;
+}
+
+/**
+ * Editorially reviewed concept relationships, not arbitrary alphabetic neighbors.
+ * Unmapped legacy entries retain the original small same-category fallback.
+ */
+const RELATED_GLOSSARY_SLUGS: Record<string, string[]> = {
+  "active-learning": [
+    "retrieval-practice",
+    "experiential-learning",
+    "formative-assessment",
+    "scaffolding"
+  ],
+  "experiential-learning": [
+    "reflective-practice",
+    "learning-transfer",
+    "active-learning",
+    "deliberate-practice"
+  ],
+  "interleaving": [
+    "desirable-difficulties",
+    "spaced-practice",
+    "retrieval-practice"
+  ],
+  "desirable-difficulties": [
+    "interleaving",
+    "retrieval-practice",
+    "spaced-practice"
+  ],
+  "assessment-rubric": [
+    "formative-assessment",
+    "summative-assessment",
+    "learning-outcome"
+  ],
+  "self-efficacy": [
+    "deliberate-practice",
+    "reflective-practice",
+    "scaffolding"
+  ],
+  "career-pathway": [
+    "career-mobility",
+    "career-pivot",
+    "upskilling",
+    "reskilling"
+  ],
+  "competency-framework": [
+    "competency",
+    "proficiency-level",
+    "skills-taxonomy"
+  ],
+  "skills-taxonomy": [
+    "competency-framework",
+    "transferable-skills",
+    "skill-gap"
+  ],
+  "job-shadowing": [
+    "career-pathway",
+    "career-pivot",
+    "proof-of-skill"
+  ],
+  "professional-certification": [
+    "micro-credential",
+    "competency-framework",
+    "proficiency-level"
+  ],
+  "micro-credential": [
+    "learning-outcome",
+    "professional-certification",
+    "proof-of-skill"
+  ],
+  "data-governance": [
+    "data-provenance",
+    "training-data",
+    "ai-transparency"
+  ],
+  "model-drift": [
+    "model-monitoring",
+    "evaluation-dataset",
+    "training-data"
+  ],
+  "model-monitoring": [
+    "model-drift",
+    "ai-model-evaluation",
+    "data-provenance"
+  ],
+  "model-inference": [
+    "large-language-model",
+    "generative-ai",
+    "ai-model-evaluation"
+  ],
+  "evaluation-dataset": [
+    "ai-model-evaluation",
+    "model-monitoring",
+    "model-drift"
+  ],
+  "ai-red-teaming": [
+    "prompt-injection",
+    "ai-model-evaluation",
+    "algorithmic-bias"
+  ],
+  "hypothesis": [
+    "assumption",
+    "baseline",
+    "trade-off"
+  ],
+  "success-criteria": [
+    "key-performance-indicator",
+    "deliverable",
+    "learning-outcome"
+  ],
+  "leading-indicator": [
+    "lagging-indicator",
+    "key-performance-indicator",
+    "feedback-loop"
+  ],
+  "lagging-indicator": [
+    "leading-indicator",
+    "key-performance-indicator",
+    "baseline"
+  ],
+  "opportunity-cost": [
+    "trade-off",
+    "competitive-advantage",
+    "scope-creep"
+  ],
+  "scope-creep": [
+    "project-dependency",
+    "deliverable",
+    "success-criteria"
+  ]
+};
+
+export function getRelatedGlossaryEntries(entry: GlossaryEntry, limit = 4): GlossaryEntry[] {
+  const recommendations = (RELATED_GLOSSARY_SLUGS[entry.slug] ?? [])
+    .map((slug) => getGlossaryEntry(slug))
+    .filter((item): item is GlossaryEntry => Boolean(item && item.slug !== entry.slug));
+  if (recommendations.length >= limit) return recommendations.slice(0, limit);
+  const seen = new Set([entry.slug, ...recommendations.map((item) => item.slug)]);
+  const fallback = GLOSSARY_ENTRIES.filter((item) => item.category === entry.category && !seen.has(item.slug));
+  return [...recommendations, ...fallback].slice(0, limit);
 }

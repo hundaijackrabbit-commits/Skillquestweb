@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react';
-import { GLOSSARY_ENTRIES, getGlossaryEntry } from '@/lib/glossary';
+import { GLOSSARY_ENTRIES, getGlossaryEntry, getRelatedGlossaryEntries } from '@/lib/glossary';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 
@@ -35,7 +35,7 @@ export default async function GlossaryDetailPage({ params }: Props) {
   const entry = getGlossaryEntry(slug);
   if (!entry) notFound();
   const url = absoluteUrl(`/glossary/${entry.slug}`);
-  const related = GLOSSARY_ENTRIES.filter((candidate) => candidate.slug !== entry.slug && candidate.category === entry.category).slice(0, 4);
+  const related = getRelatedGlossaryEntries(entry);
   const resource = nextResources[entry.category];
   const structuredData = {
     '@context': 'https://schema.org',
