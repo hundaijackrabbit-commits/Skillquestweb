@@ -8,6 +8,7 @@ type Section = { id: string; label: string };
 export function LearningPageNavigator({ containerId }: { containerId: string }) {
   const [sections, setSections] = useState<Section[]>([]);
   const [active, setActive] = useState('');
+  const [showAll, setShowAll] = useState(false);
   useEffect(() => {
     const root = document.getElementById(containerId);
     if (!root) return;
@@ -40,10 +41,16 @@ export function LearningPageNavigator({ containerId }: { containerId: string }) 
     return () => window.removeEventListener('scroll', update);
   }, [containerId]);
   if (sections.length < 3) return null;
+  const visibleSections = showAll ? sections : sections.slice(0, 5);
   return <nav aria-label="On this page" className="mb-8 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-sm lg:sticky lg:top-20 lg:z-20">
-    <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900"><List className="h-4 w-4 text-indigo-700" aria-hidden="true" /> On this page</div>
+    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+      <div className="flex items-center gap-2 text-sm font-semibold text-slate-900"><List className="h-4 w-4 text-indigo-700" aria-hidden="true" /> On this page <span className="text-xs font-normal text-slate-500">({sections.length} sections)</span></div>
+      {sections.length > 5 && <button type="button" aria-expanded={showAll} onClick={() => setShowAll(!showAll)} className="min-h-9 rounded-lg px-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
+        {showAll ? 'Show fewer sections' : `Show all ${sections.length}`}
+      </button>}
+    </div>
     <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-wrap">
-      {sections.map((section) => <a key={section.id} href={`#${section.id}`} aria-current={active === section.id ? 'location' : undefined} className={`shrink-0 rounded-full border px-3 py-2 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${active === section.id ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-slate-50'}`}>{section.label}</a>)}
+      {visibleSections.map((section) => <a key={section.id} href={`#${section.id}`} aria-current={active === section.id ? 'location' : undefined} className={`shrink-0 rounded-full border px-3 py-2 text-xs font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${active === section.id ? 'border-indigo-600 bg-indigo-50 text-indigo-900' : 'border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-slate-50'}`}>{section.label}</a>)}
     </div>
   </nav>;
 }

@@ -50,7 +50,22 @@ export default function LearnPage() {
           <div>
         <LearningProgressSummary />
         <LearningJourney />
-        <LearningAchievements />
+
+        <nav className="mb-8 flex flex-wrap items-center gap-2" aria-label="Jump to a practice activity">
+          <span className="mr-2 text-xs font-bold uppercase tracking-wider text-slate-500">Jump to</span>
+          <a href="#daily-practice-heading" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Daily challenge</a>
+          <a href="#workshops" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Workshops</a>
+          <a href="#interactive-practice-library" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Interactive exercises</a>
+          <a href="#skill-sprints" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Skill Sprints</a>
+        </nav>
+
+        <details className="group mb-10 rounded-2xl border border-violet-200 bg-white p-5 shadow-sm">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-bold text-violet-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-600 [&::-webkit-details-marker]:hidden">
+            <span>View my levels and achievements <span className="mt-1 block text-xs font-normal text-slate-600">Your existing XP, levels and badges are all here.</span></span>
+            <span aria-hidden="true" className="text-violet-700 transition-transform group-open:rotate-180">⌄</span>
+          </summary>
+          <div className="pt-5"><LearningAchievements /></div>
+        </details>
 
         <section className="mb-14" aria-labelledby="daily-practice-heading">
           <div className="mb-6">
@@ -60,7 +75,12 @@ export default function LearnPage() {
           <DailyChallenge />
         </section>
 
-        <section className="mb-14" aria-labelledby="practice-map-heading">
+        <details className="group mb-14 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600 [&::-webkit-details-marker]:hidden">
+            <span>Explore all four practice formats <span className="mt-1 block text-xs font-normal text-slate-600">Compare different exercises and choose a format.</span></span>
+            <span aria-hidden="true" className="text-indigo-700 transition-transform group-open:rotate-180">⌄</span>
+          </summary>
+          <section className="pt-6" aria-labelledby="practice-map-heading">
           <div className="mb-7">
             <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">Where to practise</div>
             <h2 id="practice-map-heading" className="mt-2 text-3xl font-bold text-slate-950">Four ways to turn reading into a rep</h2>
@@ -111,7 +131,8 @@ export default function LearnPage() {
               </article>
             ))}
           </div>
-        </section>
+          </section>
+        </details>
 
         <section id="workshops" className="mb-14 scroll-mt-28" aria-labelledby="workshops-heading">
           <div className="mb-7 max-w-3xl">
@@ -133,7 +154,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="mb-14" aria-labelledby="interactive-library-heading">
+        <section id="interactive-practice-library" className="mb-14 scroll-mt-28" aria-labelledby="interactive-library-heading">
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
             <div>
               <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700">More than quizzes</div>
@@ -160,7 +181,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section aria-labelledby="available-sprints">
+        <section id="skill-sprints" className="scroll-mt-28" aria-labelledby="available-sprints">
           <div className="mb-7 flex items-end justify-between gap-4">
             <div>
               <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Start practicing</div>

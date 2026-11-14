@@ -67,25 +67,36 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16">
+      <section className="py-8 sm:py-10" aria-label="More ways to explore">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-4 md:grid-cols-3">
-            {waysToExplore.map((item) => (
+          <details className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-lg text-sm font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600 [&::-webkit-details-marker]:hidden">
+              <span>More ways to explore <span className="ml-2 font-normal text-slate-500">Skills, careers, and learning paths</span></span>
+              <span aria-hidden="true" className="text-indigo-700 transition-transform group-open:rotate-180">⌄</span>
+            </summary>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {waysToExplore.map((item) => (
               <Link key={item.href} href={item.href} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-md">
                 <div className="inline-flex rounded-2xl bg-blue-50 p-3 text-blue-700"><item.icon className="h-5 w-5" aria-hidden="true" /></div>
                 <h2 className="mt-5 text-xl font-bold text-slate-950">{item.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{item.description}</p>
                 <span className="mt-5 inline-flex items-center text-sm font-semibold text-blue-700">{item.action}<ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
               </Link>
-            ))}
-          </div>
+              ))}
+            </div>
+          </details>
         </div>
       </section>
 
       <section className="pb-12 sm:pb-16" aria-label="Discover free learning tools">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <DiscoveryQuiz />
-          <div className="mt-5 grid gap-4 md:grid-cols-3">
+          <details className="group mt-5 rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-lg text-sm font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600 [&::-webkit-details-marker]:hidden">
+              <span>More free tools and resources <span className="ml-2 font-normal text-slate-500">Workbooks, saved skills, activities</span></span>
+              <span aria-hidden="true" className="text-indigo-700 transition-transform group-open:rotate-180">⌄</span>
+            </summary>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
             <Link href="/free-career-guide" className="rounded-2xl border border-violet-200 bg-violet-50 p-5 transition hover:border-violet-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-600">
               <p className="text-xs font-bold uppercase tracking-wider text-violet-700">Free downloadable guide</p>
               <h3 className="mt-2 font-bold text-slate-950">Get the Career &amp; Life Map</h3>
@@ -104,7 +115,8 @@ export default async function HomePage() {
               <p className="mt-1 text-sm text-slate-600">Discover practical exercises and skill-specific challenges.</p>
               <span className="mt-3 inline-flex items-center text-sm font-semibold text-emerald-800">Browse activities <ArrowRight className="ml-1 h-4 w-4" /></span>
             </Link>
-          </div>
+            </div>
+          </details>
         </div>
       </section>
 
