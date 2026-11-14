@@ -1,5 +1,6 @@
 import { LearningActionPath } from '@/components/learning/learning-action-path';
 import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
+import { GlossaryLinkedText, RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
@@ -156,7 +157,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </h1>
             
             <p className="text-xl text-gray-700 mb-8 max-w-4xl leading-relaxed">
-              {career.summary}
+              <GlossaryLinkedText text={career.summary ?? ''} maxLinks={2} />
             </p>
 
             <SaveCareerButton careerSlug={career.slug} />
@@ -208,6 +209,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
         <LearningPageNavigator containerId="learning-page-content" />
         <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
+        <RelatedGlossaryTerms text={[career.summary, career.whatTheyDo].filter(Boolean).join(' ')} maxTerms={4} />
         <ManagedAdSlot placement="career-inline" />
 
         {careerCheck && <KnowledgeCheckCard check={careerCheck} className="mb-12" />}
@@ -226,7 +228,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               </CardHeader>
               <CardContent className="prose prose-gray max-w-none">
                 <p className="text-gray-700 leading-relaxed">
-                  {career.whatTheyDo}
+                  <GlossaryLinkedText text={career.whatTheyDo ?? ''} maxLinks={2} />
                 </p>
               </CardContent>
             </Card>

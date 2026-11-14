@@ -2,6 +2,7 @@ import type { LearningLocale } from './internationalization';
 
 /** Localized interface copy. Untranslated educational content stays English. */
 const rows: readonly [string, string, string, string, string, string][] = [
+["Knowledge Dictionary","知识词典","Diccionario de conocimientos","Dictionnaire des notions","ज्ञान शब्दकोश","قاموس المفاهيم"],
 [
     "Your practical work sample",
     "你的实用工作样本",

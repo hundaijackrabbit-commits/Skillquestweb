@@ -12,6 +12,7 @@ const navigation = {
     { name: 'Industries', href: '/industries', icon: Building2 },
     { name: 'Learning Paths', href: '/paths', icon: BookOpen },
     { name: 'Blog', href: '/blog', icon: PenTool },
+    { name: 'Knowledge Dictionary', href: '/glossary', icon: BookOpen },
     { name: 'Community', href: '/community', icon: Users },
 
   ],

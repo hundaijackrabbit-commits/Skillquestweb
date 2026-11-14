@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import { Children } from 'react';
+import { linkGlossaryText, RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -125,6 +127,18 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
     .slice(0, 3);
   const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
   const knowledgeCheck = getKnowledgeCheckForBlog(post.slug);
+  // Links only the first few meaningful terms; authored MDX elements and links stay intact.
+  const linkedGlossarySlugs = new Set<string>();
+  const articleMdxComponents = {
+    ...mdxComponents,
+    p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
+      <p className="mb-5 leading-8 text-gray-700" {...props}>
+        {Children.map(children, (node) => typeof node === 'string'
+          ? linkGlossaryText(node, { maxLinks: 4 - linkedGlossarySlugs.size, usedSlugs: linkedGlossarySlugs })
+          : node)}
+      </p>
+    ),
+  };
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -211,9 +225,11 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
 
         <article className="mb-12 rounded-2xl border bg-white p-8 shadow-sm">
           <div className="prose prose-lg max-w-none">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote source={post.content} components={articleMdxComponents} />
           </div>
         </article>
+
+        <RelatedGlossaryTerms text={`${post.excerpt}\n${post.content}`} maxTerms={5} />
 
         {knowledgeCheck && <KnowledgeCheckCard check={knowledgeCheck} className="mb-12" />}
 
