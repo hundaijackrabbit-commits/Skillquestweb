@@ -4,9 +4,9 @@ import { useEffect, useId, useState } from 'react';
 import { Check, Copy, Sparkles } from 'lucide-react';
 import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
 
-export function ContextualLearningHelp({ context, prompt = 'Can you explain this concept more simply?' }: { context: string; prompt?: string }) {
+export function ContextualLearningHelp({ context, prompt = 'Can you explain this concept more simply?', defaultOpen = false, showToggle = true }: { context: string; prompt?: string; defaultOpen?: boolean; showToggle?: boolean }) {
   const questionId = useId();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [question, setQuestion] = useState(prompt);
   const [answer, setAnswer] = useState('');
   const [error, setError] = useState('');
@@ -61,10 +61,10 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
 
   return (
     <div className="mt-4 text-sm">
-      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}
+      {showToggle && <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}
         className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-indigo-200 bg-white px-3 font-semibold text-indigo-800 hover:bg-indigo-50">
-        <Sparkles className="h-4 w-4" aria-hidden="true" /> Ask about this lesson
-      </button>
+        <Sparkles className="h-4 w-4" aria-hidden="true" /> {open ? "Hide AI help" : "Ask about this lesson"}
+      </button>}
       {open && (
         <div className="mt-3 space-y-3 rounded-xl border border-indigo-100 bg-indigo-50/50 p-4">
           <label className="block font-semibold text-slate-800" htmlFor={questionId}>Your question</label>
