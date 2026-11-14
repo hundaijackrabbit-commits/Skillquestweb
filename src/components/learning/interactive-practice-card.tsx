@@ -13,6 +13,7 @@ import {
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import { Button } from '@/components/ui/button';
+import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
 import type { InteractivePractice, SequencePractice } from '@/lib/interactive-practice';
 import {
   getLearningProfile,
@@ -213,6 +214,8 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
               {solved && <p className="mt-1">{practice.explanation}</p>}
             </div>
           )}
+
+          <ContextualLearningHelp context={[practice.skillName, practice.title, practice.instruction, ...(practice.kind === "sequence" ? practice.items.map(item => item.text) : [...practice.items.map(item => item.text), ...practice.categories.map(category => `${category.label}: ${category.description}`)]), practice.explanation].join("\\n").slice(0, 4500)} prompt="Can you give me a hint about this activity without revealing the answer?" />
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-5">
             <span className="text-sm font-semibold text-slate-600">{solved ? <><CheckCircle2 className="mr-2 inline h-4 w-4 text-emerald-600" />Complete · {profile.totalXp} total XP</> : 'No penalty for retrying'}</span>
