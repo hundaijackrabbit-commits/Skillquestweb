@@ -15,6 +15,7 @@ async function allowRequest(request: NextRequest): Promise<boolean> {
   if (!ip) return false;
   const identity = createHmac('sha256', secret).update(ip).digest('hex');
   const key = `msl:learning-ai:minute:${identity}`;
+  const dailyKey = `msl:learning-ai:day:${new Date().toISOString().slice(0, 10)}`;
   const script = "local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],60) end; return n";
   try {
     const response = await fetch(url, {
@@ -26,7 +27,18 @@ async function allowRequest(request: NextRequest): Promise<boolean> {
     });
     if (!response.ok) return false;
     const result = await response.json();
-    return typeof result.result === 'number' && result.result <= 5;
+    if (typeof result.result !== 'number' || result.result > 5) return false;
+    // A second atomic counter caps the entire site's daily AI request budget.
+    const dailyResponse = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(['EVAL', "local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],90000) end; return n", '1', dailyKey]),
+      signal: AbortSignal.timeout(3000),
+      cache: 'no-store',
+    });
+    if (!dailyResponse.ok) return false;
+    const daily = await dailyResponse.json();
+    return typeof daily.result === 'number' && daily.result <= 200;
   } catch { return false; }
 }
 
