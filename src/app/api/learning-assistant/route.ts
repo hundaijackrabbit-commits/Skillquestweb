@@ -105,7 +105,16 @@ export async function POST(request: NextRequest) {
     } finally { clearTimeout(timeout); }
 
     providerStage = 'response';
-    if (!response.ok) return NextResponse.json({ error: 'AI assistance is temporarily unavailable.' }, { status: 502 });
+    if (!response.ok) {
+      let providerCode = 'unknown';
+      try {
+        const providerError = await response.json();
+        if (typeof providerError?.error?.code === 'string') providerCode = providerError.error.code.slice(0, 60);
+        else if (typeof providerError?.error?.type === 'string') providerCode = providerError.error.type.slice(0, 60);
+      } catch { /* No response body required for safe diagnostics. */ }
+      console.error('Learning assistant OpenAI rejected request', { status: response.status, providerCode });
+      return NextResponse.json({ error: 'AI assistance is temporarily unavailable.' }, { status: 502 });
+    }
     providerStage = 'parse-response';
     const data = await response.json();
     const answer = data?.choices?.[0]?.message?.content;
