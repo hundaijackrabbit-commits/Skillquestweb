@@ -288,7 +288,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 >
                   <Shield className={`h-6 w-6 ${riskColors.text}`} />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Automation Risk" /></div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><Link href="/glossary/automation-risk" title="Understand what automation risk measures" className="text-indigo-700 underline decoration-dotted underline-offset-4 hover:text-indigo-900"><T text="Automation Risk" /></Link></div>
                 <div className={`text-sm font-semibold capitalize ${riskColors.text}`}>
                   {skill.automationRisk}
                 </div>
@@ -316,6 +316,10 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
           skill.aiEraRelevance,
           skill.whereItShowsUp,
           skill.careerApplications,
+          skill.howToPractice,
+          skill.howEmployersEvaluate,
+          skill.developmentMethods,
+          skill.evidenceSummary,
         ].filter(Boolean).join(' ')} maxTerms={4} />
         <ManagedAdSlot placement="skill-inline" />
 
@@ -548,7 +552,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                   How Employers Evaluate This Skill
                 </h2>
                 <div className="prose max-w-none">
-                  <p className="text-gray-700">{skill.howEmployersEvaluate}</p>
+                  <p className="text-gray-700"><GlossaryLinkedText text={skill.howEmployersEvaluate ?? ''} maxLinks={1} /></p>
                 </div>
               </section>
             )}
@@ -927,7 +931,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <CardContent className="space-y-3">
                 {isSkillFieldEditoriallyUseful(skill, 'howToPractice') && <div className="text-sm text-blue-800">
                   <strong>How to Practice:</strong>
-                  <p className="mt-1">{skill.howToPractice}</p>
+                  <p className="mt-1"><GlossaryLinkedText text={skill.howToPractice ?? ''} maxLinks={1} /></p>
                 </div>}
                 {isSkillFieldEditoriallyUseful(skill, 'howToMeasureProgress') && <div className="text-sm text-blue-800">
                   <strong>Measure Progress:</strong>
