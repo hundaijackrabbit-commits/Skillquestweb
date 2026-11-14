@@ -6,6 +6,8 @@ import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LearningLanguageSelector } from '@/components/layout/learning-language-selector';
+import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
+import { navigationLabel } from '@/lib/navigation-translations';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { Search, Menu, X, BookOpen, Briefcase, User, LogOut, Sparkles, Route, Trophy, Users } from 'lucide-react';
 
@@ -19,6 +21,23 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [learningLocale, setLearningLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
+
+  useEffect(() => {
+    const syncLanguage = () => {
+      try {
+        const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+        setLearningLocale(stored ? normalizeLearningLocale(stored) : normalizeLearningLocale(navigator.language));
+      } catch { setLearningLocale(normalizeLearningLocale(navigator.language)); }
+    };
+    syncLanguage();
+    window.addEventListener('msl:learning-language-changed', syncLanguage);
+    window.addEventListener('storage', syncLanguage);
+    return () => {
+      window.removeEventListener('msl:learning-language-changed', syncLanguage);
+      window.removeEventListener('storage', syncLanguage);
+    };
+  }, []);
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -139,7 +158,7 @@ export function Header() {
                         onClick={() => closeMobileMenu()}
                       >
                         <item.icon className={`h-5 w-5 shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-600'}`} />
-                        <span>{item.name}</span>
+                        <span>{navigationLabel(learningLocale, item.name)}</span>
                       </Link>
                     );
                   })}
@@ -232,7 +251,7 @@ export function Header() {
               <Link key={item.name} href={item.href} aria-current={isActive ? 'page' : undefined}
                 className={`msl-nav-link flex items-center gap-2 text-sm font-semibold leading-6 transition-colors hover:text-blue-600 ${isActive ? 'text-blue-700' : 'text-slate-700'}`}>
                 <item.icon className="h-4 w-4" aria-hidden="true" />
-                <span>{item.name}</span>
+                <span>{navigationLabel(learningLocale, item.name)}</span>
               </Link>
             );
           })}
