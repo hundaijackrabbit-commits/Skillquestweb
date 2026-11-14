@@ -80,11 +80,13 @@ export async function POST(request: NextRequest) {
   }
 
   // Deliberately fixed provider URL: never accept a client-supplied endpoint.
+  let providerStage = 'initialize';
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25000);
     let response: Response;
     try {
+      providerStage = 'fetch';
       response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
@@ -102,7 +104,9 @@ export async function POST(request: NextRequest) {
       });
     } finally { clearTimeout(timeout); }
 
+    providerStage = 'response';
     if (!response.ok) return NextResponse.json({ error: 'AI assistance is temporarily unavailable.' }, { status: 502 });
+    providerStage = 'parse-response';
     const data = await response.json();
     const answer = data?.choices?.[0]?.message?.content;
     if (typeof answer !== 'string' || !answer.trim()) return NextResponse.json({ error: 'No answer was returned. Please try again.' }, { status: 502 });
@@ -116,7 +120,8 @@ export async function POST(request: NextRequest) {
     const causeMessage = cause instanceof Error ? cause.message : '';
     const category = /invalid url|url parse/i.test(message) ? 'invalid-url' : /fetch failed/i.test(message) ? 'fetch-failed' : /abort|timeout/i.test(message) ? 'timeout' : 'other';
     const causeCategory = /certificate|tls|ssl/i.test(causeMessage) ? 'tls' : /dns|enotfound|eai_again/i.test(causeMessage) ? 'dns' : /connect|network|socket/i.test(causeMessage) ? 'connection' : /timeout/i.test(causeMessage) ? 'timeout' : 'other';
-    console.error('Learning assistant provider request failed', { reason, networkCode, category, causeName, causeCategory });
+    const safeMessage = message.slice(0, 180).replace(/sk-[A-Za-z0-9_-]+/g, '[redacted]');
+    console.error('Learning assistant provider request failed', { providerStage, reason, safeMessage, networkCode, category, causeName, causeCategory });
     return NextResponse.json({ error: 'AI assistance timed out or is unavailable.' }, { status: 502 });
   }
 }
