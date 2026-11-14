@@ -12,13 +12,14 @@ import { useLearningLanguage, TranslatedText as T } from '@/components/providers
  */
 export function LearningTranslationPanel({ material }: { material: string }) {
   const { locale } = useLearningLanguage();
-  const [cache, setCache] = useState<Partial<Record<LearningLocale, string>>>({});
+  const [cache, setCache] = useState<Record<string, string>>({});
   const [visible, setVisible] = useState(true);
   const [pending, setPending] = useState<LearningLocale | null>(null);
   const [error, setError] = useState('');
 
   if (locale === 'en' || material.trim().length < 10 || material.length > 3800) return null;
-  const result = cache[locale];
+  const cacheKey = `${locale}:${material}`;
+  const result = cache[cacheKey];
   const showTranslation = Boolean(result && visible);
 
   async function toggle() {
@@ -45,7 +46,7 @@ export function LearningTranslationPanel({ material }: { material: string }) {
       if (!response.ok || typeof data.answer !== 'string' || !data.answer.trim()) {
         throw new Error(typeof data.error === 'string' ? data.error : 'Translation is temporarily unavailable.');
       }
-      setCache((current) => ({ ...current, [requestedLocale]: data.answer as string }));
+      setCache((current) => ({ ...current, [cacheKey]: data.answer as string }));
       setVisible(true);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Translation is temporarily unavailable.');
