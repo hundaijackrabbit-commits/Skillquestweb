@@ -13,6 +13,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [previousAnswer, setPreviousAnswer] = useState('');
+  const [lastQuestion, setLastQuestion] = useState('');
   const [locale, setLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
   async function ask() {
     if (loading || question.trim().length < 3) return;
     setLoading(true);
-    setPreviousAnswer(answer);
+    setLastQuestion(question.trim());
     setAnswer('');
     setCopied(false);
     setError('');
@@ -94,11 +95,15 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-3">
                 <p className="text-xs text-slate-500">AI guidance can be imperfect. Verify important details.</p>
-                <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Give me a practical example of the explanation above, using the lesson context.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Ask for an example</button>
+                <div className="flex flex-wrap gap-3">
+                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Give me a practical example of the explanation above, using the lesson context.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Practical example</button>
+                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Ask me one short question to check my understanding of the explanation above. Do not reveal the answer.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Check understanding</button>
+                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Explain the same concept in simpler language with a short analogy.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Simplify</button>
+                </div>
               </div>
             </section>
           )}
-          {error && <p role="alert" className="text-rose-700">{error}</p>}
+          {error && <div role="alert" className="flex flex-wrap items-center gap-3 text-rose-700"><span>{error}</span>{lastQuestion && <button type="button" onClick={() => { setQuestion(lastQuestion); setError(''); }} className="rounded-lg border border-rose-200 px-3 py-1.5 text-xs font-semibold hover:bg-rose-50">Restore question</button>}</div>}
         </div>
       )}
     </div>
