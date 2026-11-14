@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import type { KnowledgeCheck } from '@/lib/knowledge-checks';
+import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import {
   getLearningProfile,
   hasLearningActivity,
@@ -110,15 +112,19 @@ function KnowledgeCheckExperience({ check, className = '', userId }: ExperienceP
             <Brain className="mr-2 h-4 w-4" />{check.label}
           </div>
           <h2 id={`${check.id}-title`} className="mt-4 text-2xl font-bold tracking-tight">{check.title}</h2>
-          <p className="mt-3 text-sm leading-6 text-blue-100">Answer once from memory, then use the feedback to correct your model.</p>
+          <p className="mt-3 text-sm leading-6 text-blue-100"><T text="Answer once from memory, then use the feedback to correct your model." /></p>
           <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold">
-            <span className="rounded-full bg-white/10 px-3 py-1.5"><Sparkles className="mr-1 inline h-3.5 w-3.5" />{alreadyRewarded ? 'Reward earned' : `${check.xp} XP`}</span>
-            <span className="rounded-full bg-white/10 px-3 py-1.5">No penalty for retrying</span>
+            <span className="rounded-full bg-white/10 px-3 py-1.5"><Sparkles className="mr-1 inline h-3.5 w-3.5" />{alreadyRewarded ? <T text="Reward earned" /> : `${check.xp} XP`}</span>
+            <span className="rounded-full bg-white/10 px-3 py-1.5"><T text="No penalty for retrying" /></span>
           </div>
         </div>
 
         <div className="p-6 sm:p-7">
           <p className="text-lg font-bold leading-7 text-slate-950">{check.question}</p>
+          <LearningTranslationPanel material={[
+            `Question: ${check.question}`,
+            ...check.options.map((option, index) => `${String.fromCharCode(65 + index)}. ${option}`),
+          ].join('\n')} />
           <div className="mt-5 space-y-2.5">
             {check.options.map((option, index) => {
               const isSelected = selected === index;
@@ -149,15 +155,16 @@ function KnowledgeCheckExperience({ check, className = '', userId }: ExperienceP
 
           {selected !== null && (
             <div className={`mt-5 rounded-2xl p-4 text-sm leading-6 ${selectedIsCorrect ? 'bg-emerald-50 text-emerald-950' : 'bg-amber-50 text-amber-950'}`} role="status">
-              <div className="font-bold">{selectedIsCorrect ? 'Correct—your model holds up.' : 'Not yet. Compare the decision, evidence, and consequence once more.'}</div>
+              <div className="font-bold"><T text={selectedIsCorrect ? 'Correct—your model holds up.' : 'Not yet. Compare the decision, evidence, and consequence once more.'} /></div>
               <p className="mt-1">{check.explanation}</p>
+              <LearningTranslationPanel material={`Feedback: ${check.explanation}`} />
             </div>
           )}
 
           {solved && check.continueHref && (
             <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-5">
               <span className="inline-flex items-center text-sm font-semibold text-emerald-700"><CheckCircle2 className="mr-2 h-4 w-4" />Check complete · {profile.totalXp} total XP</span>
-              <Link href={check.continueHref}><Button variant="outline" size="sm">{check.continueLabel ?? 'Continue learning'}<ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+              <Link href={check.continueHref}><Button variant="outline" size="sm"><T text={check.continueLabel ?? 'Continue learning'} /><ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
             </div>
           )}
         </div>

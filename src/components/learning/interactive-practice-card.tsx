@@ -14,6 +14,7 @@ import { useSupabase } from '@/components/providers/supabase-provider';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import { Button } from '@/components/ui/button';
 import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
+import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
 import type { InteractivePractice, SequencePractice } from '@/lib/interactive-practice';
 import {
   getLearningProfile,
@@ -167,6 +168,16 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
         </div>
 
         <div className="p-7 sm:p-9">
+          <LearningTranslationPanel material={[
+            `Activity: ${practice.title}`,
+            `Instructions: ${practice.instruction}`,
+            ...(practice.kind === 'sequence'
+              ? shuffledSequence(practice).map((item) => `Item: ${item.text}`)
+              : [
+                  ...practice.categories.map((category) => `Category: ${category.label} — ${category.description}`),
+                  ...practice.items.map((item) => `Item: ${item.text}`),
+                ]),
+          ].join('\n')} />
           {practice.kind === 'sequence' ? (
             <SequenceBoard order={order} solved={solved} moveItem={moveItem} />
           ) : (

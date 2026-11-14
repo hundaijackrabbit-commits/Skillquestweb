@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Clock3, Sparkles } from 'lucide-react';
 import { CourseRunner } from '@/components/learning/course-runner';
@@ -79,7 +80,7 @@ export default async function SkillCoursePage({ params }: Props) {
             Back to {skill.name}
           </Link>
           <Link href="/learn" className="text-sm font-semibold text-blue-700 hover:text-blue-900">
-            Browse all Skill Sprints
+            <T text="Browse all Skill Sprints" />
           </Link>
         </div>
 
@@ -87,7 +88,7 @@ export default async function SkillCoursePage({ params }: Props) {
           <div className="mb-4 flex flex-wrap items-center gap-3 text-sm font-semibold">
             <span className="inline-flex items-center rounded-full bg-violet-100 px-3 py-1.5 text-violet-800">
               <Sparkles className="mr-1.5 h-4 w-4" />
-              Skill Sprint
+              <T text="Skill Sprint" />
             </span>
             <span className="inline-flex items-center text-slate-500">
               <Clock3 className="mr-1.5 h-4 w-4" />

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2, ClipboardCheck, Copy } from 'lucide-react';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
+import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import type { GuidedWorkshop } from '@/lib/workshops';
 import { getLearningProfile, hasLearningActivity, recordLearningActivity, LEARNING_PROGRESS_EVENT } from '@/lib/learning-progress';
 
@@ -100,8 +102,8 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
       <div className="rounded-3xl border border-indigo-200 bg-indigo-50 p-5 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-indigo-700">Your practical work sample</p>
-            <h2 id="worksheet-heading" className="mt-2 text-2xl font-bold text-slate-950">Workshop worksheet</h2>
+            <p className="text-xs font-bold uppercase tracking-wider text-indigo-700"><T text="Your practical work sample" /></p>
+            <h2 id="worksheet-heading" className="mt-2 text-2xl font-bold text-slate-950"><T text="Workshop worksheet" /></h2>
           </div>
           <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-indigo-900" aria-live="polite">{filled} of 3 sections drafted</span>
         </div>
@@ -119,7 +121,12 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
             <h3 className="text-xl font-bold text-slate-950">{step.title}</h3>
           </div>
           <p className="mt-4 leading-7 text-slate-700">{step.instruction}</p>
-          <label htmlFor={`workshop-response-${index}`} className="mt-5 block text-sm font-bold text-slate-900">Your response</label>
+          <LearningTranslationPanel material={[
+            `Step ${index + 1}: ${step.title}`,
+            `Instructions: ${step.instruction}`,
+            `Writing guide: ${step.scaffold}`,
+          ].join('\n\n')} />
+          <label htmlFor={`workshop-response-${index}`} className="mt-5 block text-sm font-bold text-slate-900"><T text="Your response" /></label>
           <textarea
             id={`workshop-response-${index}`}
             rows={5}
@@ -131,19 +138,28 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
             }))}
             className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-white p-4 text-sm leading-6 text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
           />
-          <p className="mt-2 text-xs text-slate-500">{draft.answers[index].trim().length < 40 ? 'Explain the decision in at least 40 characters.' : 'Ready for self-review.'}</p>
+          <p className="mt-2 text-xs text-slate-500"><T text={draft.answers[index].trim().length < 40 ? 'Explain the decision in at least 40 characters.' : 'Ready for self-review.'} /></p>
           <ContextualLearningHelp context={[workshop.skillName, workshop.title, workshop.scenario, step.title, step.instruction, step.scaffold].join(" | ").slice(0, 4500)} prompt="Can you help me think through this workshop step without writing my response for me?" />
           <details className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-            <summary className="cursor-pointer text-sm font-bold text-amber-950">Compare with an illustrative response</summary>
+            <summary className="cursor-pointer text-sm font-bold text-amber-950"><T text="Compare with an illustrative response" /></summary>
             <p className="mt-3 text-sm leading-6 text-amber-950">{step.example}</p>
-            <p className="mt-2 text-xs text-amber-800">One defensible approach, not the only correct answer.</p>
+            <LearningTranslationPanel material={`Illustrative response: ${step.example}`} />
+            <p className="mt-2 text-xs text-amber-800"><T text="One defensible approach, not the only correct answer." /></p>
           </details>
         </article>
       ))}
 
       <div className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-7">
-        <h3 className="flex items-center gap-2 text-xl font-bold text-slate-950"><ClipboardCheck className="h-6 w-6 text-emerald-700" /> Self-review before finishing</h3>
+        <h3 className="flex items-center gap-2 text-xl font-bold text-slate-950"><ClipboardCheck className="h-6 w-6 text-emerald-700" /> <T text="Self-review before finishing" /></h3>
         <p className="mt-2 text-sm text-slate-600">Check each criterion only when your work demonstrates it. This is a self-assessment, not an automated evaluation.</p>
+        <LearningTranslationPanel material={[
+          'Self-review criteria:',
+          ...workshop.criteria.map((criterion, index) => `${index + 1}. ${criterion}`),
+          'Common traps to check:',
+          ...workshop.pitfalls.map((pitfall, index) => `${index + 1}. ${pitfall}`),
+          'Revisit and improve:',
+          workshop.revisit,
+        ].join('\n')} />
         <div className="mt-5 space-y-3">
           {workshop.criteria.map((criterion, index) => (
             <label key={criterion} className="flex cursor-pointer items-start gap-3 rounded-xl bg-slate-50 p-3 text-sm leading-6 text-slate-800">
@@ -156,14 +172,14 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
           ))}
         </div>
         <div className="mt-5 rounded-xl bg-rose-50 p-4">
-          <div className="font-semibold text-rose-950">Common traps to check</div>
+          <div className="font-semibold text-rose-950"><T text="Common traps to check" /></div>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-rose-900">{workshop.pitfalls.map((pitfall) => <li key={pitfall}>{pitfall}</li>)}</ul>
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <button type="button" onClick={copyWorksheet} className="msl-motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-50"><Copy className="h-4 w-4" />Copy worksheet</button>
+          <button type="button" onClick={copyWorksheet} className="msl-motion-press inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold text-slate-800 hover:bg-slate-50"><Copy className="h-4 w-4" /><T text="Copy worksheet" /></button>
           <button type="button" onClick={complete} disabled={!ready || completed} className="msl-motion-press inline-flex min-h-11 items-center gap-2 rounded-xl bg-indigo-700 px-4 py-2 text-sm font-bold text-white hover:bg-indigo-800 disabled:cursor-not-allowed disabled:opacity-50">
             {completed ? <CheckCircle2 className="h-4 w-4" /> : <ClipboardCheck className="h-4 w-4" />}
-            {completed ? 'Workshop completed' : `Record practice · ${workshop.xp} XP`}
+            {completed ? <T text="Workshop completed" /> : `Record practice · ${workshop.xp} XP`}
           </button>
         </div>
         {!completed && !ready && <p className="mt-3 text-xs text-slate-500">To record completion, draft all three sections and review all four criteria.</p>}
@@ -171,13 +187,13 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
       </div>
 
       <div className="rounded-3xl bg-slate-950 p-6 text-white sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-wider text-cyan-300">Revisit and improve</p>
-        <h3 className="mt-2 text-xl font-bold">A second look is part of the workshop.</h3>
+        <p className="text-xs font-bold uppercase tracking-wider text-cyan-300"><T text="Revisit and improve" /></p>
+        <h3 className="mt-2 text-xl font-bold"><T text="A second look is part of the workshop." /></h3>
         <p className="mt-3 text-sm leading-6 text-slate-200">{workshop.revisit}</p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/dashboard#progress" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-900 hover:bg-slate-100">Track progress <ArrowRight className="h-4 w-4" /></Link>
-          <Link href="/dashboard#saved" className="inline-flex min-h-11 items-center rounded-xl border border-slate-500 px-4 py-2 text-sm font-bold text-white hover:bg-slate-800">Saved learning</Link>
-          <Link href={`/skills/${workshop.skillSlug}`} className="inline-flex min-h-11 items-center rounded-xl border border-slate-500 px-4 py-2 text-sm font-bold text-white hover:bg-slate-800">Review skill guide</Link>
+          <Link href="/dashboard#progress" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-900 hover:bg-slate-100"><T text="Track progress" /> <ArrowRight className="h-4 w-4" /></Link>
+          <Link href="/dashboard#saved" className="inline-flex min-h-11 items-center rounded-xl border border-slate-500 px-4 py-2 text-sm font-bold text-white hover:bg-slate-800"><T text="Saved learning" /></Link>
+          <Link href={`/skills/${workshop.skillSlug}`} className="inline-flex min-h-11 items-center rounded-xl border border-slate-500 px-4 py-2 text-sm font-bold text-white hover:bg-slate-800"><T text="Review skill guide" /></Link>
         </div>
       </div>
     </section>

@@ -3,6 +3,366 @@ import type { LearningLocale } from './internationalization';
 /** Localized interface copy. Untranslated educational content stays English. */
 const rows: readonly [string, string, string, string, string, string][] = [
 [
+    "Your practical work sample",
+    "你的实用工作样本",
+    "Tu muestra de trabajo práctica",
+    "Votre réalisation pratique",
+    "आपका व्यावहारिक कार्य नमूना",
+    "نموذج عملك العملي"
+  ],
+  [
+    "Workshop worksheet",
+    "工作坊练习表",
+    "Hoja de trabajo del taller",
+    "Fiche d’atelier",
+    "कार्यशाला कार्यपत्रक",
+    "ورقة عمل الورشة"
+  ],
+  [
+    "Your response",
+    "你的回答",
+    "Tu respuesta",
+    "Votre réponse",
+    "आपका उत्तर",
+    "إجابتك"
+  ],
+  [
+    "Compare with an illustrative response",
+    "对照示例回答",
+    "Comparar con una respuesta de ejemplo",
+    "Comparer avec une réponse illustrative",
+    "उदाहरण उत्तर से तुलना करें",
+    "قارن بإجابة توضيحية"
+  ],
+  [
+    "One defensible approach, not the only correct answer.",
+    "一种合理的方法，并非唯一正确答案。",
+    "Un enfoque razonable, no la única respuesta correcta.",
+    "Une approche défendable, pas la seule bonne réponse.",
+    "यह एक सही ठहराया जा सकने वाला तरीका है, एकमात्र उत्तर नहीं।",
+    "هذا نهج يمكن الدفاع عنه، وليس الإجابة الصحيحة الوحيدة."
+  ],
+  [
+    "Self-review before finishing",
+    "完成前自我检查",
+    "Autoevaluación antes de terminar",
+    "Autoévaluation avant de terminer",
+    "समाप्ति से पहले स्व-समीक्षा",
+    "مراجعة ذاتية قبل الإنهاء"
+  ],
+  [
+    "Common traps to check",
+    "需要注意的常见陷阱",
+    "Errores frecuentes a revisar",
+    "Pièges fréquents à vérifier",
+    "ध्यान देने योग्य आम गलतियाँ",
+    "أخطاء شائعة يجب الانتباه إليها"
+  ],
+  [
+    "Copy worksheet",
+    "复制练习表",
+    "Copiar hoja de trabajo",
+    "Copier la fiche",
+    "कार्यपत्रक कॉपी करें",
+    "انسخ ورقة العمل"
+  ],
+  [
+    "Workshop completed",
+    "工作坊已完成",
+    "Taller completado",
+    "Atelier terminé",
+    "कार्यशाला पूरी हुई",
+    "اكتملت الورشة"
+  ],
+  [
+    "Revisit and improve",
+    "回顾并改进",
+    "Revisar y mejorar",
+    "Revoir et améliorer",
+    "दोबारा देखें और सुधारें",
+    "راجع وحسّن"
+  ],
+  [
+    "A second look is part of the workshop.",
+    "再次回顾也是工作坊的一部分。",
+    "Revisar una vez más forma parte del taller.",
+    "Revenir sur son travail fait partie de l’atelier.",
+    "दोबारा समीक्षा कार्यशाला का हिस्सा है।",
+    "المراجعة الثانية جزء من الورشة."
+  ],
+  [
+    "Track progress",
+    "追踪进度",
+    "Seguir mi progreso",
+    "Suivre les progrès",
+    "प्रगति देखें",
+    "تابع التقدّم"
+  ],
+  [
+    "Saved learning",
+    "已保存的学习内容",
+    "Aprendizaje guardado",
+    "Apprentissages enregistrés",
+    "सहेजी हुई सीख",
+    "التعلّم المحفوظ"
+  ],
+  [
+    "Review skill guide",
+    "复习技能指南",
+    "Revisar guía de habilidades",
+    "Revoir le guide de compétences",
+    "कौशल गाइड दोहराएँ",
+    "راجع دليل المهارات"
+  ],
+  [
+    "Explain the decision in at least 40 characters.",
+    "用至少40个字符解释你的决定。",
+    "Explica la decisión con al menos 40 caracteres.",
+    "Expliquez votre décision en au moins 40 caractères.",
+    "कम से कम 40 अक्षरों में निर्णय समझाएँ।",
+    "اشرح القرار باستخدام 40 حرفًا على الأقل."
+  ],
+  [
+    "Ready for self-review.",
+    "可以开始自我检查。",
+    "Listo para autoevaluar.",
+    "Prêt pour l’autoévaluation.",
+    "स्व-समीक्षा के लिए तैयार।",
+    "جاهز للمراجعة الذاتية."
+  ],
+  [
+    "Progress",
+    "进度",
+    "Progreso",
+    "Progression",
+    "प्रगति",
+    "التقدّم"
+  ],
+  [
+    "Total practice XP",
+    "练习总经验值",
+    "Puntos totales de práctica",
+    "Total des points de pratique",
+    "कुल अभ्यास XP",
+    "مجموع نقاط التدريب"
+  ],
+  [
+    "Reset this sprint",
+    "重置本次冲刺",
+    "Reiniciar esta práctica",
+    "Réinitialiser ce sprint",
+    "इस स्प्रिंट को रीसेट करें",
+    "أعد هذا التدريب"
+  ],
+  [
+    "Understand it",
+    "理解概念",
+    "Compréndelo",
+    "Comprendre",
+    "इसे समझें",
+    "افهم الفكرة"
+  ],
+  [
+    "Example",
+    "示例",
+    "Ejemplo",
+    "Exemple",
+    "उदाहरण",
+    "مثال"
+  ],
+  [
+    "Try it at work",
+    "在工作中尝试",
+    "Pruébalo en el trabajo",
+    "Essayez au travail",
+    "काम पर आज़माएँ",
+    "جرّبه في العمل"
+  ],
+  [
+    "Retrieval check",
+    "记忆检测",
+    "Prueba de memoria",
+    "Test de rappel",
+    "याददाश्त की जाँच",
+    "اختبار الاسترجاع"
+  ],
+  [
+    "Apply it in a workshop",
+    "在工作坊中应用",
+    "Aplicarlo en un taller",
+    "Appliquer dans un atelier",
+    "कार्यशाला में लागू करें",
+    "طبّقه في ورشة"
+  ],
+  [
+    "View progress",
+    "查看进度",
+    "Ver progreso",
+    "Voir les progrès",
+    "प्रगति देखें",
+    "عرض التقدّم"
+  ],
+  [
+    "Correct—good judgment.",
+    "正确——判断很好。",
+    "Correcto: buen criterio.",
+    "Correct — bon jugement.",
+    "सही—अच्छा निर्णय।",
+    "صحيح — حكم جيّد."
+  ],
+  [
+    "Not quite. Compare the options once more.",
+    "还不完全正确。再比较一次选项。",
+    "No del todo. Compara de nuevo las opciones.",
+    "Pas tout à fait. Comparez de nouveau les choix.",
+    "अभी नहीं। विकल्पों की फिर से तुलना करें।",
+    "ليس تمامًا. قارن الخيارات مرة أخرى."
+  ],
+  [
+    "Continue",
+    "继续",
+    "Continuar",
+    "Continuer",
+    "जारी रखें",
+    "متابعة"
+  ],
+  [
+    "Complete sprint",
+    "完成冲刺",
+    "Completar práctica",
+    "Terminer le sprint",
+    "स्प्रिंट पूरा करें",
+    "أكمل التدريب"
+  ],
+  [
+    "Answer once from memory, then use the feedback to correct your model.",
+    "先凭记忆回答，再利用反馈纠正理解。",
+    "Responde de memoria y usa los comentarios para ajustar tu comprensión.",
+    "Répondez de mémoire, puis utilisez le retour pour corriger votre compréhension.",
+    "पहले याददाश्त से उत्तर दें, फिर प्रतिक्रिया से समझ सुधारें।",
+    "أجب من الذاكرة أولًا، ثم استخدم الملاحظات لتصحيح فهمك."
+  ],
+  [
+    "No penalty for retrying",
+    "重试不扣分",
+    "Sin penalización por reintentar",
+    "Aucune pénalité en cas de nouvel essai",
+    "दोबारा कोशिश पर कोई दंड नहीं",
+    "لا عقوبة على إعادة المحاولة"
+  ],
+  [
+    "Reward earned",
+    "已获得奖励",
+    "Recompensa obtenida",
+    "Récompense obtenue",
+    "इनाम मिल गया",
+    "تم الحصول على المكافأة"
+  ],
+  [
+    "Correct—your model holds up.",
+    "正确——你的理解经得起检验。",
+    "Correcto: tu razonamiento se sostiene.",
+    "Correct — votre raisonnement tient la route.",
+    "सही—आपकी समझ ठीक है।",
+    "صحيح — فهمك متماسك."
+  ],
+  [
+    "Not yet. Compare the decision, evidence, and consequence once more.",
+    "还不正确。再比较决定、证据与后果。",
+    "Todavía no. Vuelve a comparar decisión, pruebas y consecuencias.",
+    "Pas encore. Comparez de nouveau la décision, les preuves et les conséquences.",
+    "अभी नहीं। निर्णय, प्रमाण और परिणाम की फिर तुलना करें।",
+    "ليس بعد. قارن القرار والأدلة والعواقب مرة أخرى."
+  ],
+  [
+    "Continue learning",
+    "继续学习",
+    "Seguir aprendiendo",
+    "Poursuivre l’apprentissage",
+    "सीखते रहें",
+    "واصل التعلّم"
+  ],
+  [
+    "All guided workshops",
+    "全部指导工作坊",
+    "Todos los talleres guiados",
+    "Tous les ateliers guidés",
+    "सभी निर्देशित कार्यशालाएँ",
+    "جميع الورش الموجّهة"
+  ],
+  [
+    "Guided workshop",
+    "指导工作坊",
+    "Taller guiado",
+    "Atelier guidé",
+    "निर्देशित कार्यशाला",
+    "ورشة موجهة"
+  ],
+  [
+    "The situation",
+    "情境",
+    "La situación",
+    "La situation",
+    "परिस्थिति",
+    "الموقف"
+  ],
+  [
+    "What you will create",
+    "你将创作的成果",
+    "Lo que crearás",
+    "Ce que vous allez créer",
+    "आप क्या बनाएँगे",
+    "ما الذي ستنشئه"
+  ],
+  [
+    "Browse all Skill Sprints",
+    "浏览全部技能冲刺",
+    "Ver todas las prácticas rápidas",
+    "Parcourir tous les sprints",
+    "सभी कौशल स्प्रिंट देखें",
+    "تصفّح جميع التدريبات"
+  ],
+[
+    "Translate this activity",
+    "翻译这项练习",
+    "Traducir esta actividad",
+    "Traduire cette activité",
+    "इस गतिविधि का अनुवाद करें",
+    "ترجم هذا النشاط"
+  ],
+  [
+    "Translating…",
+    "正在翻译…",
+    "Traduciendo…",
+    "Traduction en cours…",
+    "अनुवाद हो रहा है…",
+    "جارٍ الترجمة…"
+  ],
+  [
+    "Hide translation",
+    "隐藏翻译",
+    "Ocultar traducción",
+    "Masquer la traduction",
+    "अनुवाद छिपाएँ",
+    "إخفاء الترجمة"
+  ],
+  [
+    "Show translation",
+    "显示翻译",
+    "Mostrar traducción",
+    "Afficher la traduction",
+    "अनुवाद दिखाएँ",
+    "إظهار الترجمة"
+  ],
+  [
+    "AI translation is optional and may contain mistakes. Use the original English text and answer choices below to complete the activity.",
+    "AI翻译为可选功能，可能存在错误。请使用下方的英语原文和选项完成练习。",
+    "La traducción con IA es opcional y puede contener errores. Usa el texto y las opciones originales en inglés para completar la actividad.",
+    "La traduction par IA est facultative et peut contenir des erreurs. Utilisez le texte et les choix originaux en anglais pour terminer l’activité.",
+    "AI अनुवाद वैकल्पिक है और इसमें गलतियाँ हो सकती हैं। गतिविधि पूरी करने के लिए नीचे दिया मूल अंग्रेज़ी पाठ और उत्तर विकल्प उपयोग करें।",
+    "الترجمة بالذكاء الاصطناعي اختيارية وقد تحتوي أخطاء. استخدم النص والخيارات الإنجليزية الأصلية أدناه لإكمال النشاط."
+  ],
+[
     "Curated, practical skill guides",
     "精选实用技能指南",
     "Guías prácticas de habilidades",
