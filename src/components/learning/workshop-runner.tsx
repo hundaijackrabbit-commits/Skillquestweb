@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2, ClipboardCheck, Copy } from 'lucide-react';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
 import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { GlossaryLinkedText } from '@/components/glossary/glossary-links';
 import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import type { GuidedWorkshop } from '@/lib/workshops';
 import { getLearningProfile, hasLearningActivity, recordLearningActivity, LEARNING_PROGRESS_EVENT } from '@/lib/learning-progress';
@@ -120,7 +121,7 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-800">{index + 1}</span>
             <h3 className="text-xl font-bold text-slate-950">{step.title}</h3>
           </div>
-          <p className="mt-4 leading-7 text-slate-700">{step.instruction}</p>
+          <p className="mt-4 leading-7 text-slate-700"><GlossaryLinkedText text={step.instruction} maxLinks={2} /></p>
           <LearningTranslationPanel material={[
             `Step ${index + 1}: ${step.title}`,
             `Instructions: ${step.instruction}`,

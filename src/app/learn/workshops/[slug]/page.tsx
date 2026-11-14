@@ -6,6 +6,7 @@ import { ArrowLeft, Clock3, FileText, Sparkles } from 'lucide-react';
 import { getAllWorkshops, getWorkshop } from '@/lib/workshops';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import { WorkshopRunner } from '@/components/learning/workshop-runner';
+import { RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -53,6 +54,12 @@ export default async function WorkshopPage({ params }: Props) {
             <div><div className="text-sm font-bold"><T text="What you will create" /></div><p className="mt-1 text-sm leading-6 text-slate-200">{workshop.deliverable}</p></div>
           </div>
         </section>
+        <RelatedGlossaryTerms text={[
+          workshop.description,
+          workshop.scenario,
+          ...workshop.steps.map((step) => step.instruction),
+          ...workshop.criteria,
+        ].join(' ')} maxTerms={5} />
         <GamificationAccessGate featureName={workshop.title} description="Create a free account to draft a work sample, revisit it, and earn a single self-assessed workshop completion. Drafts stay in this browser.">
           <WorkshopRunner workshop={workshop} />
         </GamificationAccessGate>

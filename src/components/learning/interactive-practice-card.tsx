@@ -15,6 +15,7 @@ import { GamificationAccessGate } from '@/components/learning/gamification-acces
 import { Button } from '@/components/ui/button';
 import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
 import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { GlossaryLinkedText } from '@/components/glossary/glossary-links';
 import type { InteractivePractice, SequencePractice } from '@/lib/interactive-practice';
 import {
   getLearningProfile,
@@ -160,7 +161,7 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
             {practice.label}
           </div>
           <h2 id={`${practice.id}-title`} className="mt-4 text-3xl font-bold tracking-tight">{practice.title}</h2>
-          <p className="mt-3 leading-7 text-cyan-100">{practice.instruction}</p>
+          <p className="mt-3 leading-7 text-cyan-100"><GlossaryLinkedText text={practice.instruction} maxLinks={1} /></p>
           <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold">
             <span className="rounded-full bg-white/10 px-3 py-2"><Sparkles className="mr-1.5 inline h-4 w-4" />{rewarded ? 'Reward earned' : `${practice.xp} XP`}</span>
             <span className="rounded-full bg-white/10 px-3 py-2">Move, test, and retry</span>

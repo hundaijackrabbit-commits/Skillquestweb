@@ -19,6 +19,7 @@ import { useSupabase } from '@/components/providers/supabase-provider';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import type { SkillCourse } from '@/lib/courses';
 import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { GlossaryLinkedText } from '@/components/glossary/glossary-links';
 import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import {
   getLearningProfile,
@@ -298,7 +299,7 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, workshopH
                 <Lightbulb className="mr-2 h-5 w-5 text-amber-500" />
                 <T text="Understand it" />
               </h3>
-              <p className="mt-3 leading-7 text-slate-700">{lesson.concept}</p>
+              <p className="mt-3 leading-7 text-slate-700"><GlossaryLinkedText text={lesson.concept} maxLinks={2} /></p>
               <div className="mt-4 rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-5">
                 <div className="text-xs font-bold uppercase tracking-wide text-blue-700"><T text="Example" /></div>
                 <p className="mt-2 leading-7 text-blue-950">{lesson.example}</p>
@@ -310,7 +311,7 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, workshopH
                 <Target className="mr-2 h-5 w-5 text-violet-600" />
                 <T text="Try it at work" />
               </h3>
-              <p className="mt-2 leading-7 text-violet-900">{lesson.practice}</p>
+              <p className="mt-2 leading-7 text-violet-900"><GlossaryLinkedText text={lesson.practice} maxLinks={1} /></p>
             </section>
 
             <section>

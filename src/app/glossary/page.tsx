@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BookOpen, ArrowRight } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
+import { GlossaryDirectory } from '@/components/glossary/glossary-directory';
 import { GLOSSARY_CATEGORIES, GLOSSARY_ENTRIES } from '@/lib/glossary';
 import { absoluteUrl } from '@/lib/site';
 
@@ -37,36 +38,7 @@ export default function GlossaryPage() {
             which covers what you can learn to do and how to practise.
           </p>
         </header>
-        <nav aria-label="Jump to dictionary topic" className="mt-9 flex flex-wrap gap-2">
-          {GLOSSARY_CATEGORIES.map((category) => (
-            <a key={category} href={`#${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-              className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:border-indigo-400 hover:bg-indigo-50">
-              {category}
-            </a>
-          ))}
-        </nav>
-        {GLOSSARY_CATEGORIES.map((category) => {
-          const entries = GLOSSARY_ENTRIES.filter((entry) => entry.category === category)
-            .sort((a, b) => a.title.localeCompare(b.title));
-          return (
-            <section key={category} id={category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
-              className="mt-12 scroll-mt-28" aria-label={category}>
-              <h2 className="mb-5 border-b border-slate-200 pb-3 text-2xl font-bold text-slate-950">{category}</h2>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {entries.map((entry) => (
-                  <Link key={entry.slug} href={`/glossary/${entry.slug}`}
-                    className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-indigo-700">{entry.title}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{entry.definition}</p>
-                    <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-indigo-700">
-                      Understand the term <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          );
-        })}
+        <GlossaryDirectory entries={GLOSSARY_ENTRIES} categories={GLOSSARY_CATEGORIES} />
       </div>
     </div>
   );

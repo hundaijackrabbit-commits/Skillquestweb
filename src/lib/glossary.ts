@@ -296,6 +296,407 @@ export const GLOSSARY_ENTRIES: GlossaryEntry[] = [
     "aliases": [
       "feedback loops"
     ]
+  },
+  {
+    "slug": "reflective-practice",
+    "title": "Reflective practice",
+    "category": "Learning science",
+    "definition": "A deliberate review of an experience to understand what happened, why it happened, and what to change next.",
+    "whyItMatters": "Reflection becomes useful when it produces a testable adjustment, not just a description of feelings or events. It helps turn completed work into better future decisions.",
+    "example": "After delivering a presentation, note where the audience became confused, identify a likely cause, and change one slide before the next presentation.",
+    "aliases": [
+      "reflection",
+      "reflective learning"
+    ]
+  },
+  {
+    "slug": "learning-transfer",
+    "title": "Learning transfer",
+    "category": "Learning science",
+    "definition": "Applying knowledge or a capability learned in one situation to a different task, setting, or problem.",
+    "whyItMatters": "Being able to repeat a lesson example is not the same as using the idea at work. Transfer improves when learners identify the underlying principle, compare contexts, and practise adapting it to unfamiliar situations.",
+    "example": "Use the owner-deadline-decision structure practised in a client handoff to coordinate a different situation, such as a volunteer event or internal product launch.",
+    "aliases": [
+      "transfer of learning",
+      "knowledge transfer across contexts"
+    ],
+    "sourceUrl": "https://poorvucenter.yale.edu/transfer-of-knowledge-to-new-contexts"
+  },
+  {
+    "slug": "summative-assessment",
+    "title": "Summative assessment",
+    "category": "Learning science",
+    "definition": "An evaluation used to judge what someone has learned at the end of a defined unit, course, or learning period.",
+    "whyItMatters": "Unlike formative feedback used during learning, a summative assessment summarizes achievement at a particular point. Its conclusions depend on how well the assessment matches the intended skill.",
+    "example": "At the end of a writing course, submit a completed brief evaluated against the course's published rubric.",
+    "aliases": [
+      "summative evaluation"
+    ],
+    "sourceUrl": "https://www.cmu.edu/teaching/assessment/basics/glossary.html"
+  },
+  {
+    "slug": "scaffolding",
+    "title": "Scaffolding",
+    "category": "Learning science",
+    "definition": "Temporary prompts, examples, templates, or guidance that support a learner while a task is still unfamiliar.",
+    "whyItMatters": "Good scaffolding makes a difficult task approachable without permanently doing the thinking for the learner. Support can be reduced as the learner gains independence.",
+    "example": "First use a structured decision-memo template; later write a similar memo using only a short checklist.",
+    "aliases": [
+      "instructional scaffolding",
+      "learning scaffold"
+    ],
+    "sourceUrl": "https://www.utm.utoronto.ca/tlc/instructor-resources/glossary-terms"
+  },
+  {
+    "slug": "learning-objective",
+    "title": "Learning objective",
+    "category": "Learning science",
+    "definition": "A specific statement of the knowledge or action a learner should achieve during an individual lesson or activity.",
+    "whyItMatters": "A useful objective describes something a learner can demonstrate, allowing exercises and feedback to focus on the intended result instead of vague completion.",
+    "example": "Replace 'learn more about research' with 'compare two sources and explain which one better supports a claim.'",
+    "aliases": [
+      "learning objectives"
+    ]
+  },
+  {
+    "slug": "working-memory",
+    "title": "Working memory",
+    "category": "Learning science",
+    "definition": "The limited-capacity mental workspace used to hold and manipulate information briefly while thinking or completing a task.",
+    "whyItMatters": "When a page asks readers to remember too many instructions at once, less attention remains for solving the problem. Clear steps, examples, and visible reference notes can reduce this strain.",
+    "example": "Keep the assignment criteria beside a worksheet so you can reason through a problem without memorizing every requirement.",
+    "aliases": [
+      "short-term mental workspace"
+    ]
+  },
+  {
+    "slug": "peer-feedback",
+    "title": "Peer feedback",
+    "category": "Learning science",
+    "definition": "Specific observations and suggestions about a learner's work provided by another person working at a similar level.",
+    "whyItMatters": "A peer can notice ambiguity or missing context that the author overlooks. Feedback is most useful when tied to a goal, concrete evidence, and a revision the learner can test.",
+    "example": "Exchange two project updates and ask each other to identify the decision, owner, deadline, and any remaining uncertainty.",
+    "aliases": [
+      "peer review feedback"
+    ],
+    "sourceUrl": "https://www.cmu.edu/teaching/resources/instructionalstrategies/activelearningstrategies/retrievalpractice/"
+  },
+  {
+    "slug": "upskilling",
+    "title": "Upskilling",
+    "category": "Skills & careers",
+    "definition": "Developing or updating capabilities to perform better in your current role or a closely related role.",
+    "whyItMatters": "Upskilling targets changing responsibilities or tools without necessarily requiring a career change. It is most useful when tied to tasks employers actually need performed.",
+    "example": "A customer-support specialist learns to analyse recurring support trends and present improvement recommendations.",
+    "aliases": [
+      "upskill",
+      "upskilled"
+    ],
+    "sourceUrl": "https://www.cedefop.europa.eu/en/tools/vet-glossary/glossary"
+  },
+  {
+    "slug": "reskilling",
+    "title": "Reskilling",
+    "category": "Skills & careers",
+    "definition": "Learning substantially different capabilities to move into a new type of work or adapt when an existing role changes.",
+    "whyItMatters": "Reskilling differs from upskilling because the target tasks or role may be significantly different. Existing transferable skills can still shorten the transition.",
+    "example": "A warehouse coordinator learns testing fundamentals and builds software quality-assurance work samples to pursue a new role.",
+    "aliases": [
+      "reskill",
+      "retraining"
+    ],
+    "sourceUrl": "https://www.cedefop.europa.eu/en/tools/vet-glossary/glossary"
+  },
+  {
+    "slug": "career-mobility",
+    "title": "Career mobility",
+    "category": "Skills & careers",
+    "definition": "The ability or opportunity to move between roles, employers, functions, or levels as circumstances and goals change.",
+    "whyItMatters": "Mobility can mean advancement, a lateral move, or a shift into a different field. Understanding possible moves helps learners build flexible skill combinations rather than rely on one job title.",
+    "example": "A project coordinator moves laterally into operations, using planning and stakeholder experience while learning new reporting tools.",
+    "aliases": [
+      "internal mobility",
+      "occupational mobility"
+    ],
+    "sourceUrl": "https://www.weforum.org/publications/the-future-of-jobs-report-2025"
+  },
+  {
+    "slug": "professional-portfolio",
+    "title": "Professional portfolio",
+    "category": "Skills & careers",
+    "definition": "An intentionally selected collection of work examples that demonstrates a person's capabilities, decisions, and results.",
+    "whyItMatters": "A portfolio can show how work was done, not only claim that a skill exists. Good examples include context, your contribution, constraints, and verifiable outcomes while protecting confidential details.",
+    "example": "Show a before-and-after process map, explain which steps you changed, and record how cycle time improved.",
+    "aliases": [
+      "career portfolio",
+      "work portfolio"
+    ]
+  },
+  {
+    "slug": "cross-functional-work",
+    "title": "Cross-functional work",
+    "category": "Skills & careers",
+    "definition": "Collaboration between people from different specialties or departments to achieve a shared result.",
+    "whyItMatters": "Different teams often optimize for different goals. Cross-functional work becomes more effective when responsibilities, handoffs, and decision authority are explicit.",
+    "example": "For a product release, design clarifies the user experience, engineering resolves technical constraints, and support prepares customer guidance.",
+    "aliases": [
+      "cross-functional",
+      "cross functional",
+      "cross-functional collaboration"
+    ]
+  },
+  {
+    "slug": "skill-assessment",
+    "title": "Skill assessment",
+    "category": "Skills & careers",
+    "definition": "A structured way to gather evidence of how effectively someone can apply a particular capability.",
+    "whyItMatters": "The strongest assessments use tasks similar to real work, explicit criteria, and feedback. Familiarity with a topic or confidence alone is not a reliable measure of proficiency.",
+    "example": "Instead of asking whether you know spreadsheets, build a small report from messy data and check it for errors.",
+    "aliases": [
+      "skills assessment",
+      "skills evaluation"
+    ]
+  },
+  {
+    "slug": "career-progression",
+    "title": "Career progression",
+    "category": "Skills & careers",
+    "definition": "A sequence of changes in responsibility, capability, impact, or position over a working life.",
+    "whyItMatters": "Progression does not have to mean managing more people. It may involve deeper expertise, more complex problems, broader influence, or a new kind of contribution.",
+    "example": "An analyst develops from preparing dashboards to explaining trade-offs and advising leaders on decisions.",
+    "aliases": [
+      "career advancement",
+      "professional progression"
+    ]
+  },
+  {
+    "slug": "generative-ai",
+    "title": "Generative AI",
+    "category": "AI & technology",
+    "definition": "Artificial intelligence systems that produce new content, such as text, images, audio, or code, from learned patterns and user inputs.",
+    "whyItMatters": "Generated material can accelerate drafting and exploration, but it must still be checked for factual accuracy, suitability, confidentiality, and rights considerations.",
+    "example": "Use a generative AI tool to outline training material, then verify every factual claim and rewrite examples for your audience.",
+    "aliases": [
+      "genAI",
+      "generative artificial intelligence"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "large-language-model",
+    "title": "Large language model (LLM)",
+    "category": "AI & technology",
+    "definition": "A language-focused AI model trained on substantial amounts of data to predict or generate sequences of tokens such as words and code.",
+    "whyItMatters": "An LLM can summarize, explain, and draft language, but fluent text does not guarantee a verified fact, consistent reasoning, or reliable access to current information.",
+    "example": "A learner asks an LLM to explain a workshop concept, then checks its examples against the lesson and an authoritative source.",
+    "aliases": [
+      "LLM",
+      "LLMs",
+      "large language models"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "ai-agent",
+    "title": "AI agent",
+    "category": "AI & technology",
+    "definition": "A software system that uses an AI model and programmed tools or workflows to pursue a goal through one or more actions.",
+    "whyItMatters": "Unlike a single chatbot reply, an agent may retrieve information, select steps, and interact with systems. Clear permissions, safeguards, and human review remain necessary.",
+    "example": "An agent drafts a weekly project summary from approved task records, while a manager reviews it before distribution.",
+    "aliases": [
+      "AI agents",
+      "agentic system"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "ai-model-evaluation",
+    "title": "AI model evaluation",
+    "category": "AI & technology",
+    "definition": "The process of testing an AI model's outputs against defined tasks, reference examples, safety expectations, and performance measures.",
+    "whyItMatters": "A convincing demonstration is not enough to establish reliability. Evaluation should examine representative cases, failure modes, and outcomes that matter to actual users.",
+    "example": "Test an AI assistant on 50 real support-question patterns and record factual accuracy, refusal quality, and escalation errors.",
+    "aliases": [
+      "model evaluation",
+      "AI evaluation",
+      "model benchmarking"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "training-data",
+    "title": "Training data",
+    "category": "AI & technology",
+    "definition": "Information used to fit an AI or statistical model so that it can learn patterns before being evaluated or put to use.",
+    "whyItMatters": "Training data influences what a system learns and which situations it handles poorly. Coverage, collection methods, privacy, and bias matter; evaluation should also use separate examples the model was not trained on.",
+    "example": "Train a ticket-routing model using previously categorized support requests, then test it on a separate set of real requests to see where it misroutes customers.",
+    "aliases": [
+      "training dataset",
+      "model training data"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "ai-transparency",
+    "title": "AI transparency",
+    "category": "AI & technology",
+    "definition": "Providing meaningful information about an AI system's purpose, data use, limitations, testing, and the people responsible for it.",
+    "whyItMatters": "Transparency lets people understand when AI is involved and what checks or appeals are available. It is broader than explainability, which focuses on making individual outputs or system behavior understandable.",
+    "example": "A company tells applicants when an automated screening tool is used, what information it considers, and how a person can request a review.",
+    "aliases": [
+      "algorithmic transparency",
+      "AI system transparency"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "automation-bias",
+    "title": "Automation bias",
+    "category": "AI & technology",
+    "definition": "A tendency to accept a recommendation from an automated system too readily, even when other evidence suggests it may be wrong.",
+    "whyItMatters": "Automation bias can reduce human oversight precisely when the system sounds confident. Independent checks and clear responsibility help prevent costly mistakes.",
+    "example": "A reviewer catches an incorrect AI-generated project date by comparing it with the signed client agreement before sending an update.",
+    "aliases": [
+      "automation complacency"
+    ],
+    "sourceUrl": "https://www.nist.gov/publications/language-trustworthy-ai-depth-glossary-terms"
+  },
+  {
+    "slug": "prompt-injection",
+    "title": "Prompt injection",
+    "category": "AI & technology",
+    "definition": "An attempt to make an AI system follow instructions hidden in material it was supposed to analyse, such as a document, page, or message.",
+    "whyItMatters": "A retrieved document can contain commands that conflict with the user's actual task. Systems should treat external content as data and restrict actions and access appropriately.",
+    "example": "A web page contains text telling a research assistant to ignore its task and reveal private information; a protected assistant treats that text as untrusted content.",
+    "aliases": [
+      "indirect prompt injection"
+    ],
+    "sourceUrl": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+  },
+  {
+    "slug": "workflow",
+    "title": "Workflow",
+    "category": "Reasoning & work",
+    "definition": "A repeatable sequence of tasks, decisions, and handoffs that moves work from a starting point to an intended result.",
+    "whyItMatters": "Making the sequence visible helps reveal wasted steps, unclear ownership, and places where quality or approval checks are missing.",
+    "example": "For an article, map research, draft, fact-check, edit, approval, publication, and follow-up as separate stages.",
+    "aliases": [
+      "workflows",
+      "work flow"
+    ]
+  },
+  {
+    "slug": "trade-off",
+    "title": "Trade-off",
+    "category": "Reasoning & work",
+    "definition": "A choice in which improving one desirable outcome requires accepting a cost, risk, or reduction in another.",
+    "whyItMatters": "Most real decisions involve competing objectives rather than a perfect option. Naming trade-offs makes a recommendation more transparent and easier to revisit.",
+    "example": "Launching a simpler feature this week may reduce scope but give customers access sooner and lower implementation risk.",
+    "aliases": [
+      "tradeoffs",
+      "trade-offs",
+      "trade off"
+    ]
+  },
+  {
+    "slug": "baseline",
+    "title": "Baseline",
+    "category": "Reasoning & work",
+    "definition": "A reference measurement or approved plan used to judge whether something has changed or improved.",
+    "whyItMatters": "Without a consistent starting point, improvement claims may confuse a genuine effect with seasonal variation or changed measurement.",
+    "example": "Record average customer-response time for two weeks before introducing a new triage process.",
+    "aliases": [
+      "baseline measurement",
+      "starting baseline"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
+  },
+  {
+    "slug": "assumption",
+    "title": "Assumption",
+    "category": "Reasoning & work",
+    "definition": "A proposition treated as true for planning or reasoning even though it has not yet been verified.",
+    "whyItMatters": "Unstated assumptions can turn guesses into apparently firm conclusions. Listing the important ones reveals what evidence or confirmation a decision still needs.",
+    "example": "A team plans a Friday launch assuming customer images will be approved by Wednesday; it records that dependency for confirmation.",
+    "aliases": [
+      "assumptions",
+      "working assumption"
+    ]
+  },
+  {
+    "slug": "performance-metric",
+    "title": "Performance metric",
+    "category": "Reasoning & work",
+    "definition": "A quantitative measure used to describe an aspect of work, process, or result.",
+    "whyItMatters": "Not every metric is a key performance indicator: a KPI is selected because it tracks an important objective. Useful metrics need a consistent definition and relevant context.",
+    "example": "Track average resolution time as a service metric, then compare it with customer satisfaction to avoid rewarding speed alone.",
+    "aliases": [
+      "metric",
+      "metrics",
+      "performance metrics"
+    ]
+  },
+  {
+    "slug": "escalation",
+    "title": "Escalation",
+    "category": "Reasoning & work",
+    "definition": "A deliberate transfer of an unresolved issue or decision to someone with the authority, expertise, or capacity to address it.",
+    "whyItMatters": "Escalation is not the same as blaming someone. Good escalation explains the risk, what has been attempted, who must decide, and when action is needed.",
+    "example": "If image approval is missing at 1 p.m., notify the account manager with the deadline impact and the decision required.",
+    "aliases": [
+      "escalation trigger",
+      "escalate"
+    ]
+  },
+  {
+    "slug": "customer-journey",
+    "title": "Customer journey",
+    "category": "Reasoning & work",
+    "definition": "The sequence of experiences a person has while discovering, evaluating, buying, using, and getting support for a product or service.",
+    "whyItMatters": "Mapping the journey can expose friction between teams and reveal where useful information, assistance, or reassurance is missing.",
+    "example": "Trace how someone finds a food truck's website, checks its menu, places an order, and resolves a delivery problem.",
+    "aliases": [
+      "customer journeys",
+      "buyer journey"
+    ]
+  },
+  {
+    "slug": "competitive-advantage",
+    "title": "Competitive advantage",
+    "category": "Reasoning & work",
+    "definition": "A capability, position, or combination of resources that allows an organization to create greater customer value or perform better than rivals.",
+    "whyItMatters": "An advantage is more durable when it reflects something difficult to copy, such as trusted relationships, specialist know-how, or a reliable process.",
+    "example": "A mobile service business wins repeat contracts because it can arrive faster and document work quality more consistently than competitors.",
+    "aliases": [
+      "competitive edge"
+    ]
+  },
+  {
+    "slug": "project-dependency",
+    "title": "Project dependency",
+    "category": "Reasoning & work",
+    "definition": "A relationship in which one task, decision, or deliverable relies on another being completed or available first.",
+    "whyItMatters": "Dependencies shape the actual sequence and risk of a project. Recording an owner and trigger makes it easier to prevent a small delay from blocking several teams.",
+    "example": "The client update cannot confirm the launch date until the designer receives approved images and the manager confirms the deadline.",
+    "aliases": [
+      "project dependencies",
+      "task dependency",
+      "task dependencies"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
+  },
+  {
+    "slug": "deliverable",
+    "title": "Deliverable",
+    "category": "Reasoning & work",
+    "definition": "A defined output that must be completed and handed over as part of a project, assignment, or agreement.",
+    "whyItMatters": "A deliverable should be observable and have clear acceptance criteria. Describing it precisely reduces misunderstandings about what completion means.",
+    "example": "Instead of 'improve the report,' specify a two-page findings memo with a chart, source notes, and one recommendation.",
+    "aliases": [
+      "deliverables",
+      "project deliverable"
+    ],
+    "sourceUrl": "https://www.apm.org.uk/resources/glossary/"
   }
 ];
 

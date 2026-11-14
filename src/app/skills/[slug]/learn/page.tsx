@@ -4,6 +4,7 @@ import { TranslatedText as T } from '@/components/providers/learning-language-pr
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Clock3, Sparkles } from 'lucide-react';
 import { CourseRunner } from '@/components/learning/course-runner';
+import { RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { getAllSkillCourses, getSkillCourse } from '@/lib/courses';
 import { getWorkshopForSkill } from '@/lib/workshops';
 import { getSkillBySlug } from '@/lib/content';
@@ -98,6 +99,11 @@ export default async function SkillCoursePage({ params }: Props) {
           <h1 className="text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl">{course.title}</h1>
           <p className="mt-4 text-xl leading-8 text-slate-600">{course.description}</p>
         </header>
+
+        <RelatedGlossaryTerms text={[
+          course.description,
+          ...course.lessons.flatMap((lesson) => [lesson.objective, lesson.concept, lesson.practice]),
+        ].join(' ')} maxTerms={5} />
 
         <CourseRunner
           course={course}
