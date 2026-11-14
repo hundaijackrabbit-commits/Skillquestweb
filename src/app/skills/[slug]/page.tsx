@@ -1,4 +1,5 @@
 import { LearningActionPath } from '@/components/learning/learning-action-path';
+import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
 import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
@@ -237,6 +238,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="max-w-4xl">
                 <h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900">{skill.name}</h1>
                 <p className="mb-2 text-xl leading-relaxed text-gray-700">{skill.shortDefinition}</p>
+                <ContextualLearningHelp context={[skill.name, skill.shortDefinition, ...skill.beginnerActions.slice(0, 2)].join(" | ").slice(0, 4500)} prompt={`Can you explain ${skill.name} with a practical example I could try today?`} />
               </div>
 
               <div className="w-full max-w-sm rounded-2xl border bg-white/80 p-4 shadow-sm">
