@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { BookOpen, Users, Briefcase, Building2, Gift, Layers3, PenTool, ShieldCheck, Trophy } from 'lucide-react';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 
@@ -32,28 +33,28 @@ export function Footer() {
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-sm font-bold text-white">M</div>
               <div>
                 <div className="text-lg font-bold text-slate-900">Modern Skill Lab</div>
-                <div className="text-sm text-slate-500">Practical skills for modern work</div>
+                <div className="text-sm text-slate-500"><T text="Practical skills for modern work" /></div>
               </div>
             </div>
             <p className="mt-5 max-w-md text-sm leading-6 text-slate-600">
-              Explore practical skill guides, career pathways, and modern-work ideas designed to help you decide what to learn next.
+              <T text="Explore practical skill guides, career pathways, and modern-work ideas designed to help you decide what to learn next." />
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-8">
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900">Explore</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900"><T text="Explore" /></h3>
               <ul className="mt-5 space-y-3">
                 {navigation.platform.map((item) => (
-                  <li key={item.name}><Link href={item.href} className="text-sm text-slate-600 hover:text-slate-900">{item.name}</Link></li>
+                  <li key={item.name}><Link href={item.href} className="text-sm text-slate-600 hover:text-slate-900"><T text={item.name} /></Link></li>
                 ))}
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900">Account</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900"><T text="Account" /></h3>
               <ul className="mt-5 space-y-3">
                 {navigation.company.map((item) => (
-                  <li key={item.name}><Link href={item.href} className="text-sm text-slate-600 hover:text-slate-900">{item.name}</Link></li>
+                  <li key={item.name}><Link href={item.href} className="text-sm text-slate-600 hover:text-slate-900"><T text={item.name} /></Link></li>
                 ))}
               </ul>
             </div>
@@ -61,11 +62,11 @@ export function Footer() {
 
           <div id="newsletter">
             <div className="mb-7 rounded-2xl border border-violet-200 bg-white p-5">
-              <h3 className="font-bold text-slate-900">Need help choosing your next step?</h3>
+              <h3 className="font-bold text-slate-900"><T text="Need help choosing your next step?" /></h3>
               <p className="mt-2 text-sm leading-6 text-slate-600">Use our free Career & Life Map to turn ideas into a practical plan.</p>
-              <Link href="/free-career-guide" className="mt-3 inline-flex text-sm font-bold text-violet-700 hover:text-violet-900">Explore the free guide →</Link>
+              <Link href="/free-career-guide" className="mt-3 inline-flex text-sm font-bold text-violet-700 hover:text-violet-900"><T text="Explore the free guide →" /></Link>
             </div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900">One useful skill every week</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900"><T text="One useful skill every week" /></h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">Get practical skills, career ideas, and modern-work insights worth keeping.</p>
             <NewsletterForm source="footer" compact className="mt-5" />
           </div>
@@ -73,7 +74,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Modern Skill Lab. Practical, career-relevant learning.</p>
-          <Link href="/admin/login" className="inline-flex items-center gap-1.5 hover:text-slate-700"><ShieldCheck className="h-3.5 w-3.5" /> Admin</Link>
+          <Link href="/admin/login" className="inline-flex items-center gap-1.5 hover:text-slate-700"><ShieldCheck className="h-3.5 w-3.5" /> <T text="Admin" /></Link>
         </div>
       </div>
     </footer>

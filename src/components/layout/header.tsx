@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LearningLanguageSelector } from '@/components/layout/learning-language-selector';
-import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
+import { useLearningLanguage, TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { navigationLabel } from '@/lib/navigation-translations';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { Search, Menu, X, BookOpen, Briefcase, User, LogOut, Sparkles, Route, Trophy, Users } from 'lucide-react';
@@ -21,23 +21,8 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [learningLocale, setLearningLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
+  const { locale: learningLocale } = useLearningLanguage();
 
-  useEffect(() => {
-    const syncLanguage = () => {
-      try {
-        const stored = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-        setLearningLocale(stored ? normalizeLearningLocale(stored) : normalizeLearningLocale(navigator.language));
-      } catch { setLearningLocale(normalizeLearningLocale(navigator.language)); }
-    };
-    syncLanguage();
-    window.addEventListener('msl:learning-language-changed', syncLanguage);
-    window.addEventListener('storage', syncLanguage);
-    return () => {
-      window.removeEventListener('msl:learning-language-changed', syncLanguage);
-      window.removeEventListener('storage', syncLanguage);
-    };
-  }, []);
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -127,7 +112,7 @@ export function Header() {
                       <div id="mobile-navigation-title" className="text-base font-bold leading-tight text-slate-900">
                         Modern Skill Lab
                       </div>
-                      <div className="mt-0.5 text-xs leading-snug text-slate-500">Practical skills for modern work</div>
+                      <div className="mt-0.5 text-xs leading-snug text-slate-500"><T text="Practical skills for modern work" /></div>
                     </div>
                   </div>
                 </Link>

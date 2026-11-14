@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Flame, Sparkles, Trophy } from 'lucide-react';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import {
   getLearningProfile,
@@ -43,21 +44,21 @@ export function LearningProgressSummary() {
           <Sparkles className="h-6 w-6 text-amber-600" />
           <div>
             <div className="text-2xl font-bold text-slate-950">{profile.totalXp}</div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Practice XP</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500"><T text="Practice XP" /></div>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-2xl bg-orange-50 p-4">
           <Flame className="h-6 w-6 text-orange-600" />
           <div>
             <div className="text-2xl font-bold text-slate-950">{profile.currentStreak} days</div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Practice rhythm</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500"><T text="Practice rhythm" /></div>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-2xl bg-violet-50 p-4">
           <Trophy className="h-6 w-6 text-violet-600" />
           <div>
             <div className="text-2xl font-bold text-slate-950">{profile.activities.length}</div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Completed activities</div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-slate-500"><T text="Completed activities" /></div>
           </div>
         </div>
       </div>

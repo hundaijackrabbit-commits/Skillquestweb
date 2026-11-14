@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 
 type NewsletterFormProps = {
   source?: string;
@@ -75,13 +76,13 @@ export function NewsletterForm({ source = 'website', compact = false, className 
           disabled={status === 'loading'}
           className={`${compact ? 'mt-3 sm:ml-3 sm:mt-0' : ''} msl-motion-press inline-flex shrink-0 items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-wait disabled:opacity-60`}
         >
-          {status === 'loading' ? 'Joining…' : 'Get the weekly skill'}
+          {status === 'loading' ? <T text="Joining…" /> : <T text="Get the weekly skill" />}
           {status !== 'loading' && <ArrowRight className="ml-2 h-4 w-4" />}
         </button>
       </div>
       {status === 'loading' && <span className="sr-only" role="status">Subscribing to the weekly skill email…</span>}
       {status === 'error' && <p className="msl-status mt-2 text-sm text-red-600" role="alert">{message}</p>}
-      <p className="mt-2 text-xs leading-5 text-slate-500">One useful email at a time. Unsubscribe anytime.</p>
+      <p className="mt-2 text-xs leading-5 text-slate-500"><T text="One useful email at a time. Unsubscribe anytime." /></p>
     </form>
   );
 }

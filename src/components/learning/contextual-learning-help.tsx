@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
+import { useLearningLanguage, TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { Check, Copy, Sparkles } from 'lucide-react';
-import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
 
 export function ContextualLearningHelp({ context, prompt = 'Can you explain this concept more simply?', defaultOpen = false, showToggle = true }: { context: string; prompt?: string; defaultOpen?: boolean; showToggle?: boolean }) {
   const questionId = useId();
@@ -14,19 +14,8 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
   const [copied, setCopied] = useState(false);
   const [previousAnswer, setPreviousAnswer] = useState('');
   const [lastQuestion, setLastQuestion] = useState('');
-  const [locale, setLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
+  const { locale } = useLearningLanguage();
 
-  useEffect(() => {
-    const sync = () => {
-      try {
-        const stored = localStorage.getItem(LOCALE_STORAGE_KEY);
-        setLocale(stored ? normalizeLearningLocale(stored) : normalizeLearningLocale(navigator.language));
-      } catch { setLocale(DEFAULT_LOCALE); }
-    };
-    sync();
-    window.addEventListener('msl:learning-language-changed', sync);
-    return () => window.removeEventListener('msl:learning-language-changed', sync);
-  }, []);
 
   async function ask() {
     if (loading || question.trim().length < 3) return;
@@ -63,25 +52,25 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
     <div className="mt-4 text-sm">
       {showToggle && <button type="button" aria-expanded={open} onClick={() => setOpen(!open)}
         className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-indigo-200 bg-white px-3 font-semibold text-indigo-800 hover:bg-indigo-50">
-        <Sparkles className="h-4 w-4" aria-hidden="true" /> {open ? "Hide AI help" : "Ask about this lesson"}
+        <Sparkles className="h-4 w-4" aria-hidden="true" /> {open ? <T text="Hide AI help" /> : <T text="Ask about this lesson" />}
       </button>}
       {open && (
         <div className="mt-3 space-y-3 rounded-xl border border-indigo-100 bg-indigo-50/50 p-4">
-          <label className="block font-semibold text-slate-800" htmlFor={questionId}>Your question</label>
+          <label className="block font-semibold text-slate-800" htmlFor={questionId}><T text="Your question" /></label>
           <textarea id={questionId} value={question} maxLength={800} rows={2}
             onChange={(event) => setQuestion(event.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-white p-3 text-slate-900" />
           <p className="text-xs text-slate-600">Optional AI assistance. Your question and the displayed learning material are sent to the AI provider. Avoid personal or confidential information. Verify important answers.</p>
           <button type="button" onClick={ask} disabled={loading || question.trim().length < 3}
             className="min-h-10 rounded-lg bg-indigo-700 px-4 font-semibold text-white disabled:opacity-50">
-            {loading ? 'Thinking…' : 'Get explanation'}
+            {loading ? <T text="Thinking…" /> : <T text="Get explanation" />}
           </button>
           {answer && (
             <section aria-label="AI learning explanation" className="overflow-hidden rounded-2xl border border-indigo-200 bg-white shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-white px-4 py-3">
-                <h3 className="flex items-center gap-2 font-bold text-indigo-950"><Sparkles className="h-4 w-4 text-indigo-600" aria-hidden="true" /> Your learning coach</h3>
+                <h3 className="flex items-center gap-2 font-bold text-indigo-950"><Sparkles className="h-4 w-4 text-indigo-600" aria-hidden="true" /> <T text="Your learning coach" /></h3>
                 <button type="button" onClick={copyAnswer} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50" aria-label="Copy AI explanation">
-                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />} {copied ? 'Copied' : 'Copy'}
+                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />} {copied ? <T text="Copied" /> : <T text="Copy" />}
                 </button>
               </div>
               <div role="status" aria-live="polite" className="space-y-3 px-4 py-4 text-sm leading-7 text-slate-800">
@@ -96,14 +85,14 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-3">
                 <p className="text-xs text-slate-500">AI guidance can be imperfect. Verify important details.</p>
                 <div className="flex flex-wrap gap-3">
-                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Give me a practical example of the explanation above, using the lesson context.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Practical example</button>
-                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Ask me one short question to check my understanding of the explanation above. Do not reveal the answer.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Check understanding</button>
-                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Explain the same concept in simpler language with a short analogy.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Simplify</button>
+                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Give me a practical example of the explanation above, using the lesson context.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline"><T text="Practical example" /></button>
+                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Ask me one short question to check my understanding of the explanation above. Do not reveal the answer.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline"><T text="Check understanding" /></button>
+                  <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Explain the same concept in simpler language with a short analogy.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline"><T text="Simplify" /></button>
                 </div>
               </div>
             </section>
           )}
-          {error && <div role="alert" className="flex flex-wrap items-center gap-3 text-rose-700"><span>{error}</span>{lastQuestion && <button type="button" onClick={() => { setQuestion(lastQuestion); setError(''); }} className="rounded-lg border border-rose-200 px-3 py-1.5 text-xs font-semibold hover:bg-rose-50">Restore question</button>}</div>}
+          {error && <div role="alert" className="flex flex-wrap items-center gap-3 text-rose-700"><span>{error}</span>{lastQuestion && <button type="button" onClick={() => { setQuestion(lastQuestion); setError(''); }} className="rounded-lg border border-rose-200 px-3 py-1.5 text-xs font-semibold hover:bg-rose-50"><T text="Restore question" /></button>}</div>}
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { KnowledgeVault, type VaultItem } from '@/components/learning/knowledge-vault';
 import { LearningJourney } from '@/components/learning/learning-journey';
 import {
@@ -273,7 +274,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
             <div className="flex items-center gap-5">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-400 to-violet-500 text-xl font-black shadow-lg shadow-violet-950/40">{initials}</div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">Personal learning profile</div>
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300"><T text="Personal learning profile" /></div>
                 <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{profile.name}</h1>
                 <p className="mt-1 text-sm text-slate-300">Member since {new Date(member.createdAt).toLocaleDateString('en-CA', { month: 'long', year: 'numeric' })}</p>
               </div>
@@ -285,10 +286,10 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
                   behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
                 }));
               }}>
-                <Pencil className="mr-2 h-4 w-4" />Edit fit profile
+                <Pencil className="mr-2 h-4 w-4" /><T text="Edit fit profile" />
               </Button>
               <Button type="button" variant="ghost" className="text-slate-200 hover:bg-slate-800 hover:text-white" onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" />Sign out
+                <LogOut className="mr-2 h-4 w-4" /><T text="Sign out" />
               </Button>
             </div>
           </div>
@@ -297,8 +298,8 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
 
       <main className="mx-auto max-w-7xl px-6 pt-10 lg:px-8">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-wider text-blue-700">Your learning space</p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl">What would you like to do today?</h2>
+          <p className="text-sm font-semibold uppercase tracking-wider text-blue-700"><T text="Your learning space" /></p>
+          <h2 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl"><T text="What would you like to do today?" /></h2>
           <p className="mt-2 text-slate-600">Choose a direction. Your saved work and progress are still here when you need them.</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Choose your learning goal">
@@ -311,11 +312,11 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
             const Icon = item.icon;
             const selected = item.area !== null && activeArea === item.area;
             const cls = `msl-motion-card flex min-h-44 flex-col items-start rounded-2xl border bg-white p-5 text-left shadow-sm hover:border-blue-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${selected ? 'border-blue-500 bg-blue-50/60 ring-2 ring-blue-100' : 'border-slate-200'}`;
-            const content = <><Icon className="mb-4 h-6 w-6 text-blue-700" /><span className="text-lg font-bold text-slate-950">{item.title}</span><span className="mt-2 text-sm leading-6 text-slate-600">{item.detail}</span><ArrowRight className="mt-auto self-end text-blue-700" size={18} /></>;
+            const content = <><Icon className="mb-4 h-6 w-6 text-blue-700" /><span className="text-lg font-bold text-slate-950"><T text={item.title} /></span><span className="mt-2 text-sm leading-6 text-slate-600"><T text={item.detail} /></span><ArrowRight className="mt-auto self-end text-blue-700" size={18} /></>;
             return item.href ? <Link key={item.title} href={item.href} className={cls}>{content}</Link> : <button key={item.title} type="button" aria-pressed={selected} className={cls} onClick={item.action}>{content}</button>;
           })}
         </div>
-        {activeArea && <button type="button" onClick={() => setActiveArea(null)} className="msl-motion-press mt-6 rounded-lg px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">← Back to my learning space</button>}
+        {activeArea && <button type="button" onClick={() => setActiveArea(null)} className="msl-motion-press mt-6 rounded-lg px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">← <T text="Back to my learning space" /></button>}
         <div className={activeArea === 'direction' ? 'msl-reveal' : 'hidden'}>
         <section id="profile-assessment" className="scroll-mt-36 pt-12" aria-labelledby="assessment-title">
           <div className="overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-sm">
@@ -511,7 +512,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
 
         </div>
         <section className="mt-10 rounded-3xl bg-slate-950 p-7 text-white sm:p-9" aria-labelledby="quick-links-title">
-          <h2 id="quick-links-title" className="text-2xl font-bold">Explore more</h2>
+          <h2 id="quick-links-title" className="text-2xl font-bold"><T text="Explore more" /></h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {[
               ['/skills', BookOpen, 'Skill repository'],
@@ -521,7 +522,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
               ['/learn', Sparkles, 'Practice Lab'],
             ].map(([href, Icon, label]) => (
               <Link key={href as string} href={href as string} className="flex items-center rounded-2xl border border-white/15 bg-white/5 p-4 text-sm font-bold text-slate-100 transition hover:border-blue-300 hover:bg-white/10">
-                <Icon className="mr-3 h-5 w-5 text-blue-300" />{label as string}
+                <Icon className="mr-3 h-5 w-5 text-blue-300" /><T text={label as string} />
               </Link>
             ))}
           </div>

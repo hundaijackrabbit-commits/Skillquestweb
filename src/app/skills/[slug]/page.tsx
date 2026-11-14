@@ -1,5 +1,6 @@
 import { LearningActionPath } from '@/components/learning/learning-action-path';
 import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
+import { TranslatedText as T, EnglishGuideNotice } from '@/components/providers/learning-language-provider';
 import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
@@ -239,12 +240,13 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 <h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900">{skill.name}</h1>
                 <p className="mb-2 text-xl leading-relaxed text-gray-700">{skill.shortDefinition}</p>
                 <ContextualLearningHelp context={[skill.name, skill.shortDefinition, ...skill.beginnerActions.slice(0, 2)].join(" | ").slice(0, 4500)} prompt={`Can you explain ${skill.name} with a practical example I could try today?`} />
+                <EnglishGuideNotice />
               </div>
 
               <div className="w-full max-w-sm rounded-2xl border bg-white/80 p-4 shadow-sm">
                 <div className="mb-3">
                   <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-                    Save this skill
+                    <T text="Save this skill" />
                   </h2>
                   <p className="mt-1 text-sm text-gray-600">
                     Add this skill to your dashboard so you can revisit it, track it, and build your
@@ -263,7 +265,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 >
                   <Clock className={`h-6 w-6 ${difficultyColors.text}`} />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Difficulty</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Difficulty" /></div>
                 <div className={`text-sm font-semibold ${difficultyColors.text}`}>
                   {skill.difficulty || 'Intermediate'}
                 </div>
@@ -273,7 +275,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
                   <BarChart3 className="h-6 w-6 text-blue-600" />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Development Time</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Development Time" /></div>
                 <div className="text-sm font-semibold text-blue-600">
                   {skill.estimatedTimeToDevelop?.split('.')[0] || 'Varies'}
                 </div>
@@ -285,7 +287,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 >
                   <Shield className={`h-6 w-6 ${riskColors.text}`} />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Automation Risk</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Automation Risk" /></div>
                 <div className={`text-sm font-semibold capitalize ${riskColors.text}`}>
                   {skill.automationRisk}
                 </div>
@@ -295,7 +297,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
                   <Briefcase className="h-6 w-6 text-green-600" />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Career Impact</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Career Impact" /></div>
                 <div className="text-sm font-semibold text-green-600">Career-connected</div>
               </div>
             </div>
@@ -348,7 +350,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             {isSkillFieldEditoriallyUseful(skill, 'whyItMatters') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <Target className="mr-2 h-6 w-6 text-blue-600" />
-                Why This Skill Matters
+                <T text="Why This Skill Matters" />
               </h2>
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.whyItMatters}</p>
@@ -358,7 +360,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             {isSkillFieldEditoriallyUseful(skill, 'fullDefinition') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <BookOpen className="mr-2 h-6 w-6 text-blue-600" />
-                Comprehensive Definition
+                <T text="Comprehensive Definition" />
               </h2>
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.fullDefinition}</p>
@@ -368,7 +370,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             {isSkillFieldEditoriallyUseful(skill, 'modernRelevance') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <TrendingUp className="mr-2 h-6 w-6 text-blue-600" />
-                Modern Relevance
+                <T text="Modern Relevance" />
               </h2>
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.modernRelevance}</p>
@@ -376,7 +378,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </section>}
 
             {(isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') || isSkillFieldEditoriallyUseful(skill, 'humanAdvantage')) && <section>
-              <h2 className="mb-4 text-2xl font-bold text-gray-900">AI Era Context</h2>
+              <h2 className="mb-4 text-2xl font-bold text-gray-900"><T text="AI Era Context" /></h2>
               <div className="prose max-w-none">
                 {isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') && <p className="text-gray-700">{skill.aiEraRelevance}</p>}
                 {isSkillFieldEditoriallyUseful(skill, 'humanAdvantage') && <div className="mt-4 rounded-lg bg-blue-50 p-4">
@@ -389,7 +391,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             <section>
               <h2 className="mb-6 flex items-center text-2xl font-bold text-gray-900">
                 <CheckCircle2 className="mr-2 h-6 w-6 text-blue-600" />
-                Development Path
+                <T text="Development Path" />
               </h2>
 
               <div className="space-y-6">
@@ -434,7 +436,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <AlertTriangle className="mr-2 h-6 w-6 text-yellow-600" />
-                Common Mistakes to Avoid
+                <T text="Common Mistakes to Avoid" />
               </h2>
               <ul className="space-y-2">
                 {skill.commonMistakes.map((mistake, index) => (
@@ -450,7 +452,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <MapPin className="mr-2 h-6 w-6 text-blue-600" />
-                  Where This Skill Shows Up at Work
+                  <T text="Where This Skill Shows Up at Work" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.whereItShowsUp}</p>
@@ -462,7 +464,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <Briefcase className="mr-2 h-6 w-6 text-blue-600" />
-                  Career Applications
+                  <T text="Career Applications" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.careerApplications}</p>
@@ -474,7 +476,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <Activity className="mr-2 h-6 w-6 text-blue-600" />
-                  What Strong Execution Looks Like
+                  <T text="What Strong Execution Looks Like" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.skillInAction}</p>
@@ -486,7 +488,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <Globe className="mr-2 h-6 w-6 text-blue-600" />
-                  Real-World Applications
+                  <T text="Real-World Applications" />
                 </h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {skill.realWorldScenarios.map((scenario, index) => (
@@ -587,7 +589,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <TrendingUp className="mr-2 h-6 w-6 text-blue-600" />
-                  Career Impact
+                  <T text="Career Impact" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.careerImpact}</p>

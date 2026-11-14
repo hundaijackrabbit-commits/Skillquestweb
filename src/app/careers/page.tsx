@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -80,7 +81,7 @@ export default async function CareersPage() {
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Career Intelligence Platform
+            <T text="Career Intelligence Platform" />
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600">
             Understand what different roles do and how their core, secondary, and transferable skills connect.
@@ -90,15 +91,15 @@ export default async function CareersPage() {
 
         <section className="mt-12" aria-labelledby="career-directions">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">Browse by the work you want to do</p>
-            <h2 id="career-directions" className="mt-2 text-3xl font-bold text-slate-950">Choose a direction before choosing a title</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700"><T text="Browse by the work you want to do" /></p>
+            <h2 id="career-directions" className="mt-2 text-3xl font-bold text-slate-950"><T text="Choose a direction before choosing a title" /></h2>
             <p className="mt-3 leading-7 text-slate-600">Job titles vary between organizations. Start with the kind of problems and working relationships that interest you, then compare the roles inside that direction.</p>
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {careerDirections.map((direction) => (
               <div key={direction.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="inline-flex rounded-2xl bg-blue-50 p-3 text-blue-700"><direction.icon className="h-5 w-5" aria-hidden="true" /></div>
-                <h3 className="mt-4 text-xl font-bold text-slate-950">{direction.title}</h3>
+                <h3 className="mt-4 text-xl font-bold text-slate-950"><T text={direction.title} /></h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{direction.description}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {direction.roles.map(([label, slug]) => (
@@ -112,7 +113,7 @@ export default async function CareersPage() {
 
         <section className="mt-12 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8" aria-labelledby="career-research-heading">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-700">Evidence and context</p>
-          <h2 id="career-research-heading" className="mt-2 text-2xl font-bold text-slate-950">What current research says about changing skills</h2>
+          <h2 id="career-research-heading" className="mt-2 text-2xl font-bold text-slate-950"><T text="What current research says about changing skills" /></h2>
           <p className="mt-3 max-w-4xl leading-7 text-slate-700">
             The World Economic Forum&apos;s 2025 employer survey estimates that 39% of workers&apos; core skills may change by 2030. That is a forecast across surveyed employers, not a prediction that every individual career will change at the same rate.
           </p>
@@ -126,7 +127,7 @@ export default async function CareersPage() {
 
         {/* Featured Careers Section */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Featured Career Paths</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8"><T text="Featured Career Paths" /></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {careers.filter(career => career.featured).map((career) => (
               <Card key={career.id} className="hover:shadow-lg transition-shadow">
@@ -134,7 +135,7 @@ export default async function CareersPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Briefcase className="h-5 w-5 text-blue-600" />
-                      <Badge variant="outline" size="sm">Career profile</Badge>
+                      <Badge variant="outline" size="sm"><T text="Career profile" /></Badge>
                     </div>
 
                   </div>
@@ -182,7 +183,7 @@ export default async function CareersPage() {
         {/* All Careers Section */}
         <div className="mt-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">All Career Paths</h2>
+            <h2 className="text-2xl font-bold text-gray-900"><T text="All Career Paths" /></h2>
             <Link href="/dashboard" className="text-sm font-semibold text-blue-700">Build your personal fit profile <ArrowRight className="ml-1 inline h-4 w-4" aria-hidden="true" /></Link>
           </div>
           

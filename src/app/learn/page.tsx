@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { ArrowRight, BookOpenCheck, Brain, Clock3, Compass, Layers3, ListOrdered, Sparkles, Target, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -31,10 +32,10 @@ export default function LearnPage() {
         <section className="mx-auto mb-14 max-w-4xl text-center">
           <div className="mb-5 inline-flex items-center rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-800">
             <Sparkles className="mr-2 h-4 w-4" />
-            Practice Lab
+            <T text="Practice Lab" />
           </div>
           <h1 className="text-5xl font-bold tracking-tight text-slate-950 sm:text-6xl">
-            Learn less. Practice more.
+            <T text="Learn less. Practice more." />
           </h1>
           <p className="mx-auto mt-6 max-w-3xl text-xl leading-8 text-slate-600">
             Short Skill Sprints turn selected guides into active practice. Each sprint combines a clear
@@ -52,16 +53,16 @@ export default function LearnPage() {
         <LearningJourney />
 
         <nav className="mb-8 flex flex-wrap items-center gap-2" aria-label="Jump to a practice activity">
-          <span className="mr-2 text-xs font-bold uppercase tracking-wider text-slate-500">Jump to</span>
-          <a href="#daily-practice-heading" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Daily challenge</a>
-          <a href="#workshops" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Workshops</a>
-          <a href="#interactive-practice-library" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Interactive exercises</a>
-          <a href="#skill-sprints" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50">Skill Sprints</a>
+          <span className="mr-2 text-xs font-bold uppercase tracking-wider text-slate-500"><T text="Jump to" /></span>
+          <a href="#daily-practice-heading" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Daily challenge" /></a>
+          <a href="#workshops" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Workshops" /></a>
+          <a href="#interactive-practice-library" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Interactive exercises" /></a>
+          <a href="#skill-sprints" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Skill Sprints" /></a>
         </nav>
 
         <details className="group mb-10 rounded-2xl border border-violet-200 bg-white p-5 shadow-sm">
           <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-bold text-violet-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-600 [&::-webkit-details-marker]:hidden">
-            <span>View my levels and achievements <span className="mt-1 block text-xs font-normal text-slate-600">Your existing XP, levels and badges are all here.</span></span>
+            <span><T text="View my levels and achievements" /> <span className="mt-1 block text-xs font-normal text-slate-600">Your existing XP, levels and badges are all here.</span></span>
             <span aria-hidden="true" className="text-violet-700 transition-transform group-open:rotate-180">⌄</span>
           </summary>
           <div className="pt-5"><LearningAchievements /></div>
@@ -69,21 +70,21 @@ export default function LearnPage() {
 
         <section className="mb-14" aria-labelledby="daily-practice-heading">
           <div className="mb-6">
-            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Warm up</div>
-            <h2 id="daily-practice-heading" className="mt-2 text-3xl font-bold text-slate-950">Today’s 60-second challenge</h2>
+            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700"><T text="Warm up" /></div>
+            <h2 id="daily-practice-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Today’s 60-second challenge" /></h2>
           </div>
           <DailyChallenge />
         </section>
 
         <details className="group mb-14 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600 [&::-webkit-details-marker]:hidden">
-            <span>Explore all four practice formats <span className="mt-1 block text-xs font-normal text-slate-600">Compare different exercises and choose a format.</span></span>
+            <span><T text="Explore all four practice formats" /> <span className="mt-1 block text-xs font-normal text-slate-600">Compare different exercises and choose a format.</span></span>
             <span aria-hidden="true" className="text-indigo-700 transition-transform group-open:rotate-180">⌄</span>
           </summary>
           <section className="pt-6" aria-labelledby="practice-map-heading">
           <div className="mb-7">
-            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">Where to practise</div>
-            <h2 id="practice-map-heading" className="mt-2 text-3xl font-bold text-slate-950">Four ways to turn reading into a rep</h2>
+            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700"><T text="Where to practise" /></div>
+            <h2 id="practice-map-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Four ways to turn reading into a rep" /></h2>
             <p className="mt-2 max-w-3xl leading-7 text-slate-600">Every activity feeds the same private XP, level, achievement, and practice-rhythm profile.</p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -137,7 +138,7 @@ export default function LearnPage() {
         <section id="workshops" className="mb-14 scroll-mt-28" aria-labelledby="workshops-heading">
           <div className="mb-7 max-w-3xl">
             <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Make something useful</div>
-            <h2 id="workshops-heading" className="mt-2 text-3xl font-bold text-slate-950">Guided work-sample workshops</h2>
+            <h2 id="workshops-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Guided work-sample workshops" /></h2>
             <p className="mt-2 leading-7 text-slate-600">Move beyond choosing an answer: analyze a realistic situation, write a work sample, compare an illustrative response, and review your reasoning. Save a draft privately on this browser and return to improve it.</p>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">
@@ -148,7 +149,7 @@ export default function LearnPage() {
                 <h3 className="mt-2 text-xl font-bold text-slate-950">{workshop.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{workshop.description}</p>
                 <p className="mt-4 rounded-xl bg-indigo-50 p-3 text-xs leading-5 text-indigo-900"><strong>Deliverable:</strong> {workshop.deliverable}</p>
-                <Link href={`/learn/workshops/${workshop.slug}`} className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-indigo-700 hover:text-indigo-900">Open workshop <ArrowRight className="h-4 w-4" /></Link>
+                <Link href={`/learn/workshops/${workshop.slug}`} className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-indigo-700 hover:text-indigo-900"><T text="Open workshop" /> <ArrowRight className="h-4 w-4" /></Link>
               </article>
             ))}
           </div>
@@ -157,11 +158,11 @@ export default function LearnPage() {
         <section id="interactive-practice-library" className="mb-14 scroll-mt-28" aria-labelledby="interactive-library-heading">
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700">More than quizzes</div>
-              <h2 id="interactive-library-heading" className="mt-2 text-3xl font-bold text-slate-950">Interactive practice library</h2>
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700"><T text="More than quizzes" /></div>
+              <h2 id="interactive-library-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Interactive practice library" /></h2>
               <p className="mt-2 max-w-3xl leading-7 text-slate-600">Reorder real workflows and categorize ambiguous signals across twelve additional professional skills.</p>
             </div>
-            <Badge variant="outline">Hands-on activities</Badge>
+            <Badge variant="outline"><T text="Hands-on activities" /></Badge>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {practices.map((practice) => (
@@ -184,10 +185,10 @@ export default function LearnPage() {
         <section id="skill-sprints" className="scroll-mt-28" aria-labelledby="available-sprints">
           <div className="mb-7 flex items-end justify-between gap-4">
             <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Start practicing</div>
-              <h2 id="available-sprints" className="mt-2 text-3xl font-bold text-slate-950">Available Skill Sprints</h2>
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600"><T text="Start practicing" /></div>
+              <h2 id="available-sprints" className="mt-2 text-3xl font-bold text-slate-950"><T text="Available Skill Sprints" /></h2>
             </div>
-            <Badge variant="outline">Short guided courses</Badge>
+            <Badge variant="outline"><T text="Short guided courses" /></Badge>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
@@ -221,7 +222,7 @@ export default function LearnPage() {
                   <div className="mt-auto pt-6">
                     <Link href={`/skills/${course.skillSlug}/learn`}>
                       <Button className="w-full">
-                        Start this sprint <ArrowRight className="ml-2 h-4 w-4" />
+                        <T text="Start this sprint" /> <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
                   </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { ArrowRight, RotateCcw, Sparkles } from 'lucide-react';
 
 const choices = [
@@ -15,25 +16,25 @@ export function DiscoveryQuiz() {
   const selected = choices.find((item) => item.id === choice);
   return (
     <section aria-labelledby="discovery-quiz-title" className="rounded-[2rem] border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-violet-50 p-6 shadow-sm sm:p-9">
-      <div className="flex items-center gap-2 text-sm font-semibold text-indigo-700"><Sparkles className="h-4 w-4" aria-hidden="true" /> 30-second discovery quiz</div>
-      <h2 id="discovery-quiz-title" className="mt-3 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">What would help you most today?</h2>
-      <p className="mt-2 text-sm leading-6 text-slate-600">Pick one. We'll point you to a useful place to start—no email required to see your result.</p>
+      <div className="flex items-center gap-2 text-sm font-semibold text-indigo-700"><Sparkles className="h-4 w-4" aria-hidden="true" /> <T text="30-second discovery quiz" /></div>
+      <h2 id="discovery-quiz-title" className="mt-3 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"><T text="What would help you most today?" /></h2>
+      <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Pick one. We'll point you to a useful place to start—no email required to see your result." /></p>
       <div className="mt-6 grid gap-3 md:grid-cols-3" role="group" aria-label="Choose your learning goal">
         {choices.map((item) => (
           <button key={item.id} type="button" onClick={() => setChoice(item.id)} aria-pressed={choice === item.id} className={`msl-motion-card rounded-2xl border p-4 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${choice === item.id ? 'border-indigo-600 bg-indigo-100 shadow-sm' : 'border-slate-200 bg-white hover:border-indigo-300'}`}>
-            <span className="block font-semibold text-slate-950">{item.label}</span>
-            <span className="mt-1 block text-sm leading-5 text-slate-600">{item.detail}</span>
+            <span className="block font-semibold text-slate-950"><T text={item.label} /></span>
+            <span className="mt-1 block text-sm leading-5 text-slate-600"><T text={item.detail} /></span>
           </button>
         ))}
       </div>
       {selected && (
         <div key={selected.id} aria-live="polite" className="msl-reveal mt-5 rounded-2xl border border-indigo-200 bg-white p-5">
-          <p className="text-xs font-bold uppercase tracking-widest text-indigo-700">Your next step</p>
-          <h3 className="mt-2 text-xl font-bold text-slate-950">{selected.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{selected.description}</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-indigo-700"><T text="Your next step" /></p>
+          <h3 className="mt-2 text-xl font-bold text-slate-950"><T text={selected.title} /></h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600"><T text={selected.description} /></p>
           <div className="mt-4 flex flex-wrap items-center gap-4">
-            <Link href={selected.href} className="inline-flex items-center gap-2 rounded-xl bg-indigo-700 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700">{selected.action}<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-            <button type="button" onClick={() => setChoice(null)} className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 underline-offset-4 hover:underline"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Start over</button>
+            <Link href={selected.href} className="inline-flex items-center gap-2 rounded-xl bg-indigo-700 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"><T text={selected.action} /><ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            <button type="button" onClick={() => setChoice(null)} className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 underline-offset-4 hover:underline"><RotateCcw className="h-4 w-4" aria-hidden="true" /> <T text="Start over" /></button>
           </div>
         </div>
       )}
