@@ -12,6 +12,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [previousAnswer, setPreviousAnswer] = useState('');
   const [locale, setLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
   async function ask() {
     if (loading || question.trim().length < 3) return;
     setLoading(true);
+    setPreviousAnswer(answer);
     setAnswer('');
     setCopied(false);
     setError('');
@@ -36,11 +38,12 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
       const response = await fetch('/api/learning-assistant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question.trim(), context, locale }),
+        body: JSON.stringify({ question: question.trim(), context: previousAnswer ? `${context}\n\nPREVIOUS COACH EXPLANATION (reference only): ${previousAnswer.slice(0, 1200)}`.slice(0, 4500) : context, locale }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Assistance is unavailable.');
       setAnswer(result.answer);
+      setPreviousAnswer('');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Assistance is unavailable.');
     } finally { setLoading(false); }
@@ -91,7 +94,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-3">
                 <p className="text-xs text-slate-500">AI guidance can be imperfect. Verify important details.</p>
-                <button type="button" onClick={() => { setQuestion('Can you give me a practical example of that?'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Ask for an example</button>
+                <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Give me a practical example of the explanation above, using the lesson context.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline">Ask for an example</button>
               </div>
             </section>
           )}
