@@ -109,7 +109,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ answer: answer.trim() }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     const reason = error instanceof Error ? error.name : 'UnknownError';
-    console.error('Learning assistant provider request failed', { reason });
+    const cause = error instanceof Error ? (error as Error & { cause?: unknown }).cause : undefined;
+    const networkCode = cause && typeof cause === 'object' && 'code' in cause && typeof cause.code === 'string' ? cause.code : 'unknown';
+    console.error('Learning assistant provider request failed', { reason, networkCode });
     return NextResponse.json({ error: 'AI assistance timed out or is unavailable.' }, { status: 502 });
   }
 }
