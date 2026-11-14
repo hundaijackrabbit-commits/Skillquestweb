@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, ClipboardCheck, Copy } from 'lucide-react';
 import { useSupabase } from '@/components/providers/supabase-provider';
+import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
 import type { GuidedWorkshop } from '@/lib/workshops';
 import { getLearningProfile, hasLearningActivity, recordLearningActivity, LEARNING_PROGRESS_EVENT } from '@/lib/learning-progress';
 
@@ -106,7 +107,7 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
         </div>
         <p className="mt-3 text-sm leading-6 text-slate-700">
           Write in your own words, then compare your decisions with an example and the self-review criteria.
-          Drafts are saved for this account <strong>in this browser only</strong>. Your worksheet text is not sent to our servers.
+          Drafts are saved for this account <strong>in this browser only</strong>. Your worksheet text is not sent to our servers. Optional AI help sends your question and the published workshop instructions, not your draft answers.
           Do not enter confidential or sensitive workplace information.
         </p>
       </div>
@@ -131,6 +132,7 @@ export function WorkshopRunner({ workshop }: { workshop: GuidedWorkshop }) {
             className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-white p-4 text-sm leading-6 text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
           />
           <p className="mt-2 text-xs text-slate-500">{draft.answers[index].trim().length < 40 ? 'Explain the decision in at least 40 characters.' : 'Ready for self-review.'}</p>
+          <ContextualLearningHelp context={[workshop.skillName, workshop.title, workshop.scenario, step.title, step.instruction, step.scaffold].join(" | ").slice(0, 4500)} prompt="Can you help me think through this workshop step without writing my response for me?" />
           <details className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
             <summary className="cursor-pointer text-sm font-bold text-amber-950">Compare with an illustrative response</summary>
             <p className="mt-3 text-sm leading-6 text-amber-950">{step.example}</p>
