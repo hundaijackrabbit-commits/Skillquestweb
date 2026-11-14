@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
 
 export function ContextualLearningHelp({ context, prompt = 'Can you explain this concept more simply?' }: { context: string; prompt?: string }) {
+  const questionId = useId();
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState(prompt);
   const [answer, setAnswer] = useState('');
@@ -51,8 +52,8 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
       </button>
       {open && (
         <div className="mt-3 space-y-3 rounded-xl border border-indigo-100 bg-indigo-50/50 p-4">
-          <label className="block font-semibold text-slate-800" htmlFor="learning-help-question">Your question</label>
-          <textarea id="learning-help-question" value={question} maxLength={800} rows={2}
+          <label className="block font-semibold text-slate-800" htmlFor={questionId}>Your question</label>
+          <textarea id={questionId} value={question} maxLength={800} rows={2}
             onChange={(event) => setQuestion(event.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-white p-3 text-slate-900" />
           <p className="text-xs text-slate-600">Optional AI assistance. Your question and the displayed learning material are sent to the AI provider. Avoid personal or confidential information. Verify important answers.</p>
