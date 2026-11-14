@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
   // Deliberately fixed provider URL: never accept a client-supplied endpoint.
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
+    const timeout = setTimeout(() => controller.abort(), 25000);
     let response: Response;
     try {
       response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -107,7 +107,9 @@ export async function POST(request: NextRequest) {
     const answer = data?.choices?.[0]?.message?.content;
     if (typeof answer !== 'string' || !answer.trim()) return NextResponse.json({ error: 'No answer was returned. Please try again.' }, { status: 502 });
     return NextResponse.json({ answer: answer.trim() }, { headers: { 'Cache-Control': 'no-store' } });
-  } catch {
+  } catch (error) {
+    const reason = error instanceof Error ? error.name : 'UnknownError';
+    console.error('Learning assistant provider request failed', { reason });
     return NextResponse.json({ error: 'AI assistance timed out or is unavailable.' }, { status: 502 });
   }
 }
