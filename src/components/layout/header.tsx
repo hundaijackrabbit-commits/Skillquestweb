@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { LearningLanguageSelector } from '@/components/layout/learning-language-selector';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { Search, Menu, X, BookOpen, Briefcase, User, LogOut, Sparkles, Route, Trophy, Users } from 'lucide-react';
 
@@ -146,6 +147,7 @@ export function Header() {
               </nav>
 
               <div className="mt-6 space-y-3 border-t border-slate-200 pt-5">
+                <LearningLanguageSelector compact />
                 {loading ? (
                   <div className="space-y-3" aria-label="Loading account options">
                     <div className="h-11 w-full animate-pulse rounded-xl bg-slate-200" />
@@ -237,6 +239,7 @@ export function Header() {
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-3">
+          <LearningLanguageSelector />
           <Link href="/skills" className="hidden xl:block">
             <Button asChild variant="ghost" size="sm" className="text-slate-700">
               <Search className="mr-2 h-4 w-4" />
