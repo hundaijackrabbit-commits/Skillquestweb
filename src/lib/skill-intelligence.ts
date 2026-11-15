@@ -1,3 +1,5 @@
+import { peopleHrSkillIntelligenceBriefs } from './skill-intelligence-people-hr';
+
 export type SkillEvidenceSource = {
   title: string;
   publisher: string;
@@ -181,6 +183,5 @@ const briefs: Record<string, SkillIntelligenceBrief> = {
 };
 
 export function getSkillIntelligenceBrief(skillSlug: string) {
-  return briefs[skillSlug] ?? null;
+  return briefs[skillSlug] ?? peopleHrSkillIntelligenceBriefs[skillSlug] ?? null;
 }
-
