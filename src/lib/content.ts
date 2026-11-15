@@ -68,6 +68,7 @@ export const getAllSkills = cache(async (): Promise<Skill[]> => {
     const override = slug ? editorialOverrides[slug] : undefined;
     const mergedSkill = candidate && override ? { ...candidate, ...override } : rawSkill;
     const parsed = SkillSchema.safeParse(mergedSkill);
+
     if (parsed.success) {
       validSkills.push(parsed.data);
       return;
@@ -699,10 +700,10 @@ function parseFrontmatter(frontmatter: string): Record<string, any> {
         // Parse arrays
         result[key.trim()] = value.slice(1, -1)
           .split(',')
-          .map(s => s.trim().replace(/['"]/g, ''))
+          .map(s => s.trim().replace(/['\"]/g, ''))
           .filter(s => s.length > 0);
       }
-      else result[key.trim()] = value.replace(/^['"]|['"]$/g, '');
+      else result[key.trim()] = value.replace(/^['\"]|['\"]$/g, '');
     }
   });
   
