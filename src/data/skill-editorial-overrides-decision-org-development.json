@@ -1,0 +1,171 @@
+{
+  "decision-making": {
+    "shortDefinition": "Decision making is the ability to choose and commit to an action when evidence, uncertainty, values and trade-offs compete, while making the reasoning explicit enough to review and improve.",
+    "fullDefinition": "Decision making is more than selecting an option. Strong decision makers define the decision clearly, identify the objectives and constraints, generate meaningful alternatives, assess the quality of available evidence, represent uncertainty honestly, compare trade-offs, consider who may be affected, and decide what level of reversibility or review is appropriate. They also separate decision quality from outcome quality: a sound process can still produce a poor outcome when uncertainty is real, while a weak process can occasionally get lucky. The skill therefore includes implementation, documentation and post-decision learning, not just the moment of choice.",
+    "whyItMatters": "Decisions allocate money, time, attention, opportunity and risk. Weak decisions often fail before the final choice because the problem is framed poorly, alternatives are too narrow, assumptions are treated as facts, or uncertainty is hidden behind false precision. Research on judgment and decision making shows that people use multiple strategies under risk and uncertainty and can be influenced by recurring cognitive biases. A disciplined process does not eliminate uncertainty, but it makes the important assumptions, trade-offs and review points visible enough to challenge.",
+    "modernRelevance": "Modern professionals make decisions amid fast information flows, dashboards, forecasts and AI-generated recommendations. These tools can expand the option set and speed up analysis, but they can also create an illusion of certainty or encourage over-reliance on automated advice. Current decision-making skill therefore includes checking source quality, asking what evidence would change the recommendation, distinguishing known risk from deeper ambiguity, validating AI-assisted analysis and keeping a human owner accountable for consequential choices.",
+    "whereItShowsUp": "Decision making appears in prioritization, hiring, budgets, product launches, procurement, vendor selection, incident response, customer exceptions, pricing, resource allocation, project trade-offs, risk acceptance, portfolio choices and escalation. It becomes especially visible when several reasonable options exist, information is incomplete, stakeholders value different outcomes, or delaying the decision has its own cost.",
+    "careerApplications": "Managers use decision making to allocate resources and resolve trade-offs; product and project leaders use it to prioritize scope and decide when evidence is sufficient to move; analysts support decisions by clarifying data quality, uncertainty and scenarios; operations teams use it for capacity, process and exception choices; procurement and finance teams compare vendors, costs and risks; technical and security teams use it during incidents and architecture trade-offs. As responsibility grows, the skill shifts from making isolated choices to designing decision rights, escalation rules and review systems for other people.",
+    "industryVariations": "The underlying discipline transfers across industries, but the acceptable speed, evidence and governance differ. Healthcare, finance, aviation, safety and regulated settings require stronger traceability, review and risk controls. Product and software teams may favor reversible experiments and staged releases. Operations may rely on thresholds, service levels and contingency plans. Strategy and capital allocation often involve longer horizons, scenario uncertainty and difficult-to-reverse commitments. Mastery means matching the rigor of the process to the consequence and reversibility of the decision.",
+    "professionalContexts": [
+      "Product and project prioritization",
+      "Hiring and team decisions",
+      "Budget and resource allocation",
+      "Procurement and vendor selection",
+      "Operational and customer exceptions",
+      "Risk, security and incident response",
+      "Strategy and portfolio choices",
+      "Escalation and cross-functional trade-offs"
+    ],
+    "tools": [
+      "Decision statements and decision logs",
+      "Weighted criteria / decision matrices",
+      "Decision trees and scenario maps",
+      "Base-rate and reference-class checks",
+      "Premortems and pre-mortem checklists",
+      "Sensitivity and what-if analysis",
+      "Risk registers and reversible-choice tests",
+      "Forecast calibration and post-decision reviews"
+    ],
+    "realWorldScenarios": [
+      "A team must choose between two vendors. Instead of comparing feature lists alone, it defines must-have criteria, switching costs, failure risks and a review trigger, then tests how the ranking changes when key assumptions move.",
+      "A product manager must decide whether to launch a feature with mixed experiment results. The team separates measurement uncertainty from business risk, defines what downside is reversible and chooses a staged release with a clear stop condition.",
+      "During an operational incident, several fixes are plausible. The lead identifies which action is safest to reverse, what evidence would discriminate between causes, who owns the call and when the decision must be revisited as new telemetry arrives.",
+      "A hiring panel strongly favors the first candidate interviewed. Before deciding, it scores all candidates against the same predefined criteria, records evidence for each judgment and explicitly looks for information that could overturn the early preference."
+    ],
+    "skillInAction": "Strong decision making is visible in the reasoning trail. A capable practitioner can state exactly what decision is being made, which objectives and constraints matter, what realistic alternatives were considered, which evidence is reliable, where uncertainty remains, how trade-offs were weighed, who owns the choice and what result would trigger a review. They do not confuse consensus with evidence or confidence with certainty, and they update the decision when material assumptions change.",
+    "evidenceSummary": "Research on decision making under risk and uncertainty distinguishes normative, descriptive and computational approaches, showing that choice depends on how people represent preferences, uncertainty and cognitive processes. Reviews of cognitive bias in consequential domains find recurring effects from anchoring, overconfidence, availability and risk or ambiguity tolerance, while also noting limits in the evidence base. A 2026 review emphasizes that uncertainty can both slow choices and create opportunities for exploration. Research on automation bias further shows that decision-support systems can introduce over-reliance when users fail to verify automated recommendations. Together, this evidence supports teaching decision making as an explicit process for framing, evidence, uncertainty, alternatives, trade-offs and review rather than as intuition or generic leadership confidence.",
+    "scholarlyNotes": [
+      "Johnson, J. G. & Busemeyer, J. R. (2010), Decision making under risk and uncertainty, WIREs Cognitive Science 1(5):736-749. https://pubmed.ncbi.nlm.nih.gov/26271657/ - review of normative, descriptive and computational approaches.",
+      "Saposnik, G. et al. (2016), Cognitive biases associated with medical decisions: a systematic review, BMC Medical Informatics and Decision Making 16:138. https://pubmed.ncbi.nlm.nih.gov/27809908/ - domain-specific evidence linking anchoring, overconfidence and related biases with decision errors; findings should not be generalized as prevalence estimates for every workplace.",
+      "Dayan, P. (2026), Uncertainty for better and worse, Current Opinion in Neurobiology 99:103227. https://pubmed.ncbi.nlm.nih.gov/42247840/ - recent review of behavioral consequences of uncertainty and exploration.",
+      "Goddard, K., Roudsari, A. & Wyatt, J. C. (2012), Automation bias: a systematic review of frequency, effect mediators, and mitigators, Journal of the American Medical Informatics Association 19(1):121-127. https://pubmed.ncbi.nlm.nih.gov/21685142/ - reviews over-reliance on automated decision support across multiple research fields, with a healthcare emphasis."
+    ],
+    "beginnerActions": [
+      "For one low-risk decision, write a one-sentence decision statement, the deadline, the owner and what happens if no decision is made.",
+      "List at least three realistic alternatives, including the status quo when it is genuinely available, before comparing options.",
+      "Predefine three to five decision criteria and label each important input as fact, estimate or assumption.",
+      "Keep a short decision log recording the choice, expected outcome and one condition that would justify revisiting it."
+    ],
+    "intermediateActions": [
+      "Use a base rate, reference class or historical comparison before relying on a vivid recent example or forecast.",
+      "Run a premortem: assume the chosen option failed and identify the most plausible reasons, then add a safeguard for the highest-consequence failure mode.",
+      "Perform simple sensitivity analysis on the assumptions that matter most and note whether a small change would reverse the choice.",
+      "For a meaningful decision, identify disconfirming evidence and ask what information would cause you to choose a different option."
+    ],
+    "advancedActions": [
+      "Design decision rights for a cross-functional process so people know who recommends, who decides, who must be consulted and when escalation is required.",
+      "Use forecasts or probability ranges for repeated decisions, then review calibration over time instead of rewarding confidence alone.",
+      "Lead post-decision reviews that separate process quality from luck, hindsight and outcome bias, and update the decision process when recurring failure modes appear.",
+      "For high-consequence choices, create staged commitments, independent challenge or reversible checkpoints when uncertainty cannot be reduced enough before action."
+    ],
+    "howToPractice": "Use a decision journal on real choices rather than hypothetical puzzles alone. Before deciding, record the decision statement, alternatives, criteria, evidence, assumptions, uncertainty, expected outcome and review date. After the result is observable, compare what happened with what you expected and ask whether the process was sound even if the outcome was good or bad. Repeated review is what turns isolated experience into better judgment.",
+    "howToMeasureProgress": "Track whether important decisions have explicit alternatives and criteria, how often hidden assumptions are surfaced before commitment, whether forecasts become better calibrated, whether preventable reversals or escalations decrease, whether stakeholders understand who owns the decision, and whether post-decision reviews produce specific process improvements. Better decision making is not simply faster decision making; speed should be proportionate to consequence, reversibility and the value of additional information.",
+    "commonMistakes": [
+      "Treating the first plausible option as the decision rather than generating alternatives.",
+      "Confusing a good outcome with proof that the decision process was good.",
+      "Using precise numbers that disguise weak evidence or deep uncertainty.",
+      "Ignoring base rates because a recent or vivid example feels more relevant.",
+      "Letting sunk costs justify continuing an option that no longer meets the criteria.",
+      "Using consensus, seniority or AI output as a substitute for explicit evidence and trade-offs.",
+      "Failing to define who owns the decision or when it should be revisited.",
+      "Collecting more information indefinitely when the cost of delay exceeds the likely value of additional evidence."
+    ],
+    "estimatedTimeToDevelop": "4-8 weeks for practical foundations; judgment deepens through repeated decisions and post-decision review.",
+    "coreSubskills": [
+      "Decision framing",
+      "Objectives and criteria definition",
+      "Alternative generation",
+      "Evidence-quality assessment",
+      "Risk and uncertainty representation",
+      "Bias and assumption checks",
+      "Trade-off and sensitivity analysis",
+      "Decision communication and ownership",
+      "Post-decision review and calibration"
+    ],
+    "developmentMethods": "Develop the skill through repeated, reviewable decisions. Use decision journals, premortems, reference-class checks, structured criteria, sensitivity analysis and post-decision reviews. Compare your original forecast with the observed result, invite another person to challenge the strongest assumption, and practice distinguishing facts from estimates. The purpose of a framework is to expose reasoning and uncertainty; it should not become paperwork that delays obvious low-risk choices.",
+    "practiceOpportunities": "Use everyday work choices with observable consequences: prioritize a backlog, select a vendor, approve an exception, choose a campaign concept, allocate a small budget, select between implementation options or decide whether to escalate a risk. For higher-stakes domains, use historical cases or simulations first so the reasoning can be challenged without creating real-world harm.",
+    "howEmployersEvaluate": "Employers evaluate decision making through behavioral interviews, case exercises and examples of ambiguous work. Strong evidence explains the decision that had to be made, the alternatives, the information available at the time, the uncertainty, the trade-offs, who was affected, what the candidate chose, what happened and what they learned. The strongest candidates can describe a decision they later changed because new evidence invalidated an assumption.",
+    "signalsOfMastery": [
+      "States the decision clearly before debating solutions.",
+      "Generates meaningful alternatives and explicit criteria.",
+      "Separates facts, estimates and assumptions.",
+      "Represents uncertainty without false precision.",
+      "Checks for disconfirming evidence and relevant base rates.",
+      "Matches decision rigor to consequence and reversibility.",
+      "Creates clear ownership, review triggers and escalation paths.",
+      "Learns from outcomes without rewriting the history of what was known at the time."
+    ],
+    "careerImpact": "Decision making becomes more valuable as work becomes less prescribed and consequences become larger. Demonstrated judgment can increase the scope of projects, budgets, risks and people a professional is trusted to own. The skill supports progression across management, product, operations, analysis, consulting, technical leadership and strategy because it combines reasoning with accountability rather than relying on title or confidence.",
+    "aiEraRelevance": "AI can summarize evidence, generate alternatives, run scenarios and expose overlooked considerations, but decision-support research shows that people can over-rely on automated recommendations. Modern decision making therefore requires independent problem framing, source verification, explicit uncertainty, challenge of AI-generated assumptions and a human owner who remains accountable for consequential choices. AI should expand the reasoning process, not become the authority that ends it.",
+    "humanAdvantage": "Humans remain responsible for deciding which objectives matter, whose interests and harms count, what trade-offs are acceptable, when uncertainty is low enough to act, and when a decision should not be automated at all. Context, values, accountability and the ability to revise a choice in response to social or ethical consequences are central parts of decision quality.",
+    "lastUpdated": "2026-09-24"
+  },
+  "organizational-development": {
+    "professionalContexts": [
+      "Organization and operating-model redesign",
+      "Culture and behavior change",
+      "Cross-functional effectiveness",
+      "Transformation and change portfolios",
+      "Leadership and team effectiveness",
+      "Employee experience and work design",
+      "Capability building and continuous improvement",
+      "Post-merger, growth and restructuring integration"
+    ],
+    "tools": [
+      "Organizational diagnostic frameworks",
+      "Stakeholder and system maps",
+      "Operating-model and role maps",
+      "Process and workflow maps",
+      "Employee listening and survey data",
+      "Change-impact assessments",
+      "Facilitation and workshop methods",
+      "Intervention logic models and outcome dashboards"
+    ],
+    "estimatedTimeToDevelop": "6-12 weeks for practical foundations; advanced capability develops through repeated diagnosis-intervention-evaluation cycles.",
+    "beginnerActions": [
+      "Choose one low-risk team or workflow issue and describe the observable performance gap before proposing an intervention.",
+      "Map the stakeholders, process, incentives and structural conditions that may be contributing to the issue rather than assuming it is a training or motivation problem.",
+      "Collect at least two different forms of evidence, such as workflow data plus interviews or employee feedback, and compare where they agree or conflict.",
+      "Define the intended organizational outcome and one leading and one lagging measure before running a small intervention."
+    ],
+    "intermediateActions": [
+      "Diagnose a real issue across strategy, structure, process, people, incentives and culture, then explain why the proposed intervention targets the strongest evidence rather than the most visible symptom.",
+      "Facilitate a cross-functional session that feeds diagnostic findings back to the people affected and uses their input to refine the intervention.",
+      "Run a small intervention with explicit ownership, communication, stakeholder involvement and evaluation metrics, then adapt it when the evidence changes.",
+      "Compare adoption, behavior and operating outcomes after the intervention instead of reporting only activities completed or training delivered."
+    ],
+    "advancedActions": [
+      "Design a coordinated portfolio of interventions where structure, decision rights, processes, incentives, leadership behavior and capability building reinforce the same organizational outcome.",
+      "Lead diagnosis and intervention in a politically complex change while making power, competing incentives and stakeholder impacts visible rather than treating resistance as a communication defect.",
+      "Evaluate unintended consequences and sustainability after implementation, then remove or redesign interventions that create local improvement at the expense of the wider system.",
+      "Build internal OD capability by teaching managers and people professionals to diagnose problems, test interventions and use evidence before scaling change."
+    ],
+    "careerApplications": "Organization development is used by people and HR teams, organizational design specialists, transformation leaders, operations and strategy teams, learning and development professionals, program leaders and consultants. The common work is to diagnose barriers to execution, connect organizational strategy with how work is structured and experienced, involve the people affected, choose interventions that fit the system, and evaluate whether behavior and organizational outcomes actually change.",
+    "commonMistakes": [
+      "Choosing an intervention - such as training, restructuring or a culture campaign - before diagnosing the system.",
+      "Treating employee survey scores as the diagnosis rather than one source of evidence.",
+      "Changing reporting lines without examining workflows, decision rights, incentives and capability.",
+      "Labeling understandable stakeholder concerns as resistance instead of investigating incentives, risks and power dynamics.",
+      "Measuring communications, workshops or attendance instead of adoption, behavior and operating outcomes.",
+      "Running multiple interventions without a clear theory of how they are expected to produce the desired result.",
+      "Failing to involve the people who understand the work or will have to sustain the change.",
+      "Declaring success at launch without checking whether improvements persist."
+    ],
+    "developmentMethods": "Build OD skill through an action-research rhythm: diagnose the current system, feed evidence back to stakeholders, co-design a proportionate intervention, implement it, measure effects and revise. Practice on bounded issues before attempting enterprise-wide change. Use mixed evidence - operating data, observation, interviews, employee feedback and process measures - and keep a short intervention record showing the hypothesis, expected mechanism, stakeholder impact, measures and what changed after implementation.",
+    "practiceOpportunities": "Start with manageable organizational problems: unclear handoffs between teams, recurring meeting or approval bottlenecks, role ambiguity, an employee-listening theme, inconsistent adoption of a process, or a team struggling after growth or restructuring. Map the system, test a small change, gather feedback and measure the result. Historical transformation cases are also useful when you pause before reading the outcome and design your own diagnosis and intervention logic.",
+    "howEmployersEvaluate": "Employers look for examples where the practitioner did more than facilitate a workshop or deliver change communications. Strong evidence shows how the person diagnosed the organizational problem, which data and stakeholder perspectives were used, why a particular intervention was chosen, how leaders and affected employees were involved, what measures were defined, what changed, and how the work was adapted when the initial assumptions were incomplete.",
+    "signalsOfMastery": [
+      "Distinguishes symptoms from systemic causes across structure, process, people, incentives and culture.",
+      "Uses multiple evidence sources and can explain the limitations of each.",
+      "Makes the intervention logic explicit: what should change, for whom, through which mechanism and how it will be measured.",
+      "Involves affected stakeholders without allowing consultation to replace decision ownership.",
+      "Adapts interventions when evidence contradicts the original diagnosis.",
+      "Balances local improvements with effects on the wider organizational system.",
+      "Measures adoption, behavior and sustained outcomes rather than activity alone.",
+      "Builds capability so improvements can continue without permanent consultant dependence."
+    ],
+    "careerImpact": "Strong organization-development capability expands a professional's value from delivering isolated people programs to improving how an organization actually works. It can support progression in HR and people leadership, transformation, organizational design, operations, strategy, change, learning and consulting because it demonstrates the ability to connect diagnosis, stakeholder dynamics, intervention design and measurable organizational outcomes.",
+    "lastUpdated": "2026-09-24"
+  }
+}

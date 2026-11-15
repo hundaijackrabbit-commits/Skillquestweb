@@ -1,7 +1,10 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
+import { KnowledgeVault, type VaultItem } from '@/components/learning/knowledge-vault';
+import { LearningJourney } from '@/components/learning/learning-journey';
 import {
   ArrowRight,
   BookOpen,
@@ -49,9 +52,11 @@ type SavedItem = {
   name: string;
   summary: string;
   meta: string;
+  practiceHref?: string | null;
 };
 
 type Props = {
+  vaultItems: VaultItem[];
   member: {
     email: string;
     createdAt: string;
@@ -122,7 +127,7 @@ function RecommendationCard({ item }: { item: ProfileFitMap['skills'][number] })
   return (
     <Link
       href={item.href}
-      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+      className="msl-motion-card group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 hover:border-blue-300 hover:shadow-md"
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Badge className={item.signal === 'Strong fit signal' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}>
@@ -164,7 +169,8 @@ function SavedCollection({
       {items.length > 0 ? (
         <div className="mt-5 space-y-3">
           {items.slice(0, 6).map((item) => (
-            <Link key={item.slug} href={`/${itemPrefix}/${item.slug}`} className="group block rounded-2xl border border-slate-200 p-4 transition hover:border-blue-300 hover:bg-blue-50/30">
+            <div key={item.slug}>
+              <Link href={`/${itemPrefix}/${item.slug}`} className="msl-motion-card group block rounded-2xl border border-slate-200 p-4 hover:border-blue-300 hover:bg-blue-50/30">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="font-bold text-slate-950 group-hover:text-blue-700">{item.name}</div>
@@ -173,7 +179,9 @@ function SavedCollection({
                 </div>
                 <ArrowRight className="mt-1 h-4 w-4 flex-none text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
               </div>
-            </Link>
+              </Link>
+              {item.practiceHref && <Link href={item.practiceHref} className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-bold text-indigo-700 hover:bg-indigo-50">Try related practice <ArrowRight className="h-3.5 w-3.5" /></Link>}
+            </div>
           ))}
           {items.length > 6 && <p className="pt-1 text-center text-xs font-medium text-slate-500">Showing 6 of {items.length} saved items</p>}
         </div>
@@ -191,9 +199,30 @@ function SavedCollection({
   );
 }
 
-export function PersonalDashboardClient({ member, profile, industries, fitMap, savedSkills, savedCareers }: Props) {
+export function PersonalDashboardClient({ member, profile, industries, fitMap, savedSkills, savedCareers, vaultItems }: Props) {
   const { signOut } = useSupabase();
-  const [editing, setEditing] = useState(!profile.assessment);
+  const [editing, setEditing] = useState(false);
+  const [activeArea, setActiveArea] = useState<'direction' | 'saved' | 'progress' | null>(null);
+
+  // Deep links from Practice Lab must open a visible section before scrolling.
+  useEffect(() => {
+    const openSection = () => {
+      const hash = window.location.hash.slice(1);
+      const area = hash === 'saved' ? 'saved' : hash === 'progress' ? 'progress' : hash === 'direction' ? 'direction' : null;
+      if (!area) return;
+      setActiveArea(area);
+      window.requestAnimationFrame(() => {
+        const id = area === 'saved' ? 'favourites' : area === 'progress' ? 'practice' : 'profile-assessment';
+        document.getElementById(id)?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      });
+    };
+    openSection();
+    window.addEventListener('hashchange', openSection);
+    return () => window.removeEventListener('hashchange', openSection);
+  }, []);
   const [step, setStep] = useState(0);
   const [message, setMessage] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -245,55 +274,50 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
             <div className="flex items-center gap-5">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-400 to-violet-500 text-xl font-black shadow-lg shadow-violet-950/40">{initials}</div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">Personal learning profile</div>
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300"><T text="Personal learning profile" /></div>
                 <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{profile.name}</h1>
                 <p className="mt-1 text-sm text-slate-300">Member since {new Date(member.createdAt).toLocaleDateString('en-CA', { month: 'long', year: 'numeric' })}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button type="button" variant="outline" className="border-slate-600 bg-transparent text-white hover:bg-slate-800" onClick={() => { setEditing(true); setStep(0); document.getElementById('profile-assessment')?.scrollIntoView({ behavior: 'smooth' }); }}>
-                <Pencil className="mr-2 h-4 w-4" />Edit fit profile
+              <Button type="button" variant="outline" className="border-slate-600 bg-transparent text-white hover:bg-slate-800" onClick={() => {
+                setActiveArea('direction'); setEditing(true); setStep(0);
+                requestAnimationFrame(() => document.getElementById('profile-assessment')?.scrollIntoView({
+                  behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                }));
+              }}>
+                <Pencil className="mr-2 h-4 w-4" /><T text="Edit fit profile" />
               </Button>
               <Button type="button" variant="ghost" className="text-slate-200 hover:bg-slate-800 hover:text-white" onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" />Sign out
+                <LogOut className="mr-2 h-4 w-4" /><T text="Sign out" />
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      <nav className="sticky top-16 z-20 border-b border-slate-200 bg-white/95 backdrop-blur" aria-label="Dashboard sections">
-        <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-6 py-2 lg:px-8">
-          {[
-            ['fit-map', 'Fit map'],
-            ['favourites', 'Favourites'],
-            ['practice', 'Practice'],
-            ['profile-assessment', 'Profile'],
-          ].map(([href, label]) => (
-            <a key={href} href={`#${href}`} className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 hover:text-slate-950">{label}</a>
-          ))}
-        </div>
-      </nav>
-
       <main className="mx-auto max-w-7xl px-6 pt-10 lg:px-8">
-        <section className="grid gap-4 sm:grid-cols-3" aria-label="Profile overview">
-          <a href="#favourites" className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition hover:border-blue-400">
-            <Heart className="h-5 w-5 text-blue-700" />
-            <div className="mt-3 text-3xl font-black text-slate-950">{savedSkills.length + savedCareers.length}</div>
-            <div className="mt-1 text-sm font-semibold text-slate-600">Saved favourites</div>
-          </a>
-          <a href="#fit-map" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition hover:border-emerald-400">
-            <Compass className="h-5 w-5 text-emerald-700" />
-            <div className="mt-3 text-3xl font-black text-slate-950">{profile.assessment ? fitMap.careers.length : 0}</div>
-            <div className="mt-1 text-sm font-semibold text-slate-600">Career fit signals</div>
-          </a>
-          <a href="#practice" className="rounded-2xl border border-violet-200 bg-violet-50 p-5 transition hover:border-violet-400">
-            <Layers3 className="h-5 w-5 text-violet-700" />
-            <div className="mt-3 text-lg font-black text-slate-950">Practice hub</div>
-            <div className="mt-2 inline-flex items-center text-sm font-bold text-violet-700">View XP and achievements<ArrowRight className="ml-1.5 h-4 w-4" /></div>
-          </a>
-        </section>
-
+        <div className="mb-8">
+          <p className="text-sm font-semibold uppercase tracking-wider text-blue-700"><T text="Your learning space" /></p>
+          <h2 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl"><T text="What would you like to do today?" /></h2>
+          <p className="mt-2 text-slate-600">Choose a direction. Your saved work and progress are still here when you need them.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Choose your learning goal">
+          {[
+            { title: 'Find my direction', detail: 'Explore career matches and update your fit profile', icon: Compass, area: 'direction' as const, action: () => setActiveArea('direction') },
+            { title: 'Build my skills', detail: 'Explore practical learning paths and skill guides', icon: BookOpen, area: null, href: '/paths' },
+            { title: 'My saved learning', detail: 'Return to saved skills, careers and insights', icon: Heart, area: 'saved' as const, action: () => setActiveArea('saved') },
+            { title: 'Track my progress', detail: 'Review practice, achievements and learning activity', icon: Target, area: 'progress' as const, action: () => setActiveArea('progress') },
+          ].map((item) => {
+            const Icon = item.icon;
+            const selected = item.area !== null && activeArea === item.area;
+            const cls = `msl-motion-card flex min-h-44 flex-col items-start rounded-2xl border bg-white p-5 text-left shadow-sm hover:border-blue-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${selected ? 'border-blue-500 bg-blue-50/60 ring-2 ring-blue-100' : 'border-slate-200'}`;
+            const content = <><Icon className="mb-4 h-6 w-6 text-blue-700" /><span className="text-lg font-bold text-slate-950"><T text={item.title} /></span><span className="mt-2 text-sm leading-6 text-slate-600"><T text={item.detail} /></span><ArrowRight className="mt-auto self-end text-blue-700" size={18} /></>;
+            return item.href ? <Link key={item.title} href={item.href} className={cls}>{content}</Link> : <button key={item.title} type="button" aria-pressed={selected} className={cls} onClick={item.action}>{content}</button>;
+          })}
+        </div>
+        {activeArea && <button type="button" onClick={() => setActiveArea(null)} className="msl-motion-press mt-6 rounded-lg px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">← <T text="Back to my learning space" /></button>}
+        <div className={activeArea === 'direction' ? 'msl-reveal' : 'hidden'}>
         <section id="profile-assessment" className="scroll-mt-36 pt-12" aria-labelledby="assessment-title">
           <div className="overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-sm">
             <div className="bg-gradient-to-r from-violet-950 via-indigo-950 to-blue-950 p-7 text-white sm:p-9">
@@ -449,6 +473,14 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
           )}
         </section>
 
+        </div>
+        <div className={activeArea === 'saved' ? 'msl-reveal' : 'hidden'}>
+        <KnowledgeVault items={vaultItems} />
+        <div className="mb-7 rounded-2xl border border-indigo-100 bg-indigo-50 p-5">
+          <h3 className="font-bold text-slate-950">Turn something you saved into practice</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Review an insight, try a related activity, then return to your progress. Saved content is account-synced; your XP stays in this browser.</p>
+          <Link href="/learn#workshops" className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-indigo-700">Explore guided workshops <ArrowRight className="h-4 w-4" /></Link>
+        </div>
         <section id="favourites" className="scroll-mt-36 pt-16" aria-labelledby="favourites-title">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -463,6 +495,8 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
           </div>
         </section>
 
+        </div>
+        <div className={activeArea === 'progress' ? 'msl-reveal' : 'hidden'}>
         <section id="practice" className="scroll-mt-36 pt-16" aria-labelledby="practice-title">
           <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -471,12 +505,14 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
             </div>
             <Link href="/learn" className="inline-flex items-center text-sm font-bold text-violet-700 hover:text-violet-900">Open Practice Lab<ArrowRight className="ml-1.5 h-4 w-4" /></Link>
           </div>
+          <LearningJourney compact />
           <LearningProgressSummary />
           <LearningAchievements />
         </section>
 
-        <section className="rounded-3xl bg-slate-950 p-7 text-white sm:p-9" aria-labelledby="quick-links-title">
-          <h2 id="quick-links-title" className="text-2xl font-bold">Go somewhere useful</h2>
+        </div>
+        <section className="mt-10 rounded-3xl bg-slate-950 p-7 text-white sm:p-9" aria-labelledby="quick-links-title">
+          <h2 id="quick-links-title" className="text-2xl font-bold"><T text="Explore more" /></h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {[
               ['/skills', BookOpen, 'Skill repository'],
@@ -486,7 +522,7 @@ export function PersonalDashboardClient({ member, profile, industries, fitMap, s
               ['/learn', Sparkles, 'Practice Lab'],
             ].map(([href, Icon, label]) => (
               <Link key={href as string} href={href as string} className="flex items-center rounded-2xl border border-white/15 bg-white/5 p-4 text-sm font-bold text-slate-100 transition hover:border-blue-300 hover:bg-white/10">
-                <Icon className="mr-3 h-5 w-5 text-blue-300" />{label as string}
+                <Icon className="mr-3 h-5 w-5 text-blue-300" /><T text={label as string} />
               </Link>
             ))}
           </div>

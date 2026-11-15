@@ -18,6 +18,9 @@ import { Button } from '@/components/ui/button';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import type { SkillCourse } from '@/lib/courses';
+import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { GlossaryLinkedText } from '@/components/glossary/glossary-links';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import {
   getLearningProfile,
   hasLearningActivity,
@@ -29,6 +32,7 @@ type Props = {
   course: SkillCourse;
   skillName: string;
   relatedSkillHref: string;
+  workshopHref?: string | null;
 };
 
 type ExperienceProps = Props & { userId: string };
@@ -62,19 +66,19 @@ function recordCourseEvent(skillSlug: string, action: 'start' | 'complete') {
   }).catch(() => {});
 }
 
-export function CourseRunner({ course, skillName, relatedSkillHref }: Props) {
+export function CourseRunner({ course, skillName, relatedSkillHref, workshopHref }: Props) {
   const { user } = useSupabase();
   return (
     <GamificationAccessGate
       featureName={`${skillName} Skill Sprint`}
       description="Create an account to open the lesson rounds, complete workplace exercises, earn XP, and keep your sprint progress private."
     >
-      {user ? <CourseRunnerExperience course={course} skillName={skillName} relatedSkillHref={relatedSkillHref} userId={user.id} /> : null}
+      {user ? <CourseRunnerExperience course={course} skillName={skillName} relatedSkillHref={relatedSkillHref} workshopHref={workshopHref} userId={user.id} /> : null}
     </GamificationAccessGate>
   );
 }
 
-function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }: ExperienceProps) {
+function CourseRunnerExperience({ course, skillName, relatedSkillHref, workshopHref, userId }: ExperienceProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -183,17 +187,17 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
       <aside className="h-fit rounded-3xl border border-slate-200 bg-white p-5 shadow-sm lg:sticky lg:top-28">
         <div className="mb-5 flex items-center justify-between">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Progress</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600"><T text="Progress" /></div>
             <div className="mt-1 text-2xl font-bold text-slate-900">{percent}%</div>
           </div>
           <div className="rounded-2xl bg-amber-50 px-3 py-2 text-right">
-            <div className="text-xs font-medium text-amber-700">Total practice XP</div>
+            <div className="text-xs font-medium text-amber-700"><T text="Total practice XP" /></div>
             <div className="font-bold text-amber-900">{learningProfile.totalXp} XP</div>
           </div>
         </div>
 
         <div className="mb-5 flex items-center justify-between rounded-2xl bg-orange-50 px-3 py-2 text-sm">
-          <span className="inline-flex items-center font-semibold text-orange-900"><Flame className="mr-1.5 h-4 w-4" />Practice rhythm</span>
+          <span className="inline-flex items-center font-semibold text-orange-900"><Flame className="mr-1.5 h-4 w-4" /><T text="Practice rhythm" /></span>
           <span className="font-bold text-orange-900">{learningProfile.currentStreak} days</span>
         </div>
 
@@ -240,7 +244,7 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
           className="mt-6 inline-flex items-center text-xs font-medium text-slate-500 hover:text-slate-900"
         >
           <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
-          Reset this sprint
+          <T text="Reset this sprint" />
         </button>
       </aside>
 
@@ -260,11 +264,11 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
                   </p>
                 </div>
               </div>
-              <Link href={relatedSkillHref}>
-                <Button className="w-full sm:w-auto">
-                  Return to skill guide <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <div className="flex flex-wrap gap-3">
+                {workshopHref && <Link href={workshopHref} className="inline-flex min-h-11 items-center rounded-xl bg-indigo-700 px-4 py-2 text-sm font-bold text-white hover:bg-indigo-800"><T text="Apply it in a workshop" /> <ArrowRight className="ml-2 h-4 w-4" /></Link>}
+                <Link href="/dashboard#progress" className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 py-2 text-sm font-bold text-emerald-900 hover:bg-emerald-100"><T text="View progress" /></Link>
+                <Link href={relatedSkillHref} className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 py-2 text-sm font-bold text-emerald-900 hover:bg-emerald-100"><T text="Review skill guide" /></Link>
+              </div>
             </div>
           </div>
         )}
@@ -281,14 +285,23 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
           </div>
 
           <div className="space-y-8 p-7 sm:p-9">
+            <LearningTranslationPanel material={[
+              `Lesson: ${lesson.title}`,
+              `Objective: ${lesson.objective}`,
+              `Concept: ${lesson.concept}`,
+              `Example: ${lesson.example}`,
+              `Practice: ${lesson.practice}`,
+              `Review question: ${lesson.quiz.question}`,
+              ...lesson.quiz.options.map((option, index) => `${String.fromCharCode(65 + index)}. ${option}`),
+            ].join('\n\n')} />
             <section>
               <h3 className="flex items-center text-lg font-bold text-slate-900">
                 <Lightbulb className="mr-2 h-5 w-5 text-amber-500" />
-                Understand it
+                <T text="Understand it" />
               </h3>
-              <p className="mt-3 leading-7 text-slate-700">{lesson.concept}</p>
+              <p className="mt-3 leading-7 text-slate-700"><GlossaryLinkedText text={lesson.concept} maxLinks={2} /></p>
               <div className="mt-4 rounded-2xl border-l-4 border-blue-500 bg-blue-50 p-5">
-                <div className="text-xs font-bold uppercase tracking-wide text-blue-700">Example</div>
+                <div className="text-xs font-bold uppercase tracking-wide text-blue-700"><T text="Example" /></div>
                 <p className="mt-2 leading-7 text-blue-950">{lesson.example}</p>
               </div>
             </section>
@@ -296,15 +309,15 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
             <section className="rounded-2xl bg-violet-50 p-5">
               <h3 className="flex items-center font-bold text-violet-950">
                 <Target className="mr-2 h-5 w-5 text-violet-600" />
-                Try it at work
+                <T text="Try it at work" />
               </h3>
-              <p className="mt-2 leading-7 text-violet-900">{lesson.practice}</p>
+              <p className="mt-2 leading-7 text-violet-900"><GlossaryLinkedText text={lesson.practice} maxLinks={1} /></p>
             </section>
 
             <section>
               <div className="mb-4 flex items-center justify-between gap-4">
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Retrieval check</div>
+                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500"><T text="Retrieval check" /></div>
                   <h3 className="mt-1 text-xl font-bold text-slate-900">{lesson.quiz.question}</h3>
                 </div>
                 <Sparkles className="hidden h-6 w-6 text-blue-600 sm:block" />
@@ -346,17 +359,18 @@ function CourseRunnerExperience({ course, skillName, relatedSkillHref, userId }:
                   }`}
                   role="status"
                 >
-                  <div className="font-bold">{isCorrect ? 'Correct—good judgment.' : 'Not quite. Compare the options once more.'}</div>
+                  <div className="font-bold"><T text={isCorrect ? 'Correct—good judgment.' : 'Not quite. Compare the options once more.'} /></div>
                   <p className="mt-1 text-sm leading-6">{lesson.quiz.explanation}</p>
+                  <LearningTranslationPanel material={`Feedback explanation: ${lesson.quiz.explanation}`} />
                 </div>
               )}
 
               <div className="mt-6 flex justify-end">
                 <Button onClick={completeLesson} disabled={!isCorrect} size="lg">
                   {completedSet.has(lesson.id)
-                    ? 'Continue'
+                    ? <T text="Continue" />
                     : currentIndex === course.lessons.length - 1
-                      ? 'Complete sprint'
+                      ? <T text="Complete sprint" />
                       : hasLearningActivity(learningProfile, `course:${course.skillSlug}:${lesson.id}`)
                         ? 'Complete practice and continue'
                         : `Earn ${course.pointsPerLesson} XP and continue`}

@@ -1,0 +1,194 @@
+{
+  "problem-solving": {
+    "shortDefinition": "Problem solving is the ability to move from an unclear or undesirable situation to a tested improvement by defining the problem, diagnosing likely causes, comparing options, acting on the strongest hypothesis, and checking whether the intervention actually worked.",
+    "fullDefinition": "Problem solving is a structured learning process, not simply generating ideas or fixing the first visible symptom. It begins by clarifying the gap between the current state and the desired state, identifying who is affected and what constraints matter, and establishing a baseline that makes the problem observable. The solver then separates symptoms from plausible causes, gathers discriminating evidence, develops multiple response options, weighs trade-offs and risks, tests the smallest useful intervention, and measures what changed. Strong problem solving also includes documenting assumptions, assigning ownership, learning from failed attempts, and revising the problem definition when new evidence shows that the original framing was wrong.",
+    "whyItMatters": "Organizations lose time and resources when teams treat symptoms as causes, jump to familiar solutions, or measure activity instead of whether the underlying problem improved. Analytical thinking remains a major workplace skill in the World Economic Forum's 2025 skills outlook, and creative thinking is also rising in importance. Together they reflect the two sides of effective problem solving: disciplined diagnosis and the ability to generate better options. The practical value comes from reducing avoidable rework, making uncertainty visible, and turning interventions into evidence rather than assumptions.",
+    "modernRelevance": "AI, analytics and automation can generate hypotheses, summarize evidence and propose solutions quickly, but speed increases the cost of a weak problem definition. A polished answer to the wrong question is still wrong. Modern problem solving therefore puts more weight on framing, data quality, causal reasoning, experiment design, constraint awareness and feedback loops. Professionals need to know what evidence would distinguish competing explanations before asking a tool to optimize the solution.",
+    "whereItShowsUp": "Problem solving appears in incident and root-cause analysis, customer complaints, product defects, process bottlenecks, service failures, declining performance metrics, project blockers, operational waste, quality issues, policy implementation and everyday decisions where the cause is not obvious. It also appears when a team must decide whether a problem is worth solving now, which part of it is controllable and what level of evidence is sufficient before acting.",
+    "careerApplications": "Operations teams use problem solving to remove bottlenecks and recurring failures; product and design teams use it to understand user friction before building; analysts use it to test explanations and identify decision-relevant evidence; managers use it to separate people problems from process, incentive or resource problems; customer-facing teams use it to resolve the underlying need rather than only the immediate complaint; and technical teams use structured diagnosis to isolate failure modes before changing systems.",
+    "industryVariations": "The core cycle—frame, diagnose, test, act, verify—transfers across industries, but the acceptable evidence and risk differ. Healthcare, aviation, engineering and other safety-critical environments require stronger traceability and controlled change. Manufacturing often emphasizes process variation, quality methods and root-cause tools. Software teams may rely on logs, reproduction steps and controlled releases. Service and knowledge-work settings may use customer evidence, workflow analysis and experiments. Strong practitioners adapt the method without skipping verification simply because the setting is less technical.",
+    "professionalContexts": [
+      "Incident and root-cause analysis",
+      "Customer and service problems",
+      "Operational bottlenecks and process improvement",
+      "Product and user-experience decisions",
+      "Quality and reliability issues",
+      "Cross-functional blockers",
+      "Performance and metric investigations",
+      "Continuous-improvement initiatives"
+    ],
+    "tools": [
+      "Clear problem statements and baselines",
+      "5 Whys and causal questioning",
+      "Fishbone / Ishikawa diagrams",
+      "Process maps and journey maps",
+      "Hypothesis trees and issue trees",
+      "Pareto analysis",
+      "Decision matrices and trade-off tables",
+      "Small experiments, pilots and retrospectives"
+    ],
+    "realWorldScenarios": [
+      "A support team sees repeat complaints about slow response. Instead of adding staff immediately, it maps the queue, separates arrival volume from handling time and discovers that a routing rule is sending many requests to the wrong specialist group.",
+      "A product team sees lower conversion after a redesign. It checks whether traffic mix, measurement rules or page performance changed before assuming the new interface is the cause, then runs a targeted test on the strongest explanation.",
+      "An operations manager sees recurring late deliveries. The team builds a baseline by route and supplier, identifies that one handoff creates most of the delay, pilots a revised handoff on a small subset and measures whether cycle time actually improves.",
+      "A cross-functional project keeps missing decisions. Rather than scheduling more meetings, the lead traces the delay to unclear decision rights and introduces an explicit owner, deadline and escalation path for each unresolved decision."
+    ],
+    "skillInAction": "Strong problem solving is visible in the sequence of questions, not in how quickly someone proposes an answer. The practitioner can state the problem in observable terms, distinguish symptoms from causes, show what evidence supports each important hypothesis, explain why one option was chosen over alternatives, identify the risks of being wrong, and define what result would count as improvement. After acting, they compare the outcome with the baseline and update the explanation instead of declaring success because the solution was implemented.",
+    "evidenceSummary": "The World Economic Forum's 2025 skills outlook identifies analytical thinking as a leading core skill and creative thinking as an increasingly important capability, supporting a view of problem solving that combines diagnosis with option generation. OECD's work on skills in the AI age similarly emphasizes the continuing value of human cognitive and analytical capabilities as AI changes task execution. Research on cognitive load also shows that problem-solving demands can consume substantial mental resources, which is one reason structured representations, decomposition and externalized evidence can help people reason through complex problems instead of holding every relationship in working memory. These sources support teaching problem solving as disciplined diagnosis and learning rather than generic productivity.",
+    "scholarlyNotes": [
+      "World Economic Forum (2025), Future of Jobs Report 2025: Skills Outlook. https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/",
+      "OECD (2026), Skills in the AI age. https://www.oecd.org/content/dam/oecd/en/publications/reports/2026/07/skills-in-the-ai-age_e8d8c1e6/972bd15e-en.pdf",
+      "Sweller, J. (1988), Cognitive Load During Problem Solving: Effects on Learning, Cognitive Science 12(2): 257–285. https://doi.org/10.1207/s15516709cog1202_4"
+    ],
+    "beginnerActions": [
+      "Take one recurring low-risk problem and write a problem statement that includes the observable gap, who is affected, where it occurs and a baseline measure before suggesting any solution.",
+      "List at least three plausible causes and one piece of evidence that would make each cause more or less likely.",
+      "After trying a fix, compare the same measure before and after the intervention instead of judging success from effort or intention."
+    ],
+    "intermediateActions": [
+      "Build a simple cause map or hypothesis tree for a real problem, then collect the smallest set of evidence that can eliminate weak explanations.",
+      "Generate several solution options and compare them on expected impact, cost, reversibility, risk and evidence rather than selecting the most familiar idea.",
+      "Run a small pilot with a defined success measure, record unintended effects and decide in advance what result would justify scaling, revising or stopping the intervention."
+    ],
+    "advancedActions": [
+      "Lead a cross-functional root-cause review where competing explanations are made explicit, evidence can overturn senior assumptions and the final intervention has a named owner and verification plan.",
+      "Design a problem-solving system for recurring issues that captures baselines, hypotheses, interventions, outcomes and lessons so the organization does not repeatedly rediscover the same failure modes.",
+      "For a consequential problem, distinguish correlation from causal evidence, map second-order effects and choose a reversible or staged intervention when uncertainty remains high."
+    ],
+    "howToPractice": "Use real problems with outcomes you can observe. Before solving, write the current state, desired state, baseline, constraints and affected stakeholders. Generate multiple cause hypotheses and decide what evidence would discriminate among them. Choose the smallest safe intervention that can teach you something, then measure the same outcome afterward. Keep a short problem log recording the original framing, what evidence changed your mind, what you tried and whether the result persisted.",
+    "howToMeasureProgress": "Track whether your problem statements become more specific, whether you gather evidence before proposing fixes, how often early hypotheses are revised, whether interventions have pre-defined success measures, how many recurring problems stay resolved, and whether another person can follow the reasoning from symptom to diagnosis to outcome. Progress means reducing avoidable rework and improving decision quality, not solving every problem on the first attempt.",
+    "commonMistakes": [
+      "Solving the visible symptom before establishing the underlying problem.",
+      "Choosing a favorite solution first and searching for evidence that supports it.",
+      "Using a problem statement so broad that no useful baseline or owner can be defined.",
+      "Confusing correlation, timing or anecdote with evidence of cause.",
+      "Brainstorming many ideas without criteria for choosing or testing them.",
+      "Changing several things at once and then being unable to tell what caused the result.",
+      "Implementing a fix without measuring whether the original problem improved.",
+      "Failing to assign ownership for the intervention, follow-up measurement or escalation."
+    ],
+    "estimatedTimeToDevelop": "Several weeks for core habits; months across varied, ambiguous problems.",
+    "coreSubskills": [
+      "Problem framing",
+      "Baseline and evidence definition",
+      "Root-cause analysis",
+      "Hypothesis generation",
+      "Causal reasoning",
+      "Option generation and trade-off analysis",
+      "Experiment and pilot design",
+      "Outcome verification and learning"
+    ],
+    "developmentMethods": "Build the skill through repeated diagnosis, not by memorizing named frameworks. Practice writing observable problem statements, reconstruct past failures, compare competing hypotheses, run low-risk pilots and review completed interventions to see whether the underlying issue actually changed. Frameworks such as 5 Whys, fishbone diagrams, issue trees and A3 reports are useful when they make reasoning visible; they are not substitutes for evidence.",
+    "practiceOpportunities": "Use recurring everyday problems as a lab: investigate a missed deadline, a customer complaint pattern, a slow approval process, a quality defect, a metric decline or a workflow that repeatedly produces rework. Public case studies and post-incident reports are also useful: pause before reading the resolution, build your own hypotheses and then compare your reasoning with the evidence that emerged.",
+    "howEmployersEvaluate": "Employers often evaluate problem solving through case questions, debugging exercises, work samples and discussion of past decisions. Strong candidates clarify an ambiguous problem before answering, ask for relevant evidence, distinguish assumptions from facts, generate more than one plausible explanation, choose a proportionate next test and explain what would change their conclusion. A polished final answer is less persuasive than a reasoning trail that can survive challenge.",
+    "signalsOfMastery": [
+      "Frames problems in observable terms with a meaningful baseline.",
+      "Separates symptoms, causes, assumptions and evidence.",
+      "Generates competing explanations before converging on a solution.",
+      "Chooses tests that reduce uncertainty efficiently.",
+      "Balances impact, cost, reversibility and risk when comparing options.",
+      "Defines success before implementation and verifies outcomes afterward.",
+      "Changes course when evidence contradicts the original explanation."
+    ],
+    "careerImpact": "Problem solving strengthens performance in roles where conditions are ambiguous and the correct response is not already documented. It supports progression into work with greater decision responsibility because trusted problem solvers can diagnose issues, coordinate evidence, explain trade-offs and improve systems instead of repeatedly treating symptoms. Its value compounds with domain knowledge, data literacy, communication and project execution.",
+    "aiEraRelevance": "AI can accelerate brainstorming, research, pattern detection and documentation, but it can also make weak assumptions look complete. The durable advantage is the ability to define the problem independently, decide what evidence is trustworthy, test causal claims, recognize missing context and verify whether an intervention changed the real outcome. AI is most useful when it expands or tests the reasoning process rather than replacing ownership of the diagnosis.",
+    "humanAdvantage": "People understand which problems are worth solving, how organizational incentives and relationships shape the situation, which harms or trade-offs matter, and whether a technically plausible solution is acceptable in context. Humans also choose when uncertainty is low enough to act and remain responsible for the consequences of changing a real system.",
+    "lastUpdated": "2026-09-23"
+  },
+  "project-management": {
+    "shortDefinition": "Project management is the discipline of coordinating a temporary effort toward a defined outcome by making scope, ownership, milestones, dependencies, risks, decisions, resources and changes visible enough for the team to act before problems become surprises.",
+    "fullDefinition": "Project management turns an intended outcome into coordinated execution. It begins by defining what success means, what is in and out of scope, who owns key work and decisions, what constraints apply, and which milestones or acceptance criteria show real progress. The project manager then creates enough structure to reveal dependencies, resource conflicts, risks, unresolved decisions and changes; establishes an appropriate communication and governance cadence; and adjusts the plan as evidence changes. Strong project management is not the production of schedules and status reports for their own sake. It is the ongoing work of keeping the team aligned on the outcome, surfacing constraints early, enabling decisions and closing the project with acceptance and learning.",
+    "whyItMatters": "Projects fail quietly before they fail visibly: scope expands without a decision, dependencies have no owner, risks remain implicit, milestones describe activity rather than outcomes, or stakeholders discover trade-offs too late. Modern work also creates heavy coordination load across messages, meetings and tools. Microsoft WorkLab's 2025 analysis of the 'infinite workday' describes dense communication and fragmented attention, while the World Economic Forum's 2025 skills outlook continues to emphasize leadership, analytical thinking and related human capabilities. Project management creates value by turning that coordination pressure into explicit priorities, ownership and decision points rather than adding process for its own sake.",
+    "modernRelevance": "Distributed teams, fast product cycles, external vendors, AI-assisted work and frequent scope changes make static plans less reliable. Modern project management therefore combines planning with continuous sensing: teams need a current view of what outcome matters, what changed, what is blocked, which risk is increasing and which decision is now required. The right method may be predictive, agile or hybrid; the durable skill is selecting enough structure for the uncertainty and consequence of the work.",
+    "whereItShowsUp": "Project management appears in product and service launches, system implementations, process changes, client delivery, marketing campaigns, events, research programs, construction and facilities work, compliance initiatives, organizational change, migrations, vendor engagements and any temporary cross-functional effort with a defined outcome and constraints.",
+    "careerApplications": "Dedicated project and program managers use the full discipline, but the skill is also central to product managers, operations leads, marketers, consultants, implementation specialists, team leads and functional managers. They use it to translate goals into milestones, coordinate people who may not report to them, make dependencies explicit, resolve resource conflicts, escalate decisions and keep stakeholders informed without burying them in activity reports.",
+    "industryVariations": "The governance should match the work. Construction, engineering, healthcare, finance and regulated environments may require stronger documentation, approvals, safety controls and stage gates. Software and product work may use iterative backlogs and frequent release feedback. Marketing and events often face immovable dates and external dependencies. Consulting and client services add contractual scope and acceptance. Strong project managers adapt predictive, agile and hybrid practices to risk, uncertainty and stakeholder needs instead of treating one methodology as universally correct.",
+    "professionalContexts": [
+      "Cross-functional launches",
+      "System implementations and migrations",
+      "Process and operating-model changes",
+      "Client and consulting delivery",
+      "Marketing campaigns and events",
+      "Vendor and partner projects",
+      "Compliance and regulatory initiatives",
+      "Product, program and transformation work"
+    ],
+    "tools": [
+      "Project charters and one-page briefs",
+      "Work breakdown structures or prioritized backlogs",
+      "Milestone plans and roadmaps",
+      "Dependency maps",
+      "RAID logs for risks, assumptions, issues and dependencies",
+      "RACI / DACI and decision logs",
+      "Kanban boards and issue trackers",
+      "Budget, resource and status trackers"
+    ],
+    "realWorldScenarios": [
+      "A launch date depends on legal approval. The project manager records the dependency, assigns an owner and decision date, and creates a contingency path before the dependency becomes a last-minute surprise.",
+      "A stakeholder requests a major feature halfway through delivery. Instead of quietly adding it, the project manager documents the scope change, estimates the effect on time and resources, and gets an explicit decision on which constraint will move.",
+      "A vendor misses a critical deliverable. The project manager updates the dependency path, assesses downstream impact, agrees a recovery milestone and escalates the trade-off that now requires sponsor input.",
+      "A cross-functional team has many meetings but slow decisions. The project manager separates status updates from decision forums, records decision owners and deadlines, and makes unresolved choices visible on the project control panel."
+    ],
+    "skillInAction": "Strong project management creates a shared operating picture. At any meaningful point, the team can answer: What outcome are we trying to produce? What is in scope? What is the next milestone or acceptance test? Who owns each critical dependency and decision? What changed since the last review? Which risk could most alter the plan? What requires escalation now? The project manager uses tools only to make those answers clearer and keeps governance proportionate to the consequences of getting them wrong.",
+    "evidenceSummary": "Microsoft WorkLab's 2025 analysis of the modern workday describes high communication volume, fragmented attention and work that stretches across conventional boundaries, illustrating the coordination environment in which project teams operate. The World Economic Forum's 2025 skills outlook emphasizes analytical thinking, leadership and other human capabilities that remain important as technology changes tasks. These signals support a project-management model centered on clear outcomes, explicit ownership, visible dependencies, disciplined decisions and adaptable coordination rather than administrative reporting alone. Modern Skill Lab's existing remote-project guidance also reinforces written decisions, visible owners, early blocker identification and asynchronous status visibility as practical habits for distributed teams.",
+    "scholarlyNotes": [
+      "Microsoft WorkLab (2025), Breaking down the infinite workday. https://www.microsoft.com/en-us/worklab/work-trend-index/breaking-down-infinite-workday",
+      "World Economic Forum (2025), Future of Jobs Report 2025: Skills Outlook. https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/"
+    ],
+    "beginnerActions": [
+      "Run one small bounded project and write a one-page brief covering the outcome, scope, owner, deadline, success criteria and top constraint before creating a detailed task list.",
+      "For every meaningful task or dependency, record a clear owner and due date; for every major decision, record who decides and by when.",
+      "Send a short recurring status update that separates progress, blockers, risks, decisions needed and next milestone instead of listing completed activity."
+    ],
+    "intermediateActions": [
+      "Manage a cross-functional project using a visible milestone plan, dependency map and RAID log, and review the few items most likely to change the outcome rather than every task equally.",
+      "Introduce a lightweight change process: state the requested change, expected benefit, effect on scope/time/cost/risk and who has authority to approve the trade-off.",
+      "Design the meeting and asynchronous cadence so status can be consumed without a meeting while discussion time is reserved for decisions, risks and problem solving."
+    ],
+    "advancedActions": [
+      "Design governance for a complex initiative with multiple workstreams, including decision rights, integration points, stage or release criteria, escalation thresholds and a consolidated view of cross-project risk.",
+      "Adapt predictive, agile or hybrid practices to the uncertainty and consequence of the work, and explain why the chosen controls are necessary rather than applying a methodology mechanically.",
+      "Coach project leads to distinguish activity from progress, surface bad news early and close projects with explicit acceptance, unresolved obligations and lessons that can improve future delivery."
+    ],
+    "howToPractice": "Practice on real projects small enough to finish. Start with a one-page brief, then maintain only the artifacts that improve coordination: milestone view, owners, dependencies, risks, decisions and changes. After each project, compare planned and actual milestones, inspect which risks were visible early, identify where ownership was ambiguous and ask stakeholders which status information helped them act. Gradually take on work with more stakeholders, uncertainty and consequence.",
+    "howToMeasureProgress": "Track outcome and coordination quality: milestone reliability, time that blockers remain unresolved, percentage of critical dependencies with explicit owners and dates, decision turnaround time, frequency of uncontrolled scope changes, stakeholder surprise, rework caused by unclear requirements, and whether acceptance criteria are met at close. Improvement should reduce surprises and decision friction without increasing unnecessary process.",
+    "commonMistakes": [
+      "Starting with a task list before defining the outcome, scope and acceptance criteria.",
+      "Reporting activity as progress even when the next milestone or outcome is not closer.",
+      "Allowing critical dependencies to exist without named owners, dates or consequences.",
+      "Treating requested scope changes as free additions instead of explicit trade-offs.",
+      "Leaving decision rights ambiguous until disagreement becomes a schedule problem.",
+      "Adding meetings, templates and status fields that do not help anyone decide or act.",
+      "Assuming the optimistic path is the plan and leaving no response for material risks.",
+      "Waiting too long to escalate a blocker because escalation feels like failure.",
+      "Closing delivery without explicit acceptance, remaining obligations or lessons learned."
+    ],
+    "estimatedTimeToDevelop": "Several weeks for small projects; months across complex cross-functional work.",
+    "coreSubskills": [
+      "Outcome and scope definition",
+      "Milestone and sequencing design",
+      "Dependency management",
+      "Risk and issue management",
+      "Decision-rights and escalation design",
+      "Resource and constraint management",
+      "Stakeholder communication",
+      "Change control and project learning"
+    ],
+    "developmentMethods": "Develop project management by progressively increasing coordination complexity rather than collecting certifications alone. Run short projects end to end, study where plans diverged from reality, maintain decision and risk logs, practice writing concise status reports, facilitate retrospectives and shadow experienced project leads during difficult trade-offs. Learn several delivery approaches so you can select controls that fit the work instead of forcing every project into the same template.",
+    "practiceOpportunities": "Volunteer to coordinate a small launch, event, internal process change, client deliverable, migration or community initiative. Choose work with a real deadline and multiple contributors so ownership and dependencies are visible. Build a compact portfolio artifact showing the brief, milestone plan, risk/dependency view, one important change decision and the final outcome rather than screenshots of project-management software.",
+    "howEmployersEvaluate": "Employers may use behavioral interviews, scenario questions, planning exercises and examples of completed projects. Strong evidence includes defining scope and success criteria clearly, identifying dependencies and risks early, showing how a difficult change or trade-off was handled, explaining stakeholder and decision structures, and demonstrating what changed because of the project manager's intervention. Artifacts such as a one-page brief, risk log, decision record or concise status update are stronger when tied to an actual outcome.",
+    "signalsOfMastery": [
+      "Keeps the desired outcome and acceptance criteria visible throughout delivery.",
+      "Makes critical owners, dependencies, risks and decisions explicit before they become crises.",
+      "Distinguishes useful milestones from lists of activity.",
+      "Handles scope changes as transparent trade-offs rather than silent additions.",
+      "Escalates with a clear statement of impact, options and the decision required.",
+      "Uses the lightest governance that still controls material risk and ambiguity.",
+      "Closes projects with acceptance, remaining obligations and transferable learning."
+    ],
+    "careerImpact": "Project management can broaden a professional's responsibility from completing individual tasks to coordinating outcomes across people, functions and constraints. Strong delivery evidence supports progression into project, program, operations, implementation, consulting, product and leadership roles because it demonstrates that the person can turn an ambiguous goal into coordinated execution without hiding trade-offs.",
+    "aiEraRelevance": "AI can draft plans, summarize updates, extract actions and identify apparent risks, which lowers the cost of administrative project work. The durable value shifts toward defining outcomes, interpreting changing context, negotiating trade-offs, validating whether automated summaries are complete, managing stakeholder commitments and deciding when a project needs intervention or escalation. AI can improve visibility, but it cannot own the organizational consequences of a missed commitment.",
+    "humanAdvantage": "Project work depends on commitments among people with different incentives, authority, expertise and risk tolerance. Humans interpret those relationships, negotiate what can change, recognize when a stakeholder's stated request differs from the real constraint, and take responsibility for escalation and trade-offs. Those judgments are central to delivery even when planning and reporting become more automated.",
+    "lastUpdated": "2026-09-23"
+  }
+}

@@ -1,3 +1,10 @@
+import { LearningActionPath } from '@/components/learning/learning-action-path';
+import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
+import { TranslatedText as T, EnglishGuideNotice } from '@/components/providers/learning-language-provider';
+import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
+import { GlossaryLinkedText, RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
+import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
+import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   getSkillBySlug,
-  getIndexableSkills,
+  getCanonicalSkills,
   getRelatedSkills,
   getCareersForSkill,
   getCanonicalSkillForSlug,
@@ -36,7 +43,6 @@ import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import {
-  assessSkillContentQuality,
   isSkillFieldEditoriallyUseful,
 } from '@/lib/content-quality';
 import {
@@ -75,7 +81,7 @@ interface SkillDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  const skills = await getIndexableSkills();
+  const skills = await getCanonicalSkills();
   return skills.map((skill) => ({
     slug: skill.slug,
   }));
@@ -96,14 +102,13 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
 
   const title = `${skill.name}: Practical Skill Guide`;
   const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
-  const quality = assessSkillContentQuality(skill);
 
   return {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
     alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
-    robots: { index: quality.indexable, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
       description,
@@ -192,9 +197,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Breadcrumbs
           className="mb-8"
           items={[
@@ -234,13 +239,15 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-4xl">
                 <h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900">{skill.name}</h1>
-                <p className="mb-2 text-xl leading-relaxed text-gray-700">{skill.shortDefinition}</p>
+                <p className="mb-2 text-xl leading-relaxed text-gray-700"><GlossaryLinkedText text={skill.shortDefinition ?? ''} maxLinks={1} /></p>
+                <ContextualLearningHelp context={[skill.name, skill.shortDefinition, ...skill.beginnerActions.slice(0, 2)].join(" | ").slice(0, 4500)} prompt={`Can you explain ${skill.name} with a practical example I could try today?`} />
+                <EnglishGuideNotice />
               </div>
 
               <div className="w-full max-w-sm rounded-2xl border bg-white/80 p-4 shadow-sm">
                 <div className="mb-3">
                   <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-                    Save this skill
+                    <T text="Save this skill" />
                   </h2>
                   <p className="mt-1 text-sm text-gray-600">
                     Add this skill to your dashboard so you can revisit it, track it, and build your
@@ -259,7 +266,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 >
                   <Clock className={`h-6 w-6 ${difficultyColors.text}`} />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Difficulty</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Difficulty" /></div>
                 <div className={`text-sm font-semibold ${difficultyColors.text}`}>
                   {skill.difficulty || 'Intermediate'}
                 </div>
@@ -269,7 +276,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
                   <BarChart3 className="h-6 w-6 text-blue-600" />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Development Time</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Development Time" /></div>
                 <div className="text-sm font-semibold text-blue-600">
                   {skill.estimatedTimeToDevelop?.split('.')[0] || 'Varies'}
                 </div>
@@ -281,7 +288,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 >
                   <Shield className={`h-6 w-6 ${riskColors.text}`} />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Automation Risk</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><Link href="/glossary/automation-risk" title="Understand what automation risk measures" className="text-indigo-700 underline decoration-dotted underline-offset-4 hover:text-indigo-900"><T text="Automation Risk" /></Link></div>
                 <div className={`text-sm font-semibold capitalize ${riskColors.text}`}>
                   {skill.automationRisk}
                 </div>
@@ -291,13 +298,29 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
                   <Briefcase className="h-6 w-6 text-green-600" />
                 </div>
-                <div className="mb-1 text-sm font-medium text-gray-500">Career Impact</div>
+                <div className="mb-1 text-sm font-medium text-gray-500"><T text="Career Impact" /></div>
                 <div className="text-sm font-semibold text-green-600">Career-connected</div>
               </div>
             </div>
           </div>
         </div>
 
+        <LearningActionPath title={`Practice ${skill.name}`} description="A practical starting route drawn from this skill guide. Explore the detailed learning sections below for more context." steps={skill.beginnerActions ?? []} outcome={skill.signalsOfMastery?.[0]} />
+        <LearningPageNavigator containerId="learning-page-content" />
+        <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "value", title: "Why it matters", text: skill.whyItMatters || skill.shortDefinition }, { id: "application", title: "Put it into practice", text: skill.beginnerActions[0] || skill.howToPractice }, { id: "mastery", title: "What progress looks like", text: skill.signalsOfMastery?.[0] || skill.howToMeasureProgress }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
+
+        <RelatedGlossaryTerms text={[
+          skill.shortDefinition,
+          skill.whyItMatters,
+          skill.fullDefinition,
+          skill.aiEraRelevance,
+          skill.whereItShowsUp,
+          skill.careerApplications,
+          skill.howToPractice,
+          skill.howEmployersEvaluate,
+          skill.developmentMethods,
+          skill.evidenceSummary,
+        ].filter(Boolean).join(' ')} maxTerms={4} />
         <ManagedAdSlot placement="skill-inline" />
 
         {currentBrief && <CurrentSkillBrief skillName={skill.name} brief={currentBrief} />}
@@ -336,31 +359,31 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
         />
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-          <div className="space-y-8 lg:col-span-2">
+          <div className="space-y-8 lg:col-span-2 [&>section]:rounded-2xl [&>section]:border [&>section]:border-slate-200 [&>section]:bg-white [&>section]:p-6 [&>section]:shadow-sm sm:[&>section]:p-8 [&>section_p]:max-w-prose [&>section_p]:leading-8 [&>section_p]:text-slate-700 [&>section_h2]:tracking-tight">
             {isSkillFieldEditoriallyUseful(skill, 'whyItMatters') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <Target className="mr-2 h-6 w-6 text-blue-600" />
-                Why This Skill Matters
+                <T text="Why This Skill Matters" />
               </h2>
               <div className="prose max-w-none">
-                <p className="text-gray-700">{skill.whyItMatters}</p>
+                <p className="text-gray-700"><GlossaryLinkedText text={skill.whyItMatters ?? ''} maxLinks={1} /></p>
               </div>
             </section>}
 
             {isSkillFieldEditoriallyUseful(skill, 'fullDefinition') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <BookOpen className="mr-2 h-6 w-6 text-blue-600" />
-                Comprehensive Definition
+                <T text="Comprehensive Definition" />
               </h2>
               <div className="prose max-w-none">
-                <p className="text-gray-700">{skill.fullDefinition}</p>
+                <p className="text-gray-700"><GlossaryLinkedText text={skill.fullDefinition ?? ''} maxLinks={1} /></p>
               </div>
             </section>}
 
             {isSkillFieldEditoriallyUseful(skill, 'modernRelevance') && <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <TrendingUp className="mr-2 h-6 w-6 text-blue-600" />
-                Modern Relevance
+                <T text="Modern Relevance" />
               </h2>
               <div className="prose max-w-none">
                 <p className="text-gray-700">{skill.modernRelevance}</p>
@@ -368,9 +391,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </section>}
 
             {(isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') || isSkillFieldEditoriallyUseful(skill, 'humanAdvantage')) && <section>
-              <h2 className="mb-4 text-2xl font-bold text-gray-900">AI Era Context</h2>
+              <h2 className="mb-4 text-2xl font-bold text-gray-900"><T text="AI Era Context" /></h2>
               <div className="prose max-w-none">
-                {isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') && <p className="text-gray-700">{skill.aiEraRelevance}</p>}
+                {isSkillFieldEditoriallyUseful(skill, 'aiEraRelevance') && <p className="text-gray-700"><GlossaryLinkedText text={skill.aiEraRelevance ?? ''} maxLinks={1} /></p>}
                 {isSkillFieldEditoriallyUseful(skill, 'humanAdvantage') && <div className="mt-4 rounded-lg bg-blue-50 p-4">
                   <h4 className="mb-2 font-semibold text-blue-900">Human Advantage</h4>
                   <p className="text-sm text-blue-800">{skill.humanAdvantage}</p>
@@ -381,7 +404,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             <section>
               <h2 className="mb-6 flex items-center text-2xl font-bold text-gray-900">
                 <CheckCircle2 className="mr-2 h-6 w-6 text-blue-600" />
-                Development Path
+                <T text="Development Path" />
               </h2>
 
               <div className="space-y-6">
@@ -426,7 +449,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             <section>
               <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                 <AlertTriangle className="mr-2 h-6 w-6 text-yellow-600" />
-                Common Mistakes to Avoid
+                <T text="Common Mistakes to Avoid" />
               </h2>
               <ul className="space-y-2">
                 {skill.commonMistakes.map((mistake, index) => (
@@ -442,10 +465,10 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <MapPin className="mr-2 h-6 w-6 text-blue-600" />
-                  Where This Skill Shows Up at Work
+                  <T text="Where This Skill Shows Up at Work" />
                 </h2>
                 <div className="prose max-w-none">
-                  <p className="text-gray-700">{skill.whereItShowsUp}</p>
+                  <p className="text-gray-700"><GlossaryLinkedText text={skill.whereItShowsUp ?? ''} maxLinks={1} /></p>
                 </div>
               </section>
             )}
@@ -454,7 +477,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <Briefcase className="mr-2 h-6 w-6 text-blue-600" />
-                  Career Applications
+                  <T text="Career Applications" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.careerApplications}</p>
@@ -466,7 +489,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <Activity className="mr-2 h-6 w-6 text-blue-600" />
-                  What Strong Execution Looks Like
+                  <T text="What Strong Execution Looks Like" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.skillInAction}</p>
@@ -478,7 +501,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <Globe className="mr-2 h-6 w-6 text-blue-600" />
-                  Real-World Applications
+                  <T text="Real-World Applications" />
                 </h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {skill.realWorldScenarios.map((scenario, index) => (
@@ -529,7 +552,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                   How Employers Evaluate This Skill
                 </h2>
                 <div className="prose max-w-none">
-                  <p className="text-gray-700">{skill.howEmployersEvaluate}</p>
+                  <p className="text-gray-700"><GlossaryLinkedText text={skill.howEmployersEvaluate ?? ''} maxLinks={1} /></p>
                 </div>
               </section>
             )}
@@ -579,7 +602,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <section>
                 <h2 className="mb-4 flex items-center text-2xl font-bold text-gray-900">
                   <TrendingUp className="mr-2 h-6 w-6 text-blue-600" />
-                  Career Impact
+                  <T text="Career Impact" />
                 </h2>
                 <div className="prose max-w-none">
                   <p className="text-gray-700">{skill.careerImpact}</p>
@@ -908,7 +931,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <CardContent className="space-y-3">
                 {isSkillFieldEditoriallyUseful(skill, 'howToPractice') && <div className="text-sm text-blue-800">
                   <strong>How to Practice:</strong>
-                  <p className="mt-1">{skill.howToPractice}</p>
+                  <p className="mt-1"><GlossaryLinkedText text={skill.howToPractice ?? ''} maxLinks={1} /></p>
                 </div>}
                 {isSkillFieldEditoriallyUseful(skill, 'howToMeasureProgress') && <div className="text-sm text-blue-800">
                   <strong>Measure Progress:</strong>
@@ -919,6 +942,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
           </div>
         </div>
       </div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8"><NextStepPrompt context="skill" /></div>
     </div>
   );
 }

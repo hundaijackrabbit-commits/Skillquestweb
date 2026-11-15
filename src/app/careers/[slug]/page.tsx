@@ -1,5 +1,11 @@
+import { LearningActionPath } from '@/components/learning/learning-action-path';
+import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
+import { GlossaryLinkedText, RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
+import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
+import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,7 +24,6 @@ import { ContentViewTracker } from '@/components/analytics/content-view-tracker'
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
-import { isCareerIndexable } from '@/lib/content-quality';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 import { SaveCareerButton } from '@/components/careers/save-career-button';
@@ -51,7 +56,7 @@ function humanize(value: string) {
 export async function generateStaticParams() {
   const careers = await getAllCareers();
   
-  return careers.filter(isCareerIndexable).map((career) => ({
+  return careers.map((career) => ({
     slug: career.slug,
   }));
 }
@@ -72,7 +77,7 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
     title,
     description,
     alternates: { canonical: `/careers/${career.slug}` },
-    robots: { index: isCareerIndexable(career), follow: true },
+    robots: { index: true, follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
 }
@@ -122,7 +127,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
     <div className="py-12 bg-gradient-to-b from-blue-50/30 to-white min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
         <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Careers', href: '/careers' }, { label: career.title }]} />
 
         {/* Hero Header */}
@@ -152,7 +157,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </h1>
             
             <p className="text-xl text-gray-700 mb-8 max-w-4xl leading-relaxed">
-              {career.summary}
+              <GlossaryLinkedText text={career.summary ?? ''} maxLinks={2} />
             </p>
 
             <SaveCareerButton careerSlug={career.slug} />
@@ -200,6 +205,11 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           </div>
         </div>
 
+        <LearningActionPath title={`Explore a path into ${career.title}`} description="Practical entry strategies from this career guide. Read the complete career profile below for qualifications, work environments and further details." steps={career.beginnerEntryStrategies ?? []} />
+        <LearningPageNavigator containerId="learning-page-content" />
+        <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
+
+        <RelatedGlossaryTerms text={[career.summary, career.whatTheyDo].filter(Boolean).join(' ')} maxTerms={4} />
         <ManagedAdSlot placement="career-inline" />
 
         {careerCheck && <KnowledgeCheckCard check={careerCheck} className="mb-12" />}
@@ -207,7 +217,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-8 [&_p]:leading-8 [&_p]:text-slate-700 [&_li]:leading-7">
             {/* What They Do */}
             <Card id="skills-required" className="scroll-mt-28">
               <CardHeader>
@@ -218,7 +228,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               </CardHeader>
               <CardContent className="prose prose-gray max-w-none">
                 <p className="text-gray-700 leading-relaxed">
-                  {career.whatTheyDo}
+                  <GlossaryLinkedText text={career.whatTheyDo ?? ''} maxLinks={2} />
                 </p>
               </CardContent>
             </Card>
@@ -500,6 +510,8 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
           </section>
         )}
 
+        <NextStepPrompt context="career" />
+
         {/* Action Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8">
           <div className="max-w-3xl mx-auto text-center">
@@ -528,6 +540,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </div>
           </div>
         </div>
+      <div className="mx-auto mt-12 max-w-5xl px-4"><CareerGuidePromo /></div>
       </div>
     </div>
   );

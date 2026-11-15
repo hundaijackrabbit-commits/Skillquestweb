@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { render } from '@react-email/components';
+import { render } from '@react-email/render';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { CareerGuideEmail, careerGuideEmailText } from '@/emails/career-guide-email';
@@ -18,6 +18,15 @@ const CareerGuideRequestSchema = z.object({
 });
 
 type DeliveryStatus = 'sent' | 'failed';
+
+const DEFAULT_FROM_EMAIL = 'Modern Skill Lab <guide@modernskilllab.space>';
+const LEGACY_FROM_EMAIL = 'Modern Skill Lab <guide@mail.modernskilllab.space>';
+
+function getFromEmail() {
+  const configured = process.env.RESEND_FROM_EMAIL?.trim();
+  if (!configured || configured === LEGACY_FROM_EMAIL) return DEFAULT_FROM_EMAIL;
+  return configured;
+}
 
 function firstNameFrom(name?: string) {
   return name?.split(/\s+/).find(Boolean)?.slice(0, 60);
@@ -103,7 +112,7 @@ export async function POST(request: Request) {
     const html = await render(CareerGuideEmail(emailProps));
     const { data, error } = await resend.emails.send(
       {
-        from: process.env.RESEND_FROM_EMAIL || 'Modern Skill Lab <guide@mail.modernskilllab.space>',
+        from: getFromEmail(),
         to: input.email,
         replyTo: process.env.RESEND_REPLY_TO_EMAIL || undefined,
         subject: 'Your requested Modern Skill Lab guide',

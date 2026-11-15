@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { SkillsDirectory } from '@/components/skills/skills-directory';
-import { getIndexableSkills } from '@/lib/content';
+import { getCanonicalSkills } from '@/lib/content';
 import { compareSkillsForDiscovery } from '@/lib/content-quality';
 import { TOPICS } from '@/lib/topics';
 
@@ -17,7 +17,7 @@ function first(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] ?? '' : value ?? '';
 }
 
-function searchScore(skill: Awaited<ReturnType<typeof getIndexableSkills>>[number], query: string) {
+function searchScore(skill: Awaited<ReturnType<typeof getCanonicalSkills>>[number], query: string) {
   const normalized = query.toLocaleLowerCase('en');
   const name = skill.name.toLocaleLowerCase('en');
   let score = 0;
@@ -38,7 +38,7 @@ export default async function SkillsSearchPage({ searchParams }: { searchParams:
   const sort = ['featured', 'name', 'signal'].includes(requestedSort) ? requestedSort : 'featured';
   const requestedPage = Number(first(values.page) || '1');
 
-  const allSkills = await getIndexableSkills();
+  const allSkills = await getCanonicalSkills();
   const filtered = allSkills.filter((skill) => {
     if (category && skill.category !== category) return false;
     if (!query) return true;

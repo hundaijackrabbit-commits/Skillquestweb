@@ -1,6 +1,10 @@
+import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import { Children } from 'react';
+import { linkGlossaryText, RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -71,7 +75,7 @@ const mdxComponents = {
 
 export async function generateStaticParams() {
   const blogPosts = await getAllBlogPosts();
-  return blogPosts.filter(isBlogPostIndexable).map((post) => ({
+  return blogPosts.map((post) => ({
     slug: post.slug,
   }));
 }
@@ -91,14 +95,14 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
     title: post.title,
     description,
     alternates: { canonical: `/blog/${post.slug}` },
-    robots: { index: isBlogPostIndexable(post), follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${post.title} | Modern Skill Lab`,
       description,
       type: 'article',
       url: `/blog/${post.slug}`,
-      publishedTime: post.publishedAt,
-      modifiedTime: post.lastUpdated,
+      publishedTime: post.publishedAt === '1970-01-01' ? undefined : post.publishedAt,
+      modifiedTime: post.lastUpdated === '1970-01-01' ? undefined : post.lastUpdated,
       authors: [post.author],
     },
   };
@@ -123,6 +127,18 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
     .slice(0, 3);
   const canonicalUrl = absoluteUrl(`/blog/${post.slug}`);
   const knowledgeCheck = getKnowledgeCheckForBlog(post.slug);
+  // Links only the first few meaningful terms; authored MDX elements and links stay intact.
+  const linkedGlossarySlugs = new Set<string>();
+  const articleMdxComponents = {
+    ...mdxComponents,
+    p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
+      <p className="mb-5 leading-8 text-gray-700" {...props}>
+        {Children.map(children, (node) => typeof node === 'string'
+          ? linkGlossaryText(node, { maxLinks: 4 - linkedGlossarySlugs.size, usedSlugs: linkedGlossarySlugs })
+          : node)}
+      </p>
+    ),
+  };
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -130,9 +146,10 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
         '@type': 'BlogPosting',
         headline: post.title,
         description: post.excerpt,
-        mainEntityOfPage: canonicalUrl,
-        datePublished: post.publishedAt,
-        dateModified: post.lastUpdated,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+        url: canonicalUrl,
+        ...(post.publishedAt !== '1970-01-01' ? { datePublished: post.publishedAt } : {}),
+        ...(post.lastUpdated !== '1970-01-01' ? { dateModified: post.lastUpdated } : {}),
         author: { '@type': 'Organization', name: post.author },
         publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
       },
@@ -175,22 +192,26 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
               <User className="mr-2 h-4 w-4" />
               {post.author}
             </div>
-            <div className="flex items-center">
-              <Calendar className="mr-2 h-4 w-4" />
-              <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
-            </div>
+            {post.lastUpdated !== '1970-01-01' && (
+              <div className="flex items-center">
+                <Calendar className="mr-2 h-4 w-4" />
+                <strong className="mr-1 text-gray-900">Updated</strong> {formatContentDate(post.lastUpdated)}
+              </div>
+            )}
             <div className="flex items-center">
               <Clock className="mr-2 h-4 w-4" />
               {post.readTime} min read
             </div>
-            <div className="flex items-center">
-              <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
-              Editorially reviewed
-            </div>
+            {post.reviewedBy && (
+              <div className="flex items-center">
+                <ShieldCheck className="mr-2 h-4 w-4 text-emerald-600" />
+                Editorially reviewed
+              </div>
+            )}
           </div>
 
-          {post.publishedAt !== post.lastUpdated && (
-            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Substantially reviewed and updated on the date above.</p>
+          {post.publishedAt !== '1970-01-01' && post.lastUpdated !== '1970-01-01' && post.publishedAt !== post.lastUpdated && (
+            <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Last updated on the date above.</p>
           )}
 
           <ArticleActions slug={post.slug} />
@@ -204,9 +225,11 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
 
         <article className="mb-12 rounded-2xl border bg-white p-8 shadow-sm">
           <div className="prose prose-lg max-w-none">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote source={post.content} components={articleMdxComponents} />
           </div>
         </article>
+
+        <RelatedGlossaryTerms text={`${post.excerpt}\n${post.content}`} maxTerms={5} />
 
         {knowledgeCheck && <KnowledgeCheckCard check={knowledgeCheck} className="mb-12" />}
 
@@ -279,6 +302,11 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             </div>
           </div>
         )}
+
+        {/**** Career-focused readers can access the workbook without cluttering the global menu. ****/}
+        {/**** Match career planning, job search, and professional development topics. ****/}
+        {/(career|job|interview|professional|goal|skill|learning|work)/i.test(`${post.title} ${post.excerpt}`) && <div className="my-10"><CareerGuidePromo /></div>}
+        <NextStepPrompt context="article" />
 
         <div className="mt-12 text-center">
           <Link href="/blog">

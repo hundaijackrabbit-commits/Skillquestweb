@@ -5,22 +5,24 @@ import { usePathname } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { LearningLanguageSelector } from '@/components/layout/learning-language-selector';
+import { useLearningLanguage, TranslatedText as T } from '@/components/providers/learning-language-provider';
+import { navigationLabel } from '@/lib/navigation-translations';
 import { useSupabase } from '@/components/providers/supabase-provider';
-import { Search, Menu, X, BookOpen, Briefcase, PenTool, User, LogOut, Sparkles, Route, Trophy, Layers3, Gift, Users } from 'lucide-react';
+import { Search, Menu, X, BookOpen, Briefcase, User, LogOut, Sparkles, Route, Trophy, Users } from 'lucide-react';
 
 const navigation = [
   { name: 'Skills', href: '/skills', icon: BookOpen },
-  { name: 'Topics', href: '/topics', icon: Layers3 },
-  { name: 'Practice Lab', href: '/learn', icon: Trophy },
   { name: 'Careers', href: '/careers', icon: Briefcase },
-  { name: 'Paths', href: '/paths', icon: Route },
+  { name: 'Learning Paths', href: '/paths', icon: Route },
+  { name: 'Practice', href: '/learn', icon: Trophy },
   { name: 'Community', href: '/community', icon: Users },
-  { name: 'Blog', href: '/blog', icon: PenTool },
-  { name: 'Free Guide', href: '/free-career-guide', icon: Gift },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { locale: learningLocale } = useLearningLanguage();
+
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -89,7 +91,7 @@ export function Header() {
               type="button"
               aria-label="Close main menu"
               tabIndex={-1}
-              className="fixed inset-0 z-[60] cursor-default bg-slate-950/35 backdrop-blur-[2px]"
+              className="msl-menu-backdrop fixed inset-0 z-[60] cursor-default bg-slate-950/35 backdrop-blur-[2px]"
               onClick={() => closeMobileMenu(true)}
             />
             <div
@@ -98,7 +100,7 @@ export function Header() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="mobile-navigation-title"
-              className="fixed inset-y-0 right-0 z-[70] flex h-dvh w-full max-w-sm flex-col overflow-y-auto overscroll-contain bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] shadow-2xl sm:px-6"
+              className="msl-menu-panel fixed inset-y-0 right-0 z-[70] flex h-dvh w-full max-w-sm flex-col overflow-y-auto overscroll-contain bg-white px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))] shadow-2xl sm:px-6"
             >
               <div className="flex min-w-0 items-center justify-between gap-3">
                 <Link href="/" className="min-w-0 rounded-xl p-1.5" onClick={() => closeMobileMenu()}>
@@ -110,7 +112,7 @@ export function Header() {
                       <div id="mobile-navigation-title" className="text-base font-bold leading-tight text-slate-900">
                         Modern Skill Lab
                       </div>
-                      <div className="mt-0.5 text-xs leading-snug text-slate-500">Practical skills for modern work</div>
+                      <div className="mt-0.5 text-xs leading-snug text-slate-500"><T text="Practical skills for modern work" /></div>
                     </div>
                   </div>
                 </Link>
@@ -141,7 +143,7 @@ export function Header() {
                         onClick={() => closeMobileMenu()}
                       >
                         <item.icon className={`h-5 w-5 shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-600'}`} />
-                        <span>{item.name}</span>
+                        <span>{navigationLabel(learningLocale, item.name)}</span>
                       </Link>
                     );
                   })}
@@ -149,6 +151,7 @@ export function Header() {
               </nav>
 
               <div className="mt-6 space-y-3 border-t border-slate-200 pt-5">
+                <LearningLanguageSelector compact />
                 {loading ? (
                   <div className="space-y-3" aria-label="Loading account options">
                     <div className="h-11 w-full animate-pulse rounded-xl bg-slate-200" />
@@ -159,7 +162,7 @@ export function Header() {
                     <Link href="/dashboard" className="block w-full" onClick={() => closeMobileMenu()}>
                       <Button asChild variant="ghost" size="sm" className="min-h-11 w-full justify-center">
                         <User className="mr-2 h-4 w-4" />
-                        My Profile
+                        My Dashboard
                       </Button>
                     </Link>
                     <Button
@@ -227,19 +230,20 @@ export function Header() {
         </div>
 
         <div className="hidden lg:flex lg:items-center lg:gap-x-6 xl:gap-x-8">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="flex items-center gap-2 text-sm font-semibold leading-6 text-slate-700 transition-colors hover:text-blue-600"
-            >
-              <item.icon className="h-4 w-4" />
-              <span>{item.name}</span>
-            </Link>
-          ))}
+          {navigation.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link key={item.name} href={item.href} aria-current={isActive ? 'page' : undefined}
+                className={`msl-nav-link flex items-center gap-2 text-sm font-semibold leading-6 transition-colors hover:text-blue-600 ${isActive ? 'text-blue-700' : 'text-slate-700'}`}>
+                <item.icon className="h-4 w-4" aria-hidden="true" />
+                <span>{navigationLabel(learningLocale, item.name)}</span>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-3">
+          <LearningLanguageSelector />
           <Link href="/skills" className="hidden xl:block">
             <Button asChild variant="ghost" size="sm" className="text-slate-700">
               <Search className="mr-2 h-4 w-4" />
@@ -257,7 +261,7 @@ export function Header() {
               <Link href="/dashboard">
                 <Button asChild variant="ghost" size="sm" className="text-slate-700">
                   <User className="mr-2 h-4 w-4" />
-                  My Profile
+                  My Dashboard
                 </Button>
               </Link>
               <Button variant="outline" size="sm" onClick={() => void signOut()}>

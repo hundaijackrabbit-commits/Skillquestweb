@@ -14,10 +14,27 @@ import {
 // Data file paths
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 const SKILLS_FILE = path.join(DATA_DIR, 'skills-1000plus.json');
+const SKILL_EDITORIAL_OVERRIDES_FILE = path.join(DATA_DIR, 'skill-editorial-overrides.json');
 const CAREERS_FILE = path.join(DATA_DIR, 'careers.json');
 const INDUSTRIES_FILE = path.join(DATA_DIR, 'industries.json');
 const SKILL_PATHS_FILE = path.join(DATA_DIR, 'skill-paths.json');
 const BLOG_DIR = path.join(process.cwd(), 'src', 'content', 'blog');
+
+function loadSkillEditorialOverrides(): Record<string, Record<string, unknown>> {
+  if (!fs.existsSync(SKILL_EDITORIAL_OVERRIDES_FILE)) return {};
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(SKILL_EDITORIAL_OVERRIDES_FILE, 'utf8'));
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      console.warn('Skill editorial overrides must be an object keyed by slug');
+      return {};
+    }
+    return parsed as Record<string, Record<string, unknown>>;
+  } catch (error) {
+    console.error('Unable to parse skill editorial overrides:', error);
+    return {};
+  }
+}
 
 // Content loading functions
 export const getAllSkills = cache(async (): Promise<Skill[]> => {
@@ -39,20 +56,24 @@ export const getAllSkills = cache(async (): Promise<Skill[]> => {
     return [];
   }
 
+  const editorialOverrides = loadSkillEditorialOverrides();
   const validSkills: Skill[] = [];
   let invalidCount = 0;
 
   rawSkills.forEach((rawSkill, index) => {
-    const parsed = SkillSchema.safeParse(rawSkill);
+    const candidate = rawSkill && typeof rawSkill === 'object'
+      ? rawSkill as Record<string, unknown>
+      : null;
+    const slug = typeof candidate?.slug === 'string' ? candidate.slug : undefined;
+    const override = slug ? editorialOverrides[slug] : undefined;
+    const mergedSkill = candidate && override ? { ...candidate, ...override } : rawSkill;
+    const parsed = SkillSchema.safeParse(mergedSkill);
     if (parsed.success) {
       validSkills.push(parsed.data);
       return;
     }
 
     invalidCount += 1;
-    const candidate = rawSkill && typeof rawSkill === 'object'
-      ? rawSkill as Record<string, unknown>
-      : null;
     const identity = candidate?.slug ?? candidate?.id ?? candidate?.name ?? `record-${index}`;
     console.error(
       `Invalid skill record skipped: ${String(identity)}`,
@@ -305,7 +326,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       const content = fs.readFileSync(filePath, 'utf8');
       
       // Extract frontmatter and content
-      const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+      const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
       const match = content.match(frontmatterRegex);
       
       if (match) {
@@ -319,8 +340,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           excerpt: frontmatter.excerpt || '',
           content: postContent,
           author: frontmatter.author || 'Modern Skill Lab Team',
-          publishedAt: frontmatter.publishedAt || new Date().toISOString(),
-          lastUpdated: frontmatter.lastUpdated || new Date().toISOString(),
+          // Missing editorial dates must not masquerade as a fresh publication or review.
+          // The quality gate can flag missing metadata instead of silently using today's date.
+          publishedAt: frontmatter.publishedAt || '1970-01-01',
+          lastUpdated: frontmatter.lastUpdated || frontmatter.publishedAt || '1970-01-01',
           reviewedBy: frontmatter.reviewedBy || undefined,
           evidenceNote: frontmatter.evidenceNote || undefined,
           tags: frontmatter.tags || [],
@@ -332,13 +355,20 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           category: frontmatter.category || undefined,
         };
         
-        // Validate with Zod
-        blogPosts.push(BlogPostSchema.parse(blogPost));
+        // A single malformed article must not make the entire blog disappear.
+        const parsed = BlogPostSchema.safeParse(blogPost);
+        if (parsed.success) {
+          blogPosts.push(parsed.data);
+        } else {
+          console.error(`Invalid blog article skipped: ${file}`, parsed.error.issues.map((issue) => ({ path: issue.path.join('.'), message: issue.message })));
+        }
+      } else {
+        console.warn(`Blog article skipped: missing or malformed MDX frontmatter in ${file}`);
       }
     }
     
-    // Sort by publication date
-    return blogPosts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    // Show recently substantively updated articles first, preserving publication date as a tie-breaker.
+    return blogPosts.sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime() || new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
   } catch (error) {
     console.error('Error loading blog posts:', error);
     return [];
@@ -498,7 +528,11 @@ export async function getRelatedSkills(skillId: string, limit: number = 5): Prom
     .sort((a, b) => b.score - a.score || skillContentScore(b.candidate) - skillContentScore(a.candidate))
     .map(({ candidate }) => candidate);
 
-  return (await canonicalizeSkillList(related)).filter(isSkillIndexable).slice(0, limit);
+  return (await canonicalizeSkillList(related))
+    .filter((candidate) =>
+      isSkillIndexable(candidate) && normalizedSkillName(candidate) !== normalizedSkillName(skill),
+    )
+    .slice(0, limit);
 }
 
 export async function getSkillsForCareer(careerSlug: string): Promise<Skill[]> {

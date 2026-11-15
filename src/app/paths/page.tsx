@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getSkillPaths } from '@/lib/content';
-import { isSkillPathIndexable } from '@/lib/content-quality';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { getTopicBySlug, TOPICS } from '@/lib/topics';
 import { 
@@ -31,7 +30,7 @@ function humanize(value: string) {
 }
 
 export default async function SkillPathsPage() {
-  const paths = (await getSkillPaths()).filter(isSkillPathIndexable);
+  const paths = (await getSkillPaths());
   const featuredPaths = paths.filter(path => path.featured);
   const topicPathGroups = TOPICS
     .map((topic) => ({ topic, paths: paths.filter((path) => path.category === topic.slug) }))
