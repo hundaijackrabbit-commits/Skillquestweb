@@ -13,6 +13,7 @@ import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { DiscoveryQuiz } from '@/components/marketing/discovery-quiz';
 import { ChallengeWheel } from '@/components/marketing/challenge-wheel';
+import { PortraitIntroVideo } from '@/components/marketing/portrait-intro-video';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,6 +65,25 @@ export default async function HomePage() {
             </div>
             <p className="mt-5 text-sm leading-6 text-slate-600">{growth.marketing.newsletterDescription}</p>
             <NewsletterForm source="homepage-hero" className="mt-5" />
+          </div>
+        </div>
+      </section>
+
+
+      <section className="relative overflow-hidden border-b border-indigo-100 bg-slate-950 py-12 text-white sm:py-16" aria-labelledby="homepage-video-title">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(56,189,248,0.14),transparent_48%),radial-gradient(circle_at_88%_75%,rgba(168,85,247,0.18),transparent_44%)]" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,410px)] lg:gap-16 lg:px-8">
+          <div className="order-2 lg:order-1">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-300"><T text="Introducing Modern Skill Lab" /></p>
+            <h2 id="homepage-video-title" className="mt-4 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"><T text="Your next chapter starts with one skill." /></h2>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-200"><T text="Watch our 50-second introduction to a more practical way to explore skills, connect them to careers, and turn curiosity into progress." /></p>
+            <Link href="/videos/modern-skill-lab-intro" className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-xl border border-cyan-200/50 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-100 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200">
+              <T text="Watch the introduction" /> <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <p className="mt-4 text-xs text-slate-400"><T text="Portrait video • Tap to play with sound • No autoplay" /></p>
+          </div>
+          <div className="order-1 flex min-w-0 justify-center lg:order-2">
+            <PortraitIntroVideo />
           </div>
         </div>
       </section>

@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const skillDirectoryPages = Array.from({ length: Math.max(0, Math.ceil(skills.length / 30) - 1) },(_, index) => index + 2);
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl('/'), changeFrequency: 'weekly', priority: 1 },
+    { url: absoluteUrl('/videos/modern-skill-lab-intro'), changeFrequency: 'yearly', priority: 0.7 },
     { url: absoluteUrl('/skills'), changeFrequency: 'weekly', priority: 0.9 },
     { url: absoluteUrl('/skills/a-z'), changeFrequency: 'weekly', priority: 0.82 },
     { url: absoluteUrl('/skills/clusters'), changeFrequency: 'weekly', priority: 0.84 },
