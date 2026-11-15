@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     url: absoluteUrl(INTRO_VIDEO.watchPath),
     title: INTRO_VIDEO.title,
     description: INTRO_VIDEO.description,
-    images: [{ url: absoluteUrl(INTRO_VIDEO.posterPath), width: 512, height: 910, alt: 'Modern Skill Lab introduction video thumbnail' }],
+    images: [{ url: INTRO_VIDEO.thumbnailUrl, width: 480, height: 360, alt: 'Modern Skill Lab introduction video thumbnail' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: INTRO_VIDEO.title,
     description: INTRO_VIDEO.description,
-    images: [absoluteUrl(INTRO_VIDEO.posterPath)],
+    images: [INTRO_VIDEO.thumbnailUrl],
   },
 };
 
@@ -30,10 +30,11 @@ const videoStructuredData = {
   '@id': `${absoluteUrl(INTRO_VIDEO.watchPath)}#video`,
   name: INTRO_VIDEO.title,
   description: INTRO_VIDEO.description,
-  thumbnailUrl: [absoluteUrl(INTRO_VIDEO.posterPath)],
+  thumbnailUrl: [INTRO_VIDEO.thumbnailUrl],
   uploadDate: INTRO_VIDEO.publishedAt,
   duration: INTRO_VIDEO.duration,
-  contentUrl: absoluteUrl(INTRO_VIDEO.videoPath),
+  embedUrl: INTRO_VIDEO.embedUrl,
+  url: INTRO_VIDEO.youtubeUrl,
   isAccessibleForFree: true,
   inLanguage: 'en',
   publisher: { '@type': 'Organization', name: SITE_NAME, url: absoluteUrl('/') },
@@ -55,7 +56,7 @@ export default function ModernSkillLabIntroVideoPage() {
             <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-200">{INTRO_VIDEO.description}</p>
           </div>
           <div className="mt-9 flex justify-center">
-            <PortraitIntroVideo />
+            <PortraitIntroVideo priority />
           </div>
           <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-white/15 bg-white/5 p-6 sm:p-8">
             <h2 className="text-xl font-semibold">What you can explore next</h2>

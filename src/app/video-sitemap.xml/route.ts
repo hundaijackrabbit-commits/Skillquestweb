@@ -9,17 +9,17 @@ function escapeXml(value: string) {
 
 export function GET() {
   const watchUrl = absoluteUrl(INTRO_VIDEO.watchPath);
-  const videoUrl = absoluteUrl(INTRO_VIDEO.videoPath);
-  const posterUrl = absoluteUrl(INTRO_VIDEO.posterPath);
+  const playerUrl = INTRO_VIDEO.embedUrl;
+  const thumbnailUrl = INTRO_VIDEO.thumbnailUrl;
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>${escapeXml(watchUrl)}</loc>
     <video:video>
-      <video:thumbnail_loc>${escapeXml(posterUrl)}</video:thumbnail_loc>
+      <video:thumbnail_loc>${escapeXml(thumbnailUrl)}</video:thumbnail_loc>
       <video:title>${escapeXml(INTRO_VIDEO.title)}</video:title>
       <video:description>${escapeXml(INTRO_VIDEO.description)}</video:description>
-      <video:content_loc>${escapeXml(videoUrl)}</video:content_loc>
+      <video:player_loc allow_embed="yes">${escapeXml(playerUrl)}</video:player_loc>
       <video:duration>${INTRO_VIDEO.durationSeconds}</video:duration>
       <video:publication_date>${INTRO_VIDEO.publishedAt}</video:publication_date>
     </video:video>
