@@ -1,0 +1,20 @@
+{
+  "critical-thinking": {
+    "relatedSkills": [
+      "data-analysis",
+      "problem-solving",
+      "ai-literacy",
+      "decision-making",
+      "research-methodology"
+    ],
+    "careers": [
+      "product-manager",
+      "data-analyst",
+      "business-analyst",
+      "data-scientist",
+      "user-researcher"
+    ],
+    "employerSignalValue": 9,
+    "featured": true
+  }
+}

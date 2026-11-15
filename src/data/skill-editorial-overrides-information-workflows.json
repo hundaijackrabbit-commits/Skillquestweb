@@ -1,0 +1,205 @@
+{
+  "data-organization": {
+    "shortDefinition": "Data organization is the ability to structure, label, document, store and maintain data so the right people and systems can find it, understand it, use it safely and reuse it without guessing what it means.",
+    "fullDefinition": "Data organization turns scattered records into information that can be located, interpreted and trusted. It includes choosing consistent structures, field names and formats; separating raw, working and published data; defining identifiers and naming conventions; documenting meaning with metadata and data dictionaries; recording provenance and transformations; controlling access; handling missing, duplicate and inconsistent values; and designing storage so people can retrieve the correct version later. Strong practitioners organize data for the next user as well as the current task. They can explain what a dataset contains, where it came from, who owns it, how it changed, which rules govern access and what another person would need to reuse it correctly.",
+    "whyItMatters": "Poorly organized data creates hidden costs: people search for the right file, rebuild work that already exists, join incompatible fields, use outdated extracts, misread ambiguous labels or expose information to the wrong audience. Good organization improves reliability before analysis even begins. The FAIR principles formalize several transferable qualities of well-managed digital data - findability, accessibility, interoperability and reusability - while NIH guidance defines data management as validating, organizing, protecting, maintaining and processing data so it remains accessible, reliable and high quality. Those principles originated in research data stewardship, but the underlying habits are useful in ordinary business data as well.",
+    "modernRelevance": "Cloud warehouses, SaaS systems, automation and AI have increased the number of places where data is created and reused. AI-assisted analysis makes organization more important, not less: a model can summarize the wrong table, mix incompatible definitions or confidently reason over stale data if the source structure and metadata are weak. Modern data organization therefore includes machine-readable structure, clear identifiers, documented definitions, access controls, lineage or provenance, retention rules and enough context for both humans and automated systems to distinguish authoritative data from drafts and derived copies.",
+    "whereItShowsUp": "Data organization appears in spreadsheets, CRM exports, analytics tables, research files, survey results, customer records, operational logs, finance models, product telemetry, shared drives, cloud storage, data warehouses and any workflow where multiple people or systems need to reuse information. It becomes especially important when datasets are combined, handed to another team, refreshed repeatedly, audited, automated or used to support consequential decisions.",
+    "careerApplications": "Analysts use data organization to create analysis-ready tables and reusable datasets; operations teams use it to keep recurring reporting and process data consistent; marketers organize campaign, customer and channel data; product and engineering teams structure events, logs and reference data; finance teams maintain controlled models and source files; researchers document variables, provenance and reuse conditions; and managers use shared definitions and ownership rules so teams stop arguing about which number or file is authoritative.",
+    "industryVariations": "The core principles transfer, but the controls vary. Healthcare and financial settings may require stricter access, retention and auditability. Research environments place greater emphasis on metadata, provenance, repositories and reuse. Software and analytics teams often use schemas, version-controlled transformations and data catalogs. Small teams may rely on disciplined spreadsheets and shared drives. The goal is not maximum complexity; it is enough structure and documentation to keep data understandable, secure and reusable in its actual context.",
+    "professionalContexts": [
+      "Spreadsheet and reporting workflows",
+      "Analytics and business intelligence",
+      "CRM and customer-data operations",
+      "Research and survey data",
+      "Product and operational telemetry",
+      "Shared-drive and cloud-storage management",
+      "Data migration and system integration",
+      "Audit, compliance and controlled reporting"
+    ],
+    "tools": [
+      "Data dictionaries and schema documentation",
+      "Consistent naming and identifier conventions",
+      "Folder, table and dataset taxonomies",
+      "Metadata and data catalogs",
+      "Validation and duplicate checks",
+      "Versioning and change logs",
+      "Access-control and retention settings",
+      "Lineage / provenance records"
+    ],
+    "realWorldScenarios": [
+      "A monthly report depends on five spreadsheets named final, final-v2 and latest. The analyst defines one authoritative source folder, a naming rule, owners, archive rules and a data dictionary so the next reporting cycle starts from known inputs.",
+      "Two teams both track customer status but use different labels. Before combining the data, they map definitions, choose a controlled vocabulary, document the transformation and preserve the original values for traceability.",
+      "A survey dataset will be handed to another analyst. The owner adds variable descriptions, units, missing-value rules, collection dates, provenance and a README so the recipient can interpret the data without reverse-engineering the project.",
+      "An AI assistant is asked to summarize operational performance. The team first confirms which dataset is authoritative, its refresh date, metric definitions and known gaps so the model is not reasoning over an obsolete extract."
+    ],
+    "skillInAction": "Strong data organization is visible when another person can find the correct dataset, understand its fields, determine when and how it was produced, know which version is authoritative and use it without relying on undocumented tribal knowledge. The practitioner chooses structure deliberately, validates consistency, documents exceptions and keeps permissions proportional to the sensitivity of the data.",
+    "evidenceSummary": "The FAIR Guiding Principles identify findability, accessibility, interoperability and reusability as core qualities of well-stewarded digital data and emphasize rich metadata, persistent identifiers, provenance and community-relevant standards. NIH's Data Management and Sharing Policy similarly describes data management as validating, organizing, protecting, maintaining and processing scientific data to preserve accessibility, reliability and quality, and explicitly encourages FAIR-aligned practice. These sources focus on research data rather than every workplace dataset, so they should be treated as strong stewardship principles rather than a universal business-data standard. The practical lesson is consistent: structure and metadata should make data understandable and reusable beyond the person who created it.",
+    "scholarlyNotes": [
+      "Wilkinson, M. D. et al. (2016), The FAIR Guiding Principles for scientific data management and stewardship, Scientific Data 3:160018. https://doi.org/10.1038/sdata.2016.18",
+      "NIH Policy for Data Management and Sharing (effective 2023). https://grants.nih.gov/grants/guide/notice-files/NOT-OD-21-013.html",
+      "NIST FAIR-Data Principles reference. https://www.nist.gov/itl/ssd/information-systems-group/configurable-data-curation-system-cdcs/cdcs-help-and-resources-1"
+    ],
+    "beginnerActions": [
+      "Take one messy spreadsheet or folder and define a simple naming convention, owner, date format and authoritative location.",
+      "Create a one-page data dictionary for a small table: field name, plain-language meaning, type or unit, allowed values and missing-value rule.",
+      "Separate raw source files from cleaned or transformed outputs so the original evidence is never silently overwritten.",
+      "Run basic checks for duplicate identifiers, inconsistent categories, impossible dates and blank required fields."
+    ],
+    "intermediateActions": [
+      "Design a repeatable folder or table structure for a recurring workflow and document how new data enters, changes and is archived.",
+      "Standardize identifiers and controlled categories across two datasets, recording the mapping instead of deleting the original values.",
+      "Add provenance to a reusable dataset: source, collection or extract date, transformations, owner, refresh cadence and known limitations.",
+      "Review permissions and retention for a shared dataset so access matches actual responsibilities and sensitive copies are not proliferating unnecessarily."
+    ],
+    "advancedActions": [
+      "Create a lightweight data-governance pattern for a team that defines authoritative sources, ownership, naming, metadata, quality checks, access and deprecation rules.",
+      "Design a schema or catalog that lets humans and automated systems reliably discover and distinguish raw, curated and derived datasets.",
+      "Lead a migration or integration where definitions conflict, documenting semantic mappings, validation rules, lineage and unresolved exceptions before cutover.",
+      "Audit a high-value reporting pipeline for reproducibility: another qualified person should be able to trace a published metric back to source data and transformations."
+    ],
+    "howToPractice": "Practice on real information you already use. Choose a folder, spreadsheet or recurring export that currently depends on memory. Reorganize it so a new teammate could answer five questions without asking you: What is this? Which version is current? Where did it come from? What do the fields mean? Who is allowed to use it? Keep the structure as simple as possible while still answering those questions reliably.",
+    "howToMeasureProgress": "Track time spent finding the correct source, duplicate or conflicting files, data-quality exceptions caught before reporting, percentage of important fields with clear definitions, ability to reproduce a result from source data, stale datasets retired, permission issues found and whether another person can reuse the dataset without undocumented explanation. The goal is lower ambiguity and rework, not more folders or metadata for its own sake.",
+    "commonMistakes": [
+      "Treating file names such as final-v3 as a version-control system.",
+      "Changing raw data in place and losing the original source.",
+      "Using the same word for different business definitions across teams.",
+      "Creating identifiers that are not stable or unique.",
+      "Documenting fields only after the original context has been forgotten.",
+      "Copying sensitive data into new locations instead of fixing access to the authoritative source.",
+      "Building an elaborate taxonomy that people cannot maintain.",
+      "Assuming a clean-looking table is trustworthy without checking provenance, freshness and transformation history."
+    ],
+    "estimatedTimeToDevelop": "2-6 weeks for strong everyday habits; advanced stewardship grows through repeated multi-source and multi-user workflows.",
+    "coreSubskills": [
+      "Naming and classification",
+      "Schema and field design",
+      "Metadata and data dictionaries",
+      "Identifiers and controlled vocabularies",
+      "Data-quality validation",
+      "Versioning and provenance",
+      "Access and retention control",
+      "Findability and retrieval",
+      "Handoff and reuse documentation"
+    ],
+    "developmentMethods": "Build the skill through cleanup and handoff exercises rather than theory alone. Reorganize an existing dataset, document its fields, ask another person to locate and interpret it, record where they hesitate, and improve the structure. Practice merging datasets with conflicting names and definitions, reconstructing a metric from its sources, and reviewing shared-data permissions. Use FAIR as a useful lens for findability and reuse, while adapting the level of governance to the sensitivity and scale of the work.",
+    "practiceOpportunities": "Clean a recurring spreadsheet, design a survey codebook, organize CRM exports, create a project-data README, standardize a shared-drive structure, document a dashboard's source tables, map categories during a migration or build a small data catalog for a team. A good practice task has a real future user other than you.",
+    "howEmployersEvaluate": "Employers can test data organization through spreadsheet or analytics exercises, data-cleaning tasks, documentation samples and questions about messy real-world data. Strong candidates notice ambiguous definitions, duplicate identifiers, inconsistent formats, missing provenance and access concerns before jumping into analysis. They can show an artifact - a schema, dictionary, README, validation process or organized dataset - that made later work faster or more reliable.",
+    "signalsOfMastery": [
+      "Creates structures that another person can understand without oral explanation.",
+      "Defines fields, units, categories and missing values explicitly.",
+      "Preserves raw evidence while separating transformed outputs.",
+      "Uses stable identifiers and consistent naming conventions.",
+      "Records provenance, ownership, freshness and important transformations.",
+      "Balances findability with appropriate access restrictions.",
+      "Detects duplicate, stale or conflicting data before downstream use.",
+      "Keeps governance proportional so the organization remains maintainable."
+    ],
+    "careerImpact": "Data organization is a foundation skill for analytics, operations, research, marketing, finance, product and AI-enabled work. It rarely appears as the headline achievement, but it determines whether other people can trust and reuse what a professional produces. Strong organization increases the scope of data and workflows a person can own because it reduces dependency on personal memory and makes handoffs, audits, automation and analysis more reliable.",
+    "aiEraRelevance": "AI systems can generate transformations, classifications and summaries quickly, but they still depend on the structure and context of the information they receive. Clear metadata, authoritative-source rules, provenance, stable identifiers and access controls make AI-assisted work safer and easier to verify. A useful human habit is to ask, before using AI on a dataset: what is this data, who owns it, how fresh is it, what do the fields mean, what changed it, and is this system allowed to see it?",
+    "humanAdvantage": "Humans decide what organizational concepts actually mean, which distinctions matter, what information is sensitive, which source should be authoritative and when a technically consistent structure misrepresents the real-world process. Good data organization is therefore partly technical and partly semantic governance: preserving the context that software cannot infer reliably on its own.",
+    "lastUpdated": "2026-09-24"
+  },
+  "document-collaboration": {
+    "shortDefinition": "Document collaboration is the ability to help multiple people create, review and maintain one trustworthy shared document without losing ownership, context, permissions, decisions or version history.",
+    "fullDefinition": "Document collaboration combines shared authorship with workflow discipline. It includes establishing a source of truth, defining who owns the document and who can view, comment, suggest or edit, dividing sections or responsibilities, using comments and tracked suggestions intentionally, resolving feedback, recording important decisions, managing versions, protecting sensitive content and defining when a draft becomes approved or published. Strong collaboration reduces parallel copies and ambiguous edits while preserving enough history for people to understand what changed and why. The skill is not simply knowing Google Docs or Microsoft Word; it is designing a review process in which contributors can work together without creating confusion.",
+    "whyItMatters": "Shared documents carry plans, policies, proposals, specifications, reports and decisions across teams. Collaboration breaks down when people edit different copies, do not know who owns the final call, leave feedback in multiple channels, give excessive permissions or cannot reconstruct why a decision changed. Modern platforms provide co-authoring, comments, suggestions, permission levels and version history, but the tools only help when teams agree how to use them. Research in computer-supported cooperative work has long emphasized awareness and coordination around shared workspaces, and current collaborative-writing research continues to find coordination and group awareness central to effective shared editing.",
+    "modernRelevance": "Remote and hybrid work have made the document itself part of the collaboration environment. Teams now work asynchronously across time zones, mix live co-authoring with later review, and increasingly use AI to draft, rewrite or summarize. This increases the need for explicit ownership, review states, permission hygiene and traceable decisions. AI can accelerate drafting, but teams still need to distinguish human-approved content from generated text, verify factual claims and preserve a clear authoritative version.",
+    "whereItShowsUp": "Document collaboration appears in proposals, reports, policies, requirements, briefs, research papers, contracts, meeting notes, operating procedures, product specifications, grant applications, marketing copy and any deliverable with multiple contributors or reviewers. It becomes especially important when the document crosses team or organizational boundaries, contains sensitive information, has approval requirements or will be maintained over time.",
+    "careerApplications": "Project and product teams collaborate on plans, requirements and decision records; analysts co-author reports and executive summaries; marketers review briefs and campaigns; operations teams maintain procedures; account and consulting teams develop client deliverables; engineering teams collaborate on specifications and runbooks; researchers co-author papers and protocols; and managers use shared documents to turn meetings and discussions into durable decisions, ownership and institutional memory.",
+    "industryVariations": "The workflow changes with consequence. Regulated and legal environments may require formal approval, retention and audit trails. Software teams may connect documents to issue trackers or version-controlled repositories. Creative teams may tolerate more exploratory drafting before approval. Client-service teams must manage internal versus external comments and access carefully. The transferable principle is a controlled path from draft to reviewed source of truth, with permissions and traceability appropriate to the stakes.",
+    "professionalContexts": [
+      "Cross-functional reports and proposals",
+      "Policies and standard operating procedures",
+      "Product and project documentation",
+      "Client and stakeholder deliverables",
+      "Research and analytical writing",
+      "Meeting notes and decision records",
+      "Requirements, specifications and runbooks",
+      "Remote and asynchronous team workflows"
+    ],
+    "tools": [
+      "Single-source-of-truth document spaces",
+      "Viewer / commenter / editor permissions",
+      "Comments, @mentions and assigned action items",
+      "Suggestion / track-changes workflows",
+      "Version history and restore points",
+      "Document owners and review deadlines",
+      "Approval and publication states",
+      "Decision logs and resolved-comment history"
+    ],
+    "realWorldScenarios": [
+      "Three departments are editing a policy. Instead of emailing copies, the owner creates one shared document, gives subject-matter experts suggestion access, assigns sections, resolves comments visibly and records who approves the final version.",
+      "A client proposal has internal pricing notes that should not be exposed. The team separates the client-facing source from internal working notes and checks sharing permissions before sending the link.",
+      "A product brief receives conflicting feedback from design, engineering and sales. The document owner turns comments into explicit decisions, records the rationale and resolves threads so future readers can distinguish open questions from settled choices.",
+      "An AI assistant produces a polished first draft. Contributors use it as a starting point, verify claims against sources, mark human ownership for each section and keep the approved final version distinct from generated drafts."
+    ],
+    "skillInAction": "Strong document collaboration feels calm even when many people contribute. Everyone knows where the authoritative document lives, what stage it is in, who owns the final decision, what kind of feedback is expected, when review closes and which comments still require action. Changes remain recoverable, permissions are deliberate and important decisions are captured in the document workflow rather than disappearing into side-channel messages.",
+    "evidenceSummary": "Current Microsoft and Google collaboration systems provide convergent mechanisms for shared-document work: co-authoring, role-based access, comments or mentions, suggested changes and version history. These features operationalize several coordination needs identified in computer-supported cooperative work research. Dourish and Bellotti's foundational work describes awareness as important for coordinating activity in shared workspaces, while later collaborative-writing research similarly emphasizes awareness of what other contributors are doing. Tool features do not prove that a team will collaborate well, but they support a practical model in which ownership, visibility of activity, feedback and recoverable history reduce coordination ambiguity.",
+    "scholarlyNotes": [
+      "Dourish, P. & Bellotti, V. (1992), Awareness and coordination in shared workspaces, Proceedings of ACM CSCW '92, pp. 107-114. https://doi.org/10.1145/143457.143468",
+      "Nykopp, M., Marttunen, M. & Erkens, G. (2019), Coordinating collaborative writing in an online environment, Journal of Computing in Higher Education 31:536-556. https://doi.org/10.1007/s12528-018-9203-3",
+      "Microsoft Support, Collaborate with others / Version History. https://support.microsoft.com/en-us/office/collaborate-with-others-b85eef71-e96b-4325-9501-228588728bc9",
+      "Google Docs Editors Help, comments, action items and version-history collaboration guidance. https://support.google.com/docs/answer/65129"
+    ],
+    "beginnerActions": [
+      "For one shared document, name a single owner and state whether collaborators should edit directly, suggest changes or comment only.",
+      "Move a small team deliverable out of emailed attachments into one authoritative shared file and stop creating parallel final copies.",
+      "Use comments for discussion and suggestions for proposed wording; resolve threads only after the decision or action is complete.",
+      "Before sharing externally, inspect the actual viewer, commenter and editor permissions rather than assuming the link is safe."
+    ],
+    "intermediateActions": [
+      "Design a review workflow with named contributors, reviewers, approver, deadline and a clear transition from draft to approved state.",
+      "Use version history to inspect a significant change, identify when it occurred and restore or compare earlier content without creating a separate recovery copy.",
+      "Turn a document with dozens of comments into a clean decision process by grouping feedback, assigning unresolved items and documenting final calls.",
+      "Separate internal working commentary from material that external collaborators or clients are allowed to see."
+    ],
+    "advancedActions": [
+      "Create a repeatable document-governance pattern for a team covering ownership, permissions, review mode, approval, naming, archiving and decision history.",
+      "Facilitate a politically complex review where contributors disagree, ensuring feedback is visible, decisions have owners and the final document records rationale without becoming a transcript of every argument.",
+      "Audit shared documents for over-permission, orphaned ownership, duplicate authoritative copies and stale published guidance, then design controls that prevent recurrence.",
+      "Define an AI-assisted writing workflow that labels generated material, requires source verification for factual claims and preserves human approval before publication."
+    ],
+    "howToPractice": "Choose a document that normally attracts multiple reviewers. Before anyone edits, define the owner, audience, review mode, deadline and approval state. Watch where confusion occurs: duplicated comments, conflicting edits, side-channel decisions, accidental permissions or uncertainty about the latest version. After the review, change the workflow to remove one source of ambiguity. Repeating this on reports, briefs and policies builds judgment faster than simply learning more document-editor features.",
+    "howToMeasureProgress": "Track duplicate copies created, unresolved comments at deadline, review cycles, time spent reconciling conflicting versions, accidental access problems, number of decisions lost outside the document, ability to identify the authoritative version and whether another collaborator can explain who owns the final decision. Better collaboration means less coordination friction and clearer accountability, not more simultaneous editors.",
+    "commonMistakes": [
+      "Emailing attachments back and forth after a shared source of truth already exists.",
+      "Giving everyone edit access when comment or suggestion access is sufficient.",
+      "Using comments for permanent decisions without recording the resulting decision in durable document content or a decision log.",
+      "Resolving comments before the underlying question or action is actually complete.",
+      "Collecting feedback in chat, email and the document without reconciling it in one place.",
+      "Allowing multiple people to believe they own final approval.",
+      "Publishing a document without checking link and folder permissions.",
+      "Accepting AI-generated wording or factual claims without source verification and accountable human review."
+    ],
+    "estimatedTimeToDevelop": "2-4 weeks for reliable team habits; advanced capability develops through higher-stakes, multi-reviewer documents.",
+    "coreSubskills": [
+      "Source-of-truth management",
+      "Document ownership and roles",
+      "Permission and audience control",
+      "Co-authoring and edit coordination",
+      "Comments, suggestions and feedback resolution",
+      "Version history and recovery",
+      "Approval and publication workflow",
+      "Decision traceability",
+      "Asynchronous review discipline"
+    ],
+    "developmentMethods": "Develop the skill by designing and reviewing real document workflows. Practice converting attachment-based collaboration into one shared source, assigning roles before review, using comment and suggestion modes intentionally, inspecting version history and auditing permissions. After each multi-person document, run a short retrospective: where did people duplicate work, lose context, wait unnecessarily or misunderstand ownership? Improve the workflow rather than merely adding another tool.",
+    "practiceOpportunities": "Co-author a project brief, policy, proposal, report, meeting decision record, SOP, research summary or client deliverable. Volunteer to be document owner for one review cycle. Create a review checklist for a recurring team document. Reconstruct why a past document changed by using comment and version history. Audit a shared folder for unclear ownership and excessive permissions.",
+    "howEmployersEvaluate": "Employers can evaluate document collaboration through writing samples, shared-document exercises and examples of cross-functional work. Strong candidates can explain how they established ownership, incorporated conflicting feedback, prevented version confusion, protected sensitive information and moved a draft to approved output. Useful evidence includes cleaner review cycles, fewer duplicate files, faster approvals, clearer decisions and documentation that remained usable after the original author moved on.",
+    "signalsOfMastery": [
+      "Establishes one authoritative document and clear owner.",
+      "Matches viewer, commenter and editor access to actual responsibilities.",
+      "Uses comments, suggestions and direct edits for distinct purposes.",
+      "Makes unresolved feedback and approval status visible.",
+      "Preserves recoverable version history instead of multiplying copies.",
+      "Captures important decisions and rationale where future readers can find them.",
+      "Coordinates asynchronous contributors without requiring constant meetings.",
+      "Treats AI-generated content as draft material requiring accountable human review."
+    ],
+    "careerImpact": "Document collaboration strengthens performance in knowledge work because important decisions and deliverables often pass through shared documents. People who can coordinate review, preserve context and turn many contributors into one trustworthy output are easier to trust with cross-functional projects, client work, policy, research, operations and management responsibilities. The value comes from reducing ambiguity and protecting institutional memory, not from proficiency with one brand of editor.",
+    "aiEraRelevance": "AI can draft, summarize comments, rewrite sections and compare versions, but it also creates new provenance and accountability questions. Teams need to know which material was generated, which claims were verified, who approved the result and which version is authoritative. Strong document collaboration uses AI to accelerate low-risk drafting and synthesis while keeping permissions, source verification, decision ownership and final approval explicit.",
+    "humanAdvantage": "Humans decide whose feedback carries authority, how disagreements should be resolved, what context must survive editing, whether wording accurately reflects a real decision and what information is appropriate for each audience. These social and accountability judgments cannot be reduced to simultaneous typing. The durable advantage is coordinating people around a shared artifact while preserving meaning and trust.",
+    "lastUpdated": "2026-09-24"
+  }
+}

@@ -38,6 +38,7 @@ const achievementIcons = {
   'evidence-maker': Award,
   'practice-rhythm': Flame,
   'pattern-builder': Layers3,
+  'workshop-maker': BookOpenCheck,
 };
 
 export function LearningAchievements() {

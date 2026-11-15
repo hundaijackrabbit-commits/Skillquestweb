@@ -1,16 +1,3 @@
-import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
-  Hr,
-  Html,
-  Link,
-  Preview,
-  Text,
-} from '@react-email/components';
-
 type CareerGuideEmailProps = {
   firstName?: string;
   downloadUrl: string;
@@ -20,41 +7,40 @@ export function CareerGuideEmail({ firstName, downloadUrl }: CareerGuideEmailPro
   const greeting = firstName ? `Hi ${firstName},` : 'Hello,';
 
   return (
-    <Html lang="en">
-      <Head />
-      <Preview>Here is the Career &amp; Life Map you requested.</Preview>
-      <Body style={body}>
-        <Container style={container}>
-          <Text style={brand}>Modern Skill Lab</Text>
-          <Heading style={heading}>Your guide is ready</Heading>
-          <Text style={paragraph}>{greeting}</Text>
-          <Text style={paragraph}>
+    <html lang="en">
+      <body style={body}>
+        <div style={preview}>Here is the Career &amp; Life Map you requested.</div>
+        <div style={container}>
+          <p style={brand}>Modern Skill Lab</p>
+          <h1 style={heading}>Your guide is ready</h1>
+          <p style={paragraph}>{greeting}</p>
+          <p style={paragraph}>
             You requested the Modern Skill Lab Career &amp; Life Map. Use the link below to open and save your copy.
-          </Text>
+          </p>
 
-          <Button href={downloadUrl} style={button}>
+          <a href={downloadUrl} style={button}>
             Open the Career &amp; Life Map
-          </Button>
+          </a>
 
-          <Text style={paragraph}>
+          <p style={paragraph}>
             A useful place to begin is Part 1: complete the current-state snapshot, then choose one small experiment for the next seven days.
-          </Text>
-          <Text style={paragraph}>
+          </p>
+          <p style={paragraph}>
             You can return to the guide whenever you need to review your direction, compare career options, or plan your next skill.
-          </Text>
-          <Text style={signature}>Modern Skill Lab</Text>
+          </p>
+          <p style={signature}>Modern Skill Lab</p>
 
-          <Hr style={rule} />
-          <Text style={footerText}>
+          <hr style={rule} />
+          <p style={footerText}>
             You received this email because this address was used to request the guide at modernskilllab.space. The separate weekly skill email is only enabled when you choose it.
-          </Text>
-          <Text style={footerText}>
+          </p>
+          <p style={footerText}>
             If the button does not open, use this link:{' '}
-            <Link href={downloadUrl} style={link}>{downloadUrl}</Link>
-          </Text>
-        </Container>
-      </Body>
-    </Html>
+            <a href={downloadUrl} style={link}>{downloadUrl}</a>
+          </p>
+        </div>
+      </body>
+    </html>
   );
 }
 
@@ -86,6 +72,16 @@ const body = {
   padding: '24px 12px',
 };
 
+const preview = {
+  display: 'none',
+  fontSize: '1px',
+  lineHeight: '1px',
+  maxHeight: 0,
+  maxWidth: 0,
+  opacity: 0,
+  overflow: 'hidden',
+};
+
 const container = {
   backgroundColor: '#ffffff',
   border: '1px solid #e5e7eb',
@@ -100,7 +96,7 @@ const heading = { color: '#111827', fontSize: '28px', lineHeight: '1.2', margin:
 const paragraph = { color: '#374151', fontSize: '16px', lineHeight: '1.6', margin: '0 0 18px' };
 const button = { backgroundColor: '#4f46e5', borderRadius: '8px', color: '#ffffff', display: 'block', fontSize: '15px', fontWeight: '700', margin: '26px 0', padding: '13px 18px', textAlign: 'center' as const, textDecoration: 'none' };
 const signature = { color: '#111827', fontSize: '16px', fontWeight: '700', margin: '4px 0 24px' };
-const rule = { borderColor: '#e5e7eb', margin: '26px 0 18px' };
+const rule = { border: 0, borderTop: '1px solid #e5e7eb', margin: '26px 0 18px' };
 const footerText = { color: '#6b7280', fontSize: '12px', lineHeight: '1.55', margin: '0 0 10px' };
 const link = { color: '#4338ca', textDecoration: 'underline' };
 

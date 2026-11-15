@@ -55,7 +55,7 @@ export function CareerGuideForm({ source = 'career-guide-page', className }: Car
 
   if (status.kind === 'success') {
     return (
-      <div className={cn('rounded-3xl border border-emerald-200 bg-emerald-50 p-6', className)} role="status">
+      <div className={cn('msl-reveal rounded-3xl border border-emerald-200 bg-emerald-50 p-6', className)} role="status">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white">
           <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
         </div>
@@ -74,7 +74,7 @@ export function CareerGuideForm({ source = 'career-guide-page', className }: Car
   }
 
   return (
-    <form onSubmit={handleSubmit} className={cn('space-y-4', className)} noValidate>
+    <form onSubmit={handleSubmit} aria-busy={isSubmitting} className={cn('space-y-4', className)} noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="text-sm font-semibold text-slate-800">
           First name
@@ -92,7 +92,7 @@ export function CareerGuideForm({ source = 'career-guide-page', className }: Car
       </label>
 
       {status.kind === 'error' && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm leading-5 text-red-800" role="alert">
+        <div className="msl-status rounded-xl border border-red-200 bg-red-50 p-3 text-sm leading-5 text-red-800" role="alert">
           {status.message}
         </div>
       )}

@@ -5,17 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Career, Skill } from '@/lib/types';
-import { 
-  ArrowRight, 
-  ArrowUp, 
-  Users, 
-  Target, 
-  TrendingUp,
-  MapPin,
-  Clock,
-  Briefcase,
-  Zap
-} from 'lucide-react';
+import { ArrowRight, Users, Target, MapPin, Briefcase, Zap } from 'lucide-react';
 
 interface CareerPathwayProps {
   career: Career;
@@ -25,267 +15,157 @@ interface CareerPathwayProps {
 }
 
 interface PathwayStep {
-  level: 'entry' | 'mid' | 'senior' | 'executive';
+  label: string;
   title: string;
   description: string;
   skills: string[];
-  timeframe: string;
-  responsibilities: string[];
+  focus: string[];
 }
 
+const unique = (items: string[]) => Array.from(new Set(items.filter(Boolean)));
+
 const getPathwaySteps = (career: Career): PathwayStep[] => {
-  // Generate realistic career progression steps
-  const baseTitle = career.title.replace(/Senior |Lead |Principal |Director |VP |Chief /, '');
-  
+  const growthOptions = career.growthOpportunities?.filter(Boolean) || [];
+  const entryRoutes = career.beginnerEntryStrategies?.filter(Boolean) || [];
+
   return [
     {
-      level: 'entry',
-      title: `Junior ${baseTitle}`,
-      description: 'Entry-level position focusing on learning fundamentals and building experience',
-      skills: career.coreSkills.slice(0, 3),
-      timeframe: '0-2 years',
-      responsibilities: career.beginnerEntryStrategies.slice(0, 3)
+      label: 'GET STARTED',
+      title: `Build evidence for ${career.title}`,
+      description: 'Develop the core capabilities and create evidence that you can apply them in realistic work.',
+      skills: unique(career.coreSkills.slice(0, 3)),
+      focus: entryRoutes.slice(0, 3)
     },
     {
-      level: 'mid',
-      title: baseTitle,
-      description: 'Mid-level position with increased responsibility and independence',
-      skills: [...career.coreSkills.slice(0, 2), ...career.secondarySkills.slice(0, 2)],
-      timeframe: '2-5 years',
-      responsibilities: ['Lead project initiatives', 'Mentor junior team members', 'Drive strategic improvements']
+      label: 'BUILD DEPTH',
+      title: `Grow in ${career.title}`,
+      description: 'Take on broader or more complex work as your judgment, independence, and domain knowledge improve.',
+      skills: unique([...career.coreSkills.slice(0, 3), ...career.secondarySkills.slice(0, 2)]),
+      focus: [
+        'Handle more complex work with less supervision',
+        'Build stronger evidence through projects and measurable outcomes',
+        'Deepen role-specific skills and domain knowledge'
+      ]
     },
     {
-      level: 'senior',
-      title: `Senior ${baseTitle}`,
-      description: 'Senior position leading teams and strategic initiatives',
-      skills: [...career.coreSkills, ...career.secondarySkills.slice(0, 2)],
-      timeframe: '5-8 years',
-      responsibilities: ['Lead cross-functional teams', 'Develop strategy and roadmaps', 'Drive organizational change']
-    },
-    {
-      level: 'executive',
-      title: career.growthOpportunities[0] || `Director of ${baseTitle.replace(/Manager/, 'Operations')}`,
-      description: 'Executive position setting vision and leading large organizations',
-      skills: [...career.coreSkills, ...career.transferableSkills.slice(0, 3)],
-      timeframe: '8+ years',
-      responsibilities: ['Set organizational vision', 'Lead multiple teams', 'Drive business strategy']
+      label: 'EXPLORE NEXT MOVES',
+      title: 'Possible directions from here',
+      description: 'Career growth is not a single ladder. Depending on the organization and your interests, you may deepen as a specialist, broaden your scope, move into leadership, or transition into adjacent work.',
+      skills: unique([...career.secondarySkills.slice(0, 2), ...career.transferableSkills.slice(0, 3)]),
+      focus: growthOptions.length > 0
+        ? growthOptions.slice(0, 3)
+        : [
+            'Deepen as a specialist',
+            'Broaden into adjacent responsibilities',
+            'Compare related roles before choosing a next step'
+          ]
     }
   ];
 };
 
-const getLevelColor = (level: string) => {
-  const colors = {
-    entry: 'from-green-400 to-green-600',
-    mid: 'from-blue-400 to-blue-600', 
-    senior: 'from-purple-400 to-purple-600',
-    executive: 'from-orange-400 to-orange-600'
-  };
-  return colors[level as keyof typeof colors] || 'from-gray-400 to-gray-600';
-};
-
-const getLevelBadgeColor = (level: string) => {
-  const colors = {
-    entry: 'bg-green-100 text-green-800',
-    mid: 'bg-blue-100 text-blue-800',
-    senior: 'bg-purple-100 text-purple-800', 
-    executive: 'bg-orange-100 text-orange-800'
-  };
-  return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800';
-};
-
 export function CareerPathway({ career, relatedSkills, relatedCareers, className }: CareerPathwayProps) {
   const pathwaySteps = getPathwaySteps(career);
-  
+
   return (
     <div className={className}>
-      {/* Header */}
-      <div className="mb-12">
-        <div className="flex items-center justify-between mb-6">
+      <div className="mb-10">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <h2 className="text-3xl font-bold text-gray-900 flex items-center">
             <Target className="h-8 w-8 mr-3 text-blue-600" />
-            Career Pathway
+            Career Development Map
           </h2>
-          <Badge variant="outline" className="flex items-center">
+          <Badge variant="outline" className="flex items-center w-fit">
             <MapPin className="h-4 w-4 mr-1" />
-            Industry-connected role
+            Role-specific starting point
           </Badge>
         </div>
-        
         <p className="text-lg text-gray-600 max-w-3xl">
-          Strategic progression path for {career.title} showing skills development, 
-          responsibilities growth, and typical advancement timeline.
+          A practical way to think about developing toward and within {career.title}. Titles, timelines, and promotion paths vary by employer, industry, location, and individual experience, so use this as a planning map rather than a fixed ladder.
         </p>
       </div>
 
-      {/* Pathway Visualization */}
-      <div className="relative">
-        {/* Connection Lines */}
-        <div className="absolute left-8 top-24 bottom-0 w-0.5 bg-gradient-to-b from-green-300 via-blue-300 via-purple-300 to-orange-300 hidden lg:block" />
-        
-        <div className="space-y-8">
-          {pathwaySteps.map((step, index) => (
-            <div key={step.level} className="relative">
-              {/* Level Indicator */}
-              <div className="absolute left-0 top-6 hidden lg:block">
-                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${getLevelColor(step.level)} flex items-center justify-center shadow-lg`}>
-                  <span className="text-white font-bold text-lg">{index + 1}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {pathwaySteps.map((step, index) => (
+          <Card key={step.label} className="overflow-hidden hover:shadow-md transition-shadow">
+            <CardHeader className="bg-gradient-to-r from-gray-50 to-blue-50">
+              <div className="flex items-center justify-between mb-3">
+                <Badge variant="outline">{step.label}</Badge>
+                <span className="text-sm font-semibold text-gray-400">0{index + 1}</span>
+              </div>
+              <CardTitle className="text-xl text-gray-900">{step.title}</CardTitle>
+              <p className="text-sm text-gray-600 mt-2">{step.description}</p>
+            </CardHeader>
+
+            <CardContent className="pt-6 space-y-6">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <Zap className="h-4 w-4 mr-2 text-blue-600" />
+                  Skills to strengthen
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {step.skills.map((skillId) => {
+                    const skill = relatedSkills.find(s => s.id === skillId);
+                    return skill ? (
+                      <Link key={skillId} href={`/skills/${skill.slug}`} className="inline-block">
+                        <Badge variant="secondary" className="hover:bg-blue-100 hover:text-blue-800 cursor-pointer transition-colors">
+                          {skill.name}
+                        </Badge>
+                      </Link>
+                    ) : (
+                      <Badge key={skillId} variant="outline" className="opacity-70">
+                        {skillId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </Badge>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Content Card */}
-              <div className="lg:ml-24">
-                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <CardHeader className="bg-gradient-to-r from-gray-50 to-blue-50">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <div className="flex items-center space-x-3 mb-2">
-                          <Badge className={getLevelBadgeColor(step.level)}>
-                            {step.level.toUpperCase()}
-                          </Badge>
-                          <Badge variant="outline" className="flex items-center">
-                            <Clock className="h-3 w-3 mr-1" />
-                            {step.timeframe}
-                          </Badge>
-                        </div>
-                        <CardTitle className="text-xl text-gray-900">
-                          {step.title}
-                        </CardTitle>
-                        <p className="text-gray-600 mt-1">
-                          {step.description}
-                        </p>
-                      </div>
-                      
-                      {index < pathwaySteps.length - 1 && (
-                        <ArrowUp className="h-6 w-6 text-gray-400 mt-4 sm:mt-0 transform rotate-45" />
-                      )}
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="pt-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {/* Key Skills */}
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                          <Zap className="h-4 w-4 mr-2 text-blue-600" />
-                          Key Skills Required
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {step.skills.map((skillId) => {
-                            const skill = relatedSkills.find(s => s.id === skillId);
-                            return skill ? (
-                              <Link 
-                                key={skillId}
-                                href={`/skills/${skill.slug}`}
-                                className="inline-block"
-                              >
-                                <Badge 
-                                  variant="secondary" 
-                                  className="hover:bg-blue-100 hover:text-blue-800 cursor-pointer transition-colors"
-                                >
-                                  {skill.name}
-                                </Badge>
-                              </Link>
-                            ) : (
-                              <Badge key={skillId} variant="outline" className="opacity-60">
-                                {skillId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </Badge>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Key Responsibilities */}
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
-                          <Briefcase className="h-4 w-4 mr-2 text-green-600" />
-                          Key Responsibilities
-                        </h4>
-                        <ul className="space-y-1 text-sm text-gray-600">
-                          {step.responsibilities.slice(0, 3).map((responsibility, idx) => (
-                            <li key={idx} className="flex items-start">
-                              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 mr-2 flex-shrink-0" />
-                              {responsibility}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Progression Insight */}
-                    {index < pathwaySteps.length - 1 && (
-                      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                        <div className="flex items-start">
-                          <TrendingUp className="h-5 w-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
-                          <div>
-                            <h5 className="font-medium text-blue-900 mb-1">Path to Next Level</h5>
-                            <p className="text-sm text-blue-700">
-                              Focus on developing {pathwaySteps[index + 1].skills.slice(-2).join(' and ').replace(/-/g, ' ')} skills 
-                              while building leadership experience and expanding your network.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <Briefcase className="h-4 w-4 mr-2 text-green-600" />
+                  Development focus
+                </h4>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  {step.focus.map((item, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 mr-2 flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          ))}
-        </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Alternative Career Transitions */}
       {relatedCareers && relatedCareers.length > 0 && (
-        <div className="mt-16">
+        <div className="mt-14">
           <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
             <ArrowRight className="h-6 w-6 mr-3 text-purple-600" />
-            Alternative Career Paths
+            Adjacent careers to compare
           </h3>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {relatedCareers.slice(0, 4).map((relatedCareer) => (
               <Card key={relatedCareer.id} className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="flex items-center">
-                      <Users className="h-3 w-3 mr-1" />
-                      Transition
-                    </Badge>
-                    {relatedCareer.demandLevel && (
-                      <Badge 
-                        variant={relatedCareer.demandLevel === 'very-high' ? 'success' : 'secondary'}
-                        size="sm"
-                      >
-                        {relatedCareer.demandLevel} demand
-                      </Badge>
-                    )}
-                  </div>
+                  <Badge variant="outline" className="flex items-center w-fit mb-2">
+                    <Users className="h-3 w-3 mr-1" />
+                    Compare
+                  </Badge>
                   <CardTitle className="text-lg">{relatedCareer.title}</CardTitle>
                 </CardHeader>
-                
                 <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {relatedCareer.summary}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-500">
-                      Compare capability map
-                    </div>
-                    <Link 
-                      href={`/careers/${relatedCareer.slug}`}
-                      className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center"
-                    >
-                      Explore <ArrowRight className="h-3 w-3 ml-1" />
-                    </Link>
-                  </div>
+                  <p className="text-sm text-gray-600 mb-4">{relatedCareer.summary}</p>
+                  <Link href={`/careers/${relatedCareer.slug}`} className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center">
+                    Explore role <ArrowRight className="h-3 w-3 ml-1" />
+                  </Link>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
       )}
-
     </div>
   );
 }

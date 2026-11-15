@@ -1,0 +1,13 @@
+{
+  "software": "technology",
+  "saas": "technology",
+  "cloud-services": "technology",
+  "fintech": "finance",
+  "accounting": "finance",
+  "e-commerce": "retail",
+  "advertising": "marketing",
+  "professional-services": "consulting",
+  "healthcare-tech": "healthcare",
+  "corporate-training": "education",
+  "e-learning": "education"
+}

@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Clock3, Sparkles } from 'lucide-react';
 import { CourseRunner } from '@/components/learning/course-runner';
+import { RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { getAllSkillCourses, getSkillCourse } from '@/lib/courses';
+import { getWorkshopForSkill } from '@/lib/workshops';
 import { getSkillBySlug } from '@/lib/content';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
@@ -78,7 +81,7 @@ export default async function SkillCoursePage({ params }: Props) {
             Back to {skill.name}
           </Link>
           <Link href="/learn" className="text-sm font-semibold text-blue-700 hover:text-blue-900">
-            Browse all Skill Sprints
+            <T text="Browse all Skill Sprints" />
           </Link>
         </div>
 
@@ -86,7 +89,7 @@ export default async function SkillCoursePage({ params }: Props) {
           <div className="mb-4 flex flex-wrap items-center gap-3 text-sm font-semibold">
             <span className="inline-flex items-center rounded-full bg-violet-100 px-3 py-1.5 text-violet-800">
               <Sparkles className="mr-1.5 h-4 w-4" />
-              Skill Sprint
+              <T text="Skill Sprint" />
             </span>
             <span className="inline-flex items-center text-slate-500">
               <Clock3 className="mr-1.5 h-4 w-4" />
@@ -97,10 +100,16 @@ export default async function SkillCoursePage({ params }: Props) {
           <p className="mt-4 text-xl leading-8 text-slate-600">{course.description}</p>
         </header>
 
+        <RelatedGlossaryTerms text={[
+          course.description,
+          ...course.lessons.flatMap((lesson) => [lesson.objective, lesson.concept, lesson.practice]),
+        ].join(' ')} maxTerms={5} />
+
         <CourseRunner
           course={course}
           skillName={skill.name}
           relatedSkillHref={`/skills/${skill.slug}`}
+          workshopHref={getWorkshopForSkill(skill.slug) ? `/learn/workshops/${getWorkshopForSkill(skill.slug)!.slug}` : null}
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { BookOpen, Route, Search, Sparkles } from 'lucide-react';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { Button } from '@/components/ui/button';
@@ -55,13 +56,13 @@ export function SkillsDirectory({
         <header className="mt-8 max-w-4xl">
           <div className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1.5 text-sm font-semibold text-blue-800">
             <Sparkles aria-hidden="true" className="mr-2 h-4 w-4" />
-            Curated, practical skill guides
+            <T text="Curated, practical skill guides" />
           </div>
           <h1 className="mt-5 text-4xl font-bold tracking-tight text-slate-950 sm:text-6xl">
-            {searchResults ? 'Find the right skill' : currentPage > 1 ? 'More professional skills' : 'Professional skills, organized for action'}
+            <T text={searchResults ? 'Find the right skill' : currentPage > 1 ? 'More professional skills' : 'Professional skills, organized for action'} />
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-            Search focused guides or browse a topic to connect individual skills with learning paths, careers, industries, and practical exercises.
+            <T text="Search focused guides or browse a topic to connect individual skills with learning paths, careers, industries, and practical exercises." />
           </p>
         </header>
 
@@ -92,23 +93,23 @@ export function SkillsDirectory({
               <option value="signal">Employer signal</option>
             </select>
           </label>
-          <Button type="submit" className="min-h-11">Search</Button>
+          <Button type="submit" className="min-h-11"><T text="Search" /></Button>
         </form>
 
         {!searchResults && currentPage === 1 && (
           <section className="mt-12" aria-labelledby="browse-topics">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700">Connected browsing</p>
-                <h2 id="browse-topics" className="mt-2 text-3xl font-bold text-slate-950">Choose a topic, not a random page</h2>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700"><T text="Connected browsing" /></p>
+                <h2 id="browse-topics" className="mt-2 text-3xl font-bold text-slate-950"><T text="Choose a topic, not a random page" /></h2>
               </div>
-              <Link href="/topics" className="text-sm font-semibold text-blue-700">View all topic hubs →</Link>
+              <Link href="/topics" className="text-sm font-semibold text-blue-700"><T text="View all topic hubs →" /></Link>
             </div>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {TOPICS.map((topic) => (
                 <Link key={topic.slug} href={`/topics/${topic.slug}`} className="rounded-2xl border border-slate-200 bg-white p-4 transition hover:border-blue-300 hover:shadow-sm">
                   <span className="font-semibold text-slate-950">{topic.name}</span>
-                  <span className="mt-1 block text-sm text-slate-500">Explore connected guides</span>
+                  <span className="mt-1 block text-sm text-slate-500"><T text="Explore connected guides" /></span>
                 </Link>
               ))}
             </div>
@@ -118,10 +119,10 @@ export function SkillsDirectory({
         <section className="mt-14" aria-labelledby="skill-results-heading">
           <div className="flex flex-col gap-2 border-b border-slate-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 id="skill-results-heading" className="text-3xl font-bold text-slate-950">{searchResults ? 'Matching guides' : 'Browse the library'}</h2>
+              <h2 id="skill-results-heading" className="text-3xl font-bold text-slate-950"><T text={searchResults ? 'Matching guides' : 'Browse the library'} /></h2>
               <p className="mt-1 text-sm text-slate-600">{searchResults ? 'Guides matching your current search and filters.' : 'Open a guide or continue browsing to build a connected skill stack.'}</p>
             </div>
-            {searchResults && <Link href="/skills" className="text-sm font-semibold text-blue-700">Clear search and filters</Link>}
+            {searchResults && <Link href="/skills" className="text-sm font-semibold text-blue-700"><T text="Clear search and filters" /></Link>}
           </div>
 
           {skills.length > 0 ? (
@@ -131,7 +132,7 @@ export function SkillsDirectory({
           ) : (
             <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
               <BookOpen aria-hidden="true" className="mx-auto h-10 w-10 text-slate-400" />
-              <h2 className="mt-4 text-xl font-bold text-slate-950">No matching skill guides</h2>
+              <h2 className="mt-4 text-xl font-bold text-slate-950"><T text="No matching skill guides" /></h2>
               <p className="mt-2 text-slate-600">Try a broader phrase or explore one of the topic hubs.</p>
             </div>
           )}
@@ -145,7 +146,7 @@ export function SkillsDirectory({
             <p className="mt-2 leading-7 text-slate-300">Learning paths arrange connected skills into a practical order so you can build a stack without guessing what comes next.</p>
           </div>
           <Link href="/paths" className="flex-none">
-            <Button size="lg" className="bg-white text-slate-950 hover:bg-slate-100"><Route aria-hidden="true" className="mr-2 h-4 w-4" />Browse learning paths</Button>
+            <Button size="lg" className="bg-white text-slate-950 hover:bg-slate-100"><Route aria-hidden="true" className="mr-2 h-4 w-4" /><T text="Browse learning paths" /></Button>
           </Link>
         </section>
       </div>

@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowRight, BookOpen, Briefcase, Building2, Compass, FileText, Route } from 'lucide-react';
+import { ArrowRight, BookOpen, Briefcase, Building2, Compass, FileText, Layers3, Route } from 'lucide-react';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { SkillDirectoryCard } from '@/components/skills/skill-directory-card';
+import { TopicSkillTree } from '@/components/skills/topic-skill-tree';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { absoluteUrl } from '@/lib/site';
 import { breadcrumbList } from '@/lib/seo';
 import { getTopicBySlug, getTopicContent, TOPICS } from '@/lib/topics';
+import { getDomainForTopic, getTopicsForDomain } from '@/lib/skill-domains';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
 
@@ -40,6 +42,10 @@ export default async function TopicHubPage({ params }: Props) {
   const topic = getTopicBySlug((await params).slug);
   if (!topic) notFound();
   const content = await getTopicContent(topic.slug);
+  const domain = getDomainForTopic(topic.slug);
+  const siblingTopics = domain
+    ? getTopicsForDomain(domain).filter((candidate) => candidate.slug !== topic.slug)
+    : [];
   const canonicalUrl = absoluteUrl(`/topics/${topic.slug}`);
   const topicCheck = buildDefinitionKnowledgeCheck(
     { type: 'topic', slug: topic.slug, name: topic.name },
@@ -93,7 +99,33 @@ export default async function TopicHubPage({ params }: Props) {
         </header>
 
         <main>
+          {domain && (
+            <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby="topic-domain-context">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="max-w-3xl">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-indigo-700">
+                    <Layers3 aria-hidden="true" className="h-4 w-4" />
+                    <span>Part of {domain.name}</span>
+                  </div>
+                  <h2 id="topic-domain-context" className="mt-2 text-xl font-bold text-slate-950">Explore the wider skill domain</h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{domain.description}</p>
+                </div>
+                {siblingTopics.length > 0 && (
+                  <div className="flex flex-wrap gap-2 lg:max-w-md lg:justify-end">
+                    {siblingTopics.map((sibling) => (
+                      <Link key={sibling.slug} href={`/topics/${sibling.slug}`} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50 hover:text-indigo-800">
+                        {sibling.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {topicCheck && <KnowledgeCheckCard check={topicCheck} className="mt-12" />}
+
+          <TopicSkillTree topicName={topic.name} skills={content.skills} />
 
           <section className="mt-14" aria-labelledby="topic-skills">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

@@ -327,7 +327,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       const content = fs.readFileSync(filePath, 'utf8');
       
       // Extract frontmatter and content
-      const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+      const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
       const match = content.match(frontmatterRegex);
       
       if (match) {
@@ -341,8 +341,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           excerpt: frontmatter.excerpt || '',
           content: postContent,
           author: frontmatter.author || 'Modern Skill Lab Team',
-          publishedAt: frontmatter.publishedAt || new Date().toISOString(),
-          lastUpdated: frontmatter.lastUpdated || new Date().toISOString(),
+          // Missing editorial dates must not masquerade as a fresh publication or review.
+          // The quality gate can flag missing metadata instead of silently using today's date.
+          publishedAt: frontmatter.publishedAt || '1970-01-01',
+          lastUpdated: frontmatter.lastUpdated || frontmatter.publishedAt || '1970-01-01',
           reviewedBy: frontmatter.reviewedBy || undefined,
           evidenceNote: frontmatter.evidenceNote || undefined,
           tags: frontmatter.tags || [],
@@ -354,13 +356,20 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           category: frontmatter.category || undefined,
         };
         
-        // Validate with Zod
-        blogPosts.push(BlogPostSchema.parse(blogPost));
+        // A single malformed article must not make the entire blog disappear.
+        const parsed = BlogPostSchema.safeParse(blogPost);
+        if (parsed.success) {
+          blogPosts.push(parsed.data);
+        } else {
+          console.error(`Invalid blog article skipped: ${file}`, parsed.error.issues.map((issue) => ({ path: issue.path.join('.'), message: issue.message })));
+        }
+      } else {
+        console.warn(`Blog article skipped: missing or malformed MDX frontmatter in ${file}`);
       }
     }
     
-    // Sort by publication date
-    return blogPosts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    // Show recently substantively updated articles first, preserving publication date as a tie-breaker.
+    return blogPosts.sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime() || new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
   } catch (error) {
     console.error('Error loading blog posts:', error);
     return [];
@@ -520,7 +529,11 @@ export async function getRelatedSkills(skillId: string, limit: number = 5): Prom
     .sort((a, b) => b.score - a.score || skillContentScore(b.candidate) - skillContentScore(a.candidate))
     .map(({ candidate }) => candidate);
 
-  return (await canonicalizeSkillList(related)).filter(isSkillIndexable).slice(0, limit);
+  return (await canonicalizeSkillList(related))
+    .filter((candidate) =>
+      isSkillIndexable(candidate) && normalizedSkillName(candidate) !== normalizedSkillName(skill),
+    )
+    .slice(0, limit);
 }
 
 export async function getSkillsForCareer(careerSlug: string): Promise<Skill[]> {

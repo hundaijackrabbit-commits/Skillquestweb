@@ -13,6 +13,9 @@ import {
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { GamificationAccessGate } from '@/components/learning/gamification-access-gate';
 import { Button } from '@/components/ui/button';
+import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
+import { LearningTranslationPanel } from '@/components/learning/learning-translation-panel';
+import { GlossaryLinkedText } from '@/components/glossary/glossary-links';
 import type { InteractivePractice, SequencePractice } from '@/lib/interactive-practice';
 import {
   getLearningProfile,
@@ -84,6 +87,12 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
 
   const rewarded = hasLearningActivity(profile, activityId);
   const allSorted = practice.kind === 'sort' && practice.items.every((item) => assignments[item.id]);
+  const misplacedCount = practice.kind === 'sequence'
+    ? order.filter((item, index) => item.id !== practice.items[index]?.id).length
+    : practice.items.filter((item) => assignments[item.id] && assignments[item.id] !== item.categoryId).length;
+  const firstMisplaced = practice.kind === 'sequence'
+    ? order.findIndex((item, index) => item.id !== practice.items[index]?.id)
+    : -1;
 
   function moveItem(index: number, direction: -1 | 1) {
     if (solved) return;
@@ -152,7 +161,7 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
             {practice.label}
           </div>
           <h2 id={`${practice.id}-title`} className="mt-4 text-3xl font-bold tracking-tight">{practice.title}</h2>
-          <p className="mt-3 leading-7 text-cyan-100">{practice.instruction}</p>
+          <p className="mt-3 leading-7 text-cyan-100"><GlossaryLinkedText text={practice.instruction} maxLinks={1} /></p>
           <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold">
             <span className="rounded-full bg-white/10 px-3 py-2"><Sparkles className="mr-1.5 inline h-4 w-4" />{rewarded ? 'Reward earned' : `${practice.xp} XP`}</span>
             <span className="rounded-full bg-white/10 px-3 py-2">Move, test, and retry</span>
@@ -160,6 +169,16 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
         </div>
 
         <div className="p-7 sm:p-9">
+          <LearningTranslationPanel material={[
+            `Activity: ${practice.title}`,
+            `Instructions: ${practice.instruction}`,
+            ...(practice.kind === 'sequence'
+              ? shuffledSequence(practice).map((item) => `Item: ${item.text}`)
+              : [
+                  ...practice.categories.map((category) => `Category: ${category.label} — ${category.description}`),
+                  ...practice.items.map((item) => `Item: ${item.text}`),
+                ]),
+          ].join('\n')} />
           {practice.kind === 'sequence' ? (
             <SequenceBoard order={order} solved={solved} moveItem={moveItem} />
           ) : (
@@ -197,10 +216,18 @@ function InteractivePracticeExperience({ practice, className = '', userId }: Exp
 
           {attempted && (
             <div className={`mt-5 rounded-2xl p-4 text-sm leading-6 ${solved ? 'bg-emerald-50 text-emerald-950' : 'bg-amber-50 text-amber-950'}`} role="status">
-              <div className="font-bold">{solved ? 'Pattern complete.' : 'Not yet—review the highlighted choices and try a different structure.'}</div>
+              <div className="font-bold">{solved ? 'Pattern complete.' : 'Almost there—use the feedback below and try again.'}</div>
+              {!solved && practice.kind === 'sequence' && (
+                <p className="mt-1">{misplacedCount} {misplacedCount === 1 ? 'step is' : 'steps are'} out of position. Start by reviewing step {firstMisplaced + 1}: what must happen before this action can work?</p>
+              )}
+              {!solved && practice.kind === 'sort' && (
+                <p className="mt-1">{misplacedCount} {misplacedCount === 1 ? 'choice needs' : 'choices need'} another look. Compare the highlighted items against the category descriptions above.</p>
+              )}
               {solved && <p className="mt-1">{practice.explanation}</p>}
             </div>
           )}
+
+          <ContextualLearningHelp context={[practice.skillName, practice.title, practice.instruction, ...(practice.kind === "sequence" ? order.map(item => item.text) : [...practice.items.map(item => item.text), ...practice.categories.map(category => `${category.label}: ${category.description}`)])].join(" | ").slice(0, 4500)} prompt="Can you give me a hint about this activity without revealing the answer?" />
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-5">
             <span className="text-sm font-semibold text-slate-600">{solved ? <><CheckCircle2 className="mr-2 inline h-4 w-4 text-emerald-600" />Complete · {profile.totalXp} total XP</> : 'No penalty for retrying'}</span>

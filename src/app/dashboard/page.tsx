@@ -1,6 +1,9 @@
+import { type VaultItem } from '@/components/learning/knowledge-vault';
+import { getSkillCourse } from '@/lib/courses';
+import { getInteractivePracticeForSkill } from '@/lib/interactive-practice';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { getAllCareers, getAllIndustries, getIndexableSkills } from '@/lib/content';
+import { getAllCareers, getAllIndustries, getIndexableSkills, getCanonicalSkills } from '@/lib/content';
 import { isCareerIndexable } from '@/lib/content-quality';
 import {
   CAREER_INTEREST_OPTIONS,
@@ -46,8 +49,9 @@ export default async function DashboardPage() {
     redirect('/auth?mode=signin&redirect=%2Fdashboard');
   }
 
-  const [skills, allCareers, industries, profileResult, savedSkillsResult] = await Promise.all([
+  const [skills, allSkills, allCareers, industries, profileResult, savedSkillsResult] = await Promise.all([
     getIndexableSkills(),
+    getCanonicalSkills(),
     getAllCareers(),
     getAllIndustries(),
     supabase
@@ -93,13 +97,14 @@ export default async function DashboardPage() {
   );
 
   const savedSkills = savedSkillSlugs
-    .map((slug) => skills.find((skill) => skill.slug === slug || skill.id === slug))
+    .map((slug) => allSkills.find((skill) => skill.slug === slug || skill.id === slug))
     .filter((skill): skill is (typeof skills)[number] => Boolean(skill))
     .map((skill) => ({
       slug: skill.slug,
       name: skill.name,
       summary: skill.shortDefinition,
       meta: skill.category.replace(/-/g, ' '),
+      practiceHref: getSkillCourse(skill.slug) ? `/skills/${skill.slug}/learn` : getInteractivePracticeForSkill(skill.slug) ? `/skills/${skill.slug}#interactive-practice` : null,
     }));
 
   const savedCareers = savedCareerSlugs
@@ -112,8 +117,14 @@ export default async function DashboardPage() {
       meta: `${career.coreSkills.length} core skills`,
     }));
 
+  const vaultResult = await supabase.from('knowledge_highlights').select('kind, item_slug, insight_id, title, body').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100);
+  const vaultItems = (vaultResult.data ?? []) as VaultItem[];
+
   return (
+    <>
+
     <PersonalDashboardClient
+      vaultItems={vaultItems}
       member={{
         email: user.email ?? 'member',
         createdAt: user.created_at,
@@ -133,5 +144,7 @@ export default async function DashboardPage() {
       savedSkills={savedSkills}
       savedCareers={savedCareers}
     />
+
+    </>
   );
 }

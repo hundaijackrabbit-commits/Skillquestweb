@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = Number((await params).page);
   return {
     title: `Professional Skills Library · Page ${page}`,
-    description: `Browse page ${page} of Modern Skill Lab’s complete canonical professional skill guide library.`,
+    description: `Browse page ${page} of Modern Skill Lab’s editorially selected professional skill guide library.`,
     alternates: { canonical: `/skills/page/${page}` },
   };
 }
