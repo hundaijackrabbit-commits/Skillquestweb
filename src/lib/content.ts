@@ -65,11 +65,7 @@ export const getAllSkills = cache(async (): Promise<Skill[]> => {
       ? rawSkill as Record<string, unknown>
       : null;
     const slug = typeof candidate?.slug === 'string' ? candidate.slug : undefined;
-    // Apply the existing researched communication editorial entry to its canonical skill URL.
-    // The older override key is not itself a slug in the skills dataset.
-    const override = slug
-      ? editorialOverrides[slug] ?? (slug === 'communication' ? editorialOverrides['professional-communication'] : undefined)
-      : undefined;
+    const override = slug ? editorialOverrides[slug] : undefined;
     const mergedSkill = candidate && override ? { ...candidate, ...override } : rawSkill;
     const parsed = SkillSchema.safeParse(mergedSkill);
     if (parsed.success) {

@@ -1,23 +1,22 @@
 # Communication Skills growth pilot — 2026-11-16
 
-Tracking: GitHub issue #66
+Tracking: GitHub issue #66 and PR #67
 
-## Why this batch exists
-The canonical communication skill was serving generic older text. A researched editorial override already existed under an unused professional-communication key. This patch routes that entry to the canonical communication page without a competing URL or a duplicate skill entry. Older unverified figures no longer drive the page.
+## Verified content baseline
+The raw 1,560-skill source file includes a legacy generic communication record. The production prebuild already merges a researched communication override from skill-editorial-overrides-reviewed-metadata.json into the canonical slug. Therefore the published skill guide is already editorially enriched. An additional legacy professional-communication override exists, but is not needed for this release. The content loader and existing editorial records remain unchanged.
 
-## Changes
-1. Attach researched copy to the existing canonical communication URL through a narrow loader fallback.
-2. Add a search-focused title, description, and consistent article headline.
-3. Add an original practical field guide with one before/after scenario and a five-minute exercise. Preserve the existing research, learning sections, skill sprint, Knowledge Vault and progress.
-4. Add a message-clarity practice in the existing interactive practice system with 35 XP, using the existing authentication and progress logic.
-5. Add three contextual entry links to the existing Communication topic page.
-6. Clarify the homepage brand promise while retaining the video, quiz, newsletter, navigation and other tools.
+## Changes in this pilot
+1. Add a distinctive, original workplace communication field guide to the existing /skills/communication page, with a concise three-step framework, a before/after example and a five-minute exercise.
+2. Add a communication message-clarity sort activity to the existing interactive Practice Lab system, using existing authentication, completion history, and XP infrastructure.
+3. Add clear entry links in the existing /topics/communication topic hub to professional communication, active listening, and written communication.
+4. Improve targeted metadata for the communication skill and topic without changing slugs, canonical URLs, or the general metadata policy for other skills.
+5. Sharpen homepage brand positioning to 'Understand it. Practice it. Prove it.' while retaining videos, newsletter, member tools, quiz, and discoverability.
 
-## QA gates before merge
-- Validate canonical skill content, links and existing page features at desktop and 360/390/430px widths.
-- Check practice access for signed-out users and correct XP recording for signed-in users.
-- Run lint, build, and existing SEO, links, graph, originality and controls audits.
-- Review one Vercel preview, metadata, canonical URLs and mobile appearance.
-- Compare Search Console and conversions after release; do not infer gains before measurement.
+## Quality gates before production
+- Check the communication guide, topic hub, and homepage at 360px, 390px, 430px, tablet and desktop; confirm keyboard navigation and reduced-motion behavior.
+- Verify the interactive activity remains access-gated, completes correctly, and does not award duplicate XP.
+- Run the existing lint and build, SEO, link-graph, originality, and interactive controls audits. A Vercel build is not a substitute for all of these checks.
+- Verify canonical URLs and page metadata, and confirm no previously existing components or content disappeared.
+- Record available Search Console/analytics baselines before claiming marketing results.
 
-Scope excludes new slugs, new database tables, content deletion, glossary duplication, and mass-generated lesson pages.
+Out of scope: mass rewriting legacy records, database changes, parallel glossaries, generated SEO filler pages, or deleting any existing route or feature.
