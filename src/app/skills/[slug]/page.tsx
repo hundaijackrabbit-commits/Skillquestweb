@@ -25,6 +25,7 @@ import {
 import { getSkillCourse } from '@/lib/courses';
 import { SkillMission } from '@/components/learning/skill-mission';
 import { CurrentSkillBrief } from '@/components/skills/current-skill-brief';
+import { CommunicationFieldGuide } from '@/components/skills/communication-field-guide';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 import { getSkillConnectionReason } from '@/lib/skill-connections';
 import { getKnowledgeCheckForSkill } from '@/lib/knowledge-checks';
@@ -100,8 +101,12 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
     };
   }
 
-  const title = `${skill.name}: Practical Skill Guide`;
-  const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
+  const title = skill.slug === 'communication'
+    ? 'Communication Skills at Work: Examples & Exercises'
+    : `${skill.name}: Practical Skill Guide`;
+  const description = skill.slug === 'communication'
+    ? 'Learn communication skills for work: clear messages, active listening, practical examples, common mistakes, and exercises you can try today.'
+    : skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
 
   return {
     title,
@@ -179,7 +184,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     '@graph': [
       {
         '@type': 'Article',
-        headline: `${skill.name}: Practical Skill Guide`,
+        headline: skill.slug === 'communication' ? 'Communication Skills at Work: Examples & Exercises' : `${skill.name}: Practical Skill Guide`,
         description: skill.shortDefinition,
         mainEntityOfPage: canonicalUrl,
         dateModified: currentBrief?.reviewedAt ?? skill.lastUpdated,
@@ -304,6 +309,8 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </div>
           </div>
         </div>
+
+        {skill.slug === 'communication' && <CommunicationFieldGuide />}
 
         <LearningActionPath title={`Practice ${skill.name}`} description="A practical starting route drawn from this skill guide. Explore the detailed learning sections below for more context." steps={skill.beginnerActions ?? []} outcome={skill.signalsOfMastery?.[0]} />
         <LearningPageNavigator containerId="learning-page-content" />

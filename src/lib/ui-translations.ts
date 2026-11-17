@@ -2,6 +2,30 @@ import type { LearningLocale } from './internationalization';
 
 /** Localized interface copy. Untranslated educational content stays English. */
 const rows: readonly [string, string, string, string, string, string][] = [
+  [
+    "Practical learning for modern work",
+    "面向现代职场的实用学习",
+    "Aprendizaje práctico para el trabajo actual",
+    "Un apprentissage pratique pour le monde du travail",
+    "आधुनिक कार्यस्थल के लिए व्यावहारिक सीख",
+    "تعلّم عملي للعمل الحديث"
+  ],
+  [
+    "Understand it. Practice it. Prove it.",
+    "理解它。练习它。证明你会。",
+    "Compréndelo. Practícalo. Demuéstralo.",
+    "Comprendre. Pratiquer. Démontrer.",
+    "समझें। अभ्यास करें। करके दिखाएँ।",
+    "افهمها. تدرّب عليها. أثبت إتقانك."
+  ],
+  [
+    "Explore practical skills for work and career growth. Learn how they work, try them in real situations, and keep track of your progress.",
+    "探索有助于工作和职业发展的实用技能。了解其原理，在真实情境中练习，并跟踪自己的进步。",
+    "Explora habilidades prácticas para el trabajo y tu desarrollo profesional. Aprende cómo funcionan, ponlas en práctica en situaciones reales y sigue tu progreso.",
+    "Découvrez des compétences pratiques pour le travail et votre évolution professionnelle. Apprenez à les maîtriser, exercez-vous dans des situations réelles et suivez vos progrès.",
+    "काम और करियर में आगे बढ़ने के लिए उपयोगी कौशल खोजें। समझें कि वे कैसे काम करते हैं, वास्तविक परिस्थितियों में अभ्यास करें और अपनी प्रगति देखें।",
+    "استكشف مهارات عملية للعمل والتطور المهني. تعلّم كيفية استخدامها، وجرّبها في مواقف واقعية، وتابع تقدّمك."
+  ],
 ["Knowledge Dictionary","知识词典","Diccionario de conocimientos","Dictionnaire des notions","ज्ञान शब्दकोश","قاموس المفاهيم"],
 [
     "Your practical work sample",

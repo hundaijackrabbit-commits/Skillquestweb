@@ -27,8 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = getTopicBySlug((await params).slug);
   if (!topic) return { title: 'Topic Not Found' };
   return {
-    title: `${topic.name} Skills, Paths & Careers`,
-    description: topic.description,
+    title: topic.slug === 'communication'
+      ? 'Communication Skills: Listening, Speaking & Writing'
+      : `${topic.name} Skills, Paths & Careers`,
+    description: topic.slug === 'communication'
+      ? 'Explore communication skills at work, with practical guides to listening, writing, presenting, and making your message clear.'
+      : topic.description,
     alternates: { canonical: `/topics/${topic.slug}` },
     openGraph: {
       title: `${topic.name} Skills | Modern Skill Lab`,
@@ -119,6 +123,32 @@ export default async function TopicHubPage({ params }: Props) {
                     ))}
                   </div>
                 )}
+              </div>
+            </section>
+          )}
+
+
+          {topic.slug === 'communication' && (
+            <section className="mt-8 rounded-3xl border border-indigo-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="communication-start-here">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-700">Start with real situations</p>
+              <h2 id="communication-start-here" className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Which communication skill do you need today?</h2>
+              <p className="mt-3 max-w-3xl leading-7 text-slate-700">Clear communication helps people understand an idea, ask useful questions, and agree on the next action. Choose a starting point based on what you want to improve, then use the linked guide for examples and practice.</p>
+              <div className="mt-6 grid gap-3 md:grid-cols-3">
+                <Link href="/skills/communication" className="rounded-2xl border border-indigo-200 bg-indigo-50 p-5 transition hover:border-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  <h3 className="font-bold text-slate-950">Make messages clearer</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">Structure updates, requests, meetings, and handoffs so the next step is clear.</p>
+                  <span className="mt-3 inline-flex items-center text-sm font-semibold text-indigo-800">Communication guide <ArrowRight aria-hidden="true" className="ml-1.5 h-4 w-4" /></span>
+                </Link>
+                <Link href="/skills/active-listening" className="rounded-2xl border border-slate-200 p-5 transition hover:border-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  <h3 className="font-bold text-slate-950">Understand before replying</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">Listen for meaning, ask clarifying questions, and check your understanding.</p>
+                  <span className="mt-3 inline-flex items-center text-sm font-semibold text-indigo-800">Active listening <ArrowRight aria-hidden="true" className="ml-1.5 h-4 w-4" /></span>
+                </Link>
+                <Link href="/skills/written-communication" className="rounded-2xl border border-slate-200 p-5 transition hover:border-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  <h3 className="font-bold text-slate-950">Write for busy readers</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">Make the purpose, evidence, and requested response easy to locate.</p>
+                  <span className="mt-3 inline-flex items-center text-sm font-semibold text-indigo-800">Written communication <ArrowRight aria-hidden="true" className="ml-1.5 h-4 w-4" /></span>
+                </Link>
               </div>
             </section>
           )}
