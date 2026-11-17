@@ -49,9 +49,9 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(56,189,248,0.22),transparent_36%),radial-gradient(circle_at_88%_18%,rgba(217,70,239,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(250,204,21,0.12),transparent_42%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
           <div>
-            <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold"><T text="Practical skills for modern work" /></Badge>
-            <h1 className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl"><T text="Build skills that actually move you forward." /></h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"><T text="Explore a deep library of practical skills, career connections, and learning paths built for work that keeps changing." /></p>
+            <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold"><T text="Practical learning for modern work" /></Badge>
+            <h1 className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl"><T text="Understand it. Practice it. Prove it." /></h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"><T text="Explore practical skills for work and career growth. Learn how they work, try them in real situations, and keep track of your progress." /></p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/skills"><Button variant="primary" size="lg" className="w-full sm:w-auto"><T text="Explore skills" /><ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
               <Link href="/careers"><Button variant="outline" size="lg" className="w-full border-slate-300 sm:w-auto"><T text="Explore careers" /></Button></Link>

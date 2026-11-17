@@ -26,6 +26,27 @@ export type SortPractice = PracticeBase & {
 export type InteractivePractice = SequencePractice | SortPractice;
 
 const practices: Record<string, InteractivePractice> = {
+  communication: {
+    kind: 'sort',
+    id: 'communication-clarity-v1',
+    skillSlug: 'communication',
+    skillName: 'Professional Communication',
+    label: 'Message clarity challenge',
+    title: 'Can the reader tell what happens next?',
+    instruction: 'Sort the workplace messages by whether the recipient has enough information to act.',
+    categories: [
+      { id: 'actionable', label: 'Actionable', description: 'Names a clear output, owner, decision, or next step.' },
+      { id: 'clarify', label: 'Needs clarification', description: 'Leaves the reader guessing about what is expected.' },
+    ],
+    items: [
+      { id: 'clear-handoff', text: 'Maya: please send the revised estimate to Theo by 2 p.m. so he can check it before the client call.', categoryId: 'actionable' },
+      { id: 'vague-handoff', text: 'We should probably sort out the estimate soon. Someone can take the lead.', categoryId: 'clarify' },
+      { id: 'clear-decision', text: 'We have two options. I recommend option B because of the lower setup cost; can you approve or reject it by Thursday?', categoryId: 'actionable' },
+      { id: 'vague-decision', text: 'I sent a few thoughts about the options. Let me know what you think at some point.', categoryId: 'clarify' },
+    ],
+    explanation: 'A useful message makes its purpose and next step explicit. It still leaves room for questions, uncertainty, or disagreement when the situation requires them.',
+    xp: 35,
+  },
   'problem-solving': {
     kind: 'sequence',
     id: 'problem-solving-loop-v1',
