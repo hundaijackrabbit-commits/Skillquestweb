@@ -147,7 +147,7 @@ export default async function HomePage() {
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.38),transparent_40%),radial-gradient(circle_at_5%_95%,rgba(14,165,233,0.28),transparent_45%)]" />
             <div className="relative">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">Free membership · No paid tier</p>
-              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">Don't just read about skills. Build them.</h2>
+              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">Don&apos;t just read about skills. Build them.</h2>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200">Your free account turns the library into a personal learning space with challenges, progress and real-world practice.</p>
               <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {[
