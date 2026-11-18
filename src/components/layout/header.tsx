@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LearningLanguageSelector } from '@/components/layout/learning-language-selector';
-import { useLearningLanguage, TranslatedText as T } from '@/components/providers/learning-language-provider';
+import { useLearningLanguage, useInterfaceTranslation, TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { navigationLabel } from '@/lib/navigation-translations';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import { Search, Menu, X, BookOpen, Briefcase, User, LogOut, Sparkles, Route, Trophy, Users } from 'lucide-react';
@@ -22,6 +22,7 @@ const navigation = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { locale: learningLocale } = useLearningLanguage();
+  const t = useInterfaceTranslation();
 
   const pathname = usePathname();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -89,7 +90,7 @@ export function Header() {
           <div className="lg:hidden">
             <button
               type="button"
-              aria-label="Close main menu"
+              aria-label={t('Close main menu')}
               tabIndex={-1}
               className="msl-menu-backdrop fixed inset-0 z-[60] cursor-default bg-slate-950/35 backdrop-blur-[2px]"
               onClick={() => closeMobileMenu(true)}
@@ -122,12 +123,12 @@ export function Header() {
                   className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                   onClick={() => closeMobileMenu(true)}
                 >
-                  <span className="sr-only">Close menu</span>
+                  <span className="sr-only"><T text="Close menu" /></span>
                   <X className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
 
-              <nav className="mt-6 flex-1 border-t border-slate-200 pt-5" aria-label="Mobile navigation">
+              <nav className="mt-6 flex-1 border-t border-slate-200 pt-5" aria-label={t('Mobile navigation')}>
                 <div className="space-y-1.5">
                   {navigation.map((item) => {
                     const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -153,7 +154,7 @@ export function Header() {
               <div className="mt-6 space-y-3 border-t border-slate-200 pt-5">
                 <LearningLanguageSelector compact />
                 {loading ? (
-                  <div className="space-y-3" aria-label="Loading account options">
+                  <div className="space-y-3" aria-label={t('Loading account options')}>
                     <div className="h-11 w-full animate-pulse rounded-xl bg-slate-200" />
                     <div className="h-11 w-full animate-pulse rounded-xl bg-slate-200" />
                   </div>
@@ -162,7 +163,7 @@ export function Header() {
                     <Link href="/dashboard" className="block w-full" onClick={() => closeMobileMenu()}>
                       <Button asChild variant="ghost" size="sm" className="min-h-11 w-full justify-center">
                         <User className="mr-2 h-4 w-4" />
-                        My Dashboard
+                        <T text="My Dashboard" />
                       </Button>
                     </Link>
                     <Button
@@ -175,7 +176,7 @@ export function Header() {
                       }}
                     >
                       <LogOut className="mr-2 h-4 w-4" />
-                      Sign Out
+                      <T text="Sign Out" />
                     </Button>
                   </div>
                 ) : (
@@ -186,7 +187,7 @@ export function Header() {
                       onClick={() => closeMobileMenu()}
                     >
                       <Button asChild variant="outline" size="sm" className="min-h-11 w-full justify-center">
-                        Sign In
+                        <T text="Sign In" />
                       </Button>
                     </Link>
                     <Link
@@ -196,7 +197,7 @@ export function Header() {
                     >
                       <Button asChild variant="primary" size="sm" className="min-h-11 w-full justify-center">
                         <Sparkles className="mr-2 h-4 w-4" />
-                        Get Started
+                        <T text="Get Started" />
                       </Button>
                     </Link>
                   </div>
@@ -211,7 +212,7 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8" aria-label="Global">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8" aria-label={t('Global navigation')}>
         <div className="flex lg:flex-1">
           <Link href="/" className="group -m-1.5 p-1.5">
             <span className="sr-only">Modern Skill Lab</span>
@@ -222,7 +223,7 @@ export function Header() {
               <div>
                 <div className="text-base font-bold leading-none text-slate-900 sm:text-lg">Modern Skill Lab</div>
                 <div className="mt-1 hidden text-xs font-medium text-slate-500 sm:block">
-                  Practical skills for modern work
+                  <T text="Practical skills for modern work" />
                 </div>
               </div>
             </div>
@@ -247,7 +248,7 @@ export function Header() {
           <Link href="/skills" className="hidden xl:block">
             <Button asChild variant="ghost" size="sm" className="text-slate-700">
               <Search className="mr-2 h-4 w-4" />
-              Find a skill
+              <T text="Find a skill" />
             </Button>
           </Link>
 
@@ -261,25 +262,25 @@ export function Header() {
               <Link href="/dashboard">
                 <Button asChild variant="ghost" size="sm" className="text-slate-700">
                   <User className="mr-2 h-4 w-4" />
-                  My Dashboard
+                  <T text="My Dashboard" />
                 </Button>
               </Link>
               <Button variant="outline" size="sm" onClick={() => void signOut()}>
                 <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
+                <T text="Sign Out" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/auth?mode=signin&redirect=%2Fdashboard">
                 <Button asChild variant="outline" size="sm">
-                  Sign In
+                  <T text="Sign In" />
                 </Button>
               </Link>
               <Link href="/auth?mode=signup&redirect=%2Fdashboard">
                 <Button asChild variant="primary" size="sm">
                   <Sparkles className="mr-2 h-4 w-4" />
-                  Get Started
+                  <T text="Get Started" />
                 </Button>
               </Link>
             </div>
@@ -296,7 +297,7 @@ export function Header() {
             className="-m-2 inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl p-2 text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
             onClick={() => setMobileMenuOpen(true)}
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only"><T text="Open main menu" /></span>
             <Menu className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
