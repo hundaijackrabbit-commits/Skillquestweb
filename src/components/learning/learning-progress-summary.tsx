@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Flame, Sparkles, Trophy } from 'lucide-react';
-import { TranslatedText as T } from '@/components/providers/learning-language-provider';
+import { TranslatedText as T, useInterfaceTranslation } from '@/components/providers/learning-language-provider';
 import { useSupabase } from '@/components/providers/supabase-provider';
 import {
   getLearningProfile,
@@ -22,6 +22,7 @@ const initialProfile: LearningProfile = {
 export function LearningProgressSummary() {
   const [profile, setProfile] = useState(initialProfile);
   const { user } = useSupabase();
+  const t = useInterfaceTranslation();
   const userId = user?.id;
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export function LearningProgressSummary() {
   }, [userId]);
 
   return (
-    <section className="mb-12 rounded-3xl border border-blue-200 bg-white p-5 shadow-sm sm:p-6" aria-label="Your learning progress">
+    <section className="mb-12 rounded-3xl border border-blue-200 bg-white p-5 shadow-sm sm:p-6" aria-label={t('Your learning progress')}>
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="flex items-center gap-3 rounded-2xl bg-amber-50 p-4">
           <Sparkles className="h-6 w-6 text-amber-600" />
@@ -50,7 +51,7 @@ export function LearningProgressSummary() {
         <div className="flex items-center gap-3 rounded-2xl bg-orange-50 p-4">
           <Flame className="h-6 w-6 text-orange-600" />
           <div>
-            <div className="text-2xl font-bold text-slate-950">{profile.currentStreak} days</div>
+            <div className="text-2xl font-bold text-slate-950">{profile.currentStreak} <T text="days" /></div>
             <div className="text-xs font-semibold uppercase tracking-wide text-slate-500"><T text="Practice rhythm" /></div>
           </div>
         </div>
@@ -63,7 +64,7 @@ export function LearningProgressSummary() {
         </div>
       </div>
       <p className="mt-4 text-xs leading-5 text-slate-500">
-        XP is earned only for completed practice and retrieval checks. Progress is isolated to your signed-in account on this browser.
+        <T text="XP is earned only for completed practice and retrieval checks. Progress is isolated to your signed-in account on this browser." />
       </p>
     </section>
   );

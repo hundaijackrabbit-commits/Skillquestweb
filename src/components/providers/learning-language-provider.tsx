@@ -68,7 +68,11 @@ export function useInterfaceTranslation() {
 /** A text-only translation: never renders HTML from user content or a model. */
 export function TranslatedText({ text }: { text: string }) {
   const { locale } = useLearningLanguage();
-  return <span lang={locale} dir={locale === 'ar' ? 'rtl' : 'auto'}>{translateInterface(text, locale)}</span>;
+  const translated = translateInterface(text, locale);
+  // Untranslated phrases are still English. Label them accurately for
+  // screen readers rather than incorrectly claiming they are French, Arabic, etc.
+  const textLocale = locale === 'en' || translated === text ? 'en' : locale;
+  return <span lang={textLocale} dir={textLocale === 'ar' ? 'rtl' : 'ltr'}>{translated}</span>;
 }
 
 /** Long-form skill articles are still in English. Do not mislabel them as translated. */

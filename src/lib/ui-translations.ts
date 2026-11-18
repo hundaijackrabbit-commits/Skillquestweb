@@ -1,4 +1,5 @@
 import type { LearningLocale } from './internationalization';
+import { frenchLearningUi } from './french-learning-ui';
 
 /** Localized interface copy. Untranslated educational content stays English. */
 const rows: readonly [string, string, string, string, string, string][] = [
@@ -1903,5 +1904,5 @@ for (const [en, zh, es, fr, hi, ar] of rows) {
 }
 
 export function translateInterface(text: string, locale: LearningLocale): string {
-  return dictionaries[locale][text] || text;
+  return dictionaries[locale][text] || (locale === 'fr' ? frenchLearningUi[text] : undefined) || text;
 }

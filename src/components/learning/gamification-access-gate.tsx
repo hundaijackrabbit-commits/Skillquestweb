@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useSupabase } from '@/components/providers/supabase-provider';
+import { TranslatedText as T, useInterfaceTranslation } from '@/components/providers/learning-language-provider';
 import { Button } from '@/components/ui/button';
 
 type Props = {
@@ -89,33 +90,33 @@ function AccessCard({ loading, featureName, description, signUpHref, signInHref 
 
       {loading ? (
         <>
-          <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5">Member practice</p>
-          <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">Checking your access…</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">The activity will open as soon as your account session is confirmed.</p>
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5"><T text="Member practice" /></p>
+          <h2 className="mt-2 text-xl font-bold tracking-tight text-slate-950 sm:text-2xl"><T text="Checking your access…" /></h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600"><T text="The activity will open as soon as your account session is confirmed." /></p>
         </>
       ) : (
         <>
-          <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5">Free membership</p>
-          <h2 className="mt-2 break-words text-[1.35rem] font-bold leading-tight tracking-tight text-slate-950 min-[380px]:text-2xl sm:text-3xl">Open {featureName}</h2>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{description}</p>
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-violet-700 sm:mt-5"><T text="Free membership" /></p>
+          <h2 className="mt-2 break-words text-[1.35rem] font-bold leading-tight tracking-tight text-slate-950 min-[380px]:text-2xl sm:text-3xl"><T text="Open" /> <T text={featureName} /></h2>
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-600 sm:text-base sm:leading-7"><T text={description} /></p>
 
           <div className="mt-4 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:gap-3">
             <Link href={signUpHref} className="block w-full sm:flex-1">
-              <Button asChild className="min-h-12 w-full whitespace-normal px-3 leading-5" size="lg"><Sparkles className="mr-2 h-4 w-4 shrink-0" />Create free account</Button>
+              <Button asChild className="min-h-12 w-full whitespace-normal px-3 leading-5" size="lg"><Sparkles className="mr-2 h-4 w-4 shrink-0" /><T text="Create free account" /></Button>
             </Link>
             <Link href={signInHref} className="block w-full sm:flex-1">
-              <Button asChild className="min-h-12 w-full whitespace-normal px-3 leading-5" variant="outline" size="lg">Sign in <ArrowRight className="ml-2 h-4 w-4 shrink-0" /></Button>
+              <Button asChild className="min-h-12 w-full whitespace-normal px-3 leading-5" variant="outline" size="lg"><T text="Sign in" /> <ArrowRight className="ml-2 h-4 w-4 shrink-0" /></Button>
             </Link>
           </div>
 
           <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-emerald-50 p-3 text-left text-xs leading-5 text-emerald-950 sm:mt-5 sm:rounded-2xl sm:p-4 sm:text-sm sm:leading-6">
             <ShieldCheck className="mt-0.5 h-4 w-4 flex-none text-emerald-700 sm:h-5 sm:w-5" />
-            <p>One free membership opens the member features across Modern Skill Lab: practice, feedback, XP, achievements, saved progress, and community participation. There is no paid member tier.</p>
+            <p><T text="One free membership opens the member features across Modern Skill Lab: practice, feedback, XP, achievements, saved progress, and community participation. There is no paid member tier." /></p>
           </div>
 
           <p className="mt-3 inline-flex items-start text-left text-[11px] leading-4 text-slate-500 sm:mt-4 sm:items-center sm:text-xs sm:leading-5">
             <CheckCircle2 className="mr-1.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
-            You will return to this activity after authentication.
+            <T text="You will return to this activity after authentication." />
           </p>
         </>
       )}
@@ -132,6 +133,7 @@ export function GamificationAccessGate({
 }: Props) {
   const { user, loading } = useSupabase();
   const pathname = usePathname();
+  const t = useInterfaceTranslation();
 
   if (user && !loading) return children;
 
@@ -143,7 +145,7 @@ export function GamificationAccessGate({
     <section
       id={id}
       className={`scroll-mt-28 rounded-3xl border border-violet-200 bg-white shadow-lg ${className}`}
-      aria-label={loading ? 'Checking member access' : `${featureName} requires a free account`}
+      aria-label={loading ? t('Checking member access') : `${t(featureName)} ${t('requires a free account')}`}
       aria-busy={loading}
     >
       <div className="sm:hidden">
