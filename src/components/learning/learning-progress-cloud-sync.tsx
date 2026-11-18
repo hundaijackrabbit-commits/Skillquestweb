@@ -25,6 +25,9 @@ const PAGE_SIZE = 500;
 const MAX_PAGES = 40;
 const UPLOAD_SIZE = 100;
 const SYNC_ENABLED = process.env.NEXT_PUBLIC_LEARNING_PROGRESS_SYNC_ENABLED === 'true';
+const ALLOWED_ACTIVITY_KINDS = new Set<LearningActivityKind>([
+  'mission', 'course-lesson', 'knowledge-check', 'sequence-practice', 'sort-practice', 'workshop',
+]);
 
 type CompletionRow = {
   activity_id: string;
@@ -96,7 +99,9 @@ export function LearningProgressCloudSync() {
       const existingIds = new Set(cloud.map((activity) => activity.activity_id));
       const pending = local.activities.filter((activity) =>
         !existingIds.has(activity.id) &&
-        activity.id.trim() !== '' && activity.skillSlug.trim() !== '' &&
+        activity.id.trim() !== '' && activity.id.length <= 240 &&
+        activity.skillSlug.trim() !== '' && activity.skillSlug.length <= 200 &&
+        ALLOWED_ACTIVITY_KINDS.has(activity.kind) &&
         Number.isInteger(activity.xp) && activity.xp >= 0 && activity.xp <= 1000 &&
         Number.isFinite(Date.parse(activity.completedAt)),
       );
@@ -161,10 +166,14 @@ export function LearningProgressCloudSync() {
       if (document.visibilityState === 'visible') requestSync();
     };
 
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === `msl_learning_profile_v1:${userId}`) requestSync();
+    };
+
     window.addEventListener(LEARNING_PROGRESS_EVENT, onProgress);
     window.addEventListener('online', requestSync);
     window.addEventListener('focus', requestSync);
-    window.addEventListener('storage', requestSync);
+    window.addEventListener('storage', onStorage);
     document.addEventListener('visibilitychange', onVisibility);
     requestSync();
 
@@ -173,7 +182,7 @@ export function LearningProgressCloudSync() {
       window.removeEventListener(LEARNING_PROGRESS_EVENT, onProgress);
       window.removeEventListener('online', requestSync);
       window.removeEventListener('focus', requestSync);
-      window.removeEventListener('storage', requestSync);
+      window.removeEventListener('storage', onStorage);
       document.removeEventListener('visibilitychange', onVisibility);
     };
   }, [supabase, userId]);
