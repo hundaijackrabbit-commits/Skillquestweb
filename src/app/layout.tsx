@@ -8,6 +8,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SupabaseProvider } from '@/components/providers/supabase-provider';
 import { LearningLanguageProvider } from '@/components/providers/learning-language-provider';
+import { LearningProgressCloudSync } from '@/components/learning/learning-progress-cloud-sync';
 import { CartesiaNavigationBridge } from '@/components/voice/cartesia-navigation-bridge';
 import { NavigationRecovery } from '@/components/voice/navigation-recovery';
 import { ResolvedNavigationFallback } from '@/components/voice/resolved-navigation-fallback';
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
         {adsenseClient && <Script id="adsense-script" async strategy="afterInteractive" crossOrigin="anonymous" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} />}
         <SupabaseProvider>
+          <LearningProgressCloudSync />
           <LearningLanguageProvider>
           <Header />
           {/* Long-form editorial pages are currently English; translated UI spans
