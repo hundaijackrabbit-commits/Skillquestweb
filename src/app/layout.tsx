@@ -52,7 +52,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SupabaseProvider>
           <LearningLanguageProvider>
           <Header />
-          <main className="flex-1">{children}</main>
+          {/* Long-form editorial pages are currently English; translated UI spans
+              declare their own language. Remove this restriction when content
+              has reviewed localized editions. */}
+          <main className="flex-1" lang="en" dir="ltr">{children}</main>
           <Footer />
           <ResolvedNavigationFallback />
           <CartesiaNavigationBridge />
