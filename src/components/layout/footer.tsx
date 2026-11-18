@@ -64,17 +64,17 @@ export function Footer() {
           <div id="newsletter">
             <div className="mb-7 rounded-2xl border border-violet-200 bg-white p-5">
               <h3 className="font-bold text-slate-900"><T text="Need help choosing your next step?" /></h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Use our free Career & Life Map to turn ideas into a practical plan.</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Use our free Career & Life Map to turn ideas into a practical plan." /></p>
               <Link href="/free-career-guide" className="mt-3 inline-flex text-sm font-bold text-violet-700 hover:text-violet-900"><T text="Explore the free guide →" /></Link>
             </div>
             <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-900"><T text="One useful skill every week" /></h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">Get practical skills, career ideas, and modern-work insights worth keeping.</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Get practical skills, career ideas, and modern-work insights worth keeping." /></p>
             <NewsletterForm source="footer" compact className="mt-5" />
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Modern Skill Lab. Practical, career-relevant learning.</p>
+          <p><T text="© 2026 Modern Skill Lab. Practical, career-relevant learning." /></p>
           <Link href="/admin/login" className="inline-flex items-center gap-1.5 hover:text-slate-700"><ShieldCheck className="h-3.5 w-3.5" /> <T text="Admin" /></Link>
         </div>
       </div>
