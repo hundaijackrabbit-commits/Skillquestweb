@@ -146,9 +146,9 @@ export default async function HomePage() {
           <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-[0_24px_80px_-30px_rgba(49,46,129,0.5)] sm:p-10">
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.38),transparent_40%),radial-gradient(circle_at_5%_95%,rgba(14,165,233,0.28),transparent_45%)]" />
             <div className="relative">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">Free membership · No paid tier</p>
-              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">Don&apos;t just read about skills. Build them.</h2>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200">Your free account turns the library into a personal learning space with challenges, progress and real-world practice.</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300"><T text="Free membership · No paid tier" /></p>
+              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl"><T text="Don't just read about skills. Build them." /></h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200"><T text="Your free account turns the library into a personal learning space with challenges, progress and real-world practice." /></p>
               <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {[
                   { icon: Trophy, title: 'Earn XP & achievements', description: 'Make your practice visible.' },
@@ -158,7 +158,7 @@ export default async function HomePage() {
                 ].map((item) => (
                   <div key={item.title} className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
                     <div className="inline-flex rounded-xl bg-white/15 p-2 text-cyan-200"><item.icon className="h-5 w-5" aria-hidden="true" /></div>
-                    <h3 className="mt-3 font-semibold text-white">{item.title}</h3>
+                    <h3 className="mt-3 font-semibold text-white"><T text={item.title} /></h3>
                     <p className="mt-1 text-sm text-slate-300"><T text={item.description} /></p>
                   </div>
                 ))}
@@ -211,8 +211,8 @@ export default async function HomePage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">Selected by Modern Skill Lab</p><h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"><T text="Featured skills" /></h2></div>
-            <Link href="/skills" className="inline-flex items-center text-sm font-semibold text-blue-600">Browse all skills <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600"><T text="Selected by Modern Skill Lab" /></p><h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"><T text="Featured skills" /></h2></div>
+            <Link href="/skills" className="inline-flex items-center text-sm font-semibold text-blue-600"><T text="Browse all skills" /> <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </div>
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {featured.slice(0, 3).map(({ skill, featureType, headline }) => (
@@ -224,7 +224,7 @@ export default async function HomePage() {
                 <CardContent>
                   {headline && <p className="mb-2 text-sm font-semibold text-blue-700">{headline}</p>}
                   <p className="line-clamp-4 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
-                  <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600">Explore skill <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600"><T text="Explore skill" /> <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </CardContent>
               </Card>
             ))}
@@ -279,7 +279,7 @@ export default async function HomePage() {
 
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">A better way to browse</p><h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Turn curiosity into a skill stack.</h2></div>
+          <div className="mx-auto max-w-2xl text-center"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600"><T text="A better way to browse" /></p><h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"><T text="Turn curiosity into a skill stack." /></h2></div>
           <div className="mt-10 grid gap-5 sm:grid-cols-3">
             {pillars.map((pillar) => (
               <div key={pillar.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><div className="inline-flex rounded-2xl bg-blue-600/10 p-3 text-blue-600"><pillar.icon className="h-5 w-5" /></div><h3 className="mt-5 text-lg font-semibold text-slate-900"><T text={pillar.title} /></h3><p className="mt-3 text-sm leading-6 text-slate-600"><T text={pillar.description} /></p></div>
@@ -291,8 +291,8 @@ export default async function HomePage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="rounded-[2rem] bg-slate-900 px-6 py-10 text-white sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between">
-            <div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">Make it yours</p><h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Save skills and keep building.</h2><p className="mt-4 text-base leading-7 text-slate-300">Create a free account to save useful skills and return to them from your dashboard.</p></div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto"><T text="Browse skills" /></Button></Link><Link href="/auth?mode=signup&redirect=%2Fdashboard"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto">Create account</Button></Link></div>
+            <div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300"><T text="Make it yours" /></p><h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl"><T text="Save skills and keep building." /></h2><p className="mt-4 text-base leading-7 text-slate-300"><T text="Create a free account to save useful skills and return to them from your dashboard." /></p></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto"><T text="Browse skills" /></Button></Link><Link href="/auth?mode=signup&redirect=%2Fdashboard"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto"><T text="Create account" /></Button></Link></div>
           </div>
         </div>
       </section>

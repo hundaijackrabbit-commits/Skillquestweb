@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
+import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, isRightToLeft, type LearningLocale } from '@/lib/internationalization';
 import { translateInterface } from '@/lib/ui-translations';
 
 type LanguageContext = {
@@ -31,6 +31,15 @@ export function LearningLanguageProvider({ children }: { children: ReactNode }) 
       window.removeEventListener('storage', refresh);
     };
   }, []);
+
+  // Language preference is client-side until reviewed, locale-specific routes exist.
+  // Keep the document direction and assistive-technology language in sync with the UI.
+  useEffect(() => {
+    const documentRoot = document.documentElement;
+    documentRoot.lang = locale;
+    documentRoot.dir = isRightToLeft(locale) ? 'rtl' : 'ltr';
+    documentRoot.dataset.learningLocale = locale;
+  }, [locale]);
 
   const value = useMemo<LanguageContext>(() => ({
     locale,
@@ -69,6 +78,17 @@ export function EnglishGuideNotice() {
   return (
     <p className="mt-3 rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm leading-6 text-blue-900">
       <TranslatedText text="Explore the skill guide in English, or ask the AI Coach for an explanation in your preferred language." />
+    </p>
+  );
+}
+
+/** Explain editorial language gaps without claiming that article bodies are translated. */
+export function EnglishContentNotice({ message }: { message: string }) {
+  const { locale } = useLearningLanguage();
+  if (locale === 'en') return null;
+  return (
+    <p role="note" className="mt-4 rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm leading-6 text-blue-900">
+      <TranslatedText text={message} />
     </p>
   );
 }
