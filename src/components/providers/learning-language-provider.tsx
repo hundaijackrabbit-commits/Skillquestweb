@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, type LearningLocale } from '@/lib/internationalization';
+import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, isRightToLeft, type LearningLocale } from '@/lib/internationalization';
 import { translateInterface } from '@/lib/ui-translations';
 
 type LanguageContext = {
@@ -31,6 +31,15 @@ export function LearningLanguageProvider({ children }: { children: ReactNode }) 
       window.removeEventListener('storage', refresh);
     };
   }, []);
+
+  // Language preference is client-side until reviewed, locale-specific routes exist.
+  // Keep the document direction and assistive-technology language in sync with the UI.
+  useEffect(() => {
+    const documentRoot = document.documentElement;
+    documentRoot.lang = locale;
+    documentRoot.dir = isRightToLeft(locale) ? 'rtl' : 'ltr';
+    documentRoot.dataset.learningLocale = locale;
+  }, [locale]);
 
   const value = useMemo<LanguageContext>(() => ({
     locale,
