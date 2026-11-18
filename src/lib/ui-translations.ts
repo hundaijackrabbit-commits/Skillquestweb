@@ -1834,7 +1834,7 @@ const rows: readonly [string, string, string, string, string, string][] = [
     "Administration",
     "एडमिन",
     "الإدارة"
-  ]
+  ],
   ["Home","首页","Inicio","Accueil","होम","الرئيسية"],
   ["Quick reference","快速参考","Referencia rápida","Référence rapide","त्वरित संदर्भ","مرجع سريع"],
   ["Find a term or abbreviation","查找术语或缩写","Busca un término o abreviatura","Rechercher un terme ou une abréviation","कोई शब्द या संक्षिप्त रूप खोजें","ابحث عن مصطلح أو اختصار"],
