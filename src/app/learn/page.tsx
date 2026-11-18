@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { TranslatedText as T } from '@/components/providers/learning-language-provider';
+import { TranslatedText as T, EnglishContentNotice } from '@/components/providers/learning-language-provider';
 import { ArrowRight, BookOpenCheck, Brain, Clock3, Compass, Layers3, ListOrdered, Sparkles, Target, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -38,11 +38,11 @@ export default function LearnPage() {
             <T text="Learn less. Practice more." />
           </h1>
           <p className="mx-auto mt-6 max-w-3xl text-xl leading-8 text-slate-600">
-            Short Skill Sprints turn selected guides into active practice. Each sprint combines a clear
-            concept, a workplace challenge, and a retrieval check you can finish in about fifteen minutes.
+            <T text="Short Skill Sprints turn selected guides into active practice. Each sprint combines a clear concept, a workplace challenge, and a retrieval check you can finish in about fifteen minutes." />
           </p>
         </section>
 
+        <EnglishContentNotice message="Practice activities and course descriptions are currently provided in English. The interface is being translated gradually." />
         <GamificationAccessGate
           className="mb-14"
           featureName="the full Practice Lab"
@@ -52,8 +52,8 @@ export default function LearnPage() {
         <LearningProgressSummary />
         <LearningJourney />
 
-        <nav className="mb-8 flex flex-wrap items-center gap-2" aria-label="Jump to a practice activity">
-          <span className="mr-2 text-xs font-bold uppercase tracking-wider text-slate-500"><T text="Jump to" /></span>
+        <nav className="mb-8 flex flex-wrap items-center gap-2" aria-labelledby="practice-navigation-title">
+          <span id="practice-navigation-title" className="mr-2 text-xs font-bold uppercase tracking-wider text-slate-500"><T text="Jump to" /></span>
           <a href="#daily-practice-heading" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Daily challenge" /></a>
           <a href="#workshops" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Workshops" /></a>
           <a href="#interactive-practice-library" className="rounded-full border border-indigo-200 bg-white px-4 py-2 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"><T text="Interactive exercises" /></a>
@@ -62,7 +62,7 @@ export default function LearnPage() {
 
         <details className="group mb-10 rounded-2xl border border-violet-200 bg-white p-5 shadow-sm">
           <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-bold text-violet-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-violet-600 [&::-webkit-details-marker]:hidden">
-            <span><T text="View my levels and achievements" /> <span className="mt-1 block text-xs font-normal text-slate-600">Your existing XP, levels and badges are all here.</span></span>
+            <span><T text="View my levels and achievements" /> <span className="mt-1 block text-xs font-normal text-slate-600"><T text="Your existing XP, levels and badges are all here." /></span></span>
             <span aria-hidden="true" className="text-violet-700 transition-transform group-open:rotate-180">⌄</span>
           </summary>
           <div className="pt-5"><LearningAchievements /></div>
@@ -78,14 +78,14 @@ export default function LearnPage() {
 
         <details className="group mb-14 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-bold text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600 [&::-webkit-details-marker]:hidden">
-            <span><T text="Explore all four practice formats" /> <span className="mt-1 block text-xs font-normal text-slate-600">Compare different exercises and choose a format.</span></span>
+            <span><T text="Explore all four practice formats" /> <span className="mt-1 block text-xs font-normal text-slate-600"><T text="Compare different exercises and choose a format." /></span></span>
             <span aria-hidden="true" className="text-indigo-700 transition-transform group-open:rotate-180">⌄</span>
           </summary>
           <section className="pt-6" aria-labelledby="practice-map-heading">
           <div className="mb-7">
             <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700"><T text="Where to practise" /></div>
             <h2 id="practice-map-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Four ways to turn reading into a rep" /></h2>
-            <p className="mt-2 max-w-3xl leading-7 text-slate-600">Every activity feeds the same private XP, level, achievement, and practice-rhythm profile.</p>
+            <p className="mt-2 max-w-3xl leading-7 text-slate-600"><T text="Every activity feeds the same private XP, level, achievement, and practice-rhythm profile." /></p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
@@ -124,10 +124,10 @@ export default function LearnPage() {
             ].map((item) => (
               <article key={item.title} className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                 <div className={`w-fit rounded-xl p-2.5 ${item.color}`}><item.icon className="h-5 w-5" /></div>
-                <h3 className="mt-4 text-lg font-bold text-slate-950">{item.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{item.description}</p>
+                <h3 className="mt-4 text-lg font-bold text-slate-950"><T text={item.title} /></h3>
+                <p className="mt-2 flex-1 text-sm leading-6 text-slate-600"><T text={item.description} /></p>
                 <Link href={item.href} className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:text-blue-900">
-                  {item.label} <ArrowRight className="ml-1.5 h-4 w-4" />
+                  <T text={item.label} /> <ArrowRight className="ml-1.5 h-4 w-4" />
                 </Link>
               </article>
             ))}
@@ -137,18 +137,18 @@ export default function LearnPage() {
 
         <section id="workshops" className="mb-14 scroll-mt-28" aria-labelledby="workshops-heading">
           <div className="mb-7 max-w-3xl">
-            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700">Make something useful</div>
+            <div className="text-sm font-semibold uppercase tracking-[0.18em] text-violet-700"><T text="Make something useful" /></div>
             <h2 id="workshops-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Guided work-sample workshops" /></h2>
-            <p className="mt-2 leading-7 text-slate-600">Move beyond choosing an answer: analyze a realistic situation, write a work sample, compare an illustrative response, and review your reasoning. Save a draft privately on this browser and return to improve it.</p>
+            <p className="mt-2 leading-7 text-slate-600"><T text="Move beyond choosing an answer: analyze a realistic situation, write a work sample, compare an illustrative response, and review your reasoning. Save a draft privately on this browser and return to improve it." /></p>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">
             {workshops.map((workshop) => (
               <article key={workshop.slug} className="msl-motion-card flex flex-col rounded-3xl border border-violet-200 bg-white p-6 shadow-sm hover:border-violet-400 hover:shadow-md">
-                <div className="flex items-center justify-between gap-3 text-xs font-bold text-violet-700"><span>Guided workshop</span><span>{workshop.estimatedMinutes} min</span></div>
+                <div className="flex items-center justify-between gap-3 text-xs font-bold text-violet-700"><span><T text="Guided workshop" /></span><span>{workshop.estimatedMinutes} min</span></div>
                 <div className="mt-3 text-sm font-semibold text-slate-500">{workshop.skillName}</div>
                 <h3 className="mt-2 text-xl font-bold text-slate-950">{workshop.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{workshop.description}</p>
-                <p className="mt-4 rounded-xl bg-indigo-50 p-3 text-xs leading-5 text-indigo-900"><strong>Deliverable:</strong> {workshop.deliverable}</p>
+                <p className="mt-4 rounded-xl bg-indigo-50 p-3 text-xs leading-5 text-indigo-900"><strong><T text="Deliverable:" /></strong> {workshop.deliverable}</p>
                 <Link href={`/learn/workshops/${workshop.slug}`} className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-bold text-indigo-700 hover:text-indigo-900"><T text="Open workshop" /> <ArrowRight className="h-4 w-4" /></Link>
               </article>
             ))}
@@ -160,7 +160,7 @@ export default function LearnPage() {
             <div>
               <div className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-700"><T text="More than quizzes" /></div>
               <h2 id="interactive-library-heading" className="mt-2 text-3xl font-bold text-slate-950"><T text="Interactive practice library" /></h2>
-              <p className="mt-2 max-w-3xl leading-7 text-slate-600">Reorder real workflows and categorize ambiguous signals across twelve additional professional skills.</p>
+              <p className="mt-2 max-w-3xl leading-7 text-slate-600"><T text="Reorder real workflows and categorize ambiguous signals across twelve additional professional skills." /></p>
             </div>
             <Badge variant="outline"><T text="Hands-on activities" /></Badge>
           </div>
@@ -176,7 +176,7 @@ export default function LearnPage() {
                 <div className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">{practice.skillName}</div>
                 <h3 className="mt-1 text-lg font-bold text-slate-950 group-hover:text-cyan-800">{practice.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{practice.instruction}</p>
-                <span className="mt-4 inline-flex items-center text-sm font-bold text-cyan-800">Open activity <ArrowRight className="ml-1.5 h-4 w-4" /></span>
+                <span className="mt-4 inline-flex items-center text-sm font-bold text-cyan-800"><T text="Open activity" /> <ArrowRight className="ml-1.5 h-4 w-4" /></span>
               </Link>
             ))}
           </div>
@@ -197,10 +197,10 @@ export default function LearnPage() {
                 <div className="h-2 bg-gradient-to-r from-blue-600 via-violet-600 to-fuchsia-500" />
                 <CardHeader>
                   <div className="mb-3 flex items-center justify-between gap-3">
-                    <Badge className="bg-blue-100 text-blue-800">Skill Sprint</Badge>
+                    <Badge className="bg-blue-100 text-blue-800"><T text="Skill Sprint" /></Badge>
                     <span className="inline-flex items-center text-xs font-medium text-slate-500">
                       <Clock3 className="mr-1.5 h-4 w-4" />
-                      {course.estimatedMinutes} minutes
+                      {course.estimatedMinutes} <T text="minutes" />
                     </span>
                   </div>
                   <CardTitle className="text-2xl transition-colors group-hover:text-blue-700">{course.title}</CardTitle>
@@ -210,7 +210,7 @@ export default function LearnPage() {
                   <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
                     <div className="rounded-xl bg-slate-50 p-3">
                       <Target className="mb-1.5 h-4 w-4 text-blue-600" />
-                      <span className="font-semibold text-slate-900">{course.lessons.length} rounds</span>
+                      <span className="font-semibold text-slate-900">{course.lessons.length} <T text="rounds" /></span>
                     </div>
                     <div className="rounded-xl bg-amber-50 p-3">
                       <Trophy className="mb-1.5 h-4 w-4 text-amber-600" />
@@ -235,8 +235,8 @@ export default function LearnPage() {
         <section className="mt-14 rounded-3xl border border-slate-200 bg-slate-950 p-8 text-white sm:p-10">
           <div className="grid gap-8 lg:grid-cols-3">
             <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-300">The learning loop</div>
-              <h2 className="mt-3 text-3xl font-bold">Designed for comprehension, not empty points.</h2>
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-300"><T text="The learning loop" /></div>
+              <h2 className="mt-3 text-3xl font-bold"><T text="Designed for comprehension, not empty points." /></h2>
             </div>
             <div className="lg:col-span-2 lg:grid lg:grid-cols-3 lg:gap-5">
               {[
@@ -246,8 +246,8 @@ export default function LearnPage() {
               ].map(([number, title, copy]) => (
                 <div key={number} className="mt-5 rounded-2xl bg-white/10 p-5 first:mt-0 lg:mt-0">
                   <div className="text-sm font-bold text-blue-300">{number}</div>
-                  <h3 className="mt-2 font-bold">{title}</h3>
-                  <p className="mt-1 text-sm leading-6 text-slate-300">{copy}</p>
+                  <h3 className="mt-2 font-bold"><T text={title} /></h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-300"><T text={copy} /></p>
                 </div>
               ))}
             </div>
