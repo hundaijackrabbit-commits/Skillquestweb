@@ -160,5 +160,8 @@ export const frenchLearningUi: Record<string, string> = {
   "Explore applications": "Explorer les applications",
   "Bridge the gap between recognizing a pattern and using it independently.": "Passez de la reconnaissance d'un modèle à son utilisation autonome.",
   "interactive practice": "la pratique interactive",
-  "Create a free account to open this activity, earn account-scoped XP, and keep your learning progress connected across the site.": "Créez un compte gratuit pour accéder à cette activité, gagner des XP liés à votre compte et retrouver votre progression dans le site."
+  "Create a free account to open this activity, earn account-scoped XP, and keep your learning progress connected across the site.": "Créez un compte gratuit pour accéder à cette activité, gagner des XP liés à votre compte et retrouver votre progression dans le site.",
+  "Short guided courses": "Courtes formations guidées",
+  "Loading today’s challenge": "Chargement du défi du jour",
+  "Choose your learning goal": "Choisissez votre objectif d'apprentissage"
 };
