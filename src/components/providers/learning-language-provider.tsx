@@ -81,3 +81,14 @@ export function EnglishGuideNotice() {
     </p>
   );
 }
+
+/** Explain editorial language gaps without claiming that article bodies are translated. */
+export function EnglishContentNotice({ message }: { message: string }) {
+  const { locale } = useLearningLanguage();
+  if (locale === 'en') return null;
+  return (
+    <p role="note" className="mt-4 rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm leading-6 text-blue-900">
+      <TranslatedText text={message} />
+    </p>
+  );
+}
