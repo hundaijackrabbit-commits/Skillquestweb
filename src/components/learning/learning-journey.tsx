@@ -128,7 +128,7 @@ export function LearningJourney({ compact = false }: { compact?: boolean }) {
           <p className="text-xs font-bold uppercase tracking-wider text-indigo-700"><T text="Your learning loop" /></p>
           <h2 id={compact ? 'dashboard-journey-title' : 'practice-journey-title'} className="mt-2 text-xl font-bold text-slate-950 sm:text-2xl"><T text="Pick up where you left off" /></h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-            {recent ? <span lang={locale === 'fr' ? 'fr' : 'en'}>{t('Your latest recorded rep involved {skill}. Review it, keep a useful insight, then choose your next rep.').replace('{skill}', recent.skillSlug.replace(/-/g, ' '))}</span> : <T text="Start a guided workshop or Skill Sprint, then return here to revisit and build on it." />}
+            {recent ? <span lang={locale === 'fr' || locale === 'zh-CN' ? locale : 'en'}>{t('Your latest recorded rep involved {skill}. Review it, keep a useful insight, then choose your next rep.').replace('{skill}', recent.skillSlug.replace(/-/g, ' '))}</span> : <T text="Start a guided workshop or Skill Sprint, then return here to revisit and build on it." />}
           </p>
         </div>
         <span className="rounded-full bg-indigo-100 px-3 py-1.5 text-xs font-bold text-indigo-900">{count} <T text="completed reps on this browser" /></span>
@@ -137,12 +137,12 @@ export function LearningJourney({ compact = false }: { compact?: boolean }) {
         <div className="mt-5 flex flex-col gap-4 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
           <div className="max-w-2xl">
             <p className="text-xs font-bold uppercase tracking-wider text-emerald-800"><T text="Suggested next step · based on your recent practice" /></p>
-            <h3 className="mt-2 text-lg font-bold text-slate-950"><span lang={locale === 'fr' ? 'fr' : 'en'}>{nextStep.title}</span></h3>
-            <p className="mt-1 text-sm leading-6 text-slate-700"><span lang={locale === 'fr' ? 'fr' : 'en'}>{nextStep.detail}</span></p>
-            <p className="mt-2 text-xs leading-5 text-slate-600"><strong><T text="Why this step:" /></strong> <span lang={locale === 'fr' ? 'fr' : 'en'}>{nextStep.reason}</span></p>
+            <h3 className="mt-2 text-lg font-bold text-slate-950"><span lang={locale === 'fr' || locale === 'zh-CN' ? locale : 'en'}>{nextStep.title}</span></h3>
+            <p className="mt-1 text-sm leading-6 text-slate-700"><span lang={locale === 'fr' || locale === 'zh-CN' ? locale : 'en'}>{nextStep.detail}</span></p>
+            <p className="mt-2 text-xs leading-5 text-slate-600"><strong><T text="Why this step:" /></strong> <span lang={locale === 'fr' || locale === 'zh-CN' ? locale : 'en'}>{nextStep.reason}</span></p>
           </div>
           <Link href={nextStep.href} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-xl bg-emerald-800 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
-            <span lang={locale === 'fr' ? 'fr' : 'en'}>{nextStep.actionLabel}</span><ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <span lang={locale === 'fr' || locale === 'zh-CN' ? locale : 'en'}>{nextStep.actionLabel}</span><ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       )}
