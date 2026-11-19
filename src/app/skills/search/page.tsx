@@ -3,6 +3,7 @@ import { SkillsDirectory } from '@/components/skills/skills-directory';
 import { getCanonicalSkills } from '@/lib/content';
 import { compareSkillsForDiscovery } from '@/lib/content-quality';
 import { TOPICS } from '@/lib/topics';
+import { resolveChineseSkillSearch } from '@/lib/zh-cn-skill-search';
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -32,6 +33,7 @@ function searchScore(skill: Awaited<ReturnType<typeof getCanonicalSkills>>[numbe
 export default async function SkillsSearchPage({ searchParams }: { searchParams: SearchParams }) {
   const values = await searchParams;
   const query = first(values.q).trim().slice(0, 100);
+  const searchQuery = resolveChineseSkillSearch(query);
   const requestedCategory = first(values.category);
   const category = TOPICS.some((topic) => topic.slug === requestedCategory) ? requestedCategory : '';
   const requestedSort = first(values.sort);
@@ -42,12 +44,12 @@ export default async function SkillsSearchPage({ searchParams }: { searchParams:
   const filtered = allSkills.filter((skill) => {
     if (category && skill.category !== category) return false;
     if (!query) return true;
-    return searchScore(skill, query) > 0;
+    return searchScore(skill, searchQuery) > 0;
   });
 
   filtered.sort((left, right) => {
     if (query) {
-      const difference = searchScore(right, query) - searchScore(left, query);
+      const difference = searchScore(right, searchQuery) - searchScore(left, searchQuery);
       if (difference !== 0) return difference;
     }
     if (sort === 'name') return left.name.localeCompare(right.name);
