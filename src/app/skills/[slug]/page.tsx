@@ -42,6 +42,7 @@ import SaveSkillButton from '@/components/skills/save-skill-button';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { chineseAlternateLanguages, editionPath, findChineseEdition } from '@/lib/zh-cn';
 import { breadcrumbList } from '@/lib/seo';
 import {
   isSkillFieldEditoriallyUseful,
@@ -112,7 +113,10 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
-    alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
+    alternates: {
+      canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
+      ...(chineseAlternateLanguages('skill', canonicalSkill?.slug ?? skill.slug) ? { languages: chineseAlternateLanguages('skill', canonicalSkill?.slug ?? skill.slug) } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
@@ -245,6 +249,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
               <div className="max-w-4xl">
                 <h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900">{skill.name}</h1>
                 <p className="mb-2 text-xl leading-relaxed text-gray-700"><GlossaryLinkedText text={skill.shortDefinition ?? ''} maxLinks={1} /></p>
+                 {findChineseEdition('skill', skill.slug) && <Link href={editionPath('skill', skill.slug)} lang="zh-CN" className="mb-3 inline-flex min-h-11 items-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-bold text-blue-800 hover:bg-blue-100">阅读简体中文技能指南 →</Link>}
                 <ContextualLearningHelp context={[skill.name, skill.shortDefinition, ...skill.beginnerActions.slice(0, 2)].join(" | ").slice(0, 4500)} prompt={`Can you explain ${skill.name} with a practical example I could try today?`} />
                 <EnglishGuideNotice />
               </div>

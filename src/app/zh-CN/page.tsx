@@ -4,11 +4,12 @@ import { ArrowRight, BookOpen, BrainCircuit, Compass, GraduationCap, Search, Shi
 import { TOPICS } from '@/lib/topics';
 import { translateInterface } from '@/lib/ui-translations';
 import { absoluteUrl } from '@/lib/site';
+import { editionPath, listChineseEditions } from '@/lib/zh-cn';
 
 export const metadata: Metadata = {
   title: '中文学习中心｜职场技能、职业方向与实践练习',
   description: 'Modern Skill Lab 简体中文学习入口：探索职场沟通、AI 素养、批判性思维、数据分析和职业规划。了解技能主题与免费学习工具。',
-  alternates: { canonical: '/zh-CN' },
+  alternates: { canonical: '/zh-CN', languages: { en: '/', 'zh-CN': '/zh-CN' } },
   openGraph: {
     title: '中文学习中心｜Modern Skill Lab',
     description: '用简体中文探索实用技能、职业方向和高效学习方法。',
@@ -30,7 +31,7 @@ const startingPoints = [
       '请对方复述下一步，检查是否真的达成了共同理解。',
     ],
     task: '实践：选一条日常工作消息，将它改写成“背景—要点—下一步”的三段式表达。',
-    href: '/skills/communication',
+    href: '/zh-CN/skills/communication',
   },
   {
     icon: BrainCircuit,
@@ -42,7 +43,7 @@ const startingPoints = [
       '对重要信息查阅原始来源，涉及隐私时不要输入敏感内容。',
     ],
     task: '实践：请 AI 总结一个熟悉的主题，然后逐条检查其中的事实和来源。',
-    href: '/skills/ai-literacy',
+    href: '/zh-CN/skills/ai-literacy',
   },
   {
     icon: Compass,
@@ -54,7 +55,7 @@ const startingPoints = [
       '说明目前最合理的判断，以及哪些新证据可能改变它。',
     ],
     task: '实践：选择一条职场建议，分别写出支持证据、反例及仍不确定的地方。',
-    href: '/skills/critical-thinking',
+    href: '/zh-CN/skills/critical-thinking',
   },
 ];
 
@@ -80,7 +81,37 @@ export default function ChineseLearningHome() {
 
         <section aria-labelledby="zh-transparency" className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5">
           <h2 id="zh-transparency" className="flex items-center gap-2 font-bold text-amber-950"><ShieldCheck className="h-5 w-5" aria-hidden="true" />中文内容进度说明</h2>
-          <p className="mt-2 text-sm leading-7 text-amber-950">本页的学习说明与练习建议已提供简体中文。网站的主要导航、技能搜索和部分界面也支持中文；目前许多完整的技能、职业及博客文章仍为英文。打开这些页面时，可使用页面里的 AI 学习助手请求简体中文解释。AI 回答可能存在错误，重要信息应进一步核实。</p>
+          <p className="mt-2 text-sm leading-7 text-amber-950">本页提供简体中文入门指导，并新增部分技能指南、职业指南与专题文章的中文编辑版。其他大量历史内容仍以英文为主。若某篇资料没有中文版，可使用页面中的 AI 学习助手辅助理解；AI 输出仍需核验。</p>
+        </section>
+
+        <section id="zh-editions" aria-labelledby="zh-editions-heading" className="mt-16 scroll-mt-28">
+          <div className="max-w-3xl">
+            <span className="text-sm font-bold text-blue-700">中文内容专题</span>
+            <h2 id="zh-editions-heading" className="mt-2 text-3xl font-bold text-slate-950">精选中文技能、职业与文章</h2>
+            <p className="mt-3 leading-7 text-slate-600">以下资料提供完整的中文导读、主要知识点与实用练习，并链接到对应的英文原文。中文内容是编辑整理版，篇幅和细节可能与原文不同。</p>
+          </div>
+          {([
+            { kind: 'skill', title: '技能指南', intro: '从核心概念学到可操作的练习' },
+            { kind: 'career', title: '职业指南', intro: '了解岗位职责、核心能力和入行路径' },
+            { kind: 'article', title: '专题文章', intro: '把当前工作研究转化为实际方法' },
+          ] as const).map((group) => (
+            <div key={group.kind} className="mt-9">
+              <div className="flex flex-wrap items-baseline gap-3">
+                <h3 className="text-xl font-bold text-slate-950">{group.title}</h3>
+                <p className="text-sm text-slate-500">{group.intro}</p>
+              </div>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {listChineseEditions(group.kind).map((edition) => (
+                  <Link key={edition.slug} href={editionPath(group.kind, edition.slug)}
+                    className="flex min-h-44 flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm">
+                    <span className="text-lg font-bold leading-7 text-slate-950">{edition.title}</span>
+                    <span className="mt-2 flex-1 text-sm leading-6 text-slate-600">{edition.description}</span>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue-700">阅读中文内容 <ArrowRight className="h-4 w-4" aria-hidden="true" /></span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
         </section>
 
         <section aria-labelledby="zh-start" className="mt-16">
@@ -96,7 +127,7 @@ export default function ChineseLearningHome() {
                   {item.steps.map((step) => <li key={step}>{step}</li>)}
                 </ol>
                 <p className="mt-5 rounded-xl bg-blue-50 p-4 text-sm leading-7 text-blue-900">{item.task}</p>
-                <Link href={item.href} className="mt-auto inline-flex min-h-11 items-center gap-2 pt-5 text-sm font-bold text-blue-700">查看完整技能指南（英文）<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+                <Link href={item.href} className="mt-auto inline-flex min-h-11 items-center gap-2 pt-5 text-sm font-bold text-blue-700">查看详细中文技能指南<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
               </article>
             ))}
           </div>

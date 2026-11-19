@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, normalizeLearningLocale, isRightToLeft, type LearningLocale } from '@/lib/internationalization';
 import { translateInterface } from '@/lib/ui-translations';
 
@@ -13,14 +14,19 @@ const Context = createContext<LanguageContext | null>(null);
 
 export function LearningLanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<LearningLocale>(DEFAULT_LOCALE);
+  const pathname = usePathname();
+  // Explicit Chinese editorial URLs always display Chinese navigation even
+  // if a different interface preference was stored for other pages.
+  const isChineseEditorialRoute = pathname === '/zh-CN' || pathname.startsWith('/zh-CN/');
+  const displayedLocale: LearningLocale = isChineseEditorialRoute ? 'zh-CN' : locale;
 
   useEffect(() => {
     const refresh = () => {
       try {
         const saved = window.localStorage.getItem(LOCALE_STORAGE_KEY);
-        setLocale(normalizeLearningLocale(saved || navigator.language));
+        setLocale(normalizeLearningLocale(saved || (window.location.pathname.startsWith('/zh-CN') ? 'zh-CN' : navigator.language)));
       } catch {
-        setLocale(normalizeLearningLocale(navigator.language));
+        setLocale(normalizeLearningLocale(window.location.pathname.startsWith('/zh-CN') ? 'zh-CN' : navigator.language));
       }
     };
     refresh();
@@ -36,20 +42,20 @@ export function LearningLanguageProvider({ children }: { children: ReactNode }) 
   // Keep the document direction and assistive-technology language in sync with the UI.
   useEffect(() => {
     const documentRoot = document.documentElement;
-    documentRoot.lang = locale;
-    documentRoot.dir = isRightToLeft(locale) ? 'rtl' : 'ltr';
-    documentRoot.dataset.learningLocale = locale;
-  }, [locale]);
+    documentRoot.lang = displayedLocale;
+    documentRoot.dir = isRightToLeft(displayedLocale) ? 'rtl' : 'ltr';
+    documentRoot.dataset.learningLocale = displayedLocale;
+  }, [displayedLocale]);
 
   const value = useMemo<LanguageContext>(() => ({
-    locale,
+    locale: displayedLocale,
     setLanguage: (language: string) => {
       const next = normalizeLearningLocale(language);
       setLocale(next);
       try { window.localStorage.setItem(LOCALE_STORAGE_KEY, next); } catch { /* Storage disabled. */ }
       window.dispatchEvent(new CustomEvent('msl:learning-language-changed', { detail: { locale: next } }));
     },
-  }), [locale]);
+  }), [displayedLocale]);
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
