@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function SkillsPagination({
@@ -32,7 +33,7 @@ export function SkillsPagination({
           rel="prev"
           className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700"
         >
-          <ChevronLeft aria-hidden="true" className="mr-1 h-4 w-4" /> Previous
+          <ChevronLeft aria-hidden="true" className="mr-1 h-4 w-4" /> <T text="Previous" />
         </Link>
       )}
 
@@ -68,7 +69,7 @@ export function SkillsPagination({
           rel="next"
           className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700"
         >
-          Next <ChevronRight aria-hidden="true" className="ml-1 h-4 w-4" />
+          <T text="Next" /> <ChevronRight aria-hidden="true" className="ml-1 h-4 w-4" />
         </Link>
       )}
     </nav>
