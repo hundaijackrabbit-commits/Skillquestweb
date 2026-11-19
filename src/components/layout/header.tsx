@@ -153,6 +153,7 @@ export function Header() {
 
               <div className="mt-6 space-y-3 border-t border-slate-200 pt-5">
                 <LearningLanguageSelector compact />
+                {learningLocale === 'zh-CN' && <Link href="/zh-CN" onClick={() => closeMobileMenu()} className="flex min-h-10 items-center rounded-xl bg-blue-50 px-3 text-sm font-semibold text-blue-800 hover:bg-blue-100">中文学习中心</Link>}
                 {loading ? (
                   <div className="space-y-3" aria-label={t('Loading account options')}>
                     <div className="h-11 w-full animate-pulse rounded-xl bg-slate-200" />
@@ -245,6 +246,7 @@ export function Header() {
 
         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-3">
           <LearningLanguageSelector />
+          {learningLocale === 'zh-CN' && <Link href="/zh-CN" className="hidden rounded-lg bg-blue-50 px-3 py-2 text-xs font-bold text-blue-800 hover:bg-blue-100 xl:block">中文学习中心</Link>}
           <Link href="/skills" className="hidden xl:block">
             <Button asChild variant="ghost" size="sm" className="text-slate-700">
               <Search className="mr-2 h-4 w-4" />
