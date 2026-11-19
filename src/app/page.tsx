@@ -13,7 +13,7 @@ import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { DiscoveryQuiz } from '@/components/marketing/discovery-quiz';
 import { ChallengeWheel } from '@/components/marketing/challenge-wheel';
-import { PortraitIntroVideo } from '@/components/marketing/portrait-intro-video';
+import { HomepageVideoByLanguage } from '@/components/marketing/homepage-video-by-language';
 
 export const dynamic = 'force-dynamic';
 
@@ -83,7 +83,7 @@ export default async function HomePage() {
             <p className="mt-4 text-xs text-slate-400"><T text="Portrait video • Tap to play with sound • No autoplay" /></p>
           </div>
           <div className="order-1 flex min-w-0 justify-center lg:order-2">
-            <PortraitIntroVideo />
+            <HomepageVideoByLanguage />
           </div>
         </div>
       </section>
