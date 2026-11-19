@@ -127,13 +127,13 @@ export default async function HomePage() {
             <Link href="/auth?mode=signup&redirect=%2Fdashboard" className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition hover:border-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">
               <p className="text-xs font-bold uppercase tracking-wider text-blue-700"><T text="Free member tools" /></p>
               <h3 className="mt-2 font-bold text-slate-950"><T text="Save skills as you learn" /></h3>
-              <p className="mt-1 text-sm text-slate-600">Build your personal dashboard and pick up where you left off.</p>
+              <p className="mt-1 text-sm text-slate-600"><T text="Build your personal dashboard and pick up where you left off." /></p>
               <span className="mt-3 inline-flex items-center text-sm font-semibold text-blue-800"><T text="Create an account" /> <ArrowRight className="ml-1 h-4 w-4" /></span>
             </Link>
             <Link href="/skills" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition hover:border-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-700"><T text="Hands-on activities" /></p>
               <h3 className="mt-2 font-bold text-slate-950"><T text="Try a skill today" /></h3>
-              <p className="mt-1 text-sm text-slate-600">Discover practical exercises and skill-specific challenges.</p>
+              <p className="mt-1 text-sm text-slate-600"><T text="Discover practical exercises and skill-specific challenges." /></p>
               <span className="mt-3 inline-flex items-center text-sm font-semibold text-emerald-800"><T text="Browse activities" /> <ArrowRight className="ml-1 h-4 w-4" /></span>
             </Link>
             </div>
@@ -177,10 +177,10 @@ export default async function HomePage() {
           <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
-                <Sparkles className="h-4 w-4" aria-hidden="true" /> Free skill-path diagnostic
+                <Sparkles className="h-4 w-4" aria-hidden="true" /> <T text="Free skill-path diagnostic" />
               </div>
               <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"><T text="Not sure where to start?" /></h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">Turn your goal, strengths, constraints, and available time into a focused skill stack, a practical 30-day roadmap, and one proof-of-work project.</p>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base"><T text="Turn your goal, strengths, constraints, and available time into a focused skill stack, a practical 30-day roadmap, and one proof-of-work project." /></p>
             </div>
             <Link href="/skill-path" className="mt-6 inline-flex shrink-0 lg:mt-0">
               <Button variant="primary" size="lg"><T text="Find my skill path" /><ArrowRight className="ml-2 h-4 w-4" /></Button>
@@ -219,11 +219,11 @@ export default async function HomePage() {
               <Card key={`${featureType}-${skill.slug}`} className="rounded-3xl border-slate-200 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <CardHeader>
                   <Badge variant="success" className="w-fit rounded-full px-3 py-1 text-xs font-semibold">{featureType === 'week' ? 'Skill of the Week' : featureType === 'month' ? 'Skill of the Month' : 'Editor’s Pick'}</Badge>
-                  <CardTitle className="text-2xl text-slate-900">{skill.name}</CardTitle>
+                  <CardTitle className="text-2xl text-slate-900"><T text={skill.name} /></CardTitle>
                 </CardHeader>
                 <CardContent>
                   {headline && <p className="mb-2 text-sm font-semibold text-blue-700">{headline}</p>}
-                  <p className="line-clamp-4 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
+                  <p lang="en" className="line-clamp-4 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
                   <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600"><T text="Explore skill" /> <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </CardContent>
               </Card>
@@ -253,7 +253,7 @@ export default async function HomePage() {
                 </div>
                 <h3 className="mt-4 text-xl font-bold group-hover:text-blue-200">{course.title}</h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-300">{course.description}</p>
-                <span className="mt-5 inline-flex items-center text-sm font-semibold text-white">Start sprint <ArrowRight className="ml-2 h-4 w-4" /></span>
+                <span className="mt-5 inline-flex items-center text-sm font-semibold text-white"><T text="Start sprint" /> <ArrowRight className="ml-2 h-4 w-4" /></span>
               </Link>
             ))}
           </div>
@@ -263,11 +263,11 @@ export default async function HomePage() {
       {growth.trending.length > 0 && (
         <section className="border-y bg-slate-50 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex items-center gap-3"><div className="rounded-2xl bg-orange-100 p-2.5 text-orange-700"><Flame className="h-5 w-5" /></div><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Chosen by visitors</p><h2 className="text-3xl font-bold text-slate-900">Trending this week</h2></div></div>
+            <div className="flex items-center gap-3"><div className="rounded-2xl bg-orange-100 p-2.5 text-orange-700"><Flame className="h-5 w-5" /></div><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700"><T text="Chosen by visitors" /></p><h2 className="text-3xl font-bold text-slate-900"><T text="Trending this week" /></h2></div></div>
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {growth.trending.map(({ skill }) => (
                 <Link key={skill.slug} href={`/skills/${skill.slug}`} className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
-                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Popular in the library</p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700">{skill.name}</h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
+                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400"><T text="Popular in the library" /></p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700"><T text={skill.name} /></h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
                 </Link>
               ))}
             </div>
