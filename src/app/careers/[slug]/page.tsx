@@ -25,6 +25,8 @@ import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
+import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
@@ -78,7 +80,13 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
   return {
     title,
     description,
-    alternates: { canonical: `/careers/${career.slug}` },
+    alternates: {
+      canonical: absoluteUrl(`/careers/${career.slug}`),
+      ...(hasChineseEdition('career', career.slug) ? { languages: {
+        en: absoluteUrl(`/careers/${career.slug}`),
+        'zh-CN': absoluteUrl(editionPath('career', career.slug)),
+      } } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
@@ -130,6 +138,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
       <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
+        <ChineseEditionLink kind="career" slug={career.slug} />
         <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Careers', href: '/careers' }, { label: career.title }]} />
 
         {/* Hero Header */}

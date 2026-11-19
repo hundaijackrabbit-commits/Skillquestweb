@@ -42,6 +42,8 @@ import SaveSkillButton from '@/components/skills/save-skill-button';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
+import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
 import {
   isSkillFieldEditoriallyUseful,
@@ -112,7 +114,13 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
     title,
     description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
-    alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
+    alternates: {
+      canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
+      ...(hasChineseEdition('skill', canonicalSkill?.slug ?? skill.slug) ? { languages: {
+        en: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
+        'zh-CN': absoluteUrl(editionPath('skill', canonicalSkill?.slug ?? skill.slug)),
+      } } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
@@ -205,6 +213,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       <ContentViewTracker eventType="skill_view" itemType="skill" itemSlug={skill.slug} />
       <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
+        <ChineseEditionLink kind="skill" slug={skill.slug} />
         <Breadcrumbs
           className="mb-8"
           items={[
