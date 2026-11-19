@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getSkillPaths } from '@/lib/content';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
+import { TranslatedText as T, EnglishContentNotice } from '@/components/providers/learning-language-provider';
 import { getTopicBySlug, TOPICS } from '@/lib/topics';
 import { 
   ArrowRight, 
@@ -56,48 +57,49 @@ export default async function SkillPathsPage() {
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium mb-6">
             <Compass className="h-4 w-4 mr-2" />
-            Structured Learning Journeys
+            <T text="Structured Learning Journeys" />
           </div>
           <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl mb-6">
-            Skill Development
-            <span className="text-blue-600 block">Paths</span>
+            <T text="Skill Development" />
+            <span className="text-blue-600 block"><T text="Paths" /></span>
           </h1>
           <p className="text-xl leading-8 text-gray-600 mb-8">
-            Follow structured learning paths that group complementary skills into practical sequences.
-            Move from foundations toward more advanced capabilities with a clearer roadmap for professional growth.
+            <T text="Follow structured learning paths that group complementary skills into practical sequences. Move from foundations toward more advanced capabilities with a clearer roadmap for professional growth." />
           </p>
           <div className="grid gap-4 text-left md:grid-cols-3">
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-              <h2 className="font-bold text-slate-950">Begin with an outcome</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Choose a path because you want to perform a kind of work, not simply collect disconnected topics.</p>
+              <h2 className="font-bold text-slate-950"><T text="Begin with an outcome" /></h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Choose a path because you want to perform a kind of work, not simply collect disconnected topics." /></p>
             </div>
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-              <h2 className="font-bold text-slate-950">Build in sequence</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Move from foundations into applied capabilities so each new skill has something to attach to.</p>
+              <h2 className="font-bold text-slate-950"><T text="Build in sequence" /></h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Move from foundations into applied capabilities so each new skill has something to attach to." /></p>
             </div>
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-              <h2 className="font-bold text-slate-950">Create evidence</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Turn concepts into small work samples, decisions, explanations, and repeatable habits you can inspect.</p>
+              <h2 className="font-bold text-slate-950"><T text="Create evidence" /></h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Turn concepts into small work samples, decisions, explanations, and repeatable habits you can inspect." /></p>
             </div>
           </div>
         </div>
 
+        <EnglishContentNotice message="Complete learning-path descriptions are currently in English. Chinese topic navigation and learning guidance are available." />
+
         <section className="mb-16" aria-labelledby="paths-by-topic">
           <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-700">Browse the learning graph</p>
-              <h2 id="paths-by-topic" className="mt-2 text-3xl font-bold text-slate-950">Learning paths by topic</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-700"><T text="Browse the learning graph" /></p>
+              <h2 id="paths-by-topic" className="mt-2 text-3xl font-bold text-slate-950"><T text="Learning paths by topic" /></h2>
             </div>
-            <Link href="/topics" className="text-sm font-semibold text-indigo-700">Explore all topic hubs →</Link>
+            <Link href="/topics" className="text-sm font-semibold text-indigo-700"><T text="Explore all topic hubs →" /></Link>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {topicPathGroups.map(({ topic, paths: topicPaths }) => (
               <Card key={topic.slug} className="rounded-2xl border-slate-200">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">{topic.name}</CardTitle>
+                  <CardTitle className="text-lg"><T text={topic.name} /></CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm leading-6 text-slate-600">{topic.description}</p>
+                  <p className="text-sm leading-6 text-slate-600"><T text={topic.description} /></p>
                   <div className="mt-4 space-y-2">
                     {topicPaths.slice(0, 4).map((path) => (
                       <Link key={path.id} href={`/paths/${path.id}`} className="block rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-800 transition hover:border-indigo-300 hover:bg-indigo-50">
@@ -118,7 +120,7 @@ export default async function SkillPathsPage() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900 flex items-center">
               <Star className="h-7 w-7 mr-3 text-yellow-500" />
-              Featured Learning Paths
+              <T text="Featured Learning Paths" />
             </h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -133,10 +135,10 @@ export default async function SkillPathsPage() {
                       </Badge>
                       <div className="flex items-center text-sm text-gray-600"><Clock className="h-4 w-4 mr-1" />{path.estimatedTime}</div>
                     </div>
-                    <CardTitle className="text-2xl group-hover:text-blue-600 transition-colors">{path.name}</CardTitle>
+                    <CardTitle className="text-2xl group-hover:text-blue-600 transition-colors"><T text={path.name} /></CardTitle>
                   </CardHeader>
                   <CardContent className="relative">
-                    <p className="text-gray-700 mb-6 leading-relaxed">{path.description}</p>
+                    <p lang="en" className="text-gray-700 mb-6 leading-relaxed">{path.description}</p>
                     <div className="space-y-4 mb-6">
                       <div className="flex items-start text-sm text-gray-600"><Target className="mt-1 h-4 w-4 mr-2 shrink-0 text-blue-600" /><span><strong className="font-semibold text-slate-800">Core sequence:</strong> {path.skills.slice(0, 4).map(humanize).join(' → ')}</span></div>
                       <div className="flex items-start text-sm text-gray-600"><TrendingUp className="mt-1 h-4 w-4 mr-2 shrink-0 text-green-600" /><span><strong className="font-semibold text-slate-800">Career direction:</strong> {path.relatedCareers.slice(0, 3).map(humanize).join(', ')}</span></div>
@@ -144,7 +146,7 @@ export default async function SkillPathsPage() {
                     </div>
                     <div className="flex items-center justify-between gap-3">
                       <div className="text-xs text-gray-500">{topic ? <Link href={`/topics/${topic.slug}`} className="font-semibold text-indigo-700 hover:underline">{topic.name}</Link> : path.category.replace('-', ' ').toUpperCase()}</div>
-                      <Link href={`/paths/${path.id}`}><Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">Start Path <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+                      <Link href={`/paths/${path.id}`}><Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md"><T text="Start Path" /> <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
                     </div>
                   </CardContent>
                 </Card>
@@ -155,8 +157,8 @@ export default async function SkillPathsPage() {
 
         <div className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">All Learning Paths</h2>
-            <p className="text-sm text-slate-600">Compare outcomes, sequence, difficulty, and time</p>
+            <h2 className="text-2xl font-bold text-gray-900"><T text="All Learning Paths" /></h2>
+            <p className="text-sm text-slate-600"><T text="Compare outcomes, sequence, difficulty, and time" /></p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {paths.map((path) => {
@@ -165,13 +167,13 @@ export default async function SkillPathsPage() {
                 <Card key={path.id} className="hover:shadow-lg transition-shadow group">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between mb-3">
-                      <Badge variant="outline" className={`${getDifficultyColor(path.difficulty)} border-0`} size="sm">{path.difficulty}</Badge>
+                      <Badge variant="outline" className={`${getDifficultyColor(path.difficulty)} border-0`} size="sm"><T text={path.difficulty} /></Badge>
                       {path.featured && <Star className="h-4 w-4 text-yellow-500 fill-current" />}
                     </div>
-                    <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">{path.name}</CardTitle>
+                    <CardTitle className="text-lg group-hover:text-blue-600 transition-colors"><T text={path.name} /></CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">{path.description}</p>
+                    <p lang="en" className="text-sm text-gray-600 mb-4 line-clamp-2">{path.description}</p>
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center text-xs text-gray-500"><Clock className="h-3 w-3 mr-2" /><span>{path.estimatedTime}</span></div>
                       <div className="flex items-center text-xs text-gray-500"><BookOpen className="h-3 w-3 mr-2" /><span>{path.skills.slice(0, 3).map(humanize).join(' · ')}</span></div>
