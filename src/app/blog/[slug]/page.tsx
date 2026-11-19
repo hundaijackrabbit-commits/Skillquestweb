@@ -19,6 +19,8 @@ import {
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
+import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
 import { isBlogPostIndexable } from '@/lib/content-quality';
 import { ArticleActions } from '@/components/blog/article-actions';
@@ -94,7 +96,13 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
   return {
     title: post.title,
     description,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: {
+      canonical: absoluteUrl(`/blog/${post.slug}`),
+      ...(hasChineseEdition('article', post.slug) ? { languages: {
+        en: absoluteUrl(`/blog/${post.slug}`),
+        'zh-CN': absoluteUrl(editionPath('article', post.slug)),
+      } } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: {
       title: `${post.title} | Modern Skill Lab`,
@@ -166,6 +174,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="blog_view" itemType="blog" itemSlug={post.slug} />
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
+        <ChineseEditionLink kind="article" slug={post.slug} />
         <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }, { label: post.title }]} />
 
         <div className="mb-12">

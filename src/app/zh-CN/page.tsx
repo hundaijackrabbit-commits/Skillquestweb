@@ -4,6 +4,8 @@ import { ArrowRight, BookOpen, BrainCircuit, Compass, GraduationCap, Search, Shi
 import { TOPICS } from '@/lib/topics';
 import { translateInterface } from '@/lib/ui-translations';
 import { absoluteUrl } from '@/lib/site';
+import { CHINESE_EDITION_GROUPS } from '@/lib/zh-cn/catalog';
+import { editionPath } from '@/lib/zh-cn/edition-routes';
 
 export const metadata: Metadata = {
   title: '中文学习中心｜职场技能、职业方向与实践练习',
@@ -30,7 +32,7 @@ const startingPoints = [
       '请对方复述下一步，检查是否真的达成了共同理解。',
     ],
     task: '实践：选一条日常工作消息，将它改写成“背景—要点—下一步”的三段式表达。',
-    href: '/skills/communication',
+    href: '/zh-CN/skills/communication',
   },
   {
     icon: BrainCircuit,
@@ -42,7 +44,7 @@ const startingPoints = [
       '对重要信息查阅原始来源，涉及隐私时不要输入敏感内容。',
     ],
     task: '实践：请 AI 总结一个熟悉的主题，然后逐条检查其中的事实和来源。',
-    href: '/skills/ai-literacy',
+    href: '/zh-CN/skills/ai-literacy',
   },
   {
     icon: Compass,
@@ -54,7 +56,7 @@ const startingPoints = [
       '说明目前最合理的判断，以及哪些新证据可能改变它。',
     ],
     task: '实践：选择一条职场建议，分别写出支持证据、反例及仍不确定的地方。',
-    href: '/skills/critical-thinking',
+    href: '/zh-CN/skills/critical-thinking',
   },
 ];
 
@@ -96,8 +98,31 @@ export default function ChineseLearningHome() {
                   {item.steps.map((step) => <li key={step}>{step}</li>)}
                 </ol>
                 <p className="mt-5 rounded-xl bg-blue-50 p-4 text-sm leading-7 text-blue-900">{item.task}</p>
-                <Link href={item.href} className="mt-auto inline-flex min-h-11 items-center gap-2 pt-5 text-sm font-bold text-blue-700">查看完整技能指南（英文）<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+                <Link href={item.href} className="mt-auto inline-flex min-h-11 items-center gap-2 pt-5 text-sm font-bold text-blue-700">阅读中文技能指南<ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
               </article>
+            ))}
+          </div>
+        </section>
+
+        <section aria-labelledby="zh-editorial" className="mt-16">
+          <div className="flex items-center gap-2 text-blue-700"><BookOpen aria-hidden="true" className="h-5 w-5" /><span className="text-sm font-bold">精选中文深度内容</span></div>
+          <h2 id="zh-editorial" className="mt-2 text-3xl font-bold text-slate-950">从中文入门，深入学习实用技能</h2>
+          <p className="mt-3 max-w-3xl text-base leading-8 text-slate-600">我们已为部分精选技能、职业和专题整理中文教学版本，每篇都包含实用解释、动手练习及英文原始资料链接。其他主题的完整文章仍在逐步翻译中。</p>
+          <div className="mt-8 space-y-10">
+            {CHINESE_EDITION_GROUPS.map((group) => (
+              <section key={group.kind} aria-label={group.label}>
+                <h3 className="text-xl font-bold text-slate-950">{group.label}</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600">{group.description}</p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {group.editions.map((edition) => (
+                    <Link key={edition.slug} href={editionPath(edition.kind, edition.slug)} className="group flex min-h-[148px] flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm">
+                      <h4 className="font-bold leading-7 text-slate-950 group-hover:text-blue-700">{edition.title}</h4>
+                      <p className="mt-2 flex-1 text-sm leading-7 text-slate-600">{edition.subtitle}</p>
+                      <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">阅读中文版 <ArrowRight aria-hidden="true" className="h-4 w-4" /></span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         </section>
