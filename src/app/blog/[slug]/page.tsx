@@ -112,7 +112,9 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
       publishedTime: post.publishedAt === '1970-01-01' ? undefined : post.publishedAt,
       modifiedTime: post.lastUpdated === '1970-01-01' ? undefined : post.lastUpdated,
       authors: [post.author],
+      siteName: 'Modern Skill Lab',
     },
+    twitter: { card: 'summary_large_image', title: post.title, description },
   };
 }
 
@@ -223,7 +225,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Last updated on the date above.</p>
           )}
 
-          <ArticleActions slug={post.slug} />
+          <ArticleActions slug={post.slug} title={post.title} url={canonicalUrl} />
         </div>
 
         {post.reviewedBy && (
