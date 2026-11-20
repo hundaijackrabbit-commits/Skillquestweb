@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, Copy, Linkedin, MessageCircle, Share2 } from 'lucide-react';
+import { BriefcaseBusiness, Check, Copy, MessageCircle, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLearningLanguage } from '@/components/providers/learning-language-provider';
 
@@ -51,7 +51,7 @@ export function ShareActions({ url, title }: Props) {
         WhatsApp
       </a>
       <a href={linkedInUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-        <Linkedin className="h-4 w-4" aria-hidden="true" />
+        <BriefcaseBusiness className="h-4 w-4" aria-hidden="true" />
         LinkedIn
       </a>
       <Button type="button" size="sm" variant="outline" onClick={copyLink} aria-live="polite">
