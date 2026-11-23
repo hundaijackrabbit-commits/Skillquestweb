@@ -23,6 +23,7 @@ import {
 } from '@/lib/content';
 import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
+import { ContinueLearning } from '@/components/learning/continue-learning';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
@@ -215,6 +216,14 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
             </div>
           </div>
         </div>
+
+        <ContinueLearning source={`/careers/${career.slug}`} destinations={[
+          ...relatedSkills.slice(0, 1).map((skill) => ({ href: `/skills/${skill.slug}`, title: skill.name, action: 'Build a relevant skill' })),
+          ...relatedPaths.slice(0, 1).map((path) => ({ href: `/paths/${path.id}`, title: path.name, action: 'Follow a learning path' })),
+          ...relatedCareers.slice(0, 1).map((next) => ({ href: `/careers/${next.slug}`, title: next.title, action: 'Compare a related career' })),
+          ...relatedPosts.slice(0, 1).map((post) => ({ href: `/blog/${post.slug}`, title: post.title, action: 'Read a related article' })),
+          { href: '/careers', title: 'Career library', action: 'Explore careers' },
+        ]} />
 
         <LearningActionPath title={`Explore a path into ${career.title}`} description="Practical entry strategies from this career guide. Read the complete career profile below for qualifications, work environments and further details." steps={career.beginnerEntryStrategies ?? []} />
         <LearningPageNavigator containerId="learning-page-content" />
