@@ -16,9 +16,18 @@ export async function GET(request: Request) {
       .eq('placement_key', key)
       .maybeSingle();
 
-    if (error || !data) return NextResponse.json({ enabled: false });
+    if (error) {
+      console.warn('Ad placement lookup failed', { key, code: error.code });
+      return NextResponse.json({ enabled: false });
+    }
+    if (!data) return NextResponse.json({ enabled: false });
+    if (data.enabled && (typeof data.slot_id !== 'string' || !/^\d+$/.test(data.slot_id))) {
+      console.warn('Enabled ad placement has an invalid slot ID', { key });
+      return NextResponse.json({ enabled: false });
+    }
     return NextResponse.json({ enabled: Boolean(data.enabled && data.slot_id), slotId: data.slot_id });
   } catch {
+    console.warn('Ad placement lookup unavailable', { key });
     return NextResponse.json({ enabled: false });
   }
 }
