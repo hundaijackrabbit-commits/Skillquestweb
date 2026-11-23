@@ -1,6 +1,7 @@
+import { TextbookFigure } from '@/components/learning/textbook-figure';
 import type { TextbookChapter as Chapter } from '@/lib/textbook-chapters';
 
-export function TextbookChapter({ chapter }: { chapter: Chapter }) {
+export function TextbookChapter({ chapter, slug }: { chapter: Chapter; slug: string }) {
   return (
     <section className="mb-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8" aria-labelledby="textbook-chapter-heading">
       <p className="text-xs font-bold uppercase tracking-widest text-indigo-700">Textbook companion</p>
@@ -15,6 +16,7 @@ export function TextbookChapter({ chapter }: { chapter: Chapter }) {
         <h3 className="text-lg font-bold text-slate-950">The underlying principles</h3>
         <p className="mt-3 max-w-prose leading-8 text-slate-700">{chapter.theory}</p>
       </div>
+      <TextbookFigure slug={slug} />
       <figure className="mt-7">
         <figcaption className="text-lg font-bold text-slate-950">A practical framework</figcaption>
         <ol className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
