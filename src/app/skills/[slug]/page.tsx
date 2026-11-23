@@ -42,6 +42,7 @@ import SaveSkillButton from '@/components/skills/save-skill-button';
 import { ShareActions } from '@/components/social/share-actions';
 import { SkillCommunityPulse } from '@/components/skills/skill-community-pulse';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
+import { ContinueLearning } from '@/components/learning/continue-learning';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
@@ -323,6 +324,14 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </div>
           </div>
         </div>
+
+        <ContinueLearning source={`/skills/${skill.slug}`} destinations={[
+          ...(course ? [{ href: `/skills/${skill.slug}/learn`, title: skill.name, action: 'Start practicing' }] : relatedPaths.slice(0, 1).map((path) => ({ href: `/paths/${path.id}`, title: path.name, action: 'Follow a learning path' }))),
+          ...relatedSkills.slice(0, 1).map((next) => ({ href: `/skills/${next.slug}`, title: next.name, action: 'Explore a related skill' })),
+          ...relatedCareers.slice(0, 1).map((career) => ({ href: `/careers/${career.slug}`, title: career.title, action: 'Explore a career' })),
+          ...relatedPosts.slice(0, 1).map((post) => ({ href: `/blog/${post.slug}`, title: post.title, action: 'Read a related article' })),
+          { href: '/skills', title: 'Skill library', action: 'Browse skills' },
+        ]} />
 
         <SkillCommunityPulse slug={skill.slug} />
 
