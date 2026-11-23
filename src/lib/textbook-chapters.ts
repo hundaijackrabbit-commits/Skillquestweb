@@ -6,6 +6,7 @@ export type TextbookChapter = {
   exercise: string;
   check: { question: string; answer: string };
   reading: string[];
+  caseStudy?: { context: string; concept: string; task: string; criteria: string[]; solution: string };
 };
 
 const chapters: Record<string, TextbookChapter> = {
@@ -279,6 +280,76 @@ const chapters: Record<string, TextbookChapter> = {
   }
 };
 
+const caseStudies: Record<string, NonNullable<TextbookChapter['caseStudy']>> = {
+  "communication": {
+    "context": "You coordinate a Friday client presentation. Finance needs approved pricing assumptions before revising slide 4. It is Wednesday afternoon.",
+    "concept": "A request must distinguish the deliverable from its prerequisite, identify ownership and timing, and close the feedback loop.",
+    "task": "Write a message naming the input, deliverable, owners, deadlines and escalation point. Ask the recipient to confirm the plan.",
+    "criteria": [
+      "Names a specific deliverable and owner",
+      "Identifies the prerequisite and timing",
+      "Invites confirmation or correction"
+    ],
+    "solution": "Alex, I will send the approved assumptions by Thursday at 10 a.m. Please update slide 4 using those figures by 2 p.m. If the assumptions are missing at 10, tell me immediately. Can you confirm the source and deadline? This establishes a sequence and makes a potential blocker visible."
+  },
+  "critical-thinking": {
+    "context": "Complaints about a course rose from 8 to 16 after a redesign, while enrollments rose from 100 to 400.",
+    "concept": "Counts and rates answer different questions. A causal explanation requires evidence that distinguishes competing hypotheses.",
+    "task": "Calculate both complaint rates, propose two explanations and identify a test to distinguish them.",
+    "criteria": [
+      "Calculates 8% and 4%",
+      "Separates observation from causal inference",
+      "Identifies a useful comparison"
+    ],
+    "solution": "Complaints increased in count but fell from 8% to 4% of enrollments. The redesign may have improved usability, or new learners may differ from prior learners. Compare similar learners or conduct a controlled layout test, checking complaint definitions. Neither the count nor the rate establishes causation."
+  },
+  "data-analysis": {
+    "context": "A learning site records 72 exercise completions from 600 mobile visitors and 40 from 200 desktop visitors. Assume each completion belongs to a different visitor.",
+    "concept": "A rate uses a denominator that represents the population exposed to the opportunity. Overall rates weight groups by their sizes.",
+    "task": "Calculate both device completion rates and the combined rate. Explain why an unweighted average is misleading.",
+    "criteria": [
+      "Mobile 12%, desktop 20%",
+      "Combined 14% (112/800)",
+      "Recognizes unequal group sizes and avoids claiming causation"
+    ],
+    "solution": "Mobile: 72/600 = 12%. Desktop: 40/200 = 20%. Overall: 112/800 = 14%, not 16%, because mobile contributes more observations. A device gap is visible, but differences in lesson mix and visitor intent could explain it."
+  },
+  "ai-literacy": {
+    "context": "An AI drafts a product FAQ using an approved specification sheet. It introduces a warranty duration that the sheet never mentions.",
+    "concept": "Grounding ties claims to evidence. Unsupported does not necessarily mean false, but an unsupported claim must not be treated as verified.",
+    "task": "Classify the warranty claim, rewrite the prompt to limit unsupported additions, and describe a release check.",
+    "criteria": [
+      "Marks the duration as unverified",
+      "Restricts answers to approved evidence",
+      "Requires human confirmation before publication"
+    ],
+    "solution": "Mark the warranty duration as not established. Prompt: Use only the supplied specification; identify the section supporting each answer and write not specified for missing information. Check each answer against the sheet, and obtain approved warranty wording from the product owner before publication."
+  },
+  "active-listening": {
+    "context": "A coworker says, “Nobody tells me when priorities change. I end up looking unreliable even though I finish my original assignments.”",
+    "concept": "Reflection tests meaning, while clarification narrows uncertainty. Understanding does not require agreement or an immediate solution.",
+    "task": "Respond with a tentative paraphrase, acknowledge the concern and ask one specific clarifying question before proposing action.",
+    "criteria": [
+      "Avoids blame or premature advice",
+      "Invites correction of the interpretation",
+      "Asks a non-leading question"
+    ],
+    "solution": "It sounds like you're being judged against priorities you didn't know had changed. Am I understanding correctly? Could you walk me through the last time that happened? This response checks meaning and gathers a concrete example before choosing a solution."
+  },
+  "project-management": {
+    "context": "A registration form must launch in five working days. Development needs two days; testing needs one day after development. Privacy approval needs one day and can occur in parallel. An optional feature adds two development days.",
+    "concept": "Dependencies determine task order. Parallel work can reduce elapsed time; scope changes consume schedule margin.",
+    "task": "Sketch a five-day schedule, identify release dependencies and decide how to handle the optional feature.",
+    "criteria": [
+      "Places testing after development",
+      "Requires privacy approval before release",
+      "Explains how the optional feature affects schedule margin"
+    ],
+    "solution": "Days 1–2: develop; day 1: privacy review if the necessary inputs are ready; day 3: test; day 4: fix defects and confirm approval; day 5: launch if criteria are met. Adding two development days pushes testing to day 5 and eliminates contingency. Defer the feature or agree on a revised plan."
+  }
+};
+
 export function getTextbookChapter(slug: string): TextbookChapter | undefined {
-  return chapters[slug];
+  const chapter = chapters[slug];
+  return chapter ? { ...chapter, caseStudy: caseStudies[slug] } : undefined;
 }
