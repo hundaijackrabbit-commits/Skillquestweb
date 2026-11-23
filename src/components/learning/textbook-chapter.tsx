@@ -35,6 +35,23 @@ export function TextbookChapter({ chapter }: { chapter: Chapter }) {
         </ol>
         <p className="mt-4 border-t border-sky-200 pt-3 leading-7 text-slate-800"><strong>Result:</strong> {chapter.example.result}</p>
       </div>
+      {chapter.caseStudy && (
+        <section className="mt-7 rounded-xl border border-indigo-200 bg-indigo-50/40 p-4 sm:p-6" aria-labelledby="chapter-case-heading">
+          <p className="text-xs font-bold uppercase tracking-widest text-indigo-700">Guided application</p>
+          <h3 id="chapter-case-heading" className="mt-2 text-xl font-bold text-slate-950">Apply the concept to a realistic scenario</h3>
+          <div className="mt-4 space-y-4 leading-7 text-slate-700">
+            <div><h4 className="font-semibold text-slate-950">Situation</h4><p className="mt-1">{chapter.caseStudy.context}</p></div>
+            <div><h4 className="font-semibold text-slate-950">Concept to use</h4><p className="mt-1">{chapter.caseStudy.concept}</p></div>
+            <div className="rounded-lg border border-indigo-100 bg-white p-4"><h4 className="font-semibold text-slate-950">Your task</h4><p className="mt-1">{chapter.caseStudy.task}</p></div>
+            <div><h4 className="font-semibold text-slate-950">What a strong answer includes</h4><ul className="mt-2 list-disc space-y-1 pl-5">{chapter.caseStudy.criteria.map((criterion) => <li key={criterion}>{criterion}</li>)}</ul></div>
+            <details className="rounded-lg border border-indigo-200 bg-white p-4">
+              <summary className="cursor-pointer font-semibold text-indigo-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Reveal a worked solution</summary>
+              <p className="mt-3">{chapter.caseStudy.solution}</p>
+            </details>
+          </div>
+        </section>
+      )}
+      <p className="mt-7 text-sm font-medium text-slate-600">Once you have attempted the guided case, try applying the same reasoning to your own situation and check your understanding.</p>
       <div className="mt-7 grid gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:p-5">
           <h3 className="font-bold text-emerald-950">Try it yourself</h3>
