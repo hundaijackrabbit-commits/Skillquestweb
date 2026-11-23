@@ -17,6 +17,7 @@ import {
   resolveIndustryReferences,
 } from '@/lib/content';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
+import { ContinueLearning } from '@/components/learning/continue-learning';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
@@ -233,6 +234,13 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             <strong>Editorial review:</strong> {post.reviewedBy}. {post.evidenceNote ?? 'Claims with a meaningful date or number are linked to their source in the article.'}
           </aside>
         )}
+
+        <ContinueLearning source={`/blog/${post.slug}`} destinations={[
+          ...relatedSkills.slice(0, 1).map((skill) => ({ href: `/skills/${skill.slug}`, title: skill.name, action: 'Explore a related skill' })),
+          ...relatedPosts.slice(0, 1).map((next) => ({ href: `/blog/${next.slug}`, title: next.title, action: 'Read a related article' })),
+          ...relatedCareers.slice(0, 1).map((career) => ({ href: `/careers/${career.slug}`, title: career.title, action: 'Explore a career' })),
+          { href: '/blog', title: 'Article library', action: 'Explore articles' },
+        ]} />
 
         <article className="mb-12 rounded-2xl border bg-white p-8 shadow-sm">
           <div className="prose prose-lg max-w-none">
