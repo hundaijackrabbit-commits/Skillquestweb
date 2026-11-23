@@ -342,7 +342,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
 
         <LearningActionPath title={`Practice ${skill.name}`} description="A practical starting route drawn from this skill guide. Explore the detailed learning sections below for more context." steps={skill.beginnerActions ?? []} outcome={skill.signalsOfMastery?.[0]} />
         <LearningPageNavigator containerId="learning-page-content" />
-        {textbookChapter && <TextbookChapter chapter={textbookChapter} />}
+        {textbookChapter && <TextbookChapter chapter={textbookChapter} slug={skill.slug} />}
         <KnowledgeHighlights kind="skill" slug={skill.slug} name={skill.name} insights={[{ id: "value", title: "Why it matters", text: skill.whyItMatters || skill.shortDefinition }, { id: "application", title: "Put it into practice", text: skill.beginnerActions[0] || skill.howToPractice }, { id: "mastery", title: "What progress looks like", text: skill.signalsOfMastery?.[0] || skill.howToMeasureProgress }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
         <RelatedGlossaryTerms text={[
