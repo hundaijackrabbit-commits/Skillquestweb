@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -30,6 +29,7 @@ export const metadata: Metadata = {
   keywords: ['modern skills','practical skills','career skills','professional development','AI literacy','digital skills','communication skills','critical thinking','career development'],
   alternates: { canonical: '/' },
   verification: { google: 'YKFnLTH8rZsMZoTpmT_sUapo_ROnt8Kg4MfQmMIJZ68' },
+  other: { 'google-adsense-account': 'ca-pub-9688403832260329' },
   openGraph: { title: 'Modern Skill Lab | Practical Skills for Modern Work', description: SITE_DESCRIPTION, type: 'website', locale: 'en_US', url: SITE_URL, siteName: SITE_NAME },
   twitter: { card: 'summary_large_image', title: 'Modern Skill Lab | Practical Skills for Modern Work', description: SITE_DESCRIPTION },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 } },
@@ -44,12 +44,17 @@ const structuredData = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9688403832260329"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-white text-slate-900">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-        {adsenseClient && <Script id="adsense-script" async strategy="beforeInteractive" crossOrigin="anonymous" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} />}
         <SupabaseProvider>
           <LearningProgressCloudSync />
           <LearningLanguageProvider>
