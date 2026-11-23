@@ -592,8 +592,13 @@ export async function getRelatedCareers(careerSlug: string, limit: number = 6): 
   const career = await getCareerBySlug(careerSlug);
   if (!career) return [];
 
+  const declared = (await resolveCareerReferences(career.relatedCareers))
+    .filter((candidate) => candidate.slug !== career.slug && isCareerIndexable(candidate));
+  // Curated recommendations should not be padded with weak matches just to fill the layout.
+  if (declared.length > 0) {
+    return [...new Map(declared.map((candidate) => [candidate.slug, candidate])).values()].slice(0, limit);
+  }
   const careers = (await getAllCareers()).filter(isCareerIndexable);
-  const declared = await resolveCareerReferences(career.relatedCareers);
   const scored = careers
     .filter((candidate) => candidate.slug !== career.slug)
     .map((candidate) => ({
@@ -606,8 +611,7 @@ export async function getRelatedCareers(careerSlug: string, limit: number = 6): 
     .sort((a, b) => b.score - a.score)
     .map(({ candidate }) => candidate);
 
-  return [...new Map([...declared, ...scored].map((candidate) => [candidate.slug, candidate])).values()]
-    .slice(0, limit);
+  return scored.slice(0, limit);
 }
 
 export async function getCareersForIndustry(industrySlug: string): Promise<Career[]> {
