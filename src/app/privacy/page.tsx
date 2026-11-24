@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Accounts</h2>
             <p className="mt-2">If you create an account, account and profile information is stored through Supabase. This can include your selected career interests, industries, work-style preferences, strengths, current goal, saved skills, and saved careers. Those answers are used to generate explainable content recommendations inside your private dashboard.</p>
-            <p className="mt-2">Practice XP and activity completions are currently stored in the browser and separated by signed-in account identifier. They do not yet synchronize across devices.</p>
+            <p className="mt-2">Practice XP and activity completions are stored in the browser and separated by signed-in account identifier. When cloud synchronization is enabled, signed-in activity records may also be stored in Supabase to synchronize progress across devices. Local progress remains available if synchronization is unavailable.</p>
           </section>
 
           <section>
@@ -50,7 +50,8 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Advertising</h2>
-            <p className="mt-2">Advertising is disabled unless it is deliberately configured. If Google AdSense or another advertising service is enabled later, that provider may use cookies or similar technologies according to its own policies and any consent requirements that apply to a visitor.</p>
+            <p className="mt-2">Modern Skill Lab includes Google AdSense. Advertising placements may be enabled or disabled individually. Google and its advertising partners may use cookies, similar technologies, and information such as IP addresses and browser or device information to serve, measure, and help prevent abuse of ads. Personalized advertising may use information about previous visits to this or other websites.</p>
+            <p className="mt-2">Learn how Google uses information from sites that use its services at <a className="text-blue-700 underline" href="https://policies.google.com/technologies/partner-sites">Google’s partner sites policy</a>. You can manage Google advertising preferences through <a className="text-blue-700 underline" href="https://myadcenter.google.com/">My Ad Center</a>. Browser cookie settings and any available site consent controls may also affect advertising.</p>
           </section>
 
           <section>
@@ -60,7 +61,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Changes</h2>
-            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: November 20, 2026.</p>
+            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: November 23, 2026.</p>
           </section>
         </div>
 

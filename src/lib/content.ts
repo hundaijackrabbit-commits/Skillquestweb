@@ -36,6 +36,34 @@ function loadSkillEditorialOverrides(): Record<string, Record<string, unknown>> 
   }
 }
 
+// Keep a malformed entry from taking an entire public directory offline.
+function parseContentRecords<T>(
+  raw: unknown,
+  schema: { safeParse: (value: unknown) => { success: true; data: T } | { success: false; error: { issues: readonly { path: readonly PropertyKey[]; message: string }[] } } },
+  kind: string,
+): T[] {
+  if (!Array.isArray(raw)) {
+    console.error(`Invalid ${kind} dataset: expected an array.`);
+    return [];
+  }
+  const valid: T[] = [];
+  raw.forEach((record: unknown, index: number) => {
+    const parsed = schema.safeParse(record);
+    if (parsed.success) {
+      valid.push(parsed.data);
+      return;
+    }
+    const candidate = record && typeof record === 'object' ? record as Record<string, unknown> : null;
+    const identity = candidate?.slug ?? candidate?.id ?? `record-${index}`;
+    console.error(`Invalid ${kind} record skipped: ${String(identity)}`,
+      parsed.error.issues.map((issue) => ({ path: issue.path.map(String).join('.'), message: issue.message })));
+  });
+  if (valid.length !== raw.length) {
+    console.warn(`Loaded ${valid.length} valid ${kind} records; skipped ${raw.length - valid.length} invalid record(s).`);
+  }
+  return valid;
+}
+
 // Content loading functions
 export const getAllSkills = cache(async (): Promise<Skill[]> => {
   if (!fs.existsSync(SKILLS_FILE)) {
@@ -243,7 +271,7 @@ export async function getAllCareers(): Promise<Career[]> {
     const fileContent = fs.readFileSync(CAREERS_FILE, 'utf8');
     const rawCareers = JSON.parse(fileContent);
     
-    return rawCareers.map((career: unknown) => CareerSchema.parse(career));
+    return parseContentRecords(rawCareers, CareerSchema, 'career');
   } catch (error) {
     console.error('Error loading careers:', error);
     return [];
@@ -270,7 +298,7 @@ export async function getAllIndustries(): Promise<Industry[]> {
     const fileContent = fs.readFileSync(INDUSTRIES_FILE, 'utf8');
     const rawIndustries = JSON.parse(fileContent);
     
-    return rawIndustries.map((industry: unknown) => IndustrySchema.parse(industry));
+    return parseContentRecords(rawIndustries, IndustrySchema, 'industry');
   } catch (error) {
     console.error('Error loading industries:', error);
     return [];
@@ -292,7 +320,7 @@ export async function getSkillPaths(): Promise<SkillPath[]> {
     const fileContent = fs.readFileSync(SKILL_PATHS_FILE, 'utf8');
     const rawPaths = JSON.parse(fileContent);
     
-    return rawPaths.map((path: unknown) => SkillPathSchema.parse(path));
+    return parseContentRecords(rawPaths, SkillPathSchema, 'learning path');
   } catch (error) {
     console.error('Error loading skill paths:', error);
     return [];
@@ -564,8 +592,13 @@ export async function getRelatedCareers(careerSlug: string, limit: number = 6): 
   const career = await getCareerBySlug(careerSlug);
   if (!career) return [];
 
+  const declared = (await resolveCareerReferences(career.relatedCareers))
+    .filter((candidate) => candidate.slug !== career.slug && isCareerIndexable(candidate));
+  // Curated recommendations should not be padded with weak matches just to fill the layout.
+  if (declared.length > 0) {
+    return [...new Map(declared.map((candidate) => [candidate.slug, candidate])).values()].slice(0, limit);
+  }
   const careers = (await getAllCareers()).filter(isCareerIndexable);
-  const declared = await resolveCareerReferences(career.relatedCareers);
   const scored = careers
     .filter((candidate) => candidate.slug !== career.slug)
     .map((candidate) => ({
@@ -578,8 +611,7 @@ export async function getRelatedCareers(careerSlug: string, limit: number = 6): 
     .sort((a, b) => b.score - a.score)
     .map(({ candidate }) => candidate);
 
-  return [...new Map([...declared, ...scored].map((candidate) => [candidate.slug, candidate])).values()]
-    .slice(0, limit);
+  return scored.slice(0, limit);
 }
 
 export async function getCareersForIndustry(industrySlug: string): Promise<Career[]> {
