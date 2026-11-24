@@ -2,6 +2,8 @@ import { LearningActionPath } from '@/components/learning/learning-action-path';
 import { LearningPageNavigator } from '@/components/learning/learning-page-navigator';
 import { GlossaryLinkedText, RelatedGlossaryTerms } from '@/components/glossary/glossary-links';
 import { KnowledgeHighlights } from '@/components/learning/knowledge-highlights';
+import { ContextualLearningHelp } from '@/components/learning/contextual-learning-help';
+import { EnglishContentNotice } from '@/components/providers/learning-language-provider';
 import { NextStepPrompt } from '@/components/marketing/next-step-prompt';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -23,6 +25,8 @@ import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
+import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
 import { KnowledgeCheckCard } from '@/components/learning/knowledge-check-card';
 import { buildDefinitionKnowledgeCheck } from '@/lib/knowledge-checks';
@@ -76,7 +80,13 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
   return {
     title,
     description,
-    alternates: { canonical: `/careers/${career.slug}` },
+    alternates: {
+      canonical: absoluteUrl(`/careers/${career.slug}`),
+      ...(hasChineseEdition('career', career.slug) ? { languages: {
+        en: absoluteUrl(`/careers/${career.slug}`),
+        'zh-CN': absoluteUrl(editionPath('career', career.slug)),
+      } } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: `/careers/${career.slug}` },
   };
@@ -128,6 +138,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="career_view" itemType="career" itemSlug={career.slug} />
       <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
+        <ChineseEditionLink kind="career" slug={career.slug} />
         <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Careers', href: '/careers' }, { label: career.title }]} />
 
         {/* Hero Header */}
@@ -207,7 +218,9 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
 
         <LearningActionPath title={`Explore a path into ${career.title}`} description="Practical entry strategies from this career guide. Read the complete career profile below for qualifications, work environments and further details." steps={career.beginnerEntryStrategies ?? []} />
         <LearningPageNavigator containerId="learning-page-content" />
-        <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
+        <EnglishContentNotice message="Detailed career profiles are still in English. Use the AI learning coach to ask for an explanation in your preferred language." />
+          <ContextualLearningHelp context={[career.title, career.summary, career.whatTheyDo, ...career.beginnerEntryStrategies.slice(0, 2)].filter(Boolean).join(' | ').slice(0, 4500)} prompt={`Explain the career of ${career.title} in simple language, including what people do and how to get started.`} />
+          <KnowledgeHighlights kind="career" slug={career.slug} name={career.title} insights={[{ id: "work", title: "What the work involves", text: career.whatTheyDo }, { id: "entry", title: "A practical first step", text: career.beginnerEntryStrategies[0] || career.summary }].filter((item) => typeof item.text === "string" && item.text.trim().length > 0)} />
 
         <RelatedGlossaryTerms text={[career.summary, career.whatTheyDo].filter(Boolean).join(' ')} maxTerms={4} />
         <ManagedAdSlot placement="career-inline" />

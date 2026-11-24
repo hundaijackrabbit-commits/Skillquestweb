@@ -5,6 +5,7 @@ import { GLOSSARY_ENTRIES } from '@/lib/glossary';
 import { absoluteUrl } from '@/lib/site';
 import { TOPICS } from '@/lib/topics';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
+import { CHINESE_EDITION_SLUGS, editionPath } from '@/lib/zh-cn/edition-routes';
 
 const lessonIntents = ['how-to','examples','techniques','mistakes','exercises'];
 
@@ -15,6 +16,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const skillDirectoryPages = Array.from({ length: Math.max(0, Math.ceil(skills.length / 30) - 1) },(_, index) => index + 2);
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl('/'), changeFrequency: 'weekly', priority: 1 },
+    { url: absoluteUrl('/zh-CN'), changeFrequency: 'weekly', priority: 0.86 },
+    { url: absoluteUrl('/videos/modern-skill-lab-intro'), changeFrequency: 'yearly', priority: 0.7 },
     { url: absoluteUrl('/skills'), changeFrequency: 'weekly', priority: 0.9 },
     { url: absoluteUrl('/skills/a-z'), changeFrequency: 'weekly', priority: 0.82 },
     { url: absoluteUrl('/skills/clusters'), changeFrequency: 'weekly', priority: 0.84 },
@@ -34,6 +37,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
   return [
     ...staticPages,
+    ...CHINESE_EDITION_SLUGS.skill.map((slug) => ({
+      url: absoluteUrl(editionPath('skill', slug)),
+      lastModified: '2026-11-19',
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    })),
+    ...CHINESE_EDITION_SLUGS.career.map((slug) => ({
+      url: absoluteUrl(editionPath('career', slug)),
+      lastModified: '2026-11-19',
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...CHINESE_EDITION_SLUGS.article.map((slug) => ({
+      url: absoluteUrl(editionPath('article', slug)),
+      lastModified: '2026-11-19',
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     ...skillDirectoryPages.map((page) => ({ url: absoluteUrl(`/skills/page/${page}`), changeFrequency: 'weekly' as const, priority: 0.55 })),
     ...TOPICS.map((topic) => ({ url: absoluteUrl(`/topics/${topic.slug}`), changeFrequency: 'weekly' as const, priority: 0.8 })),
     ...skills.map((skill) => ({ url: absoluteUrl(`/skills/${skill.slug}`), lastModified: getSkillIntelligenceBrief(skill.slug)?.reviewedAt ?? skill.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.7 })),

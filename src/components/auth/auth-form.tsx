@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Eye, EyeOff, CheckCircle2, AlertCircle } from 'lucide-react'
+import { TranslatedText as T, useInterfaceTranslation } from '@/components/providers/learning-language-provider'
 
 interface AuthFormProps {
   mode: 'signin' | 'signup'
@@ -16,6 +17,7 @@ interface AuthFormProps {
 
 export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboard', hideModeToggle = false }: AuthFormProps) {
   const supabase = createClient()
+  const t = useInterfaceTranslation()
 
   const [formData, setFormData] = useState({
     name: '',
@@ -127,12 +129,10 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl text-center">
-          {mode === 'signup' ? 'Create Account' : 'Welcome Back'}
+          <T text={mode === 'signup' ? 'Create Account' : 'Welcome Back'} />
         </CardTitle>
         <CardDescription className="text-center">
-          {mode === 'signup'
-            ? 'Start your personalized skills journey and receive the free Career & Life Map'
-            : 'Continue your professional development'}
+          <T text={mode === 'signup' ? 'Start your personalized skills journey and receive the free Career & Life Map' : 'Continue your professional development'} />
         </CardDescription>
       </CardHeader>
 
@@ -146,14 +146,14 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
             {message.type === 'success'
               ? <CheckCircle2 className="h-4 w-4" />
               : <AlertCircle className="h-4 w-4" />}
-            <span className="text-sm">{message.text}</span>
+            <span className="text-sm"><T text={message.text} /></span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
             <label className="block text-sm font-medium text-slate-700">
-              Full name
+              <T text="Full name" />
               <input
                 name="name"
                 autoComplete="name"
@@ -166,7 +166,7 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
           )}
 
           <label className="block text-sm font-medium text-slate-700">
-            Email
+            <T text="Email" />
             <input
               name="email"
               type="email"
@@ -180,7 +180,7 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
           </label>
 
           <label className="block text-sm font-medium text-slate-700">
-            Password
+            <T text="Password" />
             <span className="relative mt-1 block">
               <input
                 name="password"
@@ -196,18 +196,18 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-2.5"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={t(showPassword ? 'Hide password' : 'Show password')}
                 aria-pressed={showPassword}
               >
                 {showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}
               </button>
             </span>
-            {mode === 'signup' && <span className="mt-1 block text-xs font-normal text-slate-500">Use at least 8 characters.</span>}
+            {mode === 'signup' && <span className="mt-1 block text-xs font-normal text-slate-500"><T text="Use at least 8 characters." /></span>}
           </label>
 
           {mode === 'signup' && (
             <label className="block text-sm font-medium text-slate-700">
-              Confirm password
+              <T text="Confirm password" />
               <input
                 name="confirmPassword"
                 type="password"
@@ -222,7 +222,7 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
           )}
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Loading...' : mode === 'signup' ? 'Create Account' : 'Sign In'}
+            <T text={isLoading ? 'Loading...' : mode === 'signup' ? 'Create Account' : 'Sign In'} />
           </Button>
         </form>
 
@@ -232,7 +232,7 @@ export function AuthForm({ mode, onSuccess, onModeChange, redirectTo = '/dashboa
             onClick={() => onModeChange?.(mode === 'signup' ? 'signin' : 'signup')}
             className="text-blue-600 text-sm"
           >
-            {mode === 'signup' ? 'Already have an account? Sign in' : 'No account? Sign up'}
+            <T text={mode === 'signup' ? 'Already have an account? Sign in' : 'No account? Sign up'} />
           </button>
         </div>
         )}

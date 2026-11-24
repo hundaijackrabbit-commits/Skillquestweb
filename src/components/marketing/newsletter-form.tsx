@@ -43,7 +43,7 @@ export function NewsletterForm({ source = 'website', compact = false, className 
     return (
       <div className={`msl-reveal flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 ${className}`} role="status">
         <CheckCircle2 className="h-4 w-4 shrink-0" />
-        {message}
+        <T text={message} />
       </div>
     );
   }
@@ -51,7 +51,7 @@ export function NewsletterForm({ source = 'website', compact = false, className 
   return (
     <form onSubmit={onSubmit} aria-busy={status === 'loading'} className={className}>
       <div className={compact ? 'sm:flex' : 'flex flex-col gap-3 sm:flex-row'}>
-        <label htmlFor={`newsletter-email-${source}`} className="sr-only">Email address</label>
+        <label htmlFor={`newsletter-email-${source}`} className="sr-only"><T text="Email address" /></label>
         <input
           id={`newsletter-email-${source}`}
           type="email"
@@ -80,8 +80,8 @@ export function NewsletterForm({ source = 'website', compact = false, className 
           {status !== 'loading' && <ArrowRight className="ml-2 h-4 w-4" />}
         </button>
       </div>
-      {status === 'loading' && <span className="sr-only" role="status">Subscribing to the weekly skill email…</span>}
-      {status === 'error' && <p className="msl-status mt-2 text-sm text-red-600" role="alert">{message}</p>}
+      {status === 'loading' && <span className="sr-only" role="status"><T text="Subscribing to the weekly skill email…" /></span>}
+      {status === 'error' && <p className="msl-status mt-2 text-sm text-red-600" role="alert"><T text={message} /></p>}
       <p className="mt-2 text-xs leading-5 text-slate-500"><T text="One useful email at a time. Unsubscribe anytime." /></p>
     </form>
   );

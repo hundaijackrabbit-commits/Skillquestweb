@@ -25,6 +25,7 @@ import {
 import { getSkillCourse } from '@/lib/courses';
 import { SkillMission } from '@/components/learning/skill-mission';
 import { CurrentSkillBrief } from '@/components/skills/current-skill-brief';
+import { CommunicationFieldGuide } from '@/components/skills/communication-field-guide';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 import { getSkillConnectionReason } from '@/lib/skill-connections';
 import { getKnowledgeCheckForSkill } from '@/lib/knowledge-checks';
@@ -38,9 +39,13 @@ import {
   getDifficultyColor,
 } from '@/lib/utils';
 import SaveSkillButton from '@/components/skills/save-skill-button';
+import { ShareActions } from '@/components/social/share-actions';
+import { SkillCommunityPulse } from '@/components/skills/skill-community-pulse';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
+import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
 import {
   isSkillFieldEditoriallyUseful,
@@ -100,12 +105,32 @@ export async function generateMetadata({ params }: SkillDetailPageProps) {
   const description = skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
   const quality = assessSkillContentQuality(skill);
 
+  if (!skill) {
+    return {
+      title: 'Skill Not Found',
+    };
+  }
+
+  const title = skill.slug === 'communication'
+    ? 'Communication Skills at Work: Examples & Exercises'
+    : `${skill.name}: Practical Skill Guide`;
+  const description = skill.slug === 'communication'
+    ? 'Learn communication skills for work: clear messages, active listening, practical examples, common mistakes, and exercises you can try today.'
+    : skill.shortDefinition.length > 158 ? `${skill.shortDefinition.slice(0, 155)}…` : skill.shortDefinition;
+
   return {
     title, description,
     keywords: [skill.name, ...skill.professionalContexts.slice(0, 5), 'professional skills', 'career development'],
     alternates: { canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
     robots: { index: quality.indexable, follow: true },
     openGraph: { title: `${title} | Modern Skill Lab`, description, type: 'article', url: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`) },
+    alternates: {
+      canonical: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
+      ...(hasChineseEdition('skill', canonicalSkill?.slug ?? skill.slug) ? { languages: {
+        en: absoluteUrl(`/skills/${canonicalSkill?.slug ?? skill.slug}`),
+        'zh-CN': absoluteUrl(editionPath('skill', canonicalSkill?.slug ?? skill.slug)),
+      } } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: {
       title: `${title} | Modern Skill Lab`,
@@ -145,6 +170,26 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
     { '@type': 'Article', headline: `${skill.name}: Practical Skill Guide`, description: skill.shortDefinition, mainEntityOfPage: canonicalUrl, dateModified: currentBrief?.reviewedAt ?? skill.lastUpdated, author: { '@type': 'Organization', name: 'Modern Skill Lab' }, publisher: { '@type': 'Organization', name: 'Modern Skill Lab' }, about: skill.name },
     breadcrumbList([{ name: 'Modern Skill Lab', url: absoluteUrl('/') }, { name: 'Skills', url: absoluteUrl('/skills') }, { name: skill.name, url: canonicalUrl }]),
   ] };
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Article',
+        headline: skill.slug === 'communication' ? 'Communication Skills at Work: Examples & Exercises' : `${skill.name}: Practical Skill Guide`,
+        description: skill.shortDefinition,
+        mainEntityOfPage: canonicalUrl,
+        dateModified: currentBrief?.reviewedAt ?? skill.lastUpdated,
+        author: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        publisher: { '@type': 'Organization', name: 'Modern Skill Lab' },
+        about: skill.name,
+      },
+      breadcrumbList([
+        { name: 'Modern Skill Lab', url: absoluteUrl('/') },
+        { name: 'Skills', url: absoluteUrl('/skills') },
+        { name: skill.name, url: canonicalUrl },
+      ]),
+    ],
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/30 to-white py-12">
@@ -163,6 +208,7 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
           </div>
         </div></div>
       <div id="learning-page-content" className="mx-auto max-w-7xl px-6 lg:px-8">
+        <ChineseEditionLink kind="skill" slug={skill.slug} />
         <Breadcrumbs
           className="mb-8"
           items={[
@@ -205,6 +251,9 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
                 <p className="mb-2 text-xl leading-relaxed text-gray-700"><GlossaryLinkedText text={skill.shortDefinition ?? ''} maxLinks={1} /></p>
                 <ContextualLearningHelp context={[skill.name, skill.shortDefinition, ...skill.beginnerActions.slice(0, 2)].join(" | ").slice(0, 4500)} prompt={`Can you explain ${skill.name} with a practical example I could try today?`} />
                 <EnglishGuideNotice />
+                <div className="mt-5">
+                  <ShareActions url={canonicalUrl} title={`${skill.name}: Practical Skill Guide | Modern Skill Lab`} />
+                </div>
               </div>
 
               <div className="w-full max-w-sm rounded-2xl border bg-white/80 p-4 shadow-sm">
@@ -267,6 +316,10 @@ export default async function SkillDetailPage({ params }: SkillDetailPageProps) 
             </div>
           </div>
         </div>
+
+        <SkillCommunityPulse slug={skill.slug} />
+
+        {skill.slug === 'communication' && <CommunicationFieldGuide />}
 
         <LearningActionPath title={`Practice ${skill.name}`} description="A practical starting route drawn from this skill guide. Explore the detailed learning sections below for more context." steps={skill.beginnerActions ?? []} outcome={skill.signalsOfMastery?.[0]} />
         <LearningPageNavigator containerId="learning-page-content" />

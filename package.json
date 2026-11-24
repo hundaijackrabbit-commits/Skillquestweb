@@ -12,6 +12,7 @@
     "audit:editorial": "node scripts/audit-editorial-quality.mjs && node scripts/audit-editorial-slug-mapping.mjs --strict",
     "prebuild": "node scripts/complete-legacy-skill-guides.mjs && npm run editorial:prepare",
     "prebuild": "node scripts/complete-legacy-skill-guides.mjs && node scripts/fix-skill-path-references.mjs && node scripts/normalize-industry-references.mjs && node scripts/merge-editorial-override-batch.mjs",
+    "prebuild": "npm run audit:chinese-editorial && npm run audit:chinese-localization && npm run audit:learning-progress && node scripts/complete-legacy-skill-guides.mjs && node scripts/fix-skill-path-references.mjs && node scripts/normalize-industry-references.mjs && node scripts/merge-editorial-override-batch.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -24,7 +25,10 @@
     "audit:links": "node scripts/fix-skill-path-references.mjs && node scripts/normalize-industry-references.mjs && node scripts/audit-content-links.mjs --strict",
     "audit:graph": "node scripts/fix-skill-path-references.mjs && node scripts/normalize-industry-references.mjs && node scripts/audit-internal-link-graph.mjs",
     "audit:originality": "node scripts/audit-content-originality.mjs --strict",
-    "audit:controls": "node scripts/audit-interactive-controls.mjs"
+    "audit:controls": "node scripts/audit-interactive-controls.mjs",
+    "audit:learning-progress": "node --test scripts/learning-progress.test.mjs",
+    "audit:chinese-localization": "node --test scripts/chinese-localization.test.mjs",
+    "audit:chinese-editorial": "node --test scripts/chinese-editorial.test.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

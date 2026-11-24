@@ -13,6 +13,7 @@ import { DailyChallenge } from '@/components/learning/daily-challenge';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { DiscoveryQuiz } from '@/components/marketing/discovery-quiz';
 import { ChallengeWheel } from '@/components/marketing/challenge-wheel';
+import { HomepageVideoByLanguage } from '@/components/marketing/homepage-video-by-language';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,9 +49,9 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(56,189,248,0.22),transparent_36%),radial-gradient(circle_at_88%_18%,rgba(217,70,239,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(250,204,21,0.12),transparent_42%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
           <div>
-            <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold"><T text="Practical skills for modern work" /></Badge>
-            <h1 className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl"><T text="Build skills that actually move you forward." /></h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"><T text="Explore a deep library of practical skills, career connections, and learning paths built for work that keeps changing." /></p>
+            <Badge variant="info" className="rounded-full px-3 py-1 text-xs font-semibold"><T text="Practical learning for modern work" /></Badge>
+            <h1 className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl"><T text="Understand it. Practice it. Prove it." /></h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"><T text="Explore practical skills for work and career growth. Learn how they work, try them in real situations, and keep track of your progress." /></p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/skills"><Button variant="primary" size="lg" className="w-full sm:w-auto"><T text="Explore skills" /><ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
               <Link href="/careers"><Button variant="outline" size="lg" className="w-full border-slate-300 sm:w-auto"><T text="Explore careers" /></Button></Link>
@@ -64,6 +65,25 @@ export default async function HomePage() {
             </div>
             <p className="mt-5 text-sm leading-6 text-slate-600">{growth.marketing.newsletterDescription}</p>
             <NewsletterForm source="homepage-hero" className="mt-5" />
+          </div>
+        </div>
+      </section>
+
+
+      <section className="relative overflow-hidden border-b border-indigo-100 bg-slate-950 py-12 text-white sm:py-16" aria-labelledby="homepage-video-title">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(56,189,248,0.14),transparent_48%),radial-gradient(circle_at_88%_75%,rgba(168,85,247,0.18),transparent_44%)]" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,410px)] lg:gap-16 lg:px-8">
+          <div className="order-2 lg:order-1">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-300"><T text="Introducing Modern Skill Lab" /></p>
+            <h2 id="homepage-video-title" className="mt-4 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"><T text="Your next chapter starts with one skill." /></h2>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-200"><T text="Watch our 50-second introduction to a more practical way to explore skills, connect them to careers, and turn curiosity into progress." /></p>
+            <Link href="/videos/modern-skill-lab-intro" className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-xl border border-cyan-200/50 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-100 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200">
+              <T text="Watch the introduction" /> <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+            <p className="mt-4 text-xs text-slate-400"><T text="Portrait video • Tap to play with sound • No autoplay" /></p>
+          </div>
+          <div className="order-1 flex min-w-0 justify-center lg:order-2">
+            <HomepageVideoByLanguage />
           </div>
         </div>
       </section>
@@ -107,13 +127,13 @@ export default async function HomePage() {
             <Link href="/auth?mode=signup&redirect=%2Fdashboard" className="rounded-2xl border border-blue-200 bg-blue-50 p-5 transition hover:border-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">
               <p className="text-xs font-bold uppercase tracking-wider text-blue-700"><T text="Free member tools" /></p>
               <h3 className="mt-2 font-bold text-slate-950"><T text="Save skills as you learn" /></h3>
-              <p className="mt-1 text-sm text-slate-600">Build your personal dashboard and pick up where you left off.</p>
+              <p className="mt-1 text-sm text-slate-600"><T text="Build your personal dashboard and pick up where you left off." /></p>
               <span className="mt-3 inline-flex items-center text-sm font-semibold text-blue-800"><T text="Create an account" /> <ArrowRight className="ml-1 h-4 w-4" /></span>
             </Link>
             <Link href="/skills" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 transition hover:border-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-700"><T text="Hands-on activities" /></p>
               <h3 className="mt-2 font-bold text-slate-950"><T text="Try a skill today" /></h3>
-              <p className="mt-1 text-sm text-slate-600">Discover practical exercises and skill-specific challenges.</p>
+              <p className="mt-1 text-sm text-slate-600"><T text="Discover practical exercises and skill-specific challenges." /></p>
               <span className="mt-3 inline-flex items-center text-sm font-semibold text-emerald-800"><T text="Browse activities" /> <ArrowRight className="ml-1 h-4 w-4" /></span>
             </Link>
             </div>
@@ -126,9 +146,9 @@ export default async function HomePage() {
           <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-[0_24px_80px_-30px_rgba(49,46,129,0.5)] sm:p-10">
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(168,85,247,0.38),transparent_40%),radial-gradient(circle_at_5%_95%,rgba(14,165,233,0.28),transparent_45%)]" />
             <div className="relative">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300">Free membership · No paid tier</p>
-              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl">Don't just read about skills. Build them.</h2>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200">Your free account turns the library into a personal learning space with challenges, progress and real-world practice.</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300"><T text="Free membership · No paid tier" /></p>
+              <h2 id="member-benefits-title" className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-4xl"><T text="Don't just read about skills. Build them." /></h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200"><T text="Your free account turns the library into a personal learning space with challenges, progress and real-world practice." /></p>
               <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {[
                   { icon: Trophy, title: 'Earn XP & achievements', description: 'Make your practice visible.' },
@@ -138,7 +158,7 @@ export default async function HomePage() {
                 ].map((item) => (
                   <div key={item.title} className="rounded-2xl border border-white/15 bg-white/10 p-5 backdrop-blur-sm">
                     <div className="inline-flex rounded-xl bg-white/15 p-2 text-cyan-200"><item.icon className="h-5 w-5" aria-hidden="true" /></div>
-                    <h3 className="mt-3 font-semibold text-white">{item.title}</h3>
+                    <h3 className="mt-3 font-semibold text-white"><T text={item.title} /></h3>
                     <p className="mt-1 text-sm text-slate-300"><T text={item.description} /></p>
                   </div>
                 ))}
@@ -157,10 +177,10 @@ export default async function HomePage() {
           <div className="overflow-hidden rounded-[2rem] border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-violet-50 p-6 shadow-sm sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
-                <Sparkles className="h-4 w-4" aria-hidden="true" /> Free skill-path diagnostic
+                <Sparkles className="h-4 w-4" aria-hidden="true" /> <T text="Free skill-path diagnostic" />
               </div>
               <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl"><T text="Not sure where to start?" /></h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">Turn your goal, strengths, constraints, and available time into a focused skill stack, a practical 30-day roadmap, and one proof-of-work project.</p>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base"><T text="Turn your goal, strengths, constraints, and available time into a focused skill stack, a practical 30-day roadmap, and one proof-of-work project." /></p>
             </div>
             <Link href="/skill-path" className="mt-6 inline-flex shrink-0 lg:mt-0">
               <Button variant="primary" size="lg"><T text="Find my skill path" /><ArrowRight className="ml-2 h-4 w-4" /></Button>
@@ -191,20 +211,20 @@ export default async function HomePage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">Selected by Modern Skill Lab</p><h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"><T text="Featured skills" /></h2></div>
-            <Link href="/skills" className="inline-flex items-center text-sm font-semibold text-blue-600">Browse all skills <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600"><T text="Selected by Modern Skill Lab" /></p><h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"><T text="Featured skills" /></h2></div>
+            <Link href="/skills" className="inline-flex items-center text-sm font-semibold text-blue-600"><T text="Browse all skills" /> <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </div>
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {featured.slice(0, 3).map(({ skill, featureType, headline }) => (
               <Card key={`${featureType}-${skill.slug}`} className="rounded-3xl border-slate-200 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <CardHeader>
                   <Badge variant="success" className="w-fit rounded-full px-3 py-1 text-xs font-semibold">{featureType === 'week' ? 'Skill of the Week' : featureType === 'month' ? 'Skill of the Month' : 'Editor’s Pick'}</Badge>
-                  <CardTitle className="text-2xl text-slate-900">{skill.name}</CardTitle>
+                  <CardTitle className="text-2xl text-slate-900"><T text={skill.name} /></CardTitle>
                 </CardHeader>
                 <CardContent>
                   {headline && <p className="mb-2 text-sm font-semibold text-blue-700">{headline}</p>}
-                  <p className="line-clamp-4 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
-                  <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600">Explore skill <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <p lang="en" className="line-clamp-4 text-sm leading-6 text-slate-600">{skill.shortDefinition}</p>
+                  <Link href={`/skills/${skill.slug}`} className="mt-5 inline-flex items-center text-sm font-semibold text-blue-600"><T text="Explore skill" /> <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </CardContent>
               </Card>
             ))}
@@ -233,7 +253,7 @@ export default async function HomePage() {
                 </div>
                 <h3 className="mt-4 text-xl font-bold group-hover:text-blue-200">{course.title}</h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-300">{course.description}</p>
-                <span className="mt-5 inline-flex items-center text-sm font-semibold text-white">Start sprint <ArrowRight className="ml-2 h-4 w-4" /></span>
+                <span className="mt-5 inline-flex items-center text-sm font-semibold text-white"><T text="Start sprint" /> <ArrowRight className="ml-2 h-4 w-4" /></span>
               </Link>
             ))}
           </div>
@@ -243,11 +263,11 @@ export default async function HomePage() {
       {growth.trending.length > 0 && (
         <section className="border-y bg-slate-50 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex items-center gap-3"><div className="rounded-2xl bg-orange-100 p-2.5 text-orange-700"><Flame className="h-5 w-5" /></div><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Chosen by visitors</p><h2 className="text-3xl font-bold text-slate-900">Trending this week</h2></div></div>
+            <div className="flex items-center gap-3"><div className="rounded-2xl bg-orange-100 p-2.5 text-orange-700"><Flame className="h-5 w-5" /></div><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700"><T text="Chosen by visitors" /></p><h2 className="text-3xl font-bold text-slate-900"><T text="Trending this week" /></h2></div></div>
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {growth.trending.map(({ skill }) => (
                 <Link key={skill.slug} href={`/skills/${skill.slug}`} className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
-                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Popular in the library</p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700">{skill.name}</h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
+                  <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-wide text-slate-400"><T text="Popular in the library" /></p><h3 className="mt-1 truncate font-semibold text-slate-900 group-hover:text-blue-700"><T text={skill.name} /></h3></div><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-blue-600" />
                 </Link>
               ))}
             </div>
@@ -259,7 +279,7 @@ export default async function HomePage() {
 
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600">A better way to browse</p><h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Turn curiosity into a skill stack.</h2></div>
+          <div className="mx-auto max-w-2xl text-center"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-600"><T text="A better way to browse" /></p><h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"><T text="Turn curiosity into a skill stack." /></h2></div>
           <div className="mt-10 grid gap-5 sm:grid-cols-3">
             {pillars.map((pillar) => (
               <div key={pillar.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><div className="inline-flex rounded-2xl bg-blue-600/10 p-3 text-blue-600"><pillar.icon className="h-5 w-5" /></div><h3 className="mt-5 text-lg font-semibold text-slate-900"><T text={pillar.title} /></h3><p className="mt-3 text-sm leading-6 text-slate-600"><T text={pillar.description} /></p></div>
@@ -271,8 +291,8 @@ export default async function HomePage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="rounded-[2rem] bg-slate-900 px-6 py-10 text-white sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between">
-            <div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">Make it yours</p><h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Save skills and keep building.</h2><p className="mt-4 text-base leading-7 text-slate-300">Create a free account to save useful skills and return to them from your dashboard.</p></div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto"><T text="Browse skills" /></Button></Link><Link href="/auth?mode=signup&redirect=%2Fdashboard"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto">Create account</Button></Link></div>
+            <div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300"><T text="Make it yours" /></p><h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl"><T text="Save skills and keep building." /></h2><p className="mt-4 text-base leading-7 text-slate-300"><T text="Create a free account to save useful skills and return to them from your dashboard." /></p></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:mt-0"><Link href="/skills"><Button size="lg" className="w-full bg-white text-slate-900 hover:bg-slate-100 sm:w-auto"><T text="Browse skills" /></Button></Link><Link href="/auth?mode=signup&redirect=%2Fdashboard"><Button size="lg" variant="outline" className="w-full border-slate-600 bg-transparent text-white hover:bg-slate-800 sm:w-auto"><T text="Create account" /></Button></Link></div>
           </div>
         </div>
       </section>

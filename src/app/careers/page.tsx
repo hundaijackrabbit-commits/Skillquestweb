@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { TranslatedText as T } from '@/components/providers/learning-language-provider';
+import { TranslatedText as T, EnglishContentNotice } from '@/components/providers/learning-language-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -84,26 +84,27 @@ export default async function CareersPage() {
             <T text="Career Intelligence Platform" />
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600">
-            Understand what different roles do and how their core, secondary, and transferable skills connect.
-            Use each profile as a starting point for learning and career exploration.
+            <T text="Understand what different roles do and how their core, secondary, and transferable skills connect. Use each profile as a starting point for learning and career exploration." />
           </p>
         </div>
+
+        <EnglishContentNotice message="Career profile descriptions are currently in English. Chinese section labels and navigation are available." />
 
         <section className="mt-12" aria-labelledby="career-directions">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-700"><T text="Browse by the work you want to do" /></p>
             <h2 id="career-directions" className="mt-2 text-3xl font-bold text-slate-950"><T text="Choose a direction before choosing a title" /></h2>
-            <p className="mt-3 leading-7 text-slate-600">Job titles vary between organizations. Start with the kind of problems and working relationships that interest you, then compare the roles inside that direction.</p>
+            <p className="mt-3 leading-7 text-slate-600"><T text="Job titles vary between organizations. Start with the kind of problems and working relationships that interest you, then compare the roles inside that direction." /></p>
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {careerDirections.map((direction) => (
               <div key={direction.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="inline-flex rounded-2xl bg-blue-50 p-3 text-blue-700"><direction.icon className="h-5 w-5" aria-hidden="true" /></div>
                 <h3 className="mt-4 text-xl font-bold text-slate-950"><T text={direction.title} /></h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{direction.description}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600"><T text={direction.description} /></p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {direction.roles.map(([label, slug]) => (
-                    <Link key={slug} href={`/careers/${slug}`} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700">{label}</Link>
+                    <Link key={slug} href={`/careers/${slug}`} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"><T text={label} /></Link>
                   ))}
                 </div>
               </div>
@@ -112,13 +113,13 @@ export default async function CareersPage() {
         </section>
 
         <section className="mt-12 rounded-3xl border border-slate-200 bg-slate-50 p-6 md:p-8" aria-labelledby="career-research-heading">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-700">Evidence and context</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-700"><T text="Evidence and context" /></p>
           <h2 id="career-research-heading" className="mt-2 text-2xl font-bold text-slate-950"><T text="What current research says about changing skills" /></h2>
           <p className="mt-3 max-w-4xl leading-7 text-slate-700">
-            The World Economic Forum&apos;s 2025 employer survey estimates that 39% of workers&apos; core skills may change by 2030. That is a forecast across surveyed employers, not a prediction that every individual career will change at the same rate.
+            <T text="The World Economic Forum's 2025 employer survey estimates that 39% of workers' core skills may change by 2030. That is a forecast across surveyed employers, not a prediction that every individual career will change at the same rate." />
           </p>
           <p className="mt-3 max-w-4xl leading-7 text-slate-700">
-            Labour-market trends do not translate into identical requirements for every job. Compare the specific skills in each career profile, review current job postings in your region, and look for opportunities to demonstrate the skills employers actually request.
+            <T text="Labour-market trends do not translate into identical requirements for every job. Compare the specific skills in each career profile, review current job postings in your region, and look for opportunities to demonstrate the skills employers actually request." />
           </p>
           <div className="mt-5 flex flex-wrap gap-4 text-sm font-semibold">
             <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">WEF: Skills outlook (2025)</a>
@@ -139,22 +140,22 @@ export default async function CareersPage() {
                     </div>
 
                   </div>
-                  <CardTitle className="text-xl">{career.title}</CardTitle>
+                  <CardTitle className="text-xl"><T text={career.title} /></CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">
+                  <p lang="en" className="text-sm text-gray-600 mb-4">
                     {career.summary}
                   </p>
                   
                   <div className="mb-5 space-y-4">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Core focus</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500"><T text="Core focus" /></p>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {career.coreSkills.slice(0, 3).map((skill) => <Badge key={skill} variant="outline" size="sm">{humanize(skill)}</Badge>)}
                       </div>
                     </div>
                     <div>
-                      <p className="flex items-center text-xs font-semibold uppercase tracking-wide text-slate-500"><MapPin className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" />Common settings</p>
+                      <p className="flex items-center text-xs font-semibold uppercase tracking-wide text-slate-500"><MapPin className="mr-1.5 h-3.5 w-3.5" aria-hidden="true" /><T text="Common settings" /></p>
                       <p className="mt-1.5 text-sm leading-6 text-slate-600">{career.commonIndustries.slice(0, 3).map(humanize).join(' · ')}</p>
                     </div>
                   </div>
@@ -171,7 +172,7 @@ export default async function CareersPage() {
                       href={`/careers/${career.slug}`}
                       className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500"
                     >
-                      Explore <ArrowRight className="ml-1 h-3 w-3" />
+                      <T text="Explore" /> <ArrowRight className="ml-1 h-3 w-3" />
                     </Link>
                   </div>
                 </CardContent>
@@ -184,7 +185,7 @@ export default async function CareersPage() {
         <div className="mt-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900"><T text="All Career Paths" /></h2>
-            <Link href="/dashboard" className="text-sm font-semibold text-blue-700">Build your personal fit profile <ArrowRight className="ml-1 inline h-4 w-4" aria-hidden="true" /></Link>
+            <Link href="/dashboard" className="text-sm font-semibold text-blue-700"><T text="Build your personal fit profile" /> <ArrowRight className="ml-1 inline h-4 w-4" aria-hidden="true" /></Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -192,21 +193,21 @@ export default async function CareersPage() {
               <Card key={career.id} className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" size="sm">Skill-connected</Badge>
+                    <Badge variant="outline" size="sm"><T text="Skill-connected" /></Badge>
                   </div>
-                  <CardTitle className="text-lg">{career.title}</CardTitle>
+                  <CardTitle className="text-lg"><T text={career.title} /></CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <p className="text-sm text-gray-600 mb-3">
+                  <p lang="en" className="text-sm text-gray-600 mb-3">
                     {career.summary.substring(0, 120)}...
                   </p>
                   <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-500">Skills, entry routes, and growth options</div>
+                    <div className="text-xs text-gray-500"><T text="Skills, entry routes, and growth options" /></div>
                     <Link 
                       href={`/careers/${career.slug}`}
                       className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500"
                     >
-                      Learn more <ArrowRight className="ml-1 h-3 w-3" />
+                      <T text="Learn more" /> <ArrowRight className="ml-1 h-3 w-3" />
                     </Link>
                   </div>
                 </CardContent>
@@ -219,10 +220,10 @@ export default async function CareersPage() {
         <div className="mt-20 bg-gray-50 rounded-2xl p-12">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Career Intelligence Features
+              <T text="Career Intelligence Features" />
             </h2>
             <p className="text-gray-600">
-              Use each profile to compare the work itself, the evidence employers can inspect, and the next practical move you could make.
+              <T text="Use each profile to compare the work itself, the evidence employers can inspect, and the next practical move you could make." />
             </p>
           </div>
 
@@ -231,9 +232,9 @@ export default async function CareersPage() {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Briefcase className="h-6 w-6 text-blue-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Skill Requirements</h3>
+              <h3 className="font-semibold text-gray-900 mb-2"><T text="Skill Requirements" /></h3>
               <p className="text-sm text-gray-600">
-                Core, secondary, and transferable skills mapped to each career
+                <T text="Core, secondary, and transferable skills mapped to each career" />
               </p>
             </div>
 
@@ -241,9 +242,9 @@ export default async function CareersPage() {
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Target className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Evidence of Ability</h3>
+              <h3 className="font-semibold text-gray-900 mb-2"><T text="Evidence of Ability" /></h3>
               <p className="text-sm text-gray-600">
-                Practical skills, tools, projects, and signals you can make visible
+                <T text="Practical skills, tools, projects, and signals you can make visible" />
               </p>
             </div>
 
@@ -251,9 +252,9 @@ export default async function CareersPage() {
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <MapPin className="h-6 w-6 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Working Context</h3>
+              <h3 className="font-semibold text-gray-900 mb-2"><T text="Working Context" /></h3>
               <p className="text-sm text-gray-600">
-                Common industries, team environments, and role variations
+                <T text="Common industries, team environments, and role variations" />
               </p>
             </div>
 
@@ -261,9 +262,9 @@ export default async function CareersPage() {
               <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <BookOpen className="h-6 w-6 text-yellow-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Routes Forward</h3>
+              <h3 className="font-semibold text-gray-900 mb-2"><T text="Routes Forward" /></h3>
               <p className="text-sm text-gray-600">
-                Entry strategies, alternative routes, and adjacent careers to compare
+                <T text="Entry strategies, alternative routes, and adjacent careers to compare" />
               </p>
             </div>
           </div>
@@ -274,14 +275,14 @@ export default async function CareersPage() {
         {/* CTA Section */}
         <div className="mt-20 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Ready to explore your career path?
+            <T text="Ready to explore your career path?" />
           </h2>
           <p className="text-gray-600 mb-8">
-            Use the personal profile to connect your interests and saved skills with career directions worth investigating.
+            <T text="Use the personal profile to connect your interests and saved skills with career directions worth investigating." />
           </p>
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/dashboard"><Button asChild>Build My Profile</Button></Link>
-            <Link href="/industries"><Button asChild variant="outline">Browse Industries</Button></Link>
+            <Link href="/dashboard"><Button asChild><T text="Build My Profile" /></Button></Link>
+            <Link href="/industries"><Button asChild variant="outline"><T text="Browse Industries" /></Button></Link>
           </div>
         </div>
       </div>

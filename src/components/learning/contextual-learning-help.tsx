@@ -60,16 +60,22 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
           <textarea id={questionId} value={question} maxLength={800} rows={2}
             onChange={(event) => setQuestion(event.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-white p-3 text-slate-900" />
-          <p className="text-xs text-slate-600">Optional AI assistance. Your question and the displayed learning material are sent to the AI provider. Avoid personal or confidential information. Verify important answers.</p>
+          {locale === 'zh-CN' && (
+            <button type="button" onClick={() => setQuestion('请用简体中文解释本页学习主题，说明核心概念、适用场景、常见误区，并给出一个可以马上尝试的具体练习。请明确哪些信息需要另外核实。')}
+              className="inline-flex min-h-10 items-center rounded-lg border border-blue-200 bg-white px-3 text-xs font-bold text-blue-800 hover:bg-blue-50">
+              用简体中文解释
+            </button>
+          )}
+          <p className="text-xs text-slate-600"><T text="Optional AI assistance. Your question and the displayed learning material are sent to the AI provider. Avoid personal or confidential information. Verify important answers." /></p>
           <button type="button" onClick={ask} disabled={loading || question.trim().length < 3}
             className="min-h-10 rounded-lg bg-indigo-700 px-4 font-semibold text-white disabled:opacity-50">
             {loading ? <T text="Thinking…" /> : <T text="Get explanation" />}
           </button>
           {answer && (
-            <section aria-label="AI learning explanation" className="overflow-hidden rounded-2xl border border-indigo-200 bg-white shadow-sm">
+            <section aria-label={locale === 'zh-CN' ? 'AI 学习解释' : 'AI learning explanation'} className="overflow-hidden rounded-2xl border border-indigo-200 bg-white shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-white px-4 py-3">
                 <h3 className="flex items-center gap-2 font-bold text-indigo-950"><Sparkles className="h-4 w-4 text-indigo-600" aria-hidden="true" /> <T text="Your learning coach" /></h3>
-                <button type="button" onClick={copyAnswer} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50" aria-label="Copy AI explanation">
+                <button type="button" onClick={copyAnswer} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50" aria-label={locale === 'zh-CN' ? '复制 AI 解释' : 'Copy AI explanation'}>
                   {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />} {copied ? <T text="Copied" /> : <T text="Copy" />}
                 </button>
               </div>
@@ -83,7 +89,7 @@ export function ContextualLearningHelp({ context, prompt = 'Can you explain this
                 })}
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 px-4 py-3">
-                <p className="text-xs text-slate-500">AI guidance can be imperfect. Verify important details.</p>
+                <p className="text-xs text-slate-500"><T text="AI guidance can be imperfect. Verify important details." /></p>
                 <div className="flex flex-wrap gap-3">
                   <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Give me a practical example of the explanation above, using the lesson context.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline"><T text="Practical example" /></button>
                   <button type="button" onClick={() => { setPreviousAnswer(answer); setQuestion('Ask me one short question to check my understanding of the explanation above. Do not reveal the answer.'); setAnswer(''); setCopied(false); }} className="text-xs font-semibold text-indigo-700 hover:underline"><T text="Check understanding" /></button>
