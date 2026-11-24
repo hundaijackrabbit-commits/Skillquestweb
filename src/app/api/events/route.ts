@@ -31,8 +31,10 @@ export async function POST(request: Request) {
     // city, or browser-provided location in the community activity feature.
     const countryHeader = request.headers.get('x-vercel-ip-country')?.toUpperCase() ?? '';
     const countryCode = /^[A-Z]{2}$/.test(countryHeader) ? countryHeader : null;
+    const publicView = (parsed.data.eventType === 'page_view' && parsed.data.itemType === 'page' && parsed.data.itemSlug === 'home' && parsed.data.path === '/') ||
+      (['skill', 'career', 'blog'].some(kind => parsed.data.eventType === kind + '_view' && parsed.data.itemType === kind));
     let { error } = await supabase.from('content_events').insert(
-      countryCode && parsed.data.eventType === 'skill_view'
+      countryCode && publicView
         ? { ...event, country_code: countryCode }
         : event,
     );

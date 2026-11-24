@@ -4,6 +4,8 @@ import { ArrowRight, BookOpen, Brain, Briefcase, Clock3, Compass, Flame, LineCha
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { SeasonalGuideBanner } from '@/components/marketing/seasonal-guide-banner';
+import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { getIndexableSkills } from '@/lib/content';
@@ -45,6 +47,8 @@ export default async function HomePage() {
 
   return (
     <>
+      <ContentViewTracker eventType="page_view" itemType="page" itemSlug="home" />
+      <SeasonalGuideBanner />
       <section className="relative overflow-hidden border-b border-indigo-100 bg-gradient-to-br from-sky-50 via-white to-fuchsia-50">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(56,189,248,0.22),transparent_36%),radial-gradient(circle_at_88%_18%,rgba(217,70,239,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(250,204,21,0.12),transparent_42%)]" />
         <div className="relative mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
