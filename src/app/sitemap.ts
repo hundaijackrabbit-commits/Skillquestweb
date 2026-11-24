@@ -6,6 +6,7 @@ import { absoluteUrl } from '@/lib/site';
 import { TOPICS } from '@/lib/topics';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
 import { editionPath, listChineseEditions } from '@/lib/zh-cn';
+import { CHINESE_EDITION_SLUGS, editionPath } from '@/lib/zh-cn/edition-routes';
 
 const lessonIntents = ['how-to','examples','techniques','mistakes','exercises'];
 
@@ -45,6 +46,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.74,
       }))
     ),
+    ...CHINESE_EDITION_SLUGS.skill.map((slug) => ({
+      url: absoluteUrl(editionPath('skill', slug)),
+      lastModified: '2026-11-19',
+      changeFrequency: 'monthly' as const,
+      priority: 0.75,
+    })),
+    ...CHINESE_EDITION_SLUGS.career.map((slug) => ({
+      url: absoluteUrl(editionPath('career', slug)),
+      lastModified: '2026-11-19',
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...CHINESE_EDITION_SLUGS.article.map((slug) => ({
+      url: absoluteUrl(editionPath('article', slug)),
+      lastModified: '2026-11-19',
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     ...skillDirectoryPages.map((page) => ({ url: absoluteUrl(`/skills/page/${page}`), changeFrequency: 'weekly' as const, priority: 0.55 })),
     ...TOPICS.map((topic) => ({ url: absoluteUrl(`/topics/${topic.slug}`), changeFrequency: 'weekly' as const, priority: 0.8 })),
     ...skills.map((skill) => ({ url: absoluteUrl(`/skills/${skill.slug}`), lastModified: getSkillIntelligenceBrief(skill.slug)?.reviewedAt ?? skill.lastUpdated, changeFrequency: 'monthly' as const, priority: 0.7 })),

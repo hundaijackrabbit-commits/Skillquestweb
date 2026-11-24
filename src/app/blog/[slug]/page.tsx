@@ -20,6 +20,8 @@ import { ContentViewTracker } from '@/components/analytics/content-view-tracker'
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
 import { chineseAlternateLanguages, editionPath, findChineseEdition } from '@/lib/zh-cn';
+import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
+import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
 import { isBlogPostIndexable } from '@/lib/content-quality';
 import { ArticleActions } from '@/components/blog/article-actions';
@@ -96,6 +98,13 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
     title: post.title,
     description,
     alternates: { canonical: `/blog/${post.slug}`, ...(chineseAlternateLanguages('article', post.slug) ? { languages: chineseAlternateLanguages('article', post.slug) } : {}) },
+    alternates: {
+      canonical: absoluteUrl(`/blog/${post.slug}`),
+      ...(hasChineseEdition('article', post.slug) ? { languages: {
+        en: absoluteUrl(`/blog/${post.slug}`),
+        'zh-CN': absoluteUrl(editionPath('article', post.slug)),
+      } } : {}),
+    },
     robots: { index: true, follow: true },
     openGraph: {
       title: `${post.title} | Modern Skill Lab`,
@@ -105,7 +114,9 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
       publishedTime: post.publishedAt === '1970-01-01' ? undefined : post.publishedAt,
       modifiedTime: post.lastUpdated === '1970-01-01' ? undefined : post.lastUpdated,
       authors: [post.author],
+      siteName: 'Modern Skill Lab',
     },
+    twitter: { card: 'summary_large_image', title: post.title, description },
   };
 }
 
@@ -167,6 +178,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker eventType="blog_view" itemType="blog" itemSlug={post.slug} />
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
+        <ChineseEditionLink kind="article" slug={post.slug} />
         <Breadcrumbs className="mb-8" items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }, { label: post.title }]} />
 
         <div className="mb-12">
@@ -216,7 +228,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
             <p className="-mt-5 mb-8 text-xs text-gray-500">First published {formatContentDate(post.publishedAt)}. Last updated on the date above.</p>
           )}
 
-          <ArticleActions slug={post.slug} />
+          <ArticleActions slug={post.slug} title={post.title} url={canonicalUrl} />
         </div>
 
         {post.reviewedBy && (

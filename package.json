@@ -6,6 +6,7 @@
     "predev": "node scripts/normalize-industry-references.mjs",
     "dev": "next dev",
     "prebuild": "npm run audit:chinese-localization && npm run audit:chinese-editorial && npm run audit:learning-progress && node scripts/complete-legacy-skill-guides.mjs && node scripts/fix-skill-path-references.mjs && node scripts/normalize-industry-references.mjs && node scripts/merge-editorial-override-batch.mjs",
+    "prebuild": "npm run audit:chinese-editorial && npm run audit:chinese-localization && npm run audit:learning-progress && node scripts/complete-legacy-skill-guides.mjs && node scripts/fix-skill-path-references.mjs && node scripts/normalize-industry-references.mjs && node scripts/merge-editorial-override-batch.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

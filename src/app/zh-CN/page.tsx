@@ -133,6 +133,29 @@ export default function ChineseLearningHome() {
           </div>
         </section>
 
+        <section aria-labelledby="zh-editorial" className="mt-16">
+          <div className="flex items-center gap-2 text-blue-700"><BookOpen aria-hidden="true" className="h-5 w-5" /><span className="text-sm font-bold">精选中文深度内容</span></div>
+          <h2 id="zh-editorial" className="mt-2 text-3xl font-bold text-slate-950">从中文入门，深入学习实用技能</h2>
+          <p className="mt-3 max-w-3xl text-base leading-8 text-slate-600">我们已为部分精选技能、职业和专题整理中文教学版本，每篇都包含实用解释、动手练习及英文原始资料链接。其他主题的完整文章仍在逐步翻译中。</p>
+          <div className="mt-8 space-y-10">
+            {CHINESE_EDITION_GROUPS.map((group) => (
+              <section key={group.kind} aria-label={group.label}>
+                <h3 className="text-xl font-bold text-slate-950">{group.label}</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600">{group.description}</p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {group.editions.map((edition) => (
+                    <Link key={edition.slug} href={editionPath(edition.kind, edition.slug)} className="group flex min-h-[148px] flex-col rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm">
+                      <h4 className="font-bold leading-7 text-slate-950 group-hover:text-blue-700">{edition.title}</h4>
+                      <p className="mt-2 flex-1 text-sm leading-7 text-slate-600">{edition.subtitle}</p>
+                      <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-700">阅读中文版 <ArrowRight aria-hidden="true" className="h-4 w-4" /></span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </section>
+
         <section aria-labelledby="zh-topics" className="mt-16">
           <div className="flex items-center gap-2 text-violet-700"><Search className="h-5 w-5" aria-hidden="true" /><span className="text-sm font-bold">技能分类</span></div>
           <h2 id="zh-topics" className="mt-2 text-3xl font-bold text-slate-950">按你想提升的能力选择主题</h2>
