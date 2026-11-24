@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { BookOpen, Users, Briefcase, Building2, Gift, Layers3, PenTool, ShieldCheck, Trophy } from 'lucide-react';
+import { ClarityPreferences } from '@/components/layout/clarity-preferences';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 
 const navigation = {
@@ -75,6 +76,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <p><T text="© 2026 Modern Skill Lab. Practical, career-relevant learning." /></p>
+          <ClarityPreferences />
           <Link href="/admin/login" className="inline-flex items-center gap-1.5 hover:text-slate-700"><ShieldCheck className="h-3.5 w-3.5" /> <T text="Admin" /></Link>
         </div>
       </div>
