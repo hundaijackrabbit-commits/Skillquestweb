@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Chinese pages are authored in Simplified Chinese and remain static;
+        // this response header does not make English pages claim localization.
+        source: '/zh-CN/:path*',
+        headers: [{ key: 'Content-Language', value: 'zh-CN' }],
+      },
+      {
         source: '/downloads/ModernSkillLab_Career_and_Life_Map.pdf',
         headers: [
           { key: 'Content-Disposition', value: 'attachment; filename="ModernSkillLab_Career_and_Life_Map.pdf"' },

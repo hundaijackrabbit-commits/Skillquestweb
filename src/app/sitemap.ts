@@ -5,6 +5,7 @@ import { GLOSSARY_ENTRIES } from '@/lib/glossary';
 import { absoluteUrl } from '@/lib/site';
 import { TOPICS } from '@/lib/topics';
 import { getSkillIntelligenceBrief } from '@/lib/skill-intelligence';
+import { editionPath, listChineseEditions } from '@/lib/zh-cn';
 import { CHINESE_EDITION_SLUGS, editionPath } from '@/lib/zh-cn/edition-routes';
 
 const lessonIntents = ['how-to','examples','techniques','mistakes','exercises'];
@@ -37,6 +38,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
   return [
     ...staticPages,
+    ...(['skill', 'career', 'article'] as const).flatMap((kind) =>
+      listChineseEditions(kind).map((edition) => ({
+        url: absoluteUrl(editionPath(kind, edition.slug)),
+        lastModified: '2026-11-19',
+        changeFrequency: 'monthly' as const,
+        priority: 0.74,
+      }))
+    ),
     ...CHINESE_EDITION_SLUGS.skill.map((slug) => ({
       url: absoluteUrl(editionPath('skill', slug)),
       lastModified: '2026-11-19',

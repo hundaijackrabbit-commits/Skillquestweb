@@ -23,3 +23,9 @@ export type ChineseEdition = {
   related?: { title: string; href: string }[];
   sourceReviewedAt: string;
 };
+
+export const editionPath = (kind: ChineseEditionKind, slug: string) =>
+  `/zh-CN/${kind === 'skill' ? 'skills' : kind === 'career' ? 'careers' : 'blog'}/${slug}`;
+
+export const sourcePath = (kind: ChineseEditionKind, slug: string) =>
+  `/${kind === 'skill' ? 'skills' : kind === 'career' ? 'careers' : 'blog'}/${slug}`;

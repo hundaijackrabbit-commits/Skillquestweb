@@ -19,6 +19,7 @@ import {
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { chineseAlternateLanguages, editionPath, findChineseEdition } from '@/lib/zh-cn';
 import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
 import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
@@ -96,6 +97,7 @@ export async function generateMetadata({ params }: BlogPostDetailPageProps) {
   return {
     title: post.title,
     description,
+    alternates: { canonical: `/blog/${post.slug}`, ...(chineseAlternateLanguages('article', post.slug) ? { languages: chineseAlternateLanguages('article', post.slug) } : {}) },
     alternates: {
       canonical: absoluteUrl(`/blog/${post.slug}`),
       ...(hasChineseEdition('article', post.slug) ? { languages: {
@@ -197,6 +199,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostDetailPageP
           <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900">{post.title}</h1>
 
           <p className="mb-8 text-xl leading-relaxed text-gray-700">{post.excerpt}</p>
+          {findChineseEdition('article', post.slug) && <Link href={editionPath('article', post.slug)} lang="zh-CN" className="mb-7 inline-flex min-h-11 items-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-bold text-blue-800 hover:bg-blue-100">阅读简体中文专题文章 →</Link>}
 
           <div className="mb-8 flex flex-wrap items-center gap-6 text-sm text-gray-600">
             <div className="flex items-center">

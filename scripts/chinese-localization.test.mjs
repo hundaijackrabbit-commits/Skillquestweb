@@ -51,6 +51,7 @@ test('Chinese learning hub is substantive and searchable, without fictional arti
   assert.ok(page.includes("href: '/zh-CN/skills/ai-literacy'"));
   assert.ok(page.includes("href: '/zh-CN/skills/communication'"));
   assert.ok(page.includes("href: '/zh-CN/skills/critical-thinking'"));
+  assert.ok(page.includes('其他大量历史内容仍以英文为主'));
   assert.ok(page.includes('目前许多完整的技能、职业及博客文章仍为英文'));
   assert.ok(read('src/app/zh-CN/[collection]/[slug]/page.tsx').includes('Read original in English'));
   assert.ok(read('src/app/sitemap.ts').includes("absoluteUrl('/zh-CN')"));

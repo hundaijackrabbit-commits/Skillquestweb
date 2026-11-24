@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { ArrowRight, BookOpen, Brain, Briefcase, Clock3, Compass, Flame, LineChart, Route, Sparkles, Trophy } from 'lucide-react';
@@ -16,6 +17,9 @@ import { ChallengeWheel } from '@/components/marketing/challenge-wheel';
 import { HomepageVideoByLanguage } from '@/components/marketing/homepage-video-by-language';
 
 export const dynamic = 'force-dynamic';
+
+// Only the real Chinese homepage is listed as an alternate for this page.
+export const metadata: Metadata = { alternates: { canonical: '/', languages: { en: '/', 'zh-CN': '/zh-CN' } } };
 
 const defaultSlugs = ['ai-literacy', 'communication', 'critical-thinking'];
 

@@ -25,6 +25,7 @@ import { CareerPathway } from '@/components/features/career-pathway';
 import { ContentViewTracker } from '@/components/analytics/content-view-tracker';
 import { ManagedAdSlot } from '@/components/ads/managed-ad-slot';
 import { absoluteUrl } from '@/lib/site';
+import { chineseAlternateLanguages, editionPath, findChineseEdition } from '@/lib/zh-cn';
 import { ChineseEditionLink } from '@/components/learning/chinese-edition-link';
 import { editionPath, hasChineseEdition } from '@/lib/zh-cn/edition-routes';
 import { breadcrumbList } from '@/lib/seo';
@@ -80,6 +81,7 @@ export async function generateMetadata({ params }: CareerDetailPageProps) {
   return {
     title,
     description,
+    alternates: { canonical: `/careers/${career.slug}`, ...(chineseAlternateLanguages('career', career.slug) ? { languages: chineseAlternateLanguages('career', career.slug) } : {}) },
     alternates: {
       canonical: absoluteUrl(`/careers/${career.slug}`),
       ...(hasChineseEdition('career', career.slug) ? { languages: {
@@ -171,6 +173,7 @@ export default async function CareerDetailPage({ params }: CareerDetailPageProps
               <GlossaryLinkedText text={career.summary ?? ''} maxLinks={2} />
             </p>
 
+            {findChineseEdition('career', career.slug) && <div className="mb-5"><Link href={editionPath('career', career.slug)} lang="zh-CN" className="inline-flex min-h-11 items-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-bold text-blue-800 hover:bg-blue-100">阅读简体中文职业指南 →</Link></div>}
             <SaveCareerButton careerSlug={career.slug} />
 
             {/* Key Metrics Grid */}
