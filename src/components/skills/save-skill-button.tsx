@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Star, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { TranslatedText as T } from "@/components/providers/learning-language-provider";
 
 type SaveSkillButtonProps = {
   skillSlug: string;
@@ -135,16 +136,16 @@ export default function SaveSkillButton({
       {isLoading || isPending ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
-          {isPending ? "Saving..." : "Loading..."}
+          <T text={isPending ? "Saving..." : "Loading..."} />
         </>
       ) : (
         <>
           <Star className={`h-4 w-4 ${isSaved ? "fill-current" : ""}`} />
-          <span aria-live="polite">{buttonLabel}</span>
+          <span aria-live="polite"><T text={buttonLabel} /></span>
         </>
       )}
     </button>
-    {errorMessage && <p className="msl-status mt-2 text-sm text-red-700" role="alert">{errorMessage}</p>}
+    {errorMessage && <p className="msl-status mt-2 text-sm text-red-700" role="alert"><T text={errorMessage} /></p>}
     </>
   );
 }

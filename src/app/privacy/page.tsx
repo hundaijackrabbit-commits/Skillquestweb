@@ -45,6 +45,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Site analytics</h2>
             <p className="mt-2">The site uses Vercel Analytics and Speed Insights. Modern Skill Lab also records limited first-party content events such as the page or skill viewed, referral information, a temporary session identifier, and an account identifier when you are signed in. These signals help identify useful and trending content.</p>
+            <p className="mt-2">Some skill pages may show aggregated activity from the past 24 hours, based on distinct browsing sessions rather than identified people. For skill views, hosting infrastructure may provide an approximate two-letter country code. The community display does not store or publish precise locations or IP addresses, and only shows a country when at least three distinct browsing sessions have been recorded there. Counts are approximate and do not indicate who is online right now.</p>
           </section>
 
           <section>
@@ -59,7 +60,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-slate-900">Changes</h2>
-            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: September 22, 2026.</p>
+            <p className="mt-2">This page may be updated as the product adds features or changes how data is used. Last updated: November 20, 2026.</p>
           </section>
         </div>
 

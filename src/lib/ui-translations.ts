@@ -1,7 +1,33 @@
 import type { LearningLocale } from './internationalization';
+import { frenchLearningUi } from './french-learning-ui';
+import { chineseSiteUi } from './zh-cn-site-ui';
 
 /** Localized interface copy. Untranslated educational content stays English. */
 const rows: readonly [string, string, string, string, string, string][] = [
+  [
+    "Practical learning for modern work",
+    "面向现代职场的实用学习",
+    "Aprendizaje práctico para el trabajo actual",
+    "Un apprentissage pratique pour le monde du travail",
+    "आधुनिक कार्यस्थल के लिए व्यावहारिक सीख",
+    "تعلّم عملي للعمل الحديث"
+  ],
+  [
+    "Understand it. Practice it. Prove it.",
+    "理解它。练习它。证明你会。",
+    "Compréndelo. Practícalo. Demuéstralo.",
+    "Comprendre. Pratiquer. Démontrer.",
+    "समझें। अभ्यास करें। करके दिखाएँ।",
+    "افهمها. تدرّب عليها. أثبت إتقانك."
+  ],
+  [
+    "Explore practical skills for work and career growth. Learn how they work, try them in real situations, and keep track of your progress.",
+    "探索有助于工作和职业发展的实用技能。了解其原理，在真实情境中练习，并跟踪自己的进步。",
+    "Explora habilidades prácticas para el trabajo y tu desarrollo profesional. Aprende cómo funcionan, ponlas en práctica en situaciones reales y sigue tu progreso.",
+    "Découvrez des compétences pratiques pour le travail et votre évolution professionnelle. Apprenez à les maîtriser, exercez-vous dans des situations réelles et suivez vos progrès.",
+    "काम और करियर में आगे बढ़ने के लिए उपयोगी कौशल खोजें। समझें कि वे कैसे काम करते हैं, वास्तविक परिस्थितियों में अभ्यास करें और अपनी प्रगति देखें।",
+    "استكشف مهارات عملية للعمل والتطور المهني. تعلّم كيفية استخدامها، وجرّبها في مواقف واقعية، وتابع تقدّمك."
+  ],
 ["Knowledge Dictionary","知识词典","Diccionario de conocimientos","Dictionnaire des notions","ज्ञान शब्दकोश","قاموس المفاهيم"],
 [
     "Your practical work sample",
@@ -1810,7 +1836,61 @@ const rows: readonly [string, string, string, string, string, string][] = [
     "Administration",
     "एडमिन",
     "الإدارة"
-  ]
+  ],
+  ["Home","首页","Inicio","Accueil","होम","الرئيسية"],
+  ["Quick reference","快速参考","Referencia rápida","Référence rapide","त्वरित संदर्भ","مرجع سريع"],
+  ["Find a term or abbreviation","查找术语或缩写","Busca un término o abreviatura","Rechercher un terme ou une abréviation","कोई शब्द या संक्षिप्त रूप खोजें","ابحث عن مصطلح أو اختصار"],
+  ["Try: LLM, workflow, upskilling, baseline…","试试：LLM、工作流程、技能提升、基准…","Prueba: LLM, flujo de trabajo, mejora de habilidades…","Essayez : LLM, flux de travail, perfectionnement…","खोजें: LLM, वर्कफ़्लो, कौशल विकास…","جرّب: النماذج اللغوية، سير العمل، تطوير المهارات…"],
+  ["Filter dictionary topics","筛选词典主题","Filtrar temas del diccionario","Filtrer les thèmes du dictionnaire","शब्दकोश के विषय फ़िल्टर करें","تصفية موضوعات القاموس"],
+  ["All topics","所有主题","Todos los temas","Tous les thèmes","सभी विषय","كل الموضوعات"],
+  ["Learning science","学习科学","Ciencias del aprendizaje","Sciences de l'apprentissage","सीखने का विज्ञान","علم التعلّم"],
+  ["Skills & careers","技能与职业","Habilidades y carreras","Compétences et carrières","कौशल और करियर","المهارات والمسارات المهنية"],
+  ["AI & technology","人工智能与技术","IA y tecnología","IA et technologie","एआई और तकनीक","الذكاء الاصطناعي والتكنولوجيا"],
+  ["Reasoning & work","推理与工作","Razonamiento y trabajo","Raisonnement et travail","तर्क और कार्य","الاستدلال والعمل"],
+  ["Showing","显示","Mostrando","Affichage de","दिखाए जा रहे हैं","عرض"],
+  ["of","共","de","sur","कुल","من أصل"],
+  ["definitions","条定义","definiciones","définitions","परिभाषाएँ","تعريفًا"],
+  ["Clear filters","清除筛选","Borrar filtros","Effacer les filtres","फ़िल्टर हटाएँ","مسح عوامل التصفية"],
+  ["No matching definitions yet.","尚无匹配的定义。","Todavía no hay definiciones que coincidan.","Aucune définition correspondante pour le moment.","अभी कोई मिलती-जुलती परिभाषा नहीं मिली।","لا توجد تعريفات مطابقة بعد."],
+  ["Try a broader phrase, an abbreviation, or another topic.","试试更宽泛的关键词、缩写或其他主题。","Prueba una expresión más general, una abreviatura u otro tema.","Essayez une expression plus générale, une abréviation ou un autre thème.","कोई व्यापक शब्द, संक्षिप्त रूप या दूसरा विषय आज़माएँ।","جرّب عبارة أعم أو اختصارًا أو موضوعًا آخر."],
+  ["Show all terms","显示全部术语","Mostrar todos los términos","Afficher tous les termes","सभी शब्द दिखाएँ","عرض جميع المصطلحات"],
+  ["Understand the term","了解该术语","Comprender el término","Comprendre le terme","शब्द को समझें","افهم المصطلح"],
+  ["This is a reference for concepts—not a duplicate of our","这是概念参考资料，而不是以下内容的重复：","Esta es una referencia de conceptos, no un duplicado de nuestra","Cette ressource explique des notions et ne remplace pas notre","यह अवधारणाओं का संदर्भ है, इसका विकल्प नहीं:","هذا مرجع للمفاهيم وليس نسخة مكررة من"],
+  ["Skills Library","技能库","Biblioteca de habilidades","Bibliothèque des compétences","कौशल पुस्तकालय","مكتبة المهارات"],
+  ["which covers what you can learn to do and how to practise.","它介绍可学习的技能以及练习方法。","que explica qué puedes aprender a hacer y cómo practicarlo.","qui présente les compétences à acquérir et la manière de les pratiquer.","जो बताता है कि आप क्या सीख सकते हैं और उसका अभ्यास कैसे करें।","التي توضّح ما يمكنك تعلّمه وكيفية التدرب عليه."],
+  ["Dictionary definitions are currently available in English. Ask the AI Coach for explanations in your preferred language.","词典定义目前仅提供英语版本。你可以请 AI 教练使用你偏好的语言解释。","Las definiciones del diccionario están disponibles por ahora en inglés. Pide al asistente de IA explicaciones en tu idioma.","Les définitions sont pour le moment disponibles en anglais. Demandez au coach IA de vous les expliquer dans votre langue.","शब्दकोश की परिभाषाएँ अभी अंग्रेज़ी में हैं। अपनी भाषा में समझाने के लिए एआई कोच से पूछें।","تتوفر تعريفات القاموس حاليًا بالإنجليزية. اطلب من مرشد الذكاء الاصطناعي شرحها بلغتك المفضلة."],
+  ["Clear definitions for the concepts you meet while learning a skill, planning a career, or evaluating new technology. Each entry explains what a term means, why it matters, and what it looks like in practice.","清晰解释学习技能、规划职业或评估新技术时遇到的概念。每个条目都介绍术语的含义、重要性以及实际应用。","Definiciones claras de conceptos que encontrarás al aprender una habilidad, planificar tu carrera o evaluar nuevas tecnologías. Cada entrada explica el significado, la importancia y su aplicación práctica.","Des définitions claires des notions rencontrées en apprenant une compétence, en préparant votre carrière ou en évaluant une technologie. Chaque entrée explique le sens, l'utilité et une application concrète.","कौशल सीखते, करियर की योजना बनाते या नई तकनीक का मूल्यांकन करते समय मिलने वाली अवधारणाओं की स्पष्ट परिभाषाएँ। हर प्रविष्टि अर्थ, महत्त्व और व्यावहारिक उपयोग बताती है।","تعريفات واضحة للمفاهيم التي تصادفها عند تعلم مهارة أو التخطيط لمسارك المهني أو تقييم تقنية جديدة. يشرح كل مدخل معنى المصطلح وأهميته وتطبيقه العملي."],
+  ["Use our free Career & Life Map to turn ideas into a practical plan.","使用我们的免费职业与生活规划指南，把想法转化为切实可行的计划。","Usa nuestro mapa gratuito de carrera y vida para convertir ideas en un plan práctico.","Utilisez notre carte gratuite de carrière et de vie pour transformer vos idées en plan concret.","हमारे मुफ़्त करियर और जीवन मार्गदर्शक से विचारों को व्यावहारिक योजना में बदलें।","حوّل أفكارك إلى خطة عملية باستخدام دليلنا المجاني للمسار المهني والحياة."],
+  ["Get practical skills, career ideas, and modern-work insights worth keeping.","获取实用技能、职业灵感和有价值的现代职场见解。","Recibe habilidades prácticas, ideas profesionales y consejos útiles para el trabajo actual.","Recevez des conseils pratiques, des idées de carrière et des pistes utiles pour le travail actuel.","काम के कौशल, करियर के विचार और उपयोगी आधुनिक कार्य-संबंधी जानकारी पाएँ।","احصل على مهارات عملية وأفكار مهنية ورؤى مفيدة عن العمل الحديث."],
+  ["© 2026 Modern Skill Lab. Practical, career-relevant learning.","© 2026 Modern Skill Lab。实用、贴近职业发展的学习。","© 2026 Modern Skill Lab. Aprendizaje práctico para tu carrera.","© 2026 Modern Skill Lab. Des apprentissages pratiques pour votre carrière.","© 2026 Modern Skill Lab. करियर के लिए उपयोगी व्यावहारिक शिक्षा।","© 2026 Modern Skill Lab. تعلّم عملي مرتبط بالمسار المهني."],
+  ["Open main menu","打开主菜单","Abrir menú principal","Ouvrir le menu principal","मुख्य मेन्यू खोलें","فتح القائمة الرئيسية"],
+  ["Close main menu","关闭主菜单","Cerrar menú principal","Fermer le menu principal","मुख्य मेन्यू बंद करें","إغلاق القائمة الرئيسية"],
+  ["Close menu","关闭菜单","Cerrar menú","Fermer le menu","मेन्यू बंद करें","إغلاق القائمة"],
+  ["Loading account options","正在加载账户选项","Cargando opciones de cuenta","Chargement des options du compte","खाता विकल्प लोड हो रहे हैं","جارٍ تحميل خيارات الحساب"],
+  ["Mobile navigation","移动端导航","Navegación móvil","Navigation mobile","मोबाइल नेविगेशन","التنقل على الهاتف"],
+  ["Global navigation","全站导航","Navegación principal","Navigation principale","मुख्य नेविगेशन","التنقل الرئيسي"],
+  ["Your free account turns the library into a personal learning space with challenges, progress and real-world practice.","免费账户让技能库变成你的个人学习空间，包含挑战、进度跟踪和真实场景练习。","Tu cuenta gratuita convierte la biblioteca en un espacio personal de aprendizaje con retos, progreso y práctica real.","Votre compte gratuit transforme la bibliothèque en espace personnel d'apprentissage, avec défis, suivi et exercices concrets.","आपका मुफ़्त खाता कौशल पुस्तकालय को चुनौतियों, प्रगति और वास्तविक अभ्यास वाले निजी सीखने के स्थान में बदल देता है।","يحوّل حسابك المجاني المكتبة إلى مساحة تعلّم شخصية تتضمن تحديات وتتبعًا للتقدم وتطبيقًا عمليًا."],
+  ["Earn XP & achievements","赢取经验值和成就","Gana puntos y logros","Gagnez des points et des réussites","XP और उपलब्धियाँ पाएँ","اكسب نقاط الخبرة والإنجازات"],
+  ["Build a learning streak","保持连续学习","Mantén una racha de aprendizaje","Entretenez votre série d'apprentissage","लगातार सीखने की आदत बनाएँ","حافظ على سلسلة تعلّم متواصلة"],
+  ["Try skill missions","尝试技能任务","Prueba misiones de habilidades","Essayez des missions pratiques","कौशल मिशन आज़माएँ","جرّب مهام المهارات"],
+  ["Save your skills","收藏技能","Guarda tus habilidades","Enregistrez vos compétences","अपने कौशल सहेजें","احفظ مهاراتك"],
+  ["Selected by Modern Skill Lab","Modern Skill Lab 精选","Seleccionado por Modern Skill Lab","Sélection de Modern Skill Lab","Modern Skill Lab द्वारा चुना गया","من اختيار Modern Skill Lab"],
+  ["Browse all skills","浏览所有技能","Explorar todas las habilidades","Explorer toutes les compétences","सभी कौशल देखें","تصفّح جميع المهارات"],
+  ["Explore skill","探索技能","Explorar habilidad","Découvrir cette compétence","यह कौशल देखें","استكشف المهارة"],
+  ["A better way to browse","更高效的探索方式","Una mejor forma de explorar","Une meilleure façon d'explorer","खोजने का बेहतर तरीका","طريقة أفضل للاستكشاف"],
+  ["Turn curiosity into a skill stack.","将好奇心转化为实用技能组合。","Convierte tu curiosidad en un conjunto de habilidades.","Transformez votre curiosité en un ensemble de compétences.","अपनी जिज्ञासा को कौशल समूह में बदलें।","حوّل فضولك إلى مجموعة مهارات مترابطة."],
+  ["Make it yours","打造专属学习空间","Hazlo tuyo","Personnalisez votre expérience","इसे अपना बनाएँ","اجعل التجربة خاصة بك"],
+  ["Save skills and keep building.","收藏技能，持续成长。","Guarda habilidades y sigue progresando.","Enregistrez des compétences et continuez à progresser.","कौशल सहेजें और आगे बढ़ते रहें।","احفظ مهاراتك وواصل التطور."],
+  ["Create a free account to save useful skills and return to them from your dashboard.","创建免费账户，保存实用技能，并随时从个人仪表板返回学习。","Crea una cuenta gratuita para guardar habilidades útiles y retomarlas desde tu panel.","Créez un compte gratuit pour enregistrer des compétences utiles et les retrouver depuis votre tableau de bord.","उपयोगी कौशल सहेजने और डैशबोर्ड से उन पर लौटने के लिए मुफ़्त खाता बनाएँ।","أنشئ حسابًا مجانيًا لحفظ المهارات المفيدة والعودة إليها من لوحة التحكم."],
+  ["Create account","创建账户","Crear cuenta","Créer un compte","खाता बनाएँ","إنشاء حساب"],
+  ["Introducing Modern Skill Lab","认识 Modern Skill Lab","Conoce Modern Skill Lab","Découvrez Modern Skill Lab","Modern Skill Lab का परिचय","تعرّف على Modern Skill Lab"],
+  ["Your next chapter starts with one skill.","你的新篇章，从一项技能开始。","Tu próxima etapa comienza con una habilidad.","Votre prochain chapitre commence par une compétence.","आपकी अगली शुरुआत एक कौशल से होती है।","تبدأ خطوتك التالية بمهارة واحدة."],
+  ["Watch our 50-second introduction to a more practical way to explore skills, connect them to careers, and turn curiosity into progress.","观看我们的 50 秒短片，了解如何更实用地探索技能、关联职业，并将好奇心转化为成长。","Mira nuestra introducción de 50 segundos para explorar habilidades, conectarlas con carreras y convertir tu curiosidad en progreso.","Découvrez en 50 secondes une façon concrète d'explorer les compétences, de les relier aux métiers et de transformer votre curiosité en progrès.","50 सेकंड का परिचय देखें: कौशल खोजें, उन्हें करियर से जोड़ें और जिज्ञासा को प्रगति में बदलें।","شاهد مقدمتنا التي تستغرق 50 ثانية لتكتشف طريقة عملية لاستكشاف المهارات وربطها بالمهن وتحويل الفضول إلى تقدّم."],
+  ["Watch the introduction","观看介绍视频","Ver la introducción","Voir la présentation","परिचय देखें","شاهد المقدمة"],
+  ["Portrait video • Tap to play with sound • No autoplay","竖屏视频 · 点击播放声音 · 不会自动播放","Vídeo vertical · Toca para activar el sonido · Sin reproducción automática","Vidéo verticale · Touchez pour activer le son · Pas de lecture automatique","वर्टिकल वीडियो · आवाज़ के लिए टैप करें · अपने आप नहीं चलेगा","فيديو عمودي · اضغط للتشغيل مع الصوت · لا يبدأ تلقائيًا"],
+  ["Language for available interface translations and AI explanations","界面翻译和 AI 解释的语言","Idioma para las traducciones de la interfaz y las explicaciones con IA","Langue des éléments d'interface traduits et des explications par IA","उपलब्ध इंटरफ़ेस अनुवाद और एआई स्पष्टीकरण की भाषा","لغة واجهة المستخدم المترجمة وشروحات الذكاء الاصطناعي المتاحة"],
+  ["Preferred language for available translations and AI explanations","选择界面翻译和 AI 解释的语言","Idioma preferido para las traducciones y explicaciones con IA","Langue préférée pour les traductions et explications par IA","अनुवाद और एआई स्पष्टीकरण के लिए पसंदीदा भाषा","اللغة المفضلة للترجمات وشروحات الذكاء الاصطناعي"],
+  ["Changes available interface translations and AI responses. Some learning articles remain in English.","更改已提供的界面翻译和 AI 回复语言。部分学习文章仍为英文。","Cambia el idioma de la interfaz disponible y de las respuestas de IA. Algunos artículos siguen en inglés.","Change la langue des éléments d'interface disponibles et des réponses IA. Certains articles restent en anglais.","उपलब्ध इंटरफ़ेस अनुवाद और एआई जवाबों की भाषा बदलेगी। कुछ सीखने के लेख अभी अंग्रेज़ी में हैं।","يغيّر لغة عناصر الواجهة المتاحة وردود الذكاء الاصطناعي. تظل بعض المقالات التعليمية بالإنجليزية."],
 ];
 
 const dictionaries: Record<LearningLocale, Record<string, string>> = {
@@ -1825,5 +1905,5 @@ for (const [en, zh, es, fr, hi, ar] of rows) {
 }
 
 export function translateInterface(text: string, locale: LearningLocale): string {
-  return dictionaries[locale][text] || text;
+  return (locale === 'zh-CN' ? chineseSiteUi[text] : undefined) || dictionaries[locale][text] || (locale === 'fr' ? frenchLearningUi[text] : undefined) || text;
 }

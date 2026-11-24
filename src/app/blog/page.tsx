@@ -6,6 +6,7 @@ import { Breadcrumbs } from '@/components/navigation/breadcrumbs';
 import { getAllBlogPosts } from '@/lib/content';
 import { isBlogPostIndexable } from '@/lib/content-quality';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
+import { TranslatedText as T, EnglishContentNotice } from '@/components/providers/learning-language-provider';
 import { CareerGuidePromo } from '@/components/marketing/career-guide-promo';
 import { getKnowledgeCheckForBlog } from '@/lib/knowledge-checks';
 import { formatContentDate } from '@/lib/dates';
@@ -47,34 +48,35 @@ export default async function BlogPage() {
         <div className="mx-auto max-w-4xl text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-medium mb-6">
             <Lightbulb className="h-4 w-4 mr-2" />
-            Professional Development Insights
+            <T text="Professional Development Insights" />
           </div>
           
           <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl mb-6">
-            Skills & Career
-            <span className="text-blue-600 block">Intelligence Blog</span>
+            <T text="Skills & Career" />
+            <span className="text-blue-600 block"><T text="Intelligence Blog" /></span>
           </h1>
           
           <p className="text-xl leading-8 text-gray-600 mb-8">
-            Practical ideas on career development, skill building, and modern work.
-            Use the blog to connect useful concepts with the deeper skill and career library.
+            <T text="Practical ideas on career development, skill building, and modern work. Use the blog to connect useful concepts with the deeper skill and career library." />
           </p>
 
           <div className="grid gap-4 text-left md:grid-cols-3">
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-              <h2 className="font-bold text-slate-950">Understand the idea</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Start with a clear model, the limits of the concept, and the context needed to use it responsibly.</p>
+              <h2 className="font-bold text-slate-950"><T text="Understand the idea" /></h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Start with a clear model, the limits of the concept, and the context needed to use it responsibly." /></p>
             </div>
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-              <h2 className="font-bold text-slate-950">Connect it to work</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Follow links into skills, career profiles, industries, and practical workplace examples.</p>
+              <h2 className="font-bold text-slate-950"><T text="Connect it to work" /></h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Follow links into skills, career profiles, industries, and practical workplace examples." /></p>
             </div>
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
-              <h2 className="font-bold text-slate-950">Test your understanding</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Use retrieval checks and reflection prompts where an article has a connected practice activity.</p>
+              <h2 className="font-bold text-slate-950"><T text="Test your understanding" /></h2>
+              <p className="mt-2 text-sm leading-6 text-slate-600"><T text="Use retrieval checks and reflection prompts where an article has a connected practice activity." /></p>
             </div>
           </div>
         </div>
+
+        <EnglishContentNotice message="Blog article text is currently in English. Chinese navigation and introductory guidance are available." />
 
         {/* Content Status */}
         {blogPosts.length === 0 ? (
@@ -90,8 +92,8 @@ export default async function BlogPage() {
               </p>
               
               <div className="rounded-xl bg-blue-50 p-6 text-left">
-                <h3 className="mb-2 font-semibold text-gray-900">Get the next useful skill</h3>
-                <p className="mb-4 text-sm text-gray-600">Get practical skill and career ideas in your inbox as new guides are published.</p>
+                <h3 className="mb-2 font-semibold text-gray-900"><T text="Get the next useful skill" /></h3>
+                <p className="mb-4 text-sm text-gray-600"><T text="Get practical skill and career ideas in your inbox as new guides are published." /></p>
                 <NewsletterForm source="blog-empty-state" />
               </div>
             </div>
@@ -104,7 +106,7 @@ export default async function BlogPage() {
                 <div className="flex items-center justify-between mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 flex items-center">
                     <Star className="h-7 w-7 mr-3 text-yellow-500" />
-                    Featured Insights
+                    <T text="Featured Insights" />
                   </h2>
                 </div>
                 
@@ -123,7 +125,7 @@ export default async function BlogPage() {
                             ))}
                             {getKnowledgeCheckForBlog(post.slug) && (
                               <Badge className="bg-violet-100 text-violet-800" size="sm">
-                                <Brain className="mr-1 h-3 w-3" /> Practice included
+                                <Brain className="mr-1 h-3 w-3" /> <T text="Practice included" />
                               </Badge>
                             )}
                           </div>
@@ -152,7 +154,7 @@ export default async function BlogPage() {
                           </div>
                           <Link href={`/blog/${post.slug}`}>
                             <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md">
-                              Read More <ArrowRight className="ml-2 h-4 w-4" />
+                              <T text="Read More" /> <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                           </Link>
                         </div>
@@ -166,8 +168,8 @@ export default async function BlogPage() {
             {/* All Posts */}
             <div className="mb-16">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-gray-900">Latest Articles</h2>
-                <p className="text-sm text-slate-600">Sorted by latest content update</p>
+                <h2 className="text-2xl font-bold text-gray-900"><T text="Latest Articles" /></h2>
+                <p className="text-sm text-slate-600"><T text="Sorted by latest content update" /></p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

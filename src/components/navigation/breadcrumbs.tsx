@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TranslatedText as T } from '@/components/providers/learning-language-provider';
 import { ChevronRight, Home } from 'lucide-react';
 
 export type BreadcrumbItem = {
@@ -21,11 +22,11 @@ export function Breadcrumbs({ items, className = '' }: { items: BreadcrumbItem[]
                   className="inline-flex min-h-6 items-center rounded text-slate-600 underline-offset-4 hover:text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
                 >
                   {index === 0 && <Home aria-hidden="true" className="mr-1.5 h-3.5 w-3.5" />}
-                  {item.label}
+                  <T text={item.label} />
                 </Link>
               ) : (
                 <span aria-current={isLast ? 'page' : undefined} className="max-w-72 truncate font-medium text-slate-900">
-                  {item.label}
+                  <T text={item.label} />
                 </span>
               )}
             </li>

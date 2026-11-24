@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -8,6 +7,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SupabaseProvider } from '@/components/providers/supabase-provider';
 import { LearningLanguageProvider } from '@/components/providers/learning-language-provider';
+import { LearningProgressCloudSync } from '@/components/learning/learning-progress-cloud-sync';
 import { CartesiaNavigationBridge } from '@/components/voice/cartesia-navigation-bridge';
 import { NavigationRecovery } from '@/components/voice/navigation-recovery';
 import { ResolvedNavigationFallback } from '@/components/voice/resolved-navigation-fallback';
@@ -29,6 +29,7 @@ export const metadata: Metadata = {
   keywords: ['modern skills','practical skills','career skills','professional development','AI literacy','digital skills','communication skills','critical thinking','career development'],
   alternates: { canonical: '/' },
   verification: { google: 'YKFnLTH8rZsMZoTpmT_sUapo_ROnt8Kg4MfQmMIJZ68' },
+  other: { 'google-adsense-account': 'ca-pub-9688403832260329' },
   openGraph: { title: 'Modern Skill Lab | Practical Skills for Modern Work', description: SITE_DESCRIPTION, type: 'website', locale: 'en_US', url: SITE_URL, siteName: SITE_NAME },
   twitter: { card: 'summary_large_image', title: 'Modern Skill Lab | Practical Skills for Modern Work', description: SITE_DESCRIPTION },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 } },
@@ -43,16 +44,25 @@ const structuredData = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9688403832260329"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-white text-slate-900">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-        {adsenseClient && <Script id="adsense-script" async strategy="afterInteractive" crossOrigin="anonymous" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} />}
         <SupabaseProvider>
+          <LearningProgressCloudSync />
           <LearningLanguageProvider>
           <Header />
-          <main className="flex-1">{children}</main>
+          {/* Long-form editorial pages are currently English; translated UI spans
+              declare their own language. Remove this restriction when content
+              has reviewed localized editions. */}
+          <main className="flex-1" lang="en" dir="ltr">{children}</main>
           <Footer />
           <ResolvedNavigationFallback />
           <CartesiaNavigationBridge />

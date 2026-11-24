@@ -20,6 +20,7 @@ import {
   type LearningProfile,
 } from '@/lib/learning-progress';
 import { useSupabase } from '@/components/providers/supabase-provider';
+import { TranslatedText as T, useInterfaceTranslation } from '@/components/providers/learning-language-provider';
 
 const initialProfile: LearningProfile = {
   version: 1,
@@ -44,6 +45,7 @@ const achievementIcons = {
 export function LearningAchievements() {
   const [profile, setProfile] = useState(initialProfile);
   const { user } = useSupabase();
+  const t = useInterfaceTranslation();
   const userId = user?.id;
 
   useEffect(() => {
@@ -70,30 +72,30 @@ export function LearningAchievements() {
     <section className="mb-14 overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-sm" aria-labelledby="achievement-heading">
       <div className="grid lg:grid-cols-[0.7fr_1.3fr]">
         <div className="bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-950 p-7 text-white sm:p-9">
-          <div className="text-xs font-bold uppercase tracking-[0.18em] text-violet-200">Your private rank</div>
+          <div className="text-xs font-bold uppercase tracking-[0.18em] text-violet-200"><T text="Your private rank" /></div>
           <div className="mt-3 flex items-center gap-3">
             <div className="rounded-2xl bg-white/10 p-3"><Medal className="h-7 w-7 text-amber-300" /></div>
             <div>
-              <div className="text-sm font-semibold text-violet-200">Level {level.level}</div>
-              <h2 id="achievement-heading" className="text-3xl font-bold">{level.name}</h2>
+              <div className="text-sm font-semibold text-violet-200"><T text="Level" /> {level.level}</div>
+              <h2 id="achievement-heading" className="text-3xl font-bold"><T text={level.name} /></h2>
             </div>
           </div>
-          <div className="mt-7 h-2.5 overflow-hidden rounded-full bg-white/15" aria-label={`${levelProgress}% progress to the next level`}>
+          <div className="mt-7 h-2.5 overflow-hidden rounded-full bg-white/15" aria-label={`${levelProgress}% ${t('XP to the next level')}`}>
             <div className="h-full rounded-full bg-gradient-to-r from-amber-300 to-fuchsia-400 transition-all" style={{ width: `${levelProgress}%` }} />
           </div>
           <p className="mt-3 text-sm text-violet-100">
-            {level.nextXp ? `${level.nextXp - profile.totalXp} XP to the next level` : 'Highest current level reached'}
+            {level.nextXp ? <>{level.nextXp - profile.totalXp} <T text="XP to the next level" /></> : <T text="Highest current level reached" />}
           </p>
-          <p className="mt-6 text-sm leading-6 text-violet-200">Levels and achievements are private. They reward useful practice without ranking you against anyone else.</p>
+          <p className="mt-6 text-sm leading-6 text-violet-200"><T text="Levels and achievements are private. They reward useful practice without ranking you against anyone else." /></p>
         </div>
 
         <div className="p-7 sm:p-9">
           <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
             <div>
-              <div className="text-xs font-bold uppercase tracking-[0.16em] text-violet-700">Achievement shelf</div>
-              <h3 className="mt-1 text-2xl font-bold text-slate-950">{earnedCount} of {achievements.length} unlocked</h3>
+              <div className="text-xs font-bold uppercase tracking-[0.16em] text-violet-700"><T text="Achievement shelf" /></div>
+              <h3 className="mt-1 text-2xl font-bold text-slate-950">{earnedCount} <T text="of" /> {achievements.length} <T text="unlocked" /></h3>
             </div>
-            <span className="text-xs font-medium text-slate-500">Private to this account</span>
+            <span className="text-xs font-medium text-slate-500"><T text="Private to this account" /></span>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {achievements.map((achievement) => {
@@ -106,8 +108,8 @@ export function LearningAchievements() {
                     </div>
                     {achievement.earned ? <CheckCircle2 className="h-5 w-5 text-emerald-600" /> : <LockKeyhole className="h-4 w-4 text-slate-400" />}
                   </div>
-                  <div className="mt-3 font-bold text-slate-950">{achievement.name}</div>
-                  <p className="mt-1 text-xs leading-5 text-slate-600">{achievement.description}</p>
+                  <div className="mt-3 font-bold text-slate-950"><T text={achievement.name} /></div>
+                  <p className="mt-1 text-xs leading-5 text-slate-600"><T text={achievement.description} /></p>
                   <div className="mt-3 text-xs font-semibold text-slate-500">{achievement.current}/{achievement.target}</div>
                 </div>
               );

@@ -108,7 +108,8 @@ export function getLearningProfile(userId: string): LearningProfile {
     const stored = window.localStorage.getItem(storageKey);
     return normalizeProfile(stored ? (JSON.parse(stored) as Partial<LearningProfile>) : null);
   } catch {
-    window.localStorage.removeItem(profileStorageKey(userId));
+    // Never erase a learner's stored record when parsing or storage fails.
+    // The original value may still be recoverable after a browser repair.
     return emptyProfile;
   }
 }
@@ -141,8 +142,85 @@ export function recordLearningActivity(input: RecordActivityInput, userId: strin
     activities: [...current.activities, { ...input, completedAt: now.toISOString() }],
   };
 
-  window.localStorage.setItem(profileStorageKey(userId), JSON.stringify(next));
+  try {
+    window.localStorage.setItem(profileStorageKey(userId), JSON.stringify(next));
+  } catch {
+    // Do not claim completion if the browser refused to save it.
+    return current;
+  }
   window.dispatchEvent(new CustomEvent(LEARNING_PROGRESS_EVENT, { detail: { profile: next, userId } }));
+  return next;
+}
+
+/**
+ * Import *additional* completions from a signed-in member's cloud record.
+ * Existing browser activity IDs are never overwritten or deleted.
+ * Calling this repeatedly is idempotent, including after a network retry.
+ */
+export function mergeLearningActivitiesFromCloud(
+  userId: string,
+  incoming: LearningActivity[],
+): LearningProfile {
+  const current = getLearningProfile(userId);
+  if (typeof window === 'undefined' || !userId || !Array.isArray(incoming) || !incoming.length) return current;
+
+  const validKinds = new Set<LearningActivityKind>([
+    'mission', 'course-lesson', 'knowledge-check', 'sequence-practice', 'sort-practice', 'workshop',
+  ]);
+  const seen = new Set(current.activities.map((activity) => activity.id));
+  const additional: LearningActivity[] = [];
+
+  for (const activity of incoming) {
+    if (!activity || typeof activity.id !== 'string' || !activity.id.trim() ||
+        typeof activity.skillSlug !== 'string' || !activity.skillSlug.trim() ||
+        !validKinds.has(activity.kind) ||
+        !Number.isInteger(activity.xp) || activity.xp < 0 || activity.xp > 1000 ||
+        typeof activity.completedAt !== 'string' ||
+        !Number.isFinite(Date.parse(activity.completedAt)) ||
+        seen.has(activity.id)) continue;
+    seen.add(activity.id);
+    additional.push(activity);
+  }
+
+  if (!additional.length) return current;
+
+  const activities = [...current.activities, ...additional]
+    .sort((a, b) => Date.parse(a.completedAt) - Date.parse(b.completedAt));
+  const practicedDays = [...new Set(activities
+    .filter((activity) => Number.isFinite(Date.parse(activity.completedAt)))
+    .map((activity) => localDateKey(new Date(activity.completedAt))))].sort();
+
+  let chain = 0;
+  let longest = current.longestStreak;
+  let previousDay: string | null = null;
+  for (const day of practicedDays) {
+    chain = previousDay && daysBetween(previousDay, day) === 1 ? chain + 1 : 1;
+    longest = Math.max(longest, chain);
+    previousDay = day;
+  }
+
+  const today = localDateKey();
+  const lastPracticeDate = previousDay ?? current.lastPracticeDate;
+  const age = lastPracticeDate ? daysBetween(lastPracticeDate, today) : Infinity;
+  const next: LearningProfile = {
+    version: 1,
+    totalXp: activities.reduce((total, activity) => total + activity.xp, 0),
+    currentStreak: age >= 0 && age <= 1 ? chain : 0,
+    longestStreak: longest,
+    lastPracticeDate,
+    activities,
+  };
+
+  try {
+    window.localStorage.setItem(profileStorageKey(userId), JSON.stringify(next));
+  } catch {
+    // Keep the prior local progress intact if storage is unavailable.
+    return current;
+  }
+
+  window.dispatchEvent(new CustomEvent(LEARNING_PROGRESS_EVENT, {
+    detail: { profile: next, userId, source: 'cloud-merge' },
+  }));
   return next;
 }
 
